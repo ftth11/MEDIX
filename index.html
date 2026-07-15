@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK Cloudless - Sistem Management Alat Kesehatan v24.1</title>
+    <title>SiMAK Cloudless - Sistem Management Alat Kesehatan v24.2</title>
     
     <link rel="icon" type="image/png" href="logo.png">
     
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="p-4 border-t border-slate-800 bg-slate-950/40 text-center text-[10px] text-slate-500 font-mono">
-                    <i class="fa-solid fa-circle-nodes text-emerald-400 mr-1"></i> GitHub Ecosystem v24.1
+                    <i class="fa-solid fa-circle-nodes text-emerald-400 mr-1"></i> GitHub Ecosystem v24.2
                 </div>
             </div>
         </div>
@@ -150,10 +150,10 @@
                                 <thead class="bg-slate-100 font-bold border-b text-gray-700">
                                     <tr>
                                         <th class="p-3">Nama Alat Kesehatan</th>
-                                        <th class="p-3">Merk / Model</th>
+                                        <th class="p-3">Merk</th>
+                                        <th class="p-3">Model / Tipe</th>
                                         <th class="p-3">Nomor Seri (SN)</th>
-                                        <th class="p-3">Izin Edar</th>
-                                        <th class="p-3">Ruangan</th>
+                                        <th class="p-3">Ruangan / Lokasi</th>
                                         <th class="p-3">Status</th>
                                         <th class="p-3 text-center">Rekam Jejak & Aksi</th>
                                     </tr>
@@ -387,7 +387,7 @@
     </div>
 
     <script>
-        // 🚨 CONFIG GITHUB PAGES: GANTI DENGAN USERNAME ASLI ANDA 🚨
+        // 🚨 CONFIG GITHUB PAGES: WAJIB GANTI USERNAME DENGAN USERNAME ASLI ANDA 🚨
         const GITHUB_USERNAME = "ftth11"; 
         const GITHUB_REPO = "SiMAK"; 
         const JSON_URL = `https://raw.githubusercontent.com/${ftth11}/${SiMAK}/main/database.json`;
@@ -414,7 +414,30 @@
                 if (!response.ok) throw new Error("Gagal load file JSON");
                 const resData = await response.json();
                 
-                dataAlat = resData.dataAlat || [];
+                let rawAlat = resData.dataAlat || [];
+                
+                // 🚨 FAULT-TOLERANCE ENGINE: Normalisasi pemetaan properti database yang terbalik
+                dataAlat = rawAlat.map(a => {
+                    let namaFix = a.nama || '-';
+                    let merkFix = a.kode || '-';
+                    let tipeFix = a.merk || '-';
+                    let seriFix = a.tipe || '-';
+                    let edarFix = a.seri || '-';
+                    let lokasiFix = (a.edar && a.edar !== 'Baik') ? a.edar : (a.lokasi || 'Instalasi');
+                    
+                    return {
+                        id: a.id || "ALK-" + Math.floor(Math.random() * 100000),
+                        kode: "ALK-" + Math.floor(1000 + Math.random() * 9000),
+                        nama: namaFix,
+                        merk: merkFix,
+                        tipe: tipeFix,
+                        seri: seriFix,
+                        edar: edarFix,
+                        lokasi: lokasiFix,
+                        status: a.status || "Siap Digunakan"
+                    };
+                });
+
                 dataKalibrasi = resData.dataKalibrasi || [];
                 dataPerbaikan = resData.dataPerbaikan || [];
                 dataPM = resData.dataPM || [];
@@ -445,7 +468,7 @@
             localStorage.setItem('simak_local_alat', JSON.stringify(dataAlat));
             localStorage.setItem('simak_local_kalibrasi', JSON.stringify(dataKalibrasi));
             
-            alert("Perubahan Berhasil Tersimpan!\n\nFile 'database.json' baru otomatis terunduh di perangkat Anda.\n\nSilakan buka GitHub di browser Anda, lalu seret/replace file database.json yang lama dengan yang baru ini agar data di HP terupdate.");
+            alert("Perubahan Berhasil!\n\nFile database.json terupdate otomatis diunduh ke laptop. Silakan upload/replace file tersebut ke GitHub agar data di HP sinkron.");
         }
 
         function toggleSidebarMenu(show) {
@@ -477,7 +500,7 @@
             const calSelectEl = document.getElementById('form-cal-alat');
             if(!selectEl) return;
             let htmlOpts = `<option value="">-- PILIH ALAT MEDIS SESUAI DATABASE --</option>`;
-            dataAlat.forEach(a => { htmlOpts += `<option value="${a.id}">${a.nama} [SN: ${a.tipe}] - Ruang:${a.edar}</option>`; });
+            dataAlat.forEach(a => { htmlOpts += `<option value="${a.id}">${a.nama} [SN: ${a.seri}] - Ruang: ${a.lokasi}</option>`; });
             selectEl.innerHTML = htmlOpts;
             if(calSelectEl) calSelectEl.innerHTML = htmlOpts;
         }
@@ -485,7 +508,7 @@
         function renderOpsiChecklistVisual() {
             document.getElementById('box-options-alatkerja').innerHTML = opsAlatKerja.map((o, idx) => `
                 <div class="flex items-center justify-between bg-white p-1.5 rounded border shadow-sm text-[11px]">
-                    <label class="flex items-center space-x-1"><input type="checkbox" checked value="${o}"> <span>${idx+1}.${o}</span></label>
+                    <label class="flex items-center space-x-1"><input type="checkbox" checked value="${o}"> <span>${idx+1}. ${o}</span></label>
                     <div class="space-x-1 text-gray-400 no-print">
                         <button type="button" onclick="editOpsiChecklistRow('alatkerja', ${idx})" class="hover:text-blue-600"><i class="fa-solid fa-pen text-[10px]"></i></button>
                         <button type="button" onclick="removeOpsiChecklistRow('alatkerja', ${idx})" class="hover:text-red-600"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
@@ -544,7 +567,7 @@
             if(a) {
                 document.getElementById('dlk-nama').value = a.nama; document.getElementById('dlk-merk').value = a.merk || '-';
                 document.getElementById('dlk-tipe').value = a.tipe || '-'; document.getElementById('dlk-seri').value = a.seri || '-';
-                document.getElementById('dlk-lokasi').value = a.edar || 'Ruangan'; document.getElementById('dlk-nama-saksi').innerText = "Karu " + (a.edar || 'Ruangan');
+                document.getElementById('dlk-lokasi').value = a.lokasi || 'Ruangan'; document.getElementById('dlk-nama-saksi').innerText = "Karu " + (a.lokasi || 'Ruangan');
 
                 const riwayatKalibrasiAlat = dataKalibrasi.filter(c => c.alatId == alatId);
                 if(riwayatKalibrasiAlat.length > 0) {
@@ -667,23 +690,23 @@
 
         function bukaKartuPemeliharaan(alatId) {
             const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
-            document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-seri').innerText = alat.tipe || '-';
-            document.getElementById('kartu-edar').innerText = alat.seri || '-'; document.getElementById('kartu-lokasi').innerText = alat.edar || '-';
+            document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-seri').innerText = alat.merk || '-';
+            document.getElementById('kartu-edar').innerText = alat.tipe || '-'; document.getElementById('kartu-lokasi').innerText = alat.seri || '-';
 
             const listCorrective = dataPerbaikan.filter(r => r.alatId == alatId);
             document.getElementById('kartu-list-corrective').innerHTML = listCorrective.length === 0 ? 
                 `<tr><td colspan="3" class="p-3 text-center text-gray-400 italic">Belum ada catatan riwayat corrective.</td></tr>` :
-                listCorrective.map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk\vert{}\vert{}'-'}<br>${r.desc}</td><td>${r.hasilTunggal\vert{}\vert{}'Selesai'}</td><td class="p-3 text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}', 'corrective')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Buka LK</button></td></tr>`).join('');
+                listCorrective.map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc}</td><td>${r.hasilTunggal||'Selesai'}</td><td class="p-3 text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}', 'corrective')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Buka LK</button></td></tr>`).join('');
 
             const listPreventive = dataPM.filter(p => p.alatId == alatId);
             document.getElementById('kartu-list-preventive').innerHTML = listPreventive.length === 0 ?
                 `<tr><td colspan="3" class="p-3 text-center text-gray-400 italic">Belum ada catatan preventive.</td></tr>` :
-                listPreventive.map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk\vert{}\vert{}'-'}<br>${p.desc||'-'}</td><td>${p.hasilTunggal\vert{}\vert{}'Selesai'}</td><td class="p-3 text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}', 'preventive')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Buka LK</button></td></tr>`).join('');
+                listPreventive.map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc||'-'}</td><td>${p.hasilTunggal||'Selesai'}</td><td class="p-3 text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}', 'preventive')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Buka LK</button></td></tr>`).join('');
 
             const listInspeksi = dataInspeksi.filter(i => i.alatId == alatId);
             document.getElementById('kartu-list-inspeksi').innerHTML = listInspeksi.length === 0 ?
                 `<tr><td colspan="3" class="p-3 text-center text-gray-400 italic">Belum ada lembar isian inspeksi.</td></tr>` :
-                listInspeksi.map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk\vert{}\vert{}'-'}<br>${i.fungsi||'-'}</td><td>${i.hasilTunggal\vert{}\vert{}'Normal'}</td><td class="p-3 text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}', 'inspeksi')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Buka LK</button></td></tr>`).join('');
+                listInspeksi.map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.fungsi||'-'}</td><td>${i.hasilTunggal||'Normal'}</td><td class="p-3 text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}', 'inspeksi')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Buka LK</button></td></tr>`).join('');
 
             const listKalibrasi = dataKalibrasi.filter(c => c.alatId == alatId);
             document.getElementById('kartu-list-kalibrasi').innerHTML = listKalibrasi.length === 0 ?
@@ -701,16 +724,76 @@
         function renderAll() {
             updateStats(); populasikanDropdownAlatDiLembarKerja();
             const tbody = document.getElementById('table-alat-body');
-            if(dataAlat.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-400 italic">Belum ada database master. Pastikan file database.json di GitHub terisi.</td></tr>`; return; }
+            if(dataAlat.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-400 italic">Membaca file database...</td></tr>`; return; }
             
             let filteredAlat = dataAlat;
             if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
             
             tbody.innerHTML = filteredAlat.map(a => `
                 <tr class="border-b hover:bg-slate-50/80 transition">
-                    <td class="p-3 font-bold text-slate-900 text-xs">${a.nama}</td><td class="p-3 text-xs">${a.kode\vert{}\vert{}'-'} /${a.merk||'-'}</td><td class="p-3 font-mono font-bold text-xs">${a.tipe\vert{}\vert{}'-'}</td><td class="p-3 text-gray-500 text-xs">${a.seri||'-'}</td>
-                    <td class="p-3 text-xs"><span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-medium">${a.edar||'-'}</span></td>
+                    <td class="p-3 font-bold text-slate-900 text-xs">${a.nama}</td>
+                    <td class="p-3 text-xs">${a.merk}</td>
+                    <td class="p-3 text-xs">${a.tipe}</td>
+                    <td class="p-3 font-mono font-bold text-xs">${a.seri}</td>
+                    <td class="p-3 text-xs"><span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-medium">${a.lokasi}</span></td>
                     <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status==='Siap Digunakan'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${a.status}</span></td>
                     <td class="p-3 text-center space-x-1">
                         <button onclick="pemicuEditAlatLangsung('${a.id}')" class="bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded font-bold text-[10px]"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                        <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold shadow text-[10px]"><i class="fa-solid fa-folder-open"></i> Log Aset</button
+                        <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold shadow text-[10px]"><i class="fa-solid fa-folder-open"></i> Log Aset</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            const tCalBody = document.getElementById('table-kalibrasi-body');
+            if(dataKalibrasi.length === 0) { tCalBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Belum ada sertifikat kalibrasi terupload.</td></tr>`; } 
+            else {
+                tCalBody.innerHTML = dataKalibrasi.map(c => {
+                    const a = dataAlat.find(item => item.id == c.alatId) || { nama: '-', seri: '-' };
+                    return `<tr class="border-b bg-white/40"><td class="p-4"><b>${a.nama}</b><br><span class="text-[10px] text-gray-400 font-mono">SN: ${a.seri}</span></td><td class="p-4 font-mono">${c.tgl}</td><td class="p-4 font-mono text-red-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="p-4"><button onclick="lihatFileLangsung('${c.certPdf}', 'pdf', 'Sertifikat')" class="text-[11px] bg-red-50 text-red-700 px-3 py-1 rounded-lg font-bold"><i class="fa-solid fa-file-pdf mr-1 text-red-500"></i> Lihat PDF</button></td><td class="p-4"><span class="px-2 py-0.5 bg-green-100 text-green-800 font-bold text-[10px] rounded">${c.hasil}</span></td></tr>`;
+                }).join('');
+            }
+        }
+
+        function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
+        function updateStats() {
+            document.getElementById('stat-total').innerText = dataAlat.length;
+            document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
+            document.getElementById('stat-broken').innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
+            document.getElementById('stat-logs').innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
+        }
+
+        // FILTER PENCARIAN LIVE
+        function filterAlat() {
+            const q = document.getElementById('search-alat').value.toLowerCase();
+            const trs = document.getElementById('table-alat-body').getElementsByTagName('tr');
+            for(let tr of trs) { tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none'; }
+        }
+
+        function lihatFileLangsung(base64Data, jenisFile, judulData) {
+            const body = document.getElementById('preview-body'); document.getElementById('preview-title').innerText = "Live Preview: " + judulData;
+            body.innerHTML = `<iframe src="${base64Data}" class="w-full h-full border rounded font-bold" type="application/pdf"></iframe>`; toggleModal('modal-preview', true);
+        }
+
+        // SKRIP TANDA TANGAN ELEKTRONIK
+        const signatures = ['sig-teknisi', 'sig-user', 'sig-pj'];
+        function initSignatures() {
+            signatures.forEach(id => {
+                const canvas = document.getElementById(id); if(!canvas) return; canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+                const ctx = canvas.getContext('2d'); let act = false; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = '#0f172a';
+                function start(e) { act = true; draw(e); } function end() { act = false; ctx.beginPath(); }
+                function draw(e) {
+                    if(!act) return; const r = canvas.getBoundingClientRect();
+                    const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                    ctx.lineTo(cx - r.left, cy - r.top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx - r.left, cy - r.top);
+                }
+                canvas.addEventListener('mousedown', start); canvas.addEventListener('mouseup', end); canvas.addEventListener('mousemove', draw);
+            });
+        }
+        
+        window.onload = function() { 
+            muatDatabaseDariGitHub();
+            renderOpsiChecklistVisual(); 
+        };
+    </script>
+</body>
+</html>
