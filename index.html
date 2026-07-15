@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK</title>
+    <title>SiMAK Cloudless - UPTD RSUD Pondokgede v27.1</title>
     
-    <!-- LOGO PADA ALAMAT URL (FAVICON) -->
     <link rel="icon" type="image/png" href="logo.png">
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- SDK Firebase Legacy (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -46,27 +42,24 @@
             touch-action: none;
         }
         @media print {
-            body * { visibility: hidden; }
-            #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible; }
-            #area-lembar-kerja-resmi { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: black !important; }
+            body * { visibility: hidden !important; }
+            #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
+            #area-lembar-kerja-resmi { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: black !important; display: block !important; }
             .no-print { display: none !important; }
         }
     </style>
 </head>
 <body id="main-app-body" class="font-sans text-gray-800 transition-all duration-500">
 
-    <!-- INDIKATOR STATUS BULATAN MINIMALIS -->
     <div id="db-status-loader" class="fixed bottom-4 right-4 bg-slate-900/80 p-3 rounded-full shadow-2xl flex items-center justify-center z-50 border border-slate-700/60 backdrop-blur-sm">
         <div class="w-3.5 h-3.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]" id="status-dot"></div>
     </div>
 
     <div class="flex h-screen overflow-hidden bg-slate-950/50 backdrop-blur-[1px] w-full h-full relative">
         
-        <!-- SIDEBAR UTAMA -->
         <div id="app-sidebar" class="sidebar-translate fixed md:sticky top-0 left-0 h-full w-64 bg-slate-900/95 text-white flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-800/50 -translate-x-full md:translate-x-0">
             <div class="flex flex-col h-full justify-between overflow-y-auto">
                 <div>
-                    <!-- Header Sidebar -->
                     <div class="p-4 flex items-center justify-between border-b border-slate-800">
                         <div class="flex items-center space-x-3">
                             <div class="w-9 h-9 bg-white rounded p-0.5 flex items-center justify-center overflow-hidden border">
@@ -80,7 +73,6 @@
                         </button>
                     </div>
                     
-                    <!-- Navigasi Utama -->
                     <nav class="p-4 space-y-1">
                         <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item active w-full flex items-center space-x-3 px-4 py-3 rounded text-left text-gray-300 hover:text-white hover:bg-slate-800">
                             <i class="fa-solid fa-chart-pie w-5"></i><span>Dashboard Utama</span>
@@ -92,7 +84,6 @@
                             <i class="fa-solid fa-file-invoice-dollar w-5"></i><span>Pusat Riwayat & Dokumen</span>
                         </button>
                         
-                        <!-- Panel Aksi Kontrol Lembar Kerja -->
                         <div class="pt-4 mt-4 border-t border-slate-800 space-y-2">
                             <span class="block px-2 text-[10px] uppercase font-bold text-gray-500 tracking-wider">Aksi Cepat</span>
                             <button onclick="bukaLembarKerjaBaruKosong()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs py-2.5 px-3 rounded-lg font-bold shadow-md transition flex items-center justify-center space-x-2">
@@ -102,17 +93,14 @@
                     </nav>
                 </div>
 
-                <!-- BRANDING KREDIT PERSONAL -->
                 <div class="p-4 border-t border-slate-800 bg-slate-950/50 text-center text-xs text-slate-400 font-mono tracking-widest font-bold">
                      <i class="fa-solid fa-code-branch text-blue-500 mr-1.5 animate-pulse"></i>ftth11
                 </div>
             </div>
         </div>
 
-        <!-- AREA KONTEN UTAMA -->
         <div class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent">
             
-            <!-- HEADER APP -->
             <header class="bg-white/95 backdrop-blur shadow-md px-6 py-5 flex items-center no-print border-b border-slate-200">
                 <button onclick="toggleSidebarMenu(true)" class="text-slate-700 hover:text-blue-600 mr-5 focus:outline-none p-1.5 rounded-lg hover:bg-slate-100 transition">
                     <i class="fa-solid fa-bars text-2xl"></i>
@@ -129,7 +117,6 @@
 
             <main class="p-6 max-w-7xl w-full mx-auto space-y-6 bg-transparent">
 
-                <!-- TAB 1: DASHBOARD STATISTIK -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-5 rounded-xl shadow border flex items-center justify-between cursor-pointer hover:scale-105 transition border-blue-400/30">
@@ -151,7 +138,6 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: MASTER DATA ALAT MEDIS -->
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-md">Master Data Aset RSUD Pondokgede</h2>
@@ -193,7 +179,6 @@
                     </div>
                 </div>
 
-                <!-- TAB 3: PUSAT RIWAYAT & DOKUMEN -->
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center no-print flex-wrap gap-4">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-lg">Pusat Riwayat & Dokumen Aset</h2>
@@ -218,7 +203,7 @@
                                         <th class="p-4">Jenis Dokumen</th>
                                         <th class="p-4">Tanggal Dibuat</th>
                                         <th class="p-4">Deskripsi / Vendor / Tim</th>
-                                        <th class="p-4 text-center">File Arsip</th>
+                                        <th class="p-4 text-center">File Arsip / Cetak</th>
                                         <th class="p-4">Status / Hasil</th>
                                     </tr>
                                 </thead>
@@ -228,8 +213,11 @@
                     </div>
                 </div>
 
-                <!-- LEMBAR KERJA DIGITAL RESMI -->
-                <div id="area-lembar-kerja-resmi" class="bg-white p-8 rounded-xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-6 hidden">
+                <div id="area-lembar-kerja-resmi" class="bg-white p-8 rounded-xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-6 hidden relative">
+                    <button onclick="window.print()" type="button" class="no-print absolute top-4 right-4 bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow hover:bg-blue-700 flex items-center space-x-1">
+                        <i class="fa-solid fa-print"></i> <span>Cetak Dokumen Resmi</span>
+                    </button>
+
                     <div class="flex items-center justify-between border-b-4 border-black pb-4 text-black">
                         <div class="w-16 h-16 flex items-center justify-center overflow-hidden">
                             <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-kop').classList.remove('hidden')" class="w-full h-full object-contain" alt="Logo">
@@ -300,21 +288,21 @@
                                 <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Alat Kerja Digunakan</h4>
                                 <div id="box-options-alatkerja" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
                             </div>
-                            <button type="button" onclick="tambahOpsiChecklistDinamis('alatkerja')" class="mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Alat</button>
+                            <button type="button" onclick="tambahOpsiChecklistDinamis('alatkerja')" class="no-print mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Alat</button>
                         </div>
                         <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Pemeriksaan Fisik & Kebersihan</h4>
                                 <div id="box-options-fisik" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
                             </div>
-                            <button type="button" onclick="tambahOpsiChecklistDinamis('fisik')" class="mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Fisik</button>
+                            <button type="button" onclick="tambahOpsiChecklistDinamis('fisik')" class="no-print mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Fisik</button>
                         </div>
                         <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Pemeriksaan Fungsi & Kelengkapan</h4>
                                 <div id="box-options-fungsi" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
                             </div>
-                            <button type="button" onclick="tambahOpsiChecklistDinamis('fungsi')" class="mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Fungsi</button>
+                            <button type="button" onclick="tambahOpsiChecklistDinamis('fungsi')" class="no-print mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Fungsi</button>
                         </div>
                     </div>
 
@@ -332,14 +320,13 @@
                         </div>
                     </div>
 
-                    <!-- AREA TANDA TANGAN DENGAN MENU PANAH DROPDOWN NAMA -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 text-xs">
                         <div class="text-center space-y-1.5">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
                             <div class="border-2 border-dashed border-slate-300 rounded bg-slate-50 h-32 relative shadow-inner overflow-hidden">
                                 <canvas id="sig-teknisi" class="w-full h-full absolute inset-0 z-10"></canvas>
                             </div>
-                            <button type="button" onclick="clearCanvasSignature('sig-teknisi')" class="text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-0.5 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser"></i> Hapus</button>
+                            <button type="button" onclick="clearCanvasSignature('sig-teknisi')" class="no-print text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-0.5 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser"></i> Hapus</button>
                             <div class="pt-1">
                                 <select id="dlk-select-nama-teknisi" class="w-full text-center border p-1 rounded font-bold text-gray-800 outline-none bg-slate-50 focus:border-blue-500 shadow-sm"></select>
                             </div>
@@ -350,7 +337,7 @@
                             <div class="border-2 border-dashed border-slate-300 rounded bg-slate-50 h-32 relative shadow-inner overflow-hidden">
                                 <canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas>
                             </div>
-                            <button type="button" onclick="clearCanvasSignature('sig-user')" class="text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-0.5 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser"></i> Hapus</button>
+                            <button type="button" onclick="clearCanvasSignature('sig-user')" class="no-print text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-0.5 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser"></i> Hapus</button>
                             <div class="pt-1">
                                 <select id="dlk-select-nama-saksi" class="w-full text-center border p-1 rounded font-bold text-gray-800 outline-none bg-slate-50 focus:border-blue-500 shadow-sm"></select>
                             </div>
@@ -361,7 +348,7 @@
                             <div class="border-2 border-dashed border-slate-300 rounded bg-slate-50 h-32 relative shadow-inner overflow-hidden">
                                 <canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas>
                             </div>
-                            <button type="button" onclick="clearCanvasSignature('sig-pj')" class="text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-0.5 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser"></i> Hapus</button>
+                            <button type="button" onclick="clearCanvasSignature('sig-pj')" class="no-print text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-0.5 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser"></i> Hapus</button>
                             <div class="pt-1">
                                 <select id="dlk-select-nama-pj" class="w-full text-center border p-1 rounded font-bold text-gray-800 outline-none bg-slate-50 focus:border-blue-500 shadow-sm"></select>
                             </div>
@@ -374,7 +361,6 @@
                     </div>
                 </div>
 
-                <!-- POPUPS MODAL PREVIEW -->
                 <div id="modal-preview" class="fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-4xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button></div>
@@ -382,7 +368,6 @@
                     </div>
                 </div>
 
-                <!-- MODAL KARTU LOG REKAM JEJAK -->
                 <div id="modal-kartu" class="fixed inset-0 bg-slate-900/60 z-40 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-5xl rounded-xl shadow-xl overflow-hidden h-[90vh] flex flex-col text-slate-800">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
@@ -402,33 +387,31 @@
                             <button type="button" onclick="switchKartuTab('tab-k-kalibrasi')" id="btn-k-kalibrasi" class="kartu-tab border-b-2 border-transparent px-4 py-3 text-blue-600 font-bold">Kalibrasi (Sertifikat PDF)</button>
                         </div>
                         <div class="flex-1 overflow-y-auto p-4 bg-gray-50 text-xs">
-                            <div id="tab-k-corrective" class="kartu-content-box space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Log Uraian Kerja / Pelaksana</th><th class="p-3 text-center">Foto Alat</th><th class="p-3">Hasil Akhir</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="kartu-list-corrective" class="divide-y"></tbody></table></div></div>
-                            <div id="tab-k-preventive" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Tanggal Pelaksanaan / Tim</th><th class="p-3 text-center">Foto Alat</th><th class="p-3">Hasil Akhir</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="kartu-list-preventive" class="divide-y"></tbody></table></div></div>
-                            <div id="tab-k-inspeksi" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Waktu Inspeksi / Tim</th><th class="p-3 text-center">Foto Alat</th><th class="p-3">Hasil Akhir</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="kartu-list-inspeksi" class="divide-y"></tbody></table></div></div>
-                            <div id="tab-k-kalibrasi" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Tanggal Uji</th><th class="p-3">Masa Berlaku</th><th class="p-3">Vendor Kalibrasi</th><th class="p-3 text-center">Arsip Resmi</th></tr></thead><tbody id="kartu-list-kalibrasi" class="divide-y"></tbody></table></div></div>
+                            <div id="tab-k-corrective" class="kartu-content-box space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Log Uraian Kerja / Pelaksana</th><th class="p-3 text-center">Foto Alat</th><th class="p-3">Hasil</th><th class="p-3 text-center">Aksi Hapus</th></tr></thead><tbody id="kartu-list-corrective" class="divide-y"></tbody></table></div></div>
+                            <div id="tab-k-preventive" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Tanggal Pelaksanaan / Tim</th><th class="p-3 text-center">Foto Alat</th><th class="p-3">Hasil</th><th class="p-3 text-center">Aksi Hapus</th></tr></thead><tbody id="kartu-list-preventive" class="divide-y"></tbody></table></div></div>
+                            <div id="tab-k-inspeksi" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Waktu Inspeksi / Tim</th><th class="p-3 text-center">Foto Alat</th><th class="p-3">Hasil</th><th class="p-3 text-center">Aksi Hapus</th></tr></thead><tbody id="kartu-list-inspeksi" class="divide-y"></tbody></table></div></div>
+                            <div id="tab-k-kalibrasi" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-white rounded border"><table class="w-full text-left"><thead class="bg-slate-100 border-b font-semibold text-gray-600"><tr><th class="p-3">Tanggal Uji</th><th class="p-3">Masa Berlaku</th><th class="p-3">Vendor Kalibrasi</th><th class="p-3 text-center">Arsip Resmi</th><th class="p-3 text-center">Hapus</th></tr></thead><tbody id="kartu-list-kalibrasi" class="divide-y"></tbody></table></div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- MODAL REGISTER ALAT MANUAL -->
-                <div id="modal-alat" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs">
+                <div id="modal-alat" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitFormAlatMaster(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg">
                         <div id="modal-alat-title" class="px-5 py-4 bg-gray-50 border-b font-bold text-slate-800 text-sm">Registrasi Alat Manual</div>
                         <input type="hidden" id="form-alat-id">
                         <div class="p-5 space-y-3">
-                            <div><label class="block mb-0.5 font-bold">Nama Alat Kesehatan *</label><input type="text" id="form-alat-nama" required class="w-full border p-2 rounded outline-none"></div>
-                            <div><label class="block mb-0.5 font-bold">Merk</label><input type="text" id="form-alat-merk" class="w-full border p-2 rounded outline-none"></div>
-                            <div><label class="block mb-0.5 font-bold">Model / Tipe</label><input type="text" id="form-alat-tipe" class="w-full border p-2 rounded outline-none"></div>
-                            <div><label class="block mb-0.5 font-bold">Nomor Seri (SN) *</label><input type="text" id="form-alat-seri" required class="w-full border p-2 rounded outline-none"></div>
-                            <div><label class="block mb-0.5 font-bold">Izin Edar Resmi</label><input type="text" id="form-alat-edar" class="w-full border p-2 rounded outline-none"></div>
-                            <div><label class="block mb-0.5 font-bold">Instalasi / Ruangan *</label><input type="text" id="form-alat-lokasi" required class="w-full border p-2 rounded outline-none"></div>
+                            <div><label class="block mb-0.5 font-bold">Nama Alat Kesehatan *</label><input type="text" id="form-alat-nama" required class="w-full border p-2 rounded outline-none bg-slate-50 focus:bg-white"></div>
+                            <div><label class="block mb-0.5 font-bold">Merk</label><input type="text" id="form-alat-merk" class="w-full border p-2 rounded outline-none bg-slate-50 focus:bg-white"></div>
+                            <div><label class="block mb-0.5 font-bold">Model / Tipe</label><input type="text" id="form-alat-tipe" class="w-full border p-2 rounded outline-none bg-slate-50 focus:bg-white"></div>
+                            <div><label class="block mb-0.5 font-bold">Nomor Seri (SN) *</label><input type="text" id="form-alat-seri" required class="w-full border p-2 rounded outline-none bg-slate-50 focus:bg-white"></div>
+                            <div><label class="block mb-0.5 font-bold">Izin Edar Resmi</label><input type="text" id="form-alat-edar" class="w-full border p-2 rounded outline-none bg-slate-50 focus:bg-white"></div>
+                            <div><label class="block mb-0.5 font-bold">Instalasi / Ruangan *</label><input type="text" id="form-alat-lokasi" required class="w-full border p-2 rounded outline-none bg-slate-50 focus:bg-white"></div>
                         </div>
                         <div class="px-5 py-3 border-t bg-gray-50 flex justify-end space-x-2"><button type="button" onclick="toggleModal('modal-alat', false)" class="px-3 py-1.5 border rounded">Batal</button><button type="submit" class="px-4 py-1.5 bg-blue-600 text-white font-bold rounded shadow">Simpan Perubahan</button></div>
                     </form>
                 </div>
 
-                <!-- MODAL CERTIFICATE KALIBRASI -->
-                <div id="modal-kalibrasi" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs">
+                <div id="modal-kalibrasi" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitKalibrasi(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg text-slate-800">
                         <div class="p-4 font-bold bg-gray-50 border-b flex justify-between items-center">
                             <span>Upload Sertifikat Kalibrasi Terintegrasi Database</span>
@@ -456,7 +439,6 @@
     </div>
 
     <script>
-        // 🚨 CONFIG & INIT FIREBASE CLOUD REAL-TIME 🚨
         const firebaseConfig = {
             apiKey: "AIzaSyDfg719ZJwUSM_9jgIkDmWlCJLEpcBlVsM",
             authDomain: "simak-rsudpg11.firebaseapp.com",
@@ -487,7 +469,7 @@
         let opsFungsi = ["Sistem Control & Tombol Normal", "Layar Display & Alarm Berfungsi", "Kondisi Internal Battery Prima"];
         
         let listNamaTeknisi = ["Baits Abdul Pattah", "Arrief Nurcahyo, S.Tr.Em.", "Teknisi Medis A", "Teknisi Medis B"];
-        let listNamaSaksi = ["Kepala Unit Ruangan", "Saksi Ruangan A", "Saksi Ruangan B", "Saksi Ruangan C"];
+        let listNamaSaksi = ["Kepala Unit Ruangan", "Saksi Ruangan A", "Saksi Ruangan B"];
         let listNamaPj = ["Arrief Nurcahyo, S.Tr.Em.", "Baits Abdul Pattah"];
 
         async function muatDatabaseDariGitHub() {
@@ -496,10 +478,8 @@
                 dataAlat = [];
                 querySnapshot.forEach((doc) => { dataAlat.push({ id: doc.id, ...doc.data() }); });
                 dataAlat.sort((a, b) => (a.nama || '').localeCompare(b.nama || '', 'id', { sensitivity: 'base' }));
-                if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.7)]";
+                if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse";
                 renderAll();
-            }, (error) => {
-                if(dot) dot.className = "w-3.5 h-3.5 bg-rose-600 rounded-full animate-ping shadow-[0_0_12px_rgba(225,29,72,0.7)]";
             });
 
             db.collection("dataKalibrasi").onSnapshot((querySnapshot) => {
@@ -553,45 +533,36 @@
                     arrayAsal.unshift(nama.trim());
                     populasikanDropdownNamaTandaTangan();
                     element.value = nama.trim();
-                } else {
-                    element.selectedIndex = 0;
-                }
+                } else element.selectedIndex = 0;
             }
         }
 
-        // 🚨 PERBAIKAN LOGIKA VALIDASI STRING FIRESTORE ID (ANTI-LOG OUT FALSE NOTIFICATION) 🚨
+        // 🚨 FUNGSI HAPUS LOG DARI DATABASE CLOUD REAL-TIME 🚨
+        function hapusDokumenLogRealtime(id, koleksi) {
+            if(confirm("Apakah Anda yakin ingin menghapus data log ini secara permanen dari Cloud Firebase?")) {
+                db.collection(koleksi).doc(id).delete().then(() => {
+                    alert("Data log berhasil dihapus!");
+                    toggleModal('modal-kartu', false);
+                }).catch(err => alert("Gagal menghapus: " + err.message));
+            }
+        }
+
         function simpanPenuhIsianWorksheetDinamis() {
             const alatIdRaw = document.getElementById('dlk-select-alat').value;
-            // Validasi string murni agar membaca ID Dokumen Firebase Firestore secara aman
-            if(!alatIdRaw || alatIdRaw.trim() === "") {
-                return alert("Silakan pilih salah satu Alat Kesehatan dari database terlebih dahulu!");
-            }
+            if(!alatIdRaw) return alert("Silakan pilih salah satu Alat Kesehatan!");
             
-            const noLk = document.getElementById('dlk-no').value; 
-            const tgl = document.getElementById('dlk-tgl').value;
-            const deskripsi = document.getElementById('dlk-txt-deskripsi-tunggal').value;
-            const jenisKerja = document.querySelector('input[name="dlk-jenis"]:checked').value;
-            const hasilTunggal = document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value;
-            const ttdTeknisi = document.getElementById('sig-teknisi').toDataURL();
-
-            const namaTeknisiTerpilih = document.getElementById('dlk-select-nama-teknisi').value;
-            const namaSaksiTerpilih = document.getElementById('dlk-select-nama-saksi').value;
-            const namaPjTerpilih = document.getElementById('dlk-select-nama-pj').value;
-
             const payload = {
-                alatId: alatIdRaw.trim(), noLk: noLk, tgl: tgl, desc: deskripsi, jenisKerja: jenisKerja, hasilTunggal: hasilTunggal, ttdTeknisi: ttdTeknisi,
-                teknisiTtd: namaTeknisiTerpilih, saksiTtd: namaSaksiTerpilih, pjTtd: namaPjTerpilih,
-                fotoAlat: stringFotoBase64, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                alatId: alatIdRaw.trim(), noLk: document.getElementById('dlk-no').value, tgl: document.getElementById('dlk-tgl').value,
+                desc: document.getElementById('dlk-txt-deskripsi-tunggal').value, jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
+                hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
+                teknisiTtd: document.getElementById('dlk-select-nama-teknisi').value, saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
+                pjTtd: document.getElementById('dlk-select-nama-pj').value, fotoAlat: stringFotoBase64, createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
             db.collection("lembarKerja").add(payload).then(() => {
-                const statusBaru = (hasilTunggal === "Alat Rusak Perlu Perbaikan") ? "Dalam Perbaikan" : "Siap Digunakan";
-                db.collection("dataAlat").doc(alatIdRaw.trim()).update({ status: statusBaru });
+                db.collection("dataAlat").doc(alatIdRaw.trim()).update({ status: (payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan") });
                 document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                document.getElementById('dlk-input-foto').value = ""; stringFotoBase64 = "-";
-                alert("🎉 Sukses! Lembar Kerja cloud berhasil disinkronisasikan ke Firebase.");
-            }).catch(err => {
-                alert("Gagal menyimpan ke Cloud: " + err.message);
+                alert("🎉 Sukses! Lembar Kerja cloud berhasil tersimpan.");
             });
         }
 
@@ -601,8 +572,8 @@
                 const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = function() {
                     stringFotoBase64 = reader.result;
-                    const pb = document.getElementById('box-preview-foto');
-                    pb.innerHTML = `<img src="${reader.result}" class="w-full h-full object-cover">`; pb.classList.remove('hidden');
+                    document.getElementById('box-preview-foto').innerHTML = `<img src="${reader.result}" class="w-full h-full object-cover">`; 
+                    document.getElementById('box-preview-foto').classList.remove('hidden');
                 }
             }
         }
@@ -617,8 +588,7 @@
 
         function toggleSidebarMenu(show) {
             const sidebar = document.getElementById('app-sidebar');
-            if (show) sidebar.classList.remove('-translate-x-full'); 
-            else sidebar.classList.add('-translate-x-full');
+            if (show) sidebar.classList.remove('-translate-x-full'); else sidebar.classList.add('-translate-x-full');
         }
 
         function clickDashboardStat(type) {
@@ -631,16 +601,44 @@
 
         function resetFilterStatusAlat() { globalFilterStatus = "all"; renderAll(); }
 
+        // 🚨 RE-ENGINE FIX TOMBOT EDIT MASTER ASET ASLI 🚨
         function submitFormAlatMaster(e) {
             e.preventDefault(); 
             const formId = document.getElementById('form-alat-id').value;
             const payload = {
-                nama: document.getElementById('form-alat-nama').value, merk: document.getElementById('form-alat-merk').value,
-                tipe: document.getElementById('form-alat-tipe').value, seri: document.getElementById('form-alat-seri').value,
-                edar: document.getElementById('form-alat-edar').value, lokasi: document.getElementById('form-alat-lokasi').value, status: "Siap Digunakan"
+                nama: document.getElementById('form-alat-nama').value, 
+                merk: document.getElementById('form-alat-merk').value,
+                tipe: document.getElementById('form-alat-tipe').value, 
+                seri: document.getElementById('form-alat-seri').value,
+                edar: document.getElementById('form-alat-edar').value, 
+                lokasi: document.getElementById('form-alat-lokasi').value
             };
-            if(formId) db.collection("dataAlat").doc(formId).update(payload).then(() => { toggleModal('modal-alat', false); });
-            else db.collection("dataAlat").add(payload).then(() => { toggleModal('modal-alat', false); });
+
+            if(formId && formId.trim() !== "") {
+                db.collection("dataAlat").doc(formId.trim()).update(payload).then(() => { 
+                    toggleModal('modal-alat', false); 
+                    alert("Sukses memperbarui data aset alkes!"); 
+                });
+            } else {
+                db.collection("dataAlat").add({ ...payload, status: "Siap Digunakan" }).then(() => { 
+                    toggleModal('modal-alat', false); 
+                    alert("Sukses mendaftarkan aset baru!"); 
+                });
+            }
+        }
+
+        function pemicuEditAlatLangsung(id) {
+            const a = dataAlat.find(item => item.id == id); 
+            if(!a) return;
+            document.getElementById('modal-alat-title').innerText = "Edit Data Asset Alat Kesehatan";
+            document.getElementById('form-alat-id').value = a.id; 
+            document.getElementById('form-alat-nama').value = a.nama || ''; 
+            document.getElementById('form-alat-merk').value = a.merk || ''; 
+            document.getElementById('form-alat-tipe').value = a.tipe || ''; 
+            document.getElementById('form-alat-seri').value = a.seri || ''; 
+            document.getElementById('form-alat-edar').value = a.edar || ''; 
+            document.getElementById('form-alat-lokasi').value = a.lokasi || ''; 
+            toggleModal('modal-alat', true);
         }
 
         async function submitKalibrasi(e) {
@@ -684,7 +682,6 @@
                 document.getElementById('dlk-nama').value = a.nama; document.getElementById('dlk-merk').value = a.merk || '-';
                 document.getElementById('dlk-tipe').value = a.tipe || '-'; document.getElementById('dlk-seri').value = a.seri || '-';
                 document.getElementById('dlk-lokasi').value = a.lokasi || 'Ruangan';
-                
                 let defaultKaru = "Karu " + (a.lokasi || 'Ruangan');
                 document.getElementById('dlk-select-nama-saksi').innerHTML = `<option value="${defaultKaru}">${defaultKaru}</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-baru">+ Tambah Nama</option>`;
             }
@@ -695,7 +692,7 @@
             document.getElementById('dlk-no').value = "RSUDPG/IPSRS/LK-" + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10);
             document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
-            document.getElementById('box-preview-foto').classList.add('hidden'); document.getElementById('dlk-input-foto').value = "";
+            document.getElementById('box-preview-foto').classList.add('hidden');
             renderOpsiChecklistVisual(); populasikanDropdownNamaTandaTangan();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
             setTimeout(initSignatures, 300); toggleSidebarMenu(false);
@@ -723,6 +720,7 @@
             setTimeout(initSignatures, 300);
         }
 
+        // 🚨 PADA AREA LOG ALAT SEKARANG BISA MENGHAPUS DATA LOG 🚨
         function bukaKartuPemeliharaan(alatId) {
             const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
             document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-merk').innerText = alat.merk || '-';
@@ -731,10 +729,10 @@
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-600 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto Lapangan')" class="text-xs bg-slate-100 p-1 border rounded font-bold">Foto</button></td>` : `<td class="p-3 text-center text-gray-400 italic">No Photo</td>`;
 
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}','corrective')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}','preventive')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}','inspeksi')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
-            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-red-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-red-50 text-red-700 px-2 py-0.5 rounded text-[10px]">PDF</button></td></tr>`).join('');
+            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}','corrective')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenLogRealtime('${r.id}','lembarKerja')" class="text-red-600 hover:text-red-800 text-xs p-1"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}','preventive')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenLogRealtime('${p.id}','lembarKerja')" class="text-red-600 hover:text-red-800 text-xs p-1"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}','inspeksi')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenLogRealtime('${i.id}','lembarKerja')" class="text-red-600 hover:text-red-800 text-xs p-1"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-red-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-red-50 text-red-700 px-2 py-0.5 rounded text-[10px]">PDF</button></td><td class="text-center"><button onclick="hapusDokumenLogRealtime('${c.id}','dataKalibrasi')" class="text-red-600 hover:text-red-800 text-xs p-1"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
             switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
         }
 
@@ -743,6 +741,7 @@
             document.getElementById(tabId).classList.remove('hidden');
         }
 
+        // 🚨 RE-ENGINE TABEL PUSAT RIWAYAT: SEKARANG LEMBAR KERJA DAPAT DICETAK KELUAR MENJADI DOKUMEN RESMI 🚨
         function renderTabelPusatDokumen() {
             const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return;
             let wadahSemuaDokumen = [];
@@ -755,7 +754,7 @@
             const gabungLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             gabungLk.forEach(lk => {
                 const a = dataAlat.find(item => item.id == lk.alatId) || { nama: 'Alat Medis', seri: '-' };
-                wadahSemuaDokumen.push({ id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Teknisi: ${lk.teknisiTtd || '-'}`, file: lk.fotoAlat || '-', type: (lk.fotoAlat && lk.fotoAlat !== '-') ? 'img' : 'none', hasil: lk.hasilTunggal || 'Selesai' });
+                wadahSemuaDokumen.push({ id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Teknisi: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Selesai' });
             });
 
             if(subTabDokumenAktif === 'kalibrasi') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
@@ -773,8 +772,8 @@
                     <td class="p-4 font-mono">${d.tgl}</td>
                     <td class="p-4 text-gray-600 max-w-xs truncate">${d.desc}</td>
                     <td class="p-4 text-center">
-                        ${d.type==='pdf'? `<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-red-50 text-red-700 px-3 py-1 rounded font-bold text-[10px]">PDF</button>` : 
-                          (d.type==='img'? `<button onclick="lihatFileLangsung('${d.file}','img','Foto Lapangan')" class="bg-blue-50 text-blue-700 px-3 py-1 rounded font-bold text-[10px]">Foto</button>` : `<span class="text-gray-400 italic text-[10px]">No File</span>`)}
+                        ${d.type==='pdf'? `<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-red-50 text-red-700 px-3 py-1 rounded font-bold text-[10px]"><i class="fa-solid fa-file-pdf"></i> Buka PDF</button>` : 
+                          `<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}','corrective')" class="bg-indigo-600 text-white px-3 py-1 rounded font-bold text-[10px]"><i class="fa-solid fa-print"></i> Cetak LK</button>`}
                     </td>
                     <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${d.hasil}</span></td>
                 </tr>
