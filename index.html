@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK Cloudless - UPTD RSUD Pondokgede v27.4</title>
+    <title>SiMAK</title>
     
     <link rel="icon" type="image/png" href="logo.png">
     
@@ -41,11 +41,27 @@
         canvas {
             touch-action: none;
         }
+        
+        /* DESAIN FRAME PREVIEW CETAK RESMI */
+        #box-bingkai-foto-cetak {
+            display: none;
+        }
+
         @media print {
             body * { visibility: hidden !important; }
             #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
             #area-lembar-kerja-resmi { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: black !important; display: block !important; }
             .no-print { display: none !important; }
+            
+            /* Menampilkan frame foto rapi saat dicetak */
+            #box-bingkai-foto-cetak {
+                display: block !important;
+                border: 2px dashed #000000;
+                border-radius: 8px;
+                padding: 12px;
+                text-align: center;
+                background-color: #fafafa !important;
+            }
         }
     </style>
 </head>
@@ -266,11 +282,18 @@
                         </div>
                     </div>
 
-                    <div class="border p-4 rounded-lg text-xs bg-white shadow-sm">
+                    <div class="border p-4 rounded-lg text-xs bg-white shadow-sm no-print">
                         <label class="block font-bold text-slate-800 border-b pb-1.5 mb-2"><i class="fa-solid fa-camera text-indigo-600 mr-1.5"></i>Ambil Gambar/Foto Kondisi Alat Lapangan <span class="text-emerald-600 font-bold">(Auto-Compressed)</span></label>
                         <div class="flex items-center space-x-3 pt-1">
                             <input type="file" id="dlk-input-foto" accept="image/*" capture="environment" onchange="previewFotoDipilih(this)" class="w-full border p-1 rounded bg-slate-50">
                             <div id="box-preview-foto" class="w-16 h-16 border rounded bg-slate-100 hidden overflow-hidden flex items-center justify-center shadow-inner"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="box-bingkai-foto-cetak">
+                        <p class="text-xs font-bold uppercase tracking-wider mb-2 text-left text-black border-b pb-1">Lampiran Dokumen Foto Fisik Aset Lapangan:</p>
+                        <div id="wadah-foto-cetakan-print" class="w-full h-72 flex items-center justify-center overflow-hidden bg-white border">
+                            <span class="text-gray-400 italic text-xs">[ Tidak Ada Lampiran Foto Fisik Lapangan ]</span>
                         </div>
                     </div>
 
@@ -282,28 +305,59 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs no-print">
                         <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Alat Kerja Digunakan</h4>
-                                <div id="box-options-alatkerja" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
+                                <div class="flex space-x-1 mb-2">
+                                    <select id="drop-alatkerja" class="w-full border p-1.5 bg-white rounded outline-none text-[11px]"></select>
+                                    <button type="button" onclick="tambahOpsiChecklistDinamis('alatkerja')" class="bg-slate-700 text-white px-2 rounded font-bold shadow-sm">+</button>
+                                </div>
                             </div>
-                            <button type="button" onclick="tambahOpsiChecklistDinamis('alatkerja')" class="no-print mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Alat</button>
                         </div>
                         <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Pemeriksaan Fisik & Kebersihan</h4>
-                                <div id="box-options-fisik" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
+                                <div class="flex space-x-1 mb-2">
+                                    <select id="drop-fisik" class="w-full border p-1.5 bg-white rounded outline-none text-[11px]"></select>
+                                    <button type="button" onclick="tambahOpsiChecklistDinamis('fisik')" class="bg-slate-700 text-white px-2 rounded font-bold shadow-sm">+</button>
+                                </div>
                             </div>
-                            <button type="button" onclick="tambahOpsiChecklistDinamis('fisik')" class="no-print mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Fisik</button>
                         </div>
                         <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Pemeriksaan Fungsi & Kelengkapan</h4>
-                                <div id="box-options-fungsi" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
+                                <div class="flex space-x-1 mb-2">
+                                    <select id="drop-fungsi" class="w-full border p-1.5 bg-white rounded outline-none text-[11px]"></select>
+                                    <button type="button" onclick="tambahOpsiChecklistDinamis('fungsi')" class="bg-slate-700 text-white px-2 rounded font-bold shadow-sm">+</button>
+                                </div>
                             </div>
-                            <button type="button" onclick="tambahOpsiChecklistDinamis('fungsi')" class="no-print mt-2 bg-slate-700 text-white text-[10px] py-1 rounded w-full font-bold shadow-sm">+ Tambah Fungsi</button>
                         </div>
+                    </div>
+
+                    <div class="border rounded-lg overflow-hidden bg-white shadow-sm">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-slate-100 font-bold text-gray-700 border-b">
+                                <tr>
+                                    <th class="p-2.5 w-1/3 border-r">Kategori Parameter Kerja</th>
+                                    <th class="p-2.5">Detail Parameter Lapangan Medis</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y text-gray-800">
+                                <tr>
+                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r">Alat Kerja Digunakan</td>
+                                    <td class="p-2.5 font-mono" id="cell-print-alatkerja">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r">Pemeriksaan Fisik & Kebersihan</td>
+                                    <td class="p-2.5" id="cell-print-fisik">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r">Pemeriksaan Fungsi & Kelengkapan</td>
+                                    <td class="p-2.5" id="cell-print-fungsi">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="border p-4 rounded-lg text-xs space-y-2 bg-white">
@@ -458,8 +512,6 @@
         let dataPM = [];
         let dataInspeksi = [];
         
-        let targetEditLkType = null;
-        let targetEditLkLogId = null;
         let globalFilterStatus = "all";
         let subTabDokumenAktif = "all";
         let stringFotoBase64 = "-";
@@ -559,7 +611,12 @@
                 desc: document.getElementById('dlk-txt-deskripsi-tunggal').value, jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
                 hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
                 teknisiTtd: document.getElementById('dlk-select-nama-teknisi').value, saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
-                pjTtd: document.getElementById('dlk-select-nama-pj').value, fotoAlat: stringFotoBase64, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                pjTtd: document.getElementById('dlk-select-nama-pj').value, fotoAlat: stringFotoBase64, createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                
+                // Menyimpan data dropdown tabel terpadu parameter alkes ke dalam database cloud
+                paramAlatKerja: document.getElementById('drop-alatkerja').value,
+                paramFisik: document.getElementById('drop-fisik').value,
+                paramFungsi: document.getElementById('drop-fungsi').value
             };
 
             db.collection("lembarKerja").add(payload).then(() => {
@@ -571,7 +628,6 @@
             });
         }
 
-        // 🚨 SINKRONISASI PENGOMPRES GAMBAR KANVAS MANUAL (ANTI LIMITASI 1MB FIREBASE) 🚨
         function previewFotoDipilih(input) {
             const file = input.files[0];
             if(file) {
@@ -583,12 +639,8 @@
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
-                        
-                        // Menetapkan batas maksimal dimensi resolusi gambar terkompresi
-                        const MAX_WIDTH = 600;
-                        const MAX_HEIGHT = 600;
-                        let width = img.width;
-                        let height = img.height;
+                        const MAX_WIDTH = 600; const MAX_HEIGHT = 600;
+                        let width = img.width; let height = img.height;
                         
                         if (width > height) {
                             if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
@@ -596,15 +648,15 @@
                             if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
                         }
                         
-                        canvas.width = width;
-                        canvas.height = height;
+                        canvas.width = width; canvas.height = height;
                         ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // Konversi ke Base64 dengan kompresi kualitas JPEG 60% (Sangat hemat & jernih)
                         stringFotoBase64 = canvas.toDataURL('image/jpeg', 0.6);
                         
                         document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="w-full h-full object-cover">`; 
                         document.getElementById('box-preview-foto').classList.remove('hidden');
+                        
+                        // Sinkronisasikan foto ke area frame cetak lembar kerja printer
+                        document.getElementById('wadah-foto-cetakan-print').innerHTML = `<img src="${stringFotoBase64}" class="max-h-64 object-contain shadow rounded">`;
                     }
                 }
             }
@@ -652,6 +704,19 @@
             }
         }
 
+        // 🚨 MEMBUAT FUNGSI openModalAlatManual BERJALAN LANCAR KETIKA DIKLIK 🚨
+        function openModalAlatManual() {
+            document.getElementById('modal-alat-title').innerText = "Registrasi Alat Baru Manual";
+            document.getElementById('form-alat-id').value = ""; 
+            document.getElementById('form-alat-nama').value = ""; 
+            document.getElementById('form-alat-merk').value = ""; 
+            document.getElementById('form-alat-tipe').value = ""; 
+            document.getElementById('form-alat-seri').value = ""; 
+            document.getElementById('form-alat-edar').value = ""; 
+            document.getElementById('form-alat-lokasi').value = ""; 
+            toggleModal('modal-alat', true);
+        }
+
         function pemicuEditAlatLangsung(id) {
             const a = dataAlat.find(item => item.id == id); if(!a) return;
             document.getElementById('modal-alat-title').innerText = "Edit Data Asset Alat Kesehatan";
@@ -686,18 +751,31 @@
             selectEl.innerHTML = htmlOpts; if(calSelectEl) calSelectEl.innerHTML = htmlOpts;
         }
 
-        function renderOpsiChecklistVisual() {
-            document.getElementById('box-options-alatkerja').innerHTML = opsAlatKerja.map((o, idx) => `<div class="p-1.5 bg-white border text-[11px]"><input type="checkbox" checked> <span>${idx+1}. ${o}</span></div>`).join('');
-            document.getElementById('box-options-fisik').innerHTML = opsFisik.map((o) => `<div class="p-1.5 bg-white border text-[11px]"><input type="checkbox" checked> <span>✓ ${o}</span></div>`).join('');
-            document.getElementById('box-options-fungsi').innerHTML = opsFungsi.map((o) => `<div class="p-1.5 bg-white border text-[11px]"><input type="checkbox" checked> <span>✓ ${o}</span></div>`).join('');
+        // 🚨 ATUR RENDER DROPDOWN DENGAN ELEMEN INTERAKTIF 🚨
+        function renderOpsiDropdownDinamis() {
+            const createOpts = (arr) => arr.map(item => `<option value="${item}">${item}</option>`).join('');
+            
+            const dAlat = document.getElementById('drop-alatkerja');
+            const dFisik = document.getElementById('drop-fisik');
+            const dFungsi = document.getElementById('drop-fungsi');
+            
+            if(dAlat) { dAlat.innerHTML = createOpts(opsAlatKerja); updateTabelTerpaduRealtime('alatkerja', dAlat.value); dAlat.onchange = (e) => updateTabelTerpaduRealtime('alatkerja', e.target.value); }
+            if(dFisik) { dFisik.innerHTML = createOpts(opsFisik); updateTabelTerpaduRealtime('fisik', dFisik.value); dFisik.onchange = (e) => updateTabelTerpaduRealtime('fisik', e.target.value); }
+            if(dFungsi) { dFungsi.innerHTML = createOpts(opsFungsi); updateTabelTerpaduRealtime('fungsi', dFungsi.value); dFungsi.onchange = (e) => updateTabelTerpaduRealtime('fungsi', e.target.value); }
+        }
+
+        function updateTabelTerpaduRealtime(kategori, value) {
+            const targetCell = document.getElementById('cell-print-' + kategori);
+            if(targetCell) targetCell.innerText = value || '-';
         }
 
         function tambahOpsiChecklistDinamis(kategori) {
-            let nilai = prompt("Parameter baru:"); if(!nilai) return;
-            if(kategori === 'alatkerja') opsAlatKerja.push(nilai.trim());
-            if(kategori === 'fisik') opsFisik.push(nilai.trim());
-            if(kategori === 'fungsi') opsFungsi.push(nilai.trim());
-            renderOpsiChecklistVisual();
+            let nilai = prompt("Masukkan opsi kustom parameter baru:"); 
+            if(!nilai || nilai.trim() === "") return;
+            
+            if(kategori === 'alatkerja') { opsAlatKerja.push(nilai.trim()); renderOpsiDropdownDinamis(); document.getElementById('drop-alatkerja').value = nilai.trim(); updateTabelTerpaduRealtime('alatkerja', nilai.trim()); }
+            if(kategori === 'fisik') { opsFisik.push(nilai.trim()); renderOpsiDropdownDinamis(); document.getElementById('drop-fisik').value = nilai.trim(); updateTabelTerpaduRealtime('fisik', nilai.trim()); }
+            if(kategori === 'fungsi') { opsFungsi.push(nilai.trim()); renderOpsiDropdownDinamis(); document.getElementById('drop-fungsi').value = nilai.trim(); updateTabelTerpaduRealtime('fungsi', nilai.trim()); }
         }
 
         function sinkronisasiDataAlatKeWorksheet(alatId) {
@@ -712,13 +790,15 @@
         }
 
         function bukaLembarKerjaBaruKosong() {
-            targetEditLkType = "new"; targetEditLkLogId = null; stringFotoBase64 = "-";
+            stringFotoBase64 = "-";
             populasikanDropdownAlatDiLembarKerja();
             document.getElementById('dlk-no').value = "RSUDPG/IPSRS/LK-" + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10);
             document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
             document.getElementById('box-preview-foto').classList.add('hidden');
-            renderOpsiChecklistVisual(); populasikanDropdownNamaTandaTangan();
+            document.getElementById('wadah-foto-cetakan-print').innerHTML = `<span class="text-gray-400 italic text-xs">[ Tidak Ada Lampiran Foto Fisik Lapangan ]</span>`;
+            
+            renderOpsiDropdownDinamis(); populasikanDropdownNamaTandaTangan();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
             setTimeout(initSignatures, 300); toggleSidebarMenu(false);
         }
@@ -728,10 +808,7 @@
             populasikanDropdownAlatDiLembarKerja();
             
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
-            if(!record) {
-                alert("Dokumen lembar kerja tidak ditemukan atau belum selesai dimuat dari cloud server.");
-                return;
-            }
+            if(!record) return alert("Dokumen lembar kerja tidak ditemukan.");
 
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => {
                 if(radio.value === record.jenisKerja) radio.checked = true;
@@ -739,20 +816,30 @@
 
             document.getElementById('dlk-no').value = record.noLk || ("LK-" + id);
             document.getElementById('dlk-tgl').value = (record.tgl) ? record.tgl.substring(0, 10) : new Date().toISOString().substring(0, 10);
-            
             document.getElementById('dlk-select-alat').value = record.alatId.trim(); 
             sinkronisasiDataAlatKeWorksheet(record.alatId.trim());
             document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc || record.fungsi || "";
+            
+            renderOpsiDropdownDinamis();
+            
+            // Set data log parameter tersimpan ke dropdown dan tabel
+            if(record.paramAlatKerja) { document.getElementById('drop-alatkerja').value = record.paramAlatKerja; updateTabelTerpaduRealtime('alatkerja', record.paramAlatKerja); }
+            if(record.paramFisik) { document.getElementById('drop-fisik').value = record.paramFisik; updateTabelTerpaduRealtime('fisik', record.paramFisik); }
+            if(record.paramFungsi) { document.getElementById('drop-fungsi').value = record.paramFungsi; updateTabelTerpaduRealtime('fungsi', record.paramFungsi); }
+
+            if(record.fotoAlat && record.fotoAlat !== '-') {
+                stringFotoBase64 = record.fotoAlat;
+                document.getElementById('wadah-foto-cetakan-print').innerHTML = `<img src="${record.fotoAlat}" class="max-h-64 object-contain shadow rounded">`;
+            } else {
+                document.getElementById('wadah-foto-cetakan-print').innerHTML = `<span class="text-gray-400 italic text-xs">[ Tidak Ada Lampiran Foto Fisik Lapangan ]</span>`;
+            }
             
             populasikanDropdownNamaTandaTangan();
             if(record.teknisiTtd) document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd;
             if(record.saksiTtd) document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd;
             if(record.pjTtd) document.getElementById('dlk-select-nama-pj').value = record.pjTtd;
 
-            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
-            areaLK.classList.remove('hidden'); 
-            areaLK.scrollIntoView({ behavior: 'smooth' });
-            
+            const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
             setTimeout(initSignatures, 300);
         }
 
@@ -883,7 +970,7 @@
             });
         }
         
-        window.onload = function() { muatDatabaseDariGitHub(); renderOpsiChecklistVisual(); gantiSubTabDokumen('all'); };
+        window.onload = function() { muatDatabaseDariGitHub(); renderOpsiDropdownDinamis(); gantiSubTabDokumen('all'); };
     </script>
 </body>
 </html>
