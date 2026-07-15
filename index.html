@@ -442,6 +442,11 @@
                 querySnapshot.forEach((doc) => {
                     dataAlat.push({ id: doc.id, ...doc.data() });
                 });
+
+                // 🚨 AUTO-SORT ENGINE: Mengurutkan data berdasarkan Nama Alat secara Alfabet (A-Z)
+                dataAlat.sort((a, b) => {
+                    return (a.nama || '').localeCompare(b.nama || '', 'id', { sensitivity: 'base' });
+                });
                 
                 if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.7)]";
                 renderAll();
