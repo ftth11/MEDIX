@@ -566,9 +566,14 @@
             }
         }
 
+        // 🚨 PREVENT ERROR: MEMBACA VALUE DENGAN MENGHAPUS WHITESPACE AGAR SYNC FIREBASE TEPAT 🚨
         function simpanPenuhIsianWorksheetDinamis() {
-            const alatIdRaw = document.getElementById('dlk-select-alat').value;
-            if(!alatIdRaw) return alert("Silakan pilih salah satu Alat Kesehatan!");
+            const selectAlatEl = document.getElementById('dlk-select-alat');
+            const alatIdRaw = selectAlatEl.value;
+            
+            if(!alatIdRaw || alatIdRaw.trim() === "") {
+                return alert("Silakan pilih salah satu Alat Kesehatan dari database terlebih dahulu!");
+            }
             
             const payload = {
                 alatId: alatIdRaw.trim(), noLk: document.getElementById('dlk-no').value, tgl: document.getElementById('dlk-tgl').value,
@@ -582,6 +587,8 @@
                 db.collection("dataAlat").doc(alatIdRaw.trim()).update({ status: (payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan") });
                 document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
                 alert("🎉 Sukses! Lembar Kerja cloud berhasil tersimpan.");
+            }).catch(err => {
+                alert("Gagal menyimpan ke Cloud: " + err.message);
             });
         }
 
@@ -700,6 +707,7 @@
 
         function bukaLembarKerjaBaruKosong() {
             targetEditLkType = "new"; targetEditLkLogId = null; stringFotoBase64 = "-";
+            populasikanDropdownAlatDiLembarKerja(); // Render ulang dropdown untuk memastikan option ada
             document.getElementById('dlk-no').value = "RSUDPG/IPSRS/LK-" + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10);
             document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
@@ -709,36 +717,35 @@
             setTimeout(initSignatures, 300); toggleSidebarMenu(false);
         }
 
-        // 🚨 RE-ENGINE FIX: PENCARIAN GLOBAL ANTI-GAGAL SAAT DIBUKA DARI PUSAT RIWAYAT DOKUMEN 🚨
+        // 🚨 FIX UTAMA: ME-RENDER ULANG DROPDOWN TERLEBIH DAHULU SEBELUM MENGISI VALUE AGAR TIDAK ANOMALI/BLANK 🚨
         function bukaLembarKerjaDinamisDariLog(id) {
             toggleModal('modal-kartu', false);
+            populasikanDropdownAlatDiLembarKerja(); // Render ulang elemen `<option>` agar aman dibaca script
             
-            // Gabungkan pencarian global di ketiga koleksi untuk menjamin kecocokan data ID
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             if(!record) {
                 alert("Dokumen lembar kerja tidak ditemukan atau belum selesai dimuat dari cloud server.");
                 return;
             }
 
-            // Set radio button jenis kerja sesuai data cloud
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => {
                 if(radio.value === record.jenisKerja) radio.checked = true;
             });
 
             document.getElementById('dlk-no').value = record.noLk || ("LK-" + id);
             document.getElementById('dlk-tgl').value = (record.tgl) ? record.tgl.substring(0, 10) : new Date().toISOString().substring(0, 10);
-            document.getElementById('dlk-select-alat').value = record.alatId; 
-            sinkronisasiDataAlatKeWorksheet(record.alatId);
+            
+            // Sekarang aman mengunci value karena struktur data option telah diproduksi ulang
+            document.getElementById('dlk-select-alat').value = record.alatId.trim(); 
+            sinkronisasiDataAlatKeWorksheet(record.alatId.trim());
+            
             document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc || record.fungsi || "";
             
-            renderOpsiChecklistVisual(); 
             populasikanDropdownNamaTandaTangan();
-            
             if(record.teknisiTtd) document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd;
             if(record.saksiTtd) document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd;
             if(record.pjTtd) document.getElementById('dlk-select-nama-pj').value = record.pjTtd;
 
-            // Membuka visual panel lembar kerja & gulirkan halaman secara otomatis
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
             areaLK.classList.remove('hidden'); 
             areaLK.scrollIntoView({ behavior: 'smooth' });
