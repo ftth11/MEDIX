@@ -1,0 +1,5411 @@
+[
+  {
+    "Suction Pump - Low Vacuum": "AED",
+    "SANI": "HEART GUARDIAN",
+    "SN703A-D": "HR-501",
+    "SN SANM094-19-037": "SN D01222030301",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "AED",
+    "SANI": "HEART GUARDIAN",
+    "SN703A-D": "HR-501",
+    "SN SANM094-19-037": "SN D01220040237",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Ambulance APV",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "ANESTHESI VENTILATOR",
+    "SANI": "MINDRAY",
+    "SN703A-D": "WATO EX 35",
+    "SN SANM094-19-037": "SN KG 05005847",
+    "AKD 20903210130": "AKL:20502110045",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Anesthesi Ventilator",
+    "SANI": "ENESERS",
+    "SN703A-D": "A 8500 GS",
+    "SN SANM094-19-037": "SN 2703010089-07",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Audiometri Diagnostik",
+    "SANI": "MAICO",
+    "SN703A-D": "MA 42",
+    "SN SANM094-19-037": "SN 8527361",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Auto Washer Desinfektor",
+    "SANI": "SHINVA",
+    "SN703A-D": "SMART-L",
+    "SN SANM094-19-037": "SN G2339326",
+    "AKD 20903210130": "AKD 20903620148",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Baby CPAP",
+    "SANI": "FYROM",
+    "SN703A-D": "ESPIRO CPAP",
+    "SN SANM094-19-037": "SN 02080311200001",
+    "AKD 20903210130": "AKD 20403710552",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Baby CPAP",
+    "SANI": "DIAMEDICA",
+    "SN703A-D": "CPAP",
+    "SN SANM094-19-037": "SN A211210120US",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "ANDINI",
+    "SN703A-D": "ELECTRIC 3 FUNCTION",
+    "SN SANM094-19-037": "SN 06343",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "ANDINI",
+    "SN703A-D": "ELECTRIC 3 FUNCTION",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "ANDINI",
+    "SN703A-D": "ELECTRIC 3 FUNCTION",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-6415",
+    "SN SANM094-19-037": "SN 9008052 00004",
+    "AKD 20903210130": "AKD 10903500367",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-6000",
+    "SN SANM094-19-037": "SN 9001055 00004",
+    "AKD 20903210130": "AKD 10903500367",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-6415",
+    "SN SANM094-19-037": "SN 1119L901105600100",
+    "AKD 20903210130": "AKD 10903500367",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-6415",
+    "SN SANM094-19-037": "SN 1119L901105600099",
+    "AKD 20903210130": "AKD 10903500367",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-H6318",
+    "SN SANM094-19-037": "SN 901102900095",
+    "AKD 20903210130": "AKD 20902021603",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-H6318",
+    "SN SANM094-19-037": "SN 901102900094",
+    "AKD 20903210130": "AKD 20902021603",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-H6418X",
+    "SN SANM094-19-037": "SN 900302100044",
+    "AKD 20903210130": "AKD 20902021641",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-H6418X",
+    "SN SANM094-19-037": "SN 900204500020",
+    "AKD 20903210130": "AKD 20902021641",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "TIMOTION",
+    "SN703A-D": "TH1-1000-004",
+    "SN SANM094-19-037": "SN 201805180055",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Bedah",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-6000",
+    "SN SANM094-19-037": "SN 900402200002",
+    "AKD 20903210130": "AKD 10903500367",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Elektrik",
+    "SANI": "Paramount",
+    "SN703A-D": "PA-6000",
+    "SN SANM094-19-037": "SN 900305400015",
+    "AKD 20903210130": "AKD 10903500367",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Emergency",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-8031",
+    "SN SANM094-19-037": "SN 901010900030",
+    "AKD 20903210130": "AKD 20903310382",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Emergency",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-8031",
+    "SN SANM094-19-037": "SN 901110700009",
+    "AKD 20903210130": "AKD 20903310382",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Emergency",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-8031B",
+    "SN SANM094-19-037": "SN 9005015 00001",
+    "AKD 20903210130": "AKD 20903310382",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Emergency",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-8031B",
+    "SN SANM094-19-037": "SN 9002027 00001",
+    "AKD 20903210130": "AKD 20903310382",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Emergency",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-8031B",
+    "SN SANM094-19-037": "SN 9002027 00002",
+    "AKD 20903210130": "AKD 20903310382",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01142",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01942",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 06143",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 02542",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 032842",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 02242",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 02842",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 06243",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00642",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00542",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00842",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00242",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01342",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01642",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00442",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 020842",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01542",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00142",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 02142",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00742",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 03042",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01042",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00942",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01442",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 00342",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 02642",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01842",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 01242",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 02442",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 0255",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 02342",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "ANDINI",
+    "SN703A-D": "MANUAL O2",
+    "SN SANM094-19-037": "SN 031842",
+    "AKD 20903210130": "10902600255",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "SKN",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN 21040160213006",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "SKN",
+    "SN703A-D": "SKN 01 - 12CE",
+    "SN SANM094-19-037": "SN 21040160213007",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Jantung",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "SKN",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN 21040160213011",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "SKN",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN 20146160213007",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "SKN",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "SKN",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed Manual",
+    "SANI": "BIP MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "CMI",
+    "SN703A-D": "CMIK228 B",
+    "SN SANM094-19-037": "SN 8228B(b)23K14",
+    "AKD 20903210130": "AKD 10903220525",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-728",
+    "SN SANM094-19-037": "SN 901002000018",
+    "AKD 20903210130": "AKD 10903129463",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-728",
+    "SN SANM094-19-037": "SN 901002000019",
+    "AKD 20903210130": "AKD 10903129463",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-728",
+    "SN SANM094-19-037": "SN 9006012 00001",
+    "AKD 20903210130": "AKD 10903129463",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-728",
+    "SN SANM094-19-037": "SN 9006012 00002",
+    "AKD 20903210130": "AKD 10903129463",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-728",
+    "SN SANM094-19-037": "SN 9005152 00017",
+    "AKD 20903210130": "AKD 10903129463",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-728",
+    "SN SANM094-19-037": "SN 9005152 00018",
+    "AKD 20903210130": "AKD 10903129463",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bed transfer",
+    "SANI": "Paramount",
+    "SN703A-D": "PK-728",
+    "SN SANM094-19-037": "SN 9005152 00019",
+    "AKD 20903210130": "AKD 10903129463",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bi-Level PAP",
+    "SANI": "YUWELLL",
+    "SN703A-D": "YH-830",
+    "SN SANM094-19-037": "SN YH830AV20509019",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bio Safety Cabinet",
+    "SANI": "BIOBASE",
+    "SN703A-D": "11231BBC86",
+    "SN SANM094-19-037": "SN BSC31A20091762",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Bio Safety Cabinet",
+    "SANI": "MYCO",
+    "SN703A-D": "80AG1BSC",
+    "SN SANM094-19-037": "SN SR23.000.296",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Blanket Warmer",
+    "SANI": "CALIMA",
+    "SN703A-D": "CCALIMA22",
+    "SN SANM094-19-037": "SN 231205997",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Blanket Warmer",
+    "SANI": "CALIMA",
+    "SN703A-D": "CCALIMA22",
+    "SN SANM094-19-037": "SN 231206001",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Blood Gas Analyzer",
+    "SANI": "ABL80 FLEX",
+    "SN703A-D": "ABL80",
+    "SN SANM094-19-037": "SN ABN-BT-106WH",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Cabinet Warmer",
+    "SANI": "ENTHERMICS",
+    "SN703A-D": "EC1350BL",
+    "SN SANM094-19-037": "SN 3339530-3",
+    "AKD 20903210130": "AKL 20903125438",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "CENTRAL MONITOR",
+    "SANI": "Philips",
+    "SN703A-D": "Center Ix",
+    "SN SANM094-19-037": "SN VS433D2216",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "CENTRIFUGE",
+    "SANI": "NUVE",
+    "SN703A-D": "NF 400",
+    "SN SANM094-19-037": "SN 03.4028",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "CENTRIFUGE",
+    "SANI": "DLAB",
+    "SN703A-D": "D1008",
+    "SN SANM094-19-037": "SN HB208AR0002382",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "CENTRIFUGE",
+    "SANI": "KUBOTA",
+    "SN703A-D": "4200",
+    "SN SANM094-19-037": "SN X8 0928-MOOO",
+    "AKD 20903210130": "AKL 20209806042",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "CTG",
+    "SANI": "PHILIPS",
+    "SN703A-D": "Goldway CTG 7",
+    "SN SANM094-19-037": "SN CN62805047",
+    "AKD 20903210130": "AKL 21102313610",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "CTG",
+    "SANI": "MEDGYN-USA",
+    "SN703A-D": "F6",
+    "SN SANM094-19-037": "SN 460990-N21115190029",
+    "AKD 20903210130": "AKL 21501311029",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "CTG",
+    "SANI": "MEDGYN-USA",
+    "SN703A-D": "F6",
+    "SN SANM094-19-037": "SN 460990-N21115190006",
+    "AKD 20903210130": "AKL 21501311029",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "DEFIBRILATOR",
+    "SANI": "MINDRAY",
+    "SN703A-D": "BENEHEART D6",
+    "SN SANM094-19-037": "SN DZ-8A002365",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "DEFIBRILATOR",
+    "SANI": "NIHON KOHDEN",
+    "SN703A-D": "TEC 5621",
+    "SN SANM094-19-037": "SN 11315",
+    "AKD 20903210130": "AKL 30505815897",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "DEFIBRILATOR",
+    "SANI": "NIHON KOHDEN",
+    "SN703A-D": "TEC 5621",
+    "SN SANM094-19-037": "SN 11316",
+    "AKD 20903210130": "AKL 30505815897",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "DEFIBRILATOR",
+    "SANI": "NICOSH",
+    "SN703A-D": "NC-05DF",
+    "SN SANM094-19-037": "SN S5230524118",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "DEFIBRILATOR",
+    "SANI": "SCHILLER",
+    "SN703A-D": "TOUCH 7",
+    "SN SANM094-19-037": "SN 128960003837",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "DENTAL UNIT",
+    "SANI": "Andini",
+    "SN703A-D": "Fortuna Premium",
+    "SN SANM094-19-037": "SN 19.07.012.051",
+    "AKD 20903210130": "AKD10605800730",
+    "Instalasi ICU HCU": "Poli Gigi",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "DENTAL UNIT",
+    "SANI": "Andini",
+    "SN703A-D": "Fortuna Premium",
+    "SN SANM094-19-037": "SN 19.07.012.052",
+    "AKD 20903210130": "AKD10605800730",
+    "Instalasi ICU HCU": "Poli Gigi",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Diode Laser",
+    "SANI": "LASOTRONIX",
+    "SN703A-D": "SMARTm",
+    "SN SANM094-19-037": "SN LX03865",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EEG",
+    "SANI": "Nihon Kohden",
+    "SN703A-D": "EEG-1250",
+    "SN SANM094-19-037": "SN 6532",
+    "AKD 20903210130": "AKL 21001716289",
+    "Instalasi ICU HCU": "Poli Saraf",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EKG",
+    "SANI": "Elitech",
+    "SN703A-D": "ECG-1200G",
+    "SN SANM094-19-037": "SN CKCE300017",
+    "AKD 20903210130": "AKD 20502310189",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EKG",
+    "SANI": "Philips",
+    "SN703A-D": "PageWriter TC10",
+    "SN SANM094-19-037": "SN CN 72118446",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EKG",
+    "SANI": "Philips",
+    "SN703A-D": "PageWriter TC10",
+    "SN SANM094-19-037": "SN CN 72118445",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EKG",
+    "SANI": "FALCON",
+    "SN703A-D": "TEC301-0071",
+    "SN SANM094-19-037": "SN KM1230607-tec301-0071",
+    "AKD 20903210130": "AKD 20502122623",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EKG",
+    "SANI": "NICOSH",
+    "SN703A-D": "NC2212-ECG",
+    "SN SANM094-19-037": "SN E1212450824",
+    "AKD 20903210130": "AKD 20502220392",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EKG",
+    "SANI": "BTL",
+    "SN703A-D": "BTL FLEXY 12 ECG",
+    "SN SANM094-19-037": "SN 07600B101478",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Jantung",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EKG",
+    "SANI": "BTL",
+    "SN703A-D": "BTL-08SD ECG",
+    "SN SANM094-19-037": "SN 071D0B012304",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Jantung",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Electro Stimulator",
+    "SANI": "BTL",
+    "SN703A-D": "BTL-4625 PRE",
+    "SN SANM094-19-037": "SN 058P0B027138",
+    "AKD 20903210130": "AKL 21403510771",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Emergency Trolley",
+    "SANI": "ZELOS",
+    "SN703A-D": "ZET 503",
+    "SN SANM094-19-037": "SN 240836606000700061",
+    "AKD 20903210130": "AKD 10404020578",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Emergency Trolley",
+    "SANI": "ZELOS",
+    "SN703A-D": "ZET 503",
+    "SN SANM094-19-037": "SN 240836606000700062",
+    "AKD 20903210130": "AKD 10404020578",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Emergency Trolley",
+    "SANI": "ZELOS",
+    "SN703A-D": "ZET 503",
+    "SN SANM094-19-037": "SN 240836606000700062",
+    "AKD 20903210130": "AKD 10404020578",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Emergency Trolley",
+    "SANI": "ZELOS",
+    "SN703A-D": "ZET 503",
+    "SN SANM094-19-037": "SN 240836606000700064",
+    "AKD 20903210130": "AKD 10404020578",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Endoscopy - Bronchoscopy",
+    "SANI": "Endo",
+    "SN703A-D": "EI.EC.v2",
+    "SN SANM094-19-037": "SN EIECV2IPX025013",
+    "AKD 20903210130": "AKD 20801420338",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "ENT Treatment Chair",
+    "SANI": "MEDICINDO",
+    "SN703A-D": "MD-305",
+    "SN SANM094-19-037": "SN MD10424G136",
+    "AKD 20903210130": "AKD 10704800461",
+    "Instalasi ICU HCU": "Poli THT",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "ENT Treatment Unit",
+    "SANI": "MEDICINDO",
+    "SN703A-D": "8007 SP-501",
+    "SN SANM094-19-037": "SN MD10324G133",
+    "AKD 20903210130": "AKD 10704410115",
+    "Instalasi ICU HCU": "Poli THT",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "ESU",
+    "SANI": "CONMED",
+    "SN703A-D": "60-8005-002",
+    "SN SANM094-19-037": "SN 19230003",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "ESU",
+    "SANI": "ENESERS",
+    "SN703A-D": "NSR ES400",
+    "SN SANM094-19-037": "SN 198.2407.0117-10",
+    "AKD 20903210130": "AKD 21603919471",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EXAMINATION LAMP",
+    "SANI": "KARIXA",
+    "SN703A-D": "NT 50 HSS",
+    "SN SANM094-19-037": "SN 19212120109003",
+    "AKD 20903210130": "AKD 10903700206",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EXAMINATION LAMP",
+    "SANI": "KARIXA",
+    "SN703A-D": "NT 50 HSS",
+    "SN SANM094-19-037": "SN 20101120109001",
+    "AKD 20903210130": "AKD 10903700206",
+    "Instalasi ICU HCU": "Poli Obgyn",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EXAMINATION LAMP",
+    "SANI": "KARIXA",
+    "SN703A-D": "NT 50 HSS",
+    "SN SANM094-19-037": "SN 19212120109005",
+    "AKD 20903210130": "AKD 10903700206",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "EXAMINATION LAMP",
+    "SANI": "KARIXA",
+    "SN703A-D": "NT 50 HSS",
+    "SN SANM094-19-037": "SN 19212120109001",
+    "AKD 20903210130": "AKD 10903700206",
+    "Instalasi ICU HCU": "Poli Bedah",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Examination Lamp",
+    "SANI": "NESCO",
+    "SN703A-D": "KS-Q7",
+    "SN SANM094-19-037": "SN 23102403-001",
+    "AKD 20903210130": "AKL 10903220235",
+    "Instalasi ICU HCU": "Poli Bedah",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Examination Lamp",
+    "SANI": "NESCO",
+    "SN703A-D": "KS-Q7",
+    "SN SANM094-19-037": "SN 23102403-002",
+    "AKD 20903210130": "AKL 10903220235",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Examination Lamp",
+    "SANI": "NESCO",
+    "SN703A-D": "KS-Q7",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKL 10903220235",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "EXAMINATION LAMP",
+    "SANI": "KARIXA",
+    "SN703A-D": "NT 50 HSS",
+    "SN SANM094-19-037": "SN 20101120109003",
+    "AKD 20903210130": "AKD 10903700206",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Examination Lamp",
+    "SANI": "KARIXA",
+    "SN703A-D": "NT 50 HSS",
+    "SN SANM094-19-037": "SN 13207001001064",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Fetal Doppler",
+    "SANI": "Elitech",
+    "SN703A-D": "SONOTREX-B",
+    "SN SANM094-19-037": "SN FD 2188A0315",
+    "AKD 20903210130": "AKD 21102800003",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Fetal Doppler",
+    "SANI": "Elitech",
+    "SN703A-D": "SONOTREX-B",
+    "SN SANM094-19-037": "SN FD 2188A0493",
+    "AKD 20903210130": "AKD 21102800003",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Fetal Doppler",
+    "SANI": "Elitech",
+    "SN703A-D": "SONOTREX-B",
+    "SN SANM094-19-037": "SN FD 2188A0126",
+    "AKD 20903210130": "AKD 21102800003",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Fetal Doppler",
+    "SANI": "Elitech",
+    "SN703A-D": "SONOTREX-B",
+    "SN SANM094-19-037": "SN FD 2188A0037",
+    "AKD 20903210130": "AKD 21102800003",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Fetal Doppler",
+    "SANI": "Bistos",
+    "SN703A-D": "BT-250",
+    "SN SANM094-19-037": "SN BHR40096",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flat Panel Detector",
+    "SANI": "RADMEDIX",
+    "SN703A-D": "ACQUITY DR RX-12391",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "AKL 21501714315",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flat Panel Detector",
+    "SANI": "KONIKA MINOLTA",
+    "SN703A-D": "AERO DR (P-41)",
+    "SN SANM094-19-037": "SN ACNN-03189",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Bayi",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "FRESS",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "AKD 10402220015",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Flow meter Dewasa",
+    "SANI": "HIROMAX",
+    "SN703A-D": "DEWASA",
+    "SN SANM094-19-037": "SN 697581624230924408",
+    "AKD 20903210130": "AKL 10402320112",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Freezer - Blood Plasma",
+    "SANI": "KIRSCH",
+    "SN703A-D": "FROSTERBL-178",
+    "SN SANM094-19-037": "SN 1700525036",
+    "AKD 20903210130": "AKL 20209502479",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Freezer - Blood Plasma",
+    "SANI": "RSA",
+    "SN703A-D": "CF-220",
+    "SN SANM094-19-037": "SN 0101050",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Freezer - Blood Plasma",
+    "SANI": "GEA",
+    "SN703A-D": "AB-226-12",
+    "SN SANM094-19-037": "SN 0101060",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "Human",
+    "SN703A-D": "HUMASENS 2.0",
+    "SN SANM094-19-037": "SN GA124000345",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "HUMAN",
+    "SN703A-D": "HUMASENS 2.0",
+    "SN SANM094-19-037": "SN GA124000342",
+    "AKD 20903210130": "AKL 20101811879",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "HUMAN",
+    "SN703A-D": "HUMASENS 2.0",
+    "SN SANM094-19-037": "SN GA124000335",
+    "AKD 20903210130": "AKL 20101811879",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "HUMAN",
+    "SN703A-D": "HUMASENS 2.0",
+    "SN SANM094-19-037": "SN GA121000433",
+    "AKD 20903210130": "AKL 20101811879",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "HUMAN",
+    "SN703A-D": "HUMASENS 2.0",
+    "SN SANM094-19-037": "SN GA124000327",
+    "AKD 20903210130": "AKL 20101811879",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "BIOLAND",
+    "SN703A-D": "G-425-3",
+    "SN SANM094-19-037": "SN G22F0015796",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "BIOLAND",
+    "SN703A-D": "G-425-3",
+    "SN SANM094-19-037": "SN G22F0015690",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "ACCU-CHECK",
+    "SN703A-D": "PERFORMA",
+    "SN SANM094-19-037": "SN 68807342957",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "ACCU-CHECK",
+    "SN703A-D": "ACTIVE",
+    "SN SANM094-19-037": "SN GB15511299",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Glucometer",
+    "SANI": "BIOLAND",
+    "SN703A-D": "G-425-3",
+    "SN SANM094-19-037": "SN G22F0015797",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Hematology analyzer",
+    "SANI": "MINDRAY",
+    "SN703A-D": "BC5380",
+    "SN SANM094-19-037": "SN RF-84102350",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "High Flow Nasal Canula",
+    "SANI": "Fisher & Paykel",
+    "SN703A-D": "Airvo 2",
+    "SN SANM094-19-037": "SN 201013184490",
+    "AKD 20903210130": "AKL 2040 3717969",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "High Flow Nasal Canula",
+    "SANI": "Fisher & Paykel",
+    "SN703A-D": "Airvo 2",
+    "SN SANM094-19-037": "SN 200624142985",
+    "AKD 20903210130": "AKL 2040 3717969",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "High Flow Nasal Canula",
+    "SANI": "Fisher & Paykel",
+    "SN703A-D": "Airvo 2",
+    "SN SANM094-19-037": "SN 210514272131",
+    "AKD 20903210130": "AKL 2040 3717969",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "High Flow Nasal Canula",
+    "SANI": "Fisher & Paykel",
+    "SN703A-D": "Airvo 2",
+    "SN SANM094-19-037": "SN 210514272510",
+    "AKD 20903210130": "AKL 2040 3717969",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "High Flow Nasal Canula",
+    "SANI": "Fisher & Paykel",
+    "SN703A-D": "Airvo 2",
+    "SN SANM094-19-037": "SN 210519276303",
+    "AKD 20903210130": "AKL 2040 3717969",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "High Flow Nasal Canula",
+    "SANI": "Fisher & Paykel",
+    "SN703A-D": "Airvo 2",
+    "SN SANM094-19-037": "SN 210519276387",
+    "AKD 20903210130": "AKL 2040 3717969",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "High Flow Nasal Canula",
+    "SANI": "Fisher & Paykel",
+    "SN703A-D": "Airvo 2",
+    "SN SANM094-19-037": "SN 210519276560",
+    "AKD 20903210130": "AKL 2040 3717969",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "HIGH INTENSITY LASER",
+    "SANI": "BTL",
+    "SN703A-D": "BTL-6000 HIL",
+    "SN SANM094-19-037": "SN 04100B003866",
+    "AKD 20903210130": "AKL 21403510166",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "IMMUNOLOGY ANALYZER",
+    "SANI": "BODITECH",
+    "SN703A-D": "AFIAS - 6",
+    "SN SANM094-19-037": "SN A6RPD 260378",
+    "AKD 20903210130": "AKL 20209606042",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Incubator",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 01030312190001",
+    "AKD 20903210130": "AKD 20902710852",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Incubator",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 01030312190002",
+    "AKD 20903210130": "AKD 20902710852",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Incubator",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 01032506200002",
+    "AKD 20903210130": "AKL P2005-2775280",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Incubator",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 01030907200001",
+    "AKD 20903210130": "AKL P2005-2775280",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Incubator",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 01030907200002",
+    "AKD 20903210130": "AKL P2005-2775280",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Incubator",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 01031305200005",
+    "AKD 20903210130": "AKL P2005-2775280",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Incubator Transport",
+    "SANI": "BIP MED",
+    "SN703A-D": "BICB-104-TR",
+    "SN SANM094-19-037": "SN BICB3IX210001",
+    "AKD 20903210130": "AKD 20902021899",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Warmer",
+    "SANI": "SANI",
+    "SN703A-D": "SN-1001 W",
+    "SN SANM094-19-037": "SN SANM021-19-036",
+    "AKD 20903210130": "AKD 20902210133",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Warmer",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1+",
+    "SN SANM094-19-037": "SN 02151807200007",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Warmer",
+    "SANI": "BIP MED",
+    "SN703A-D": "BW-301",
+    "SN SANM094-19-037": "SN BIW1IX210052",
+    "AKD 20903210130": "AKD 20902022672",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Warmer",
+    "SANI": "MEDICOR",
+    "SN703A-D": "BLR-2100",
+    "SN SANM094-19-037": "SN BD210223",
+    "AKD 20903210130": "AKL 20902110837",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infant Warmer",
+    "SANI": "BIP MED",
+    "SN703A-D": "BIW-305-BPT",
+    "SN SANM094-19-037": "SN BIW3-VII240002",
+    "AKD 20903210130": "AKD 20902220579",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infra Red Therapy",
+    "SANI": "Stainlles",
+    "SN703A-D": "Infra Red",
+    "SN SANM094-19-037": "SN 01 IR",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "MINDRAY",
+    "SN703A-D": "SK-600 II",
+    "SN SANM094-19-037": "SN SK90511559T",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Eternity",
+    "SN703A-D": "IP300",
+    "SN SANM094-19-037": "SN IP300R202003006",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Eternity",
+    "SN703A-D": "IP300",
+    "SN SANM094-19-037": "SN IP300R202003007",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Eternity",
+    "SN703A-D": "IP300",
+    "SN SANM094-19-037": "SN IP300R202003004",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "CHANGSA BEYOND",
+    "SN703A-D": "BY-820",
+    "SN SANM094-19-037": "SN BY-20820042027",
+    "AKD 20903210130": "AKL 20902214112",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "CHANGSA BEYOND",
+    "SN703A-D": "BY-820",
+    "SN SANM094-19-037": "SN BY-20820042002",
+    "AKD 20903210130": "AKL 20902214112",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-100",
+    "SN SANM094-19-037": "SN 01093313",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-100",
+    "SN SANM094-19-037": "SN 01093936",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-100",
+    "SN SANM094-19-037": "SN 01093887",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-100",
+    "SN SANM094-19-037": "SN 01093877",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "TERUMO",
+    "SN703A-D": "TE*LM730N03",
+    "SN SANM094-19-037": "SN 2004010090",
+    "AKD 20903210130": "AKL 20902813162",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "i7",
+    "SN SANM094-19-037": "SN 2000121070101013",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "i7",
+    "SN SANM094-19-037": "SN 2000121070101040",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "i7",
+    "SN SANM094-19-037": "SN 2000121070101041",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "i7",
+    "SN SANM094-19-037": "SN 2000121070101047",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "i7",
+    "SN SANM094-19-037": "SN 2000121070100979",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "i7",
+    "SN SANM094-19-037": "SN 2000121070100952",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN KMI231005-IPS-00933",
+    "AKD 20903210130": "AKD 20902129764",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN KMI231006-IPS-00964",
+    "AKD 20903210130": "AKD 20902129764",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 29",
+    "SN SANM094-19-037": "SN 010124IF0011",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 29",
+    "SN SANM094-19-037": "SN 010124IF0012",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 29",
+    "SN SANM094-19-037": "SN 010124IF0013",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 29",
+    "SN SANM094-19-037": "SN 010124IF0010",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN KMIIP03240709-00447",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN KMIIP03240709-00458",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Inmedik",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN IM-IP01250303002229",
+    "AKD 20903210130": "AKD 20902420092",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Inmedik",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN IM-IP01260227002088",
+    "AKD 20903210130": "AKD 20902420092",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Inmedik",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN IM-IP01260401001003",
+    "AKD 20903210130": "AKD 20902420092",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Inmedik",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN IM-IP01260401001013",
+    "AKD 20903210130": "AKD 20902420092",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Inmedik",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN IM-IP01260401001016",
+    "AKD 20903210130": "AKD 20902420092",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Inmedik",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN IM-IP01260401001017",
+    "AKD 20903210130": "AKD 20902420092",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Pump",
+    "SANI": "Inmedik",
+    "SN703A-D": "IPS",
+    "SN SANM094-19-037": "SN IM-IP01260401001018",
+    "AKD 20903210130": "AKD 20902420092",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Warmer",
+    "SANI": "STIHLER",
+    "SN703A-D": "ASTOFLO",
+    "SN SANM094-19-037": "SN AFP300EU=E07685",
+    "AKD 20903210130": "AKL 20209713222",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Warmer",
+    "SANI": "STIHLER",
+    "SN703A-D": "ASTOFLO",
+    "SN SANM094-19-037": "SN AFP300EU=E07129",
+    "AKD 20903210130": "AKL 20209713222",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Warmer",
+    "SANI": "STIHLER",
+    "SN703A-D": "ASTOFLO",
+    "SN SANM094-19-037": "SN AFP300EU=E08102",
+    "AKD 20903210130": "AKL 20209713222",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Warmer",
+    "SANI": "STIHLER",
+    "SN703A-D": "ASTOFLO",
+    "SN SANM094-19-037": "SN AFP300EU=E08103",
+    "AKD 20903210130": "AKL 20209713222",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Infusion Warmer",
+    "SANI": "STIHLER",
+    "SN703A-D": "ASTOFLO",
+    "SN SANM094-19-037": "SN AFP300EU=E08104",
+    "AKD 20903210130": "AKL 20209713222",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "KIMIA ANALYZER",
+    "SANI": "MINDRAY",
+    "SN703A-D": "BS-120",
+    "SN SANM094-19-037": "SN WK-7A105664",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Kursi Gynecolog",
+    "SANI": "POLY JAYA",
+    "SN703A-D": "POLY 030 SSFS",
+    "SN SANM094-19-037": "SN 030-20-001",
+    "AKD 20903210130": "AKD 21104310216",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Kursi Gynecolog",
+    "SANI": "POLY JAYA",
+    "SN703A-D": "POLY 030 SSFS",
+    "SN SANM094-19-037": "SN 030-20-002",
+    "AKD 20903210130": "AKD 21104310216",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Kursi Roda",
+    "SANI": "Bipmed",
+    "SN703A-D": "BKR-202",
+    "SN SANM094-19-037": "SN KR",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Laminar Air Flow",
+    "SANI": "INNOTECH",
+    "SN703A-D": "IBS-V800",
+    "SN SANM094-19-037": "SN LV 20021055",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Manual Resuscitation Anak",
+    "SANI": "MPM",
+    "SN703A-D": "BE-1603",
+    "SN SANM094-19-037": "SN MO10110115",
+    "AKD 20903210130": "AKL 20403123111",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Manual Resuscitation Bayi",
+    "SANI": "MPM",
+    "SN703A-D": "BE-1703",
+    "SN SANM094-19-037": "SN MO10110116",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Matras Antidecubitus",
+    "SANI": "YOUNG WON MEDICAL",
+    "SN703A-D": "AD-1200 TUBE",
+    "SN SANM094-19-037": "SN 332065",
+    "AKD 20903210130": "AKL 20902026087",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Matras Antidecubitus",
+    "SANI": "YOUNG WON MEDICAL",
+    "SN703A-D": "AD-1200 TUBE",
+    "SN SANM094-19-037": "SN 332066",
+    "AKD 20903210130": "AKL 20902026087",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Fix",
+    "SANI": "SOCOREX",
+    "SN703A-D": "ACURA 5 UL",
+    "SN SANM094-19-037": "SN 29051174",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Fix",
+    "SANI": "SOCOREX",
+    "SN703A-D": "ACURA 10 UL",
+    "SN SANM094-19-037": "SN 27071671",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Fix",
+    "SANI": "SOCOREX",
+    "SN703A-D": "ACURA 20 UL",
+    "SN SANM094-19-037": "SN 27091239",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Fix",
+    "SANI": "SOCOREX",
+    "SN703A-D": "ACURA 50 UL",
+    "SN SANM094-19-037": "SN 28111036",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Fix",
+    "SANI": "SOCOREX",
+    "SN703A-D": "ACURA 100 UL",
+    "SN SANM094-19-037": "SN 29051243",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Fix",
+    "SANI": "SOCOREX",
+    "SN703A-D": "ACURA 500 UL",
+    "SN SANM094-19-037": "SN 29071010",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Fix",
+    "SANI": "SOCOREX",
+    "SN703A-D": "ACURA 1000 UL",
+    "SN SANM094-19-037": "SN 29051389",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Variable",
+    "SANI": "DRAGONLAB",
+    "SN703A-D": "0.5UL - 10UL",
+    "SN SANM094-19-037": "SN YE193AL0306769",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Variable",
+    "SANI": "DRAGONLAB",
+    "SN703A-D": "0.5UL - 10UL",
+    "SN SANM094-19-037": "SN YE205AN0019573",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Variable",
+    "SANI": "DRAGONLAB",
+    "SN703A-D": "0.5UL - 10UL",
+    "SN SANM094-19-037": "SN YE193AL0306772",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Variable",
+    "SANI": "DRAGONLAB",
+    "SN703A-D": "10UL - 100UL",
+    "SN SANM094-19-037": "SN YE198AL0499013",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Variable",
+    "SANI": "DRAGONLAB",
+    "SN703A-D": "10UL - 100UL",
+    "SN SANM094-19-037": "SN YE198AL0499012",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Variable",
+    "SANI": "DRAGONLAB",
+    "SN703A-D": "100UL - 1000UL",
+    "SN SANM094-19-037": "SN YE199AL0548318",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Micropipet Variable",
+    "SANI": "DRAGONLAB",
+    "SN703A-D": "100UL - 1000UL",
+    "SN SANM094-19-037": "SN YE199AL0547845",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "MIKROSKOP",
+    "SANI": "OLYMPUS",
+    "SN703A-D": "OLYMPUS CX-33RTFS2",
+    "SN SANM094-19-037": "SN 8H45303 / 30430",
+    "AKD 20903210130": "AKL 10263715479",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Mikroskop Binocular",
+    "SANI": "Leica",
+    "SN703A-D": "DM 750",
+    "SN SANM094-19-037": "SN 549738",
+    "AKD 20903210130": "AKL 10203111388",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "Elitech",
+    "SN703A-D": "PROMIST-3",
+    "SN SANM094-19-037": "SN MN03191A0274",
+    "AKD 20903210130": "AKD 20403710661",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "Elitech",
+    "SN703A-D": "PROMIST-3",
+    "SN SANM094-19-037": "SN MN03191A0270",
+    "AKD 20903210130": "AKD 20403710661",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "BLUE CROSS",
+    "SN703A-D": "CN-MINI",
+    "SN SANM094-19-037": "SN 1755530535",
+    "AKD 20903210130": "AKL 20403511095",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "BLUE CROSS",
+    "SN703A-D": "CN-MINI",
+    "SN SANM094-19-037": "SN 1755530536",
+    "AKD 20903210130": "AKL 20403511095",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "BLUE CROSS",
+    "SN703A-D": "CN-MINI",
+    "SN SANM094-19-037": "SN 1755530537",
+    "AKD 20903210130": "AKL 20403511095",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "OMRON",
+    "SN703A-D": "NEC28",
+    "SN SANM094-19-037": "SN 20230412551UF",
+    "AKD 20903210130": "AKL 20403220668",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "OMRON",
+    "SN703A-D": "NE-C28",
+    "SN SANM094-19-037": "SN 20230412550UF",
+    "AKD 20903210130": "AKL 20403220668",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "OMRON",
+    "SN703A-D": "NE-C28",
+    "SN SANM094-19-037": "SN 20230412552UF",
+    "AKD 20903210130": "AKL 20403220668",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "PRIZMA",
+    "SN703A-D": "PRIZJET",
+    "SN SANM094-19-037": "SN 201613011301",
+    "AKD 20903210130": "AKL 20403510564",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "PRIZMA",
+    "SN703A-D": "PRIZJET",
+    "SN SANM094-19-037": "SN 201613011302",
+    "AKD 20903210130": "AKL 20403510564",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "PRIZMA",
+    "SN703A-D": "PRIZJET",
+    "SN SANM094-19-037": "SN 201613011303",
+    "AKD 20903210130": "AKL 20403510564",
+    "Instalasi ICU HCU": "Poli Anak",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Compressor",
+    "SANI": "PRIZMA",
+    "SN703A-D": "PRIZJET",
+    "SN SANM094-19-037": "SN 201613011304",
+    "AKD 20903210130": "AKL 20403510564",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Ultrasonic",
+    "SANI": "FYROM",
+    "SN703A-D": "ULTRA",
+    "SN SANM094-19-037": "SN 02172606230006",
+    "AKD 20903210130": "AKD 20403220653",
+    "Instalasi ICU HCU": "Poli Paru",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nebulizer Ultrasonic",
+    "SANI": "SERENITY",
+    "SN703A-D": "NEU-38 U",
+    "SN SANM094-19-037": "SN SR240513075",
+    "AKD 20903210130": "AKD 20403220282",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Negatif Pressure",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Neo Resuscitator Transport",
+    "SANI": "PIGEON",
+    "SN703A-D": "AD3000-TPA",
+    "SN SANM094-19-037": "SN 231011A010",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nierbeken Kecil",
+    "SANI": "HERBERZ",
+    "SN703A-D": "NIERBEKEN20",
+    "SN SANM094-19-037": "SN 01NRTHT",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli THT",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "NPWT",
+    "SANI": "VACULTA",
+    "SN703A-D": "CAPULTDEV01",
+    "SN SANM094-19-037": "SN GAAC21551",
+    "AKD 20903210130": "AKL 21603510578",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nucleic Acid Extractor",
+    "SANI": "TIANLONG",
+    "SN703A-D": "Libex",
+    "SN SANM094-19-037": "SN TL20C20121295",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Nucleic Acid Purification System",
+    "SANI": "ALLSHENG",
+    "SN703A-D": "Auto-Pure32A",
+    "SN SANM094-19-037": "SN 154-26899-20060002",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Operating Lamp - Dual Arm",
+    "SANI": "MEDILAND",
+    "SN703A-D": "SLIMLED 55",
+    "SN SANM094-19-037": "SN 2190907003001",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Operating Lamp - Single Arm",
+    "SANI": "Elitech",
+    "SN703A-D": "MOL-02",
+    "SN SANM094-19-037": "SN OL2122BB0004",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Operating Table - Elektrik",
+    "SANI": "MEDILAND",
+    "SN703A-D": "EMAX300",
+    "SN SANM094-19-037": "SN 2200519001001",
+    "AKD 20903210130": "AKL 21603810773",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Operating Table - Manual",
+    "SANI": "MAK",
+    "SN703A-D": "MMT-OT2048M",
+    "SN SANM094-19-037": "SN 231152511140300062",
+    "AKD 20903210130": "AKD 11603021795",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "ORBITAL SHAKER",
+    "SANI": "GEMMY",
+    "SN703A-D": "VRN-200",
+    "SN SANM094-19-037": "SN 1907781",
+    "AKD 20903210130": "AKL 10102510453",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OTOSKOP",
+    "SANI": "RIESTER",
+    "SN703A-D": "EAR SCOPE",
+    "SN SANM094-19-037": "SN 2101-200",
+    "AKD 20903210130": "AKL 10703513132",
+    "Instalasi ICU HCU": "Poli THT",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "YUWELLL",
+    "SN703A-D": "9F-5AW",
+    "SN SANM094-19-037": "SN 200500982",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "YUWELLL",
+    "SN703A-D": "9F-5AW",
+    "SN SANM094-19-037": "SN 200506749",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2124789",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2124812",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2125102",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2114845",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2129086",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2129128",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2129148",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "OXYGEN CONCENTRATOR",
+    "SANI": "Philips",
+    "SN703A-D": "Everflo Concentrator",
+    "SN SANM094-19-037": "SN 2124846",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE 671M4380",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE 671M4381",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE 671M4388",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE 671M6255",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "ZONDAN",
+    "SN703A-D": "IMD12",
+    "SN SANM094-19-037": "SN CCAN260867",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE671N6988",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE671N7009",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE671N7007",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX400",
+    "SN SANM094-19-037": "SN DE671N7599",
+    "AKD 20903210130": "AKL 20502318188",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "KONSUNG",
+    "SN703A-D": "AURORA 12S",
+    "SN SANM094-19-037": "SN MO 20060050046",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "KONSUNG",
+    "SN703A-D": "AURORA 12S",
+    "SN SANM094-19-037": "SN MO 20060050044",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Ambulance APV",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX 500",
+    "SN SANM094-19-037": "SN DE671R3044",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX 500",
+    "SN SANM094-19-037": "SN DE671R3042",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX 500",
+    "SN SANM094-19-037": "SN DE671R3047",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX 500",
+    "SN SANM094-19-037": "SN DE671R3083",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX 500",
+    "SN SANM094-19-037": "SN DE671R3045",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "MX 500",
+    "SN SANM094-19-037": "SN DE671V3850",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PATIENT MONITOR",
+    "SANI": "NICOSH",
+    "SN703A-D": "NC 2207-PM",
+    "SN SANM094-19-037": "SN PM070410824",
+    "AKD 20903210130": "AKD 20502220394",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Pengukur tinggi badan",
+    "SANI": "GEA",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Phototeraphy LED",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 0115052200005",
+    "AKD 20903210130": "AKD P20093336467",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Phototeraphy LED",
+    "SANI": "BIP MED",
+    "SN703A-D": "BPT-301-5L",
+    "SN SANM094-19-037": "SN BPT1IX210003",
+    "AKD 20903210130": "AKD 20902022002",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Phototeraphy TL",
+    "SANI": "FYROM",
+    "SN703A-D": "INFINITY G1",
+    "SN SANM094-19-037": "SN 01083011190001",
+    "AKD 20903210130": "AKD 20902610406",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "MINDRAY",
+    "SN703A-D": "PM-60",
+    "SN SANM094-19-037": "SN CR-97206053",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "MINDRAY",
+    "SN703A-D": "PM-60",
+    "SN SANM094-19-037": "SN CR-97206052",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24001389",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24004635",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24004644",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24001363",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24001383",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24001368",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Poli Anak",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24001353",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24004646",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Beurer",
+    "SN703A-D": "PO 80",
+    "SN SANM094-19-037": "SN 2020F24004648",
+    "AKD 20903210130": "AKL 20502611813",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CHOICE MMED",
+    "SN703A-D": "MD300CN310",
+    "SN SANM094-19-037": "SN 203665601728",
+    "AKD 20903210130": "AKL20502912916",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CHOICE MED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN MO 3NCN310",
+    "AKD 20903210130": "AKL2050291296",
+    "Instalasi ICU HCU": "Ambulance APV",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CHOICE MMED",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN MO 300CN310",
+    "AKD 20903210130": "AKL20502912916",
+    "Instalasi ICU HCU": "Ambulance APV",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501264",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501797",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501219",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501268",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501570",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501563",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501276",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501796",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501501",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501495",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501787",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501269",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501262",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501572",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501256",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501559",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501509",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501781",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501255",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "CONTEC",
+    "SN703A-D": "CMS50DL1",
+    "SN SANM094-19-037": "SN 20090501783",
+    "AKD 20903210130": "AKL 20502022292",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Elitech",
+    "SN703A-D": "FOX PRO",
+    "SN SANM094-19-037": "SN FX0621AB0111",
+    "AKD 20903210130": "AKD 20502910952",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Elitech",
+    "SN703A-D": "FOX PRO",
+    "SN SANM094-19-037": "SN FX0621AB0150",
+    "AKD 20903210130": "AKD 20502910952",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Elitech",
+    "SN703A-D": "FOX PRO",
+    "SN SANM094-19-037": "SN FX0621AB0047",
+    "AKD 20903210130": "AKD 20502910952",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Elitech",
+    "SN703A-D": "FOX PRO",
+    "SN SANM094-19-037": "SN FX0621AB0124",
+    "AKD 20903210130": "AKD 20502910952",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Elitech",
+    "SN703A-D": "FOX PRO",
+    "SN SANM094-19-037": "SN FX0621AB0080",
+    "AKD 20903210130": "AKD 20502910952",
+    "Instalasi ICU HCU": "Instalasi Rawat Jalan",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "PULSE OXYMETER",
+    "SANI": "Elitech",
+    "SN703A-D": "FOX PRO",
+    "SN SANM094-19-037": "SN FX0621AB0090",
+    "AKD 20903210130": "AKD 20502910952",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Pulse Oxymeter",
+    "SANI": "",
+    "SN703A-D": "YK-820MINIA",
+    "SN SANM094-19-037": "SN 23121108040304",
+    "AKD 20903210130": "AKL 20601220025",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Pulse Oxymeter",
+    "SANI": "Core Ray",
+    "SN703A-D": "Cr-100",
+    "SN SANM094-19-037": "SN CR2401 00009",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Pulse Oxymeter",
+    "SANI": "Core Ray",
+    "SN703A-D": "Cr-100",
+    "SN SANM094-19-037": "SN CR2401 00040",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Pulse Oxymeter",
+    "SANI": "Core Ray",
+    "SN703A-D": "Cr-100",
+    "SN SANM094-19-037": "SN CR2401 00043",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "REAL-TIME PCR SYSTEM",
+    "SANI": "TIANLONG",
+    "SN703A-D": "GENTIER 96E",
+    "SN SANM094-19-037": "SN TL22EL21011023",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Refleks Hammer",
+    "SANI": "GENERAL CARE",
+    "SN703A-D": "HS-401G03",
+    "SN SANM094-19-037": "SN 02 HAMMER ICU",
+    "AKD 20903210130": "AKL 110011412221",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Refrigerator Blood",
+    "SANI": "KIRSCH",
+    "SN703A-D": "MED 340 Pro-Active",
+    "SN SANM094-19-037": "SN 3301025616",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Refrigerator Farmasi",
+    "SANI": "KIRSCH",
+    "SN703A-D": "MED 340 PRO-ACTIVE",
+    "SN SANM094-19-037": "SN 330 10 25638",
+    "AKD 20903210130": "AKL 20209502479",
+    "Instalasi ICU HCU": "Instalasi Farmasi",
+    "Instalasi ICU/HCU": "Instalasi Farmasi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Refrigerator Lab",
+    "SANI": "KIRSCH",
+    "SN703A-D": "MED 340 PRO-ACTIVE",
+    "SN SANM094-19-037": "330 10 25604",
+    "AKD 20903210130": "AKL 20209502479",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Resmed Lumis",
+    "SANI": "RESMED",
+    "SN703A-D": "LUMIS 150",
+    "SN SANM094-19-037": "SN 22201214905",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Resmed Lumis",
+    "SANI": "RESMED",
+    "SN703A-D": "LUMIS 150",
+    "SN SANM094-19-037": "SN 22201215315",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "ROLLER MIXER",
+    "SANI": "WAP LAB",
+    "SN703A-D": "WP-60R",
+    "SN SANM094-19-037": "SN VF182AC0000795",
+    "AKD 20903210130": "AKL10209513091",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Scoop Stretcher",
+    "SANI": "GEA",
+    "SN703A-D": "YDC-4A-3EA",
+    "SN SANM094-19-037": "SN 30220241236",
+    "AKD 20903210130": "AKL 10903322060",
+    "Instalasi ICU HCU": "PEMULASARA JENAZAH",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "SCRUB STATION",
+    "SANI": "UZUMCU",
+    "SN703A-D": "80700",
+    "SN SANM094-19-037": "SN 180755392548",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Scrub Station",
+    "SANI": "INDAMED",
+    "SN703A-D": "DR 02 C",
+    "SN SANM094-19-037": "SN …",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sealer Machine",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Farmasi",
+    "Instalasi ICU/HCU": "Instalasi Farmasi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sealer Machine",
+    "SANI": "MD CARE",
+    "SN703A-D": "MD 660",
+    "SN SANM094-19-037": "SN 6600016102498",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Set GV",
+    "SANI": "Mar Plus",
+    "SN703A-D": "GV Set 1,1",
+    "SN SANM094-19-037": "SN 88-163-01",
+    "AKD 20903210130": "AKD",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Set SC",
+    "SANI": "BBRAUN",
+    "SN703A-D": "SC",
+    "SN SANM094-19-037": "SN BF059R",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Set THT",
+    "SANI": "ZEPF",
+    "SN703A-D": "ENT INSTRUMENT SET",
+    "SN SANM094-19-037": "SN 44-1902-01",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli THT",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Shock Wave Teraphy",
+    "SANI": "BTL",
+    "SN703A-D": "BTL-6000 SWT",
+    "SN SANM094-19-037": "SN 04400B013936",
+    "AKD 20903210130": "AKL 21403320429",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Shortwave Diathermy",
+    "SANI": "BTL",
+    "SN703A-D": "BTL-6000 SWD",
+    "SN SANM094-19-037": "SN 01300B005346",
+    "AKD 20903210130": "AKL 20502113580",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Spirometer",
+    "SANI": "BELINTELMED",
+    "SN703A-D": "MAS2-BM",
+    "SN SANM094-19-037": "SN 9827",
+    "AKD 20903210130": "AKL 20401918676",
+    "Instalasi ICU HCU": "Poli Paru",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Plasma",
+    "SANI": "SHINVA",
+    "SN703A-D": "PS-100",
+    "SN SANM094-19-037": "SN 4200653",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Steam",
+    "SANI": "Hirayama",
+    "SN703A-D": "HVE-50",
+    "SN SANM094-19-037": "SN 30620040913",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Steam",
+    "SANI": "HANSHIN",
+    "SN703A-D": "HS-2321 SD",
+    "SN SANM094-19-037": "SN ML110025",
+    "AKD 20903210130": "AKL P2005-2767998",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Steam",
+    "SANI": "HANSHIN",
+    "SN703A-D": "HS-2321 SD",
+    "SN SANM094-19-037": "SN OZ060046",
+    "AKD 20903210130": "AKL P2005-2767998",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Steam",
+    "SANI": "GEA",
+    "SN703A-D": "YX-24LDJ",
+    "SN SANM094-19-037": "SN 20S-15758",
+    "AKD 20903210130": "AKL 20903705322",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Steam",
+    "SANI": "SHINVA",
+    "SN703A-D": "MAST-V",
+    "SN SANM094-19-037": "SN 20228612",
+    "AKD 20903210130": "AKD 20903520560",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Steam",
+    "SANI": "Hanshin",
+    "SN703A-D": "HS-2321 SD",
+    "SN SANM094-19-037": "SN OS010063",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "Get 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0706",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "Get 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0689",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Poli Gigi",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "Get 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0655",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "GET 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0547",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "GET 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0586",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "GET 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0606",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "GET 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0572",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Poli Bedah",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - UV & Ozone",
+    "SANI": "Elitech",
+    "SN703A-D": "GET 338 UO",
+    "SN SANM094-19-037": "SN LS07191A0476",
+    "AKD 20903210130": "AKD 20903800291",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Sterilizer - Warmer Bottle",
+    "SANI": "",
+    "SN703A-D": "TY-899",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Stetoskop Bayi",
+    "SANI": "LITMANN",
+    "SN703A-D": "2114R",
+    "SN SANM094-19-037": "SN 707387788766",
+    "AKD 20903210130": "AKL 10501511964",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "DIXION-GERMANY",
+    "SN703A-D": "VACUS 7305",
+    "SN SANM094-19-037": "SN 070620075050",
+    "AKD 20903210130": "AKL 21603615708",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "INMEDIK",
+    "SN703A-D": "VULCAN",
+    "SN SANM094-19-037": "SN 2423015132001044",
+    "AKD 20903210130": "AKD 21603222987",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "INMEDIK",
+    "SN703A-D": "VULCAN",
+    "SN SANM094-19-037": "SN 2423015132001045",
+    "AKD 20903210130": "AKD 21603222987",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "INMEDIK",
+    "SN703A-D": "VULCAN",
+    "SN SANM094-19-037": "SN 2423015132001046",
+    "AKD 20903210130": "AKD 21603222987",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "INMEDIK",
+    "SN703A-D": "VULCAN",
+    "SN SANM094-19-037": "SN 2423015132001048",
+    "AKD 20903210130": "AKD 21603222987",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "INMEDIK",
+    "SN703A-D": "VULCAN",
+    "SN SANM094-19-037": "SN 2423015132001049",
+    "AKD 20903210130": "AKD 21603222987",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "INMEDIK",
+    "SN703A-D": "VULCAN",
+    "SN SANM094-19-037": "SN 2423015132001052",
+    "AKD 20903210130": "AKD 21603222987",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "GEA",
+    "SN703A-D": "YX980D",
+    "SN SANM094-19-037": "SN 07-24-067",
+    "AKD 20903210130": "AKL 21603420536",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - high Vacuum",
+    "SANI": "GEA",
+    "SN703A-D": "YX980D",
+    "SN SANM094-19-037": "SN 07-24-068",
+    "AKD 20903210130": "AKL 21603420536",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - Low Vacuum",
+    "SANI": "SANI",
+    "SN703A-D": "SN703A-D",
+    "SN SANM094-19-037": "SN SANM094-19-038",
+    "AKD 20903210130": "AKD 20903210130",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - Low Vacuum",
+    "SANI": "Medela",
+    "SN703A-D": "VARIO 18 AC",
+    "SN SANM094-19-037": "SN 1833290",
+    "AKD 20903210130": "AKL 21603602276",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - Low Vacuum",
+    "SANI": "Medela",
+    "SN703A-D": "VARIO 18 AC",
+    "SN SANM094-19-037": "SN 1830280",
+    "AKD 20903210130": "AKL 21603602276",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - Low Vacuum",
+    "SANI": "Medela",
+    "SN703A-D": "VARIO 18 AC",
+    "SN SANM094-19-037": "SN 1833294",
+    "AKD 20903210130": "AKL 21603602276",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - Low Vacuum",
+    "SANI": "ACARE",
+    "SN703A-D": "ASU-200",
+    "SN SANM094-19-037": "SN S20040346",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Suction Pump - Low Vacuum",
+    "SANI": "Endo",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "MINDRAY",
+    "SN703A-D": "SK-500 III",
+    "SN SANM094-19-037": "SN SK90600292",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "MINDRAY",
+    "SN703A-D": "SK-500 II",
+    "SN SANM094-19-037": "SN SK91204055",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "MINDRAY",
+    "SN703A-D": "SK-500 II",
+    "SN SANM094-19-037": "SN SK91204056",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "MINDRAY",
+    "SN703A-D": "SK-500 II",
+    "SN SANM094-19-037": "SN SK91204057",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "CHANGSA BEYOND",
+    "SN703A-D": "BYZ-810",
+    "SN SANM094-19-037": "SN BY-20810071571",
+    "AKD 20903210130": "AKL 20902214111",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "CHANGSA BEYOND",
+    "SN703A-D": "BYZ-810",
+    "SN SANM094-19-037": "SN BY-20810071572",
+    "AKD 20903210130": "AKL 20902214111",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-400",
+    "SN SANM094-19-037": "SN 02025745",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-400",
+    "SN SANM094-19-037": "SN 02025722",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-400",
+    "SN SANM094-19-037": "SN 02025482",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HAWK MEDICAL",
+    "SN703A-D": "HK-400",
+    "SN SANM094-19-037": "SN 02025769",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "TERUMO",
+    "SN703A-D": "TE*SS730N03",
+    "SN SANM094-19-037": "SN 2008010475",
+    "AKD 20903210130": "AKL 20902813042",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "s7",
+    "SN SANM094-19-037": "SN 2020121070103211",
+    "AKD 20903210130": "AKL 20902713807",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "s7",
+    "SN SANM094-19-037": "SN 2020121070103309",
+    "AKD 20903210130": "AKL 20902713807",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "s7",
+    "SN SANM094-19-037": "SN 2020121070103301",
+    "AKD 20903210130": "AKL 20902713807",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "s7",
+    "SN SANM094-19-037": "SN 2020121070103305",
+    "AKD 20903210130": "AKL 20902713807",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "s7",
+    "SN SANM094-19-037": "SN 2020121070103217",
+    "AKD 20903210130": "AKL 20902713807",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "HEDY",
+    "SN703A-D": "s7",
+    "SN SANM094-19-037": "SN 2020121070103216",
+    "AKD 20903210130": "AKL 20902713807",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "SPS",
+    "SN SANM094-19-037": "SN KMI231005-SPS-01070",
+    "AKD 20903210130": "AKD 20902129162",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "SPS",
+    "SN SANM094-19-037": "SN KMI231006-SPS-01160",
+    "AKD 20903210130": "AKD20902129162",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 39",
+    "SN SANM094-19-037": "SN 010623SY0054",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 39",
+    "SN SANM094-19-037": "SN 010623SY0055",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 39",
+    "SN SANM094-19-037": "SN 010623SY0053",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "DALFIN",
+    "SN703A-D": "Dalfusion 39",
+    "SN SANM094-19-037": "SN 010623SY0056",
+    "AKD 20903210130": "AKD 20902321984",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "SPS",
+    "SN SANM094-19-037": "SN KMISY03240708-00458",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "INMEDIK",
+    "SN703A-D": "SPS",
+    "SN SANM094-19-037": "SN KMISY03240625-00221",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Syringe Pump",
+    "SANI": "Mindray",
+    "SN703A-D": "SK 500 III",
+    "SN SANM094-19-037": "SN SK90600297",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ERKA",
+    "SN703A-D": "Perfect Aneroid",
+    "SN SANM094-19-037": "SN 19008642",
+    "AKD 20903210130": "AKL 20501111136",
+    "Instalasi ICU HCU": "Poli Obgyn",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ERKA",
+    "SN703A-D": "D-83646",
+    "SN SANM094-19-037": "SN 19400287",
+    "AKD 20903210130": "AKL 20501111142",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ERKA",
+    "SN703A-D": "D-83646",
+    "SN SANM094-19-037": "SN 19400298",
+    "AKD 20903210130": "AKL 20501111142",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ERKA",
+    "SN703A-D": "D-83646",
+    "SN SANM094-19-037": "SN 19400293",
+    "AKD 20903210130": "AKL 20501111142",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ERKA",
+    "SN703A-D": "D-83646",
+    "SN SANM094-19-037": "SN 19400270",
+    "AKD 20903210130": "AKL 20501111142",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ERKA",
+    "SN703A-D": "D-83646",
+    "SN SANM094-19-037": "SN 19400290",
+    "AKD 20903210130": "AKL 20501111142",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "REGAL CLOCK",
+    "SN SANM094-19-037": "SN 9010143",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Paru",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "REGAL CLOCK",
+    "SN SANM094-19-037": "SN 9009810",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Jantung",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "DM500",
+    "SN SANM094-19-037": "SN 201-004-571",
+    "AKD 20903210130": "AKD 20501610294",
+    "Instalasi ICU HCU": "Poli Penyakit Dalam",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "DM500",
+    "SN SANM094-19-037": "SN 201-004-553",
+    "AKD 20903210130": "AKD 20501610294",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "DM500",
+    "SN SANM094-19-037": "SN 201-004-473",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "DM500",
+    "SN SANM094-19-037": "SN 201004661",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "DM500",
+    "SN SANM094-19-037": "SN 201004085",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "AS-081R-W",
+    "SN SANM094-19-037": "SN 00269476",
+    "AKD 20903210130": "AKD 2050150566",
+    "Instalasi ICU HCU": "Ambulance APV",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "AS-041-HP",
+    "SN SANM094-19-037": "SN 520816",
+    "AKD 20903210130": "AKD 20501600327",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Manual",
+    "SANI": "ABN",
+    "SN703A-D": "AS-051",
+    "SN SANM094-19-037": "SN 358978",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "CAM",
+    "SN703A-D": "CAM.MYP2",
+    "SN SANM094-19-037": "SN 013086",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "CAM",
+    "SN703A-D": "CAM.MYP2",
+    "SN SANM094-19-037": "SN 013094",
+    "AKD 20903210130": "AKL 20501806238",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "LAICA",
+    "SN703A-D": "BM2301",
+    "SN SANM094-19-037": "SN RSPG-001-PA",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Anyelir",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "LAICA",
+    "SN703A-D": "BM2301",
+    "SN SANM094-19-037": "SN RSPG-002",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "LAICA",
+    "SN703A-D": "BM2301",
+    "SN SANM094-19-037": "SN RSPG-011-RHB",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "RGB",
+    "SN703A-D": "BPM002",
+    "SN SANM094-19-037": "SN BPm002236A0615",
+    "AKD 20903210130": "AKD 20501910740",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "RGB",
+    "SN703A-D": "BPM002",
+    "SN SANM094-19-037": "SN BPM002236A0088",
+    "AKD 20903210130": "AKD 20501910740",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "RGB",
+    "SN703A-D": "BPM002",
+    "SN SANM094-19-037": "SN BPM002236A0032",
+    "AKD 20903210130": "AKD 20501910740",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "RGB",
+    "SN703A-D": "BPM002",
+    "SN SANM094-19-037": "SN BPM002236A0763",
+    "AKD 20903210130": "AKD 20501910740",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "RGB",
+    "SN703A-D": "BPM002",
+    "SN SANM094-19-037": "SN BPM002236A0070",
+    "AKD 20903210130": "AKD 20501910740",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "OMRON",
+    "SN703A-D": "HBP-9030",
+    "SN SANM094-19-037": "SN 07007375LF",
+    "AKD 20903210130": "AKL 20501027806",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "Yuwell",
+    "SN703A-D": "YE990",
+    "SN SANM094-19-037": "SN B2408000007",
+    "AKD 20903210130": "AKL 20501320971",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tensimeter Otomatis",
+    "SANI": "Yuwell",
+    "SN703A-D": "YE990",
+    "SN SANM094-19-037": "SN B2408000009",
+    "AKD 20903210130": "AKL 20501320971",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMAL CYCLER",
+    "SANI": "LONGGENE",
+    "SN703A-D": "Q2000C",
+    "SN SANM094-19-037": "SN 033-00204",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "Ressources",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "Ressources",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "AE-320",
+    "SN703A-D": "Smart",
+    "SN SANM094-19-037": "SN 12558",
+    "AKD 20903210130": "AKD 20202070039",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "GP-300",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "AKD 20202070039",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "SMART",
+    "SN703A-D": "AE320",
+    "SN SANM094-19-037": "SN 12558",
+    "AKD 20903210130": "AKD 20202070039",
+    "Instalasi ICU HCU": "Ambulance APV",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "",
+    "SN703A-D": "GP-300",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "AKD 20202070039",
+    "Instalasi ICU HCU": "Ambulance APV",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "Magic Star",
+    "SN703A-D": "MS-303",
+    "SN SANM094-19-037": "SN BSC21D21B",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "ELITECH",
+    "SN703A-D": "MFT-01",
+    "SN SANM094-19-037": "SN MFT 01204A1937",
+    "AKD 20903210130": "AKD 20901020234",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "ELITECH",
+    "SN703A-D": "MFT-01",
+    "SN SANM094-19-037": "SN MFT 01204A0071",
+    "AKD 20903210130": "AKD 20901020234",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "ELITECH",
+    "SN703A-D": "MFT-01",
+    "SN SANM094-19-037": "SN MFT 01204A0446",
+    "AKD 20903210130": "AKD 20901020234",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Thermogun",
+    "SANI": "ELITECH",
+    "SN703A-D": "MFT-01",
+    "SN SANM094-19-037": "SN MFT 01204A0987",
+    "AKD 20903210130": "AKD 20901020234",
+    "Instalasi ICU HCU": "Poli Anak",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "HUMIDITY",
+    "SN703A-D": "DIGITAL",
+    "SN SANM094-19-037": "SN FARMASI-01",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Farmasi",
+    "Instalasi ICU/HCU": "Instalasi Farmasi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "HUMIDITY",
+    "SN703A-D": "DIGITAL",
+    "SN SANM094-19-037": "SN CSSD01",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "HUMIDITY",
+    "SN703A-D": "DIGITAL",
+    "SN SANM094-19-037": "SN RSPG-001-RDLG",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "HUMIDITY",
+    "SN703A-D": "DIGITAL",
+    "SN SANM094-19-037": "SN ADMIN 01",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "CLOCK",
+    "SN703A-D": "HTC-2",
+    "SN SANM094-19-037": "SN RSPG-001-PCR",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Gudang Alkes",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN -",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Subag Administrasi Umum dan Kepegawaian"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "HUMIDITY",
+    "SN703A-D": "DIGITAL",
+    "SN SANM094-19-037": "SN RSPG005-PRN",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "CLOCK",
+    "SN703A-D": "HTC-1",
+    "SN SANM094-19-037": "SN RSPG-001-GFM",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "GUDANG FARMASI",
+    "Instalasi ICU/HCU": "Instalasi Farmasi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOHYGROMETER",
+    "SANI": "CLOCK",
+    "SN703A-D": "HTC-1",
+    "SN SANM094-19-037": "SN GIZI",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Gizi",
+    "Instalasi ICU/HCU": "Instalasi Gizi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOMETER EAR",
+    "SANI": "ONEHEALTH",
+    "SN703A-D": "YHT101",
+    "SN SANM094-19-037": "SN:XC221103100848",
+    "AKD 20903210130": "AKL 20901220254",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOMETER EAR",
+    "SANI": "ONEHEALTH",
+    "SN703A-D": "YHT101",
+    "SN SANM094-19-037": "SN XC221103100046",
+    "AKD 20903210130": "AKL 20901220254",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "THERMOMETER EAR",
+    "SANI": "ONEHEALTH",
+    "SN703A-D": "YHT101",
+    "SN SANM094-19-037": "SN XC221103100845",
+    "AKD 20903210130": "AKL 20901220254",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Bayi",
+    "SANI": "SECA",
+    "SN703A-D": "SECA 334",
+    "SN SANM094-19-037": "SN 10000000262574",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Bayi",
+    "SANI": "TANITA",
+    "SN703A-D": "B0585",
+    "SN SANM094-19-037": "SN 8200316085",
+    "AKD 20903210130": "AKL 10901510539",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Bayi",
+    "SANI": "SECA",
+    "SN703A-D": "seca 334",
+    "SN SANM094-19-037": "SN 10000000262575",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Poli Anak",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Bayi",
+    "SANI": "TANITA",
+    "SN703A-D": "B0585",
+    "SN SANM094-19-037": "SN 8200316086",
+    "AKD 20903210130": "AKL 10901510539",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Bayi",
+    "SANI": "ONEMED",
+    "SN703A-D": "OD231B",
+    "SN SANM094-19-037": "SN 032400584",
+    "AKD 20903210130": "AKL 10901127801",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Dewasa",
+    "SANI": "SECA",
+    "SN703A-D": "SECA 755",
+    "SN SANM094-19-037": "SN 10000000273777",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Dewasa",
+    "SANI": "SECA",
+    "SN703A-D": "SECA 755",
+    "SN SANM094-19-037": "SN 10000000273778",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Dewasa",
+    "SANI": "SECA",
+    "SN703A-D": "SECA 755",
+    "SN SANM094-19-037": "SN 10000000273779",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Dewasa",
+    "SANI": "SECA",
+    "SN703A-D": "SECA 755",
+    "SN SANM094-19-037": "SN 10000000273776",
+    "AKD 20903210130": "-",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Dewasa",
+    "SANI": "SECA",
+    "SN703A-D": "SECA 755",
+    "SN SANM094-19-037": "SN 10000000273780",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Umum",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Dewasa",
+    "SANI": "TANITA",
+    "SN703A-D": "DC-430MA",
+    "SN SANM094-19-037": "SN 24030025",
+    "AKD 20903210130": "AKL 20502613009",
+    "Instalasi ICU HCU": "Instalasi Gizi",
+    "Instalasi ICU/HCU": "Instalasi Gizi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Dewasa",
+    "SANI": "GEA",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN 202311255",
+    "AKD 20903210130": "AKL 10901911296",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Timbangan Obat",
+    "SANI": "LOKAL",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "SN 4278",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Farmasi",
+    "Instalasi ICU/HCU": "Instalasi Farmasi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Treadmill",
+    "SANI": "BTL",
+    "SN703A-D": "TREADMILL",
+    "SN SANM094-19-037": "SN 442A23",
+    "AKD 20903210130": "AKL 20502510770",
+    "Instalasi ICU HCU": "Poli Jantung",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Tympanometri",
+    "SANI": "MAICO",
+    "SN703A-D": "MA911",
+    "SN SANM094-19-037": "SN 8572692",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "UAP STERILISATOR",
+    "SANI": "UV PLUS",
+    "SN703A-D": "UVP801C 3L",
+    "SN SANM094-19-037": "SN 0222100007C00010",
+    "AKD 20903210130": "AKL 20903025420",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ultrasonic Cleaner",
+    "SANI": "SHINVA",
+    "SN703A-D": "QX-300-F",
+    "SN SANM094-19-037": "SN 2268121",
+    "AKD 20903210130": "AKD 20903521310",
+    "Instalasi ICU HCU": "Instalasi CSSD",
+    "Instalasi ICU/HCU": "Instalasi CSSD"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ultrasound therapy",
+    "SANI": "BTL",
+    "SN703A-D": "BTL-4710 PRE",
+    "SN SANM094-19-037": "SN 058P0B027210",
+    "AKD 20903210130": "AKL 21403510771",
+    "Instalasi ICU HCU": "Instalasi Rehabilitasi Medik",
+    "Instalasi ICU/HCU": "Instalasi Rehab Medik"
+  },
+  {
+    "Suction Pump - Low Vacuum": "URINE ANALYZER",
+    "SANI": "MINDRAY",
+    "SN703A-D": "UA-600T",
+    "SN SANM094-19-037": "SN XL-84000644",
+    "AKD 20903210130": "AKL P2006-3012994",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "USG - Echo",
+    "SANI": "GE",
+    "SN703A-D": "VERSANA PREMIER",
+    "SN SANM094-19-037": "SN IDN00015",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Jantung",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "USG - GENERAL",
+    "SANI": "MINDRAY",
+    "SN703A-D": "DP-20",
+    "SN SANM094-19-037": "SN CQ5-95000897",
+    "AKD 20903210130": "AKL 21501817045",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "USG - General",
+    "SANI": "GE",
+    "SN703A-D": "LOGIC P7",
+    "SN SANM094-19-037": "SN LP7351832",
+    "AKD 20903210130": "AKL 21501818525",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "USG - OBGYN",
+    "SANI": "GE",
+    "SN703A-D": "Voluson P6",
+    "SN SANM094-19-037": "SN VP6801521",
+    "AKD 20903210130": "AKL 21501815462",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "USG - OBGYN",
+    "SANI": "Mindray",
+    "SN703A-D": "DC70",
+    "SN SANM094-19-037": "SN CJ1-18002501",
+    "AKD 20903210130": "AKL 21501915364",
+    "Instalasi ICU HCU": "Poli Obgyn",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Vein Finder",
+    "SANI": "PRIVO",
+    "SN703A-D": "PRIMA VEIN",
+    "SN SANM094-19-037": "SN OEM 1832439000301",
+    "AKD 20903210130": "AKD 10903322460",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Vein Finder",
+    "SANI": "PRIVO",
+    "SN703A-D": "PRIMA VEIN",
+    "SN SANM094-19-037": "SN OEM 2252439000712",
+    "AKD 20903210130": "AKD 10903322460",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Vein Finder",
+    "SANI": "PRIVO",
+    "SN703A-D": "PRIMA VEIN",
+    "SN SANM094-19-037": "SN OEM 2252439000812",
+    "AKD 20903210130": "AKD 10903322460",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "VEIN FINDER",
+    "SANI": "MEDCAPTAIN",
+    "SN703A-D": "NAVI-30",
+    "SN SANM094-19-037": "SN 6202408000055",
+    "AKD 20903210130": "AKL",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "VEIN FINDER",
+    "SANI": "MEDCAPTAIN",
+    "SN703A-D": "NAVI-30",
+    "SN SANM094-19-037": "SN 6202408000054",
+    "AKD 20903210130": "AKL",
+    "Instalasi ICU HCU": "Instalasi Laboratorium",
+    "Instalasi ICU/HCU": "Instalasi Laboratorium dan Bank Darah"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Adult / Pediatrik",
+    "SANI": "VYAIRE MEDICAL",
+    "SN703A-D": "IX 5",
+    "SN SANM094-19-037": "SN IX5-2020-07-14063",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Adult / Pediatrik",
+    "SANI": "VYAIRE MEDICAL",
+    "SN703A-D": "IX 5",
+    "SN SANM094-19-037": "SN IX5-2020-07-14065",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Adult / Pediatrik",
+    "SANI": "PHILIPS",
+    "SN703A-D": "Trilogi EV300",
+    "SN SANM094-19-037": "SN H3161264163EA",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Adult / Pediatrik",
+    "SANI": "PHILIPS",
+    "SN703A-D": "Trilogi EV300",
+    "SN SANM094-19-037": "SN H31612693F080",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Adult / Pediatrik",
+    "SANI": "PHILIPS",
+    "SN703A-D": "Trilogi EV300",
+    "SN SANM094-19-037": "SN H3161264525CE",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Bayi",
+    "SANI": "eVent",
+    "SN703A-D": "Inspiration 7i",
+    "SN SANM094-19-037": "SN 20217i45706",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Transport Adult / Pediatrik",
+    "SANI": "CAREFUSION",
+    "SN703A-D": "LTV 1200",
+    "SN SANM094-19-037": "SN E91113",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Transport Adult / Pediatrik",
+    "SANI": "CAREFUSION",
+    "SN703A-D": "LTV 1200",
+    "SN SANM094-19-037": "SN E91030",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Ventilator Transport Adult / Pediatrik",
+    "SANI": "ALLIED",
+    "SN703A-D": "EPV200",
+    "SN SANM094-19-037": "SN 202005060009",
+    "AKD 20903210130": "AKL 20403514757",
+    "Instalasi ICU HCU": "Ambulance Hiace",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "Video Laryngoskop Adult",
+    "SANI": "VIMAC",
+    "SN703A-D": "VM1102R",
+    "SN SANM094-19-037": "SN VM1112CEAH00025",
+    "AKD 20903210130": "AKL 10403024709",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "Video Laryngoskop Pediatric",
+    "SANI": "VIMAC",
+    "SN703A-D": "VM1101R",
+    "SN SANM094-19-037": "SN VM1111CEAH00001",
+    "AKD 20903210130": "AKL 10403024709",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "VITAL SIGN MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "SURESIGN VS4",
+    "SN SANM094-19-037": "SN US42761893",
+    "AKD 20903210130": "AKL 20501310582",
+    "Instalasi ICU HCU": "Instalasi Kamar Bersalin",
+    "Instalasi ICU/HCU": "Instalasi Kamar Bersalin (VK)"
+  },
+  {
+    "Suction Pump - Low Vacuum": "VITAL SIGN MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "SURESIGN VS4",
+    "SN SANM094-19-037": "SN US42761895",
+    "AKD 20903210130": "AKL 20501310582",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "VITAL SIGN MONITOR",
+    "SANI": "PHILIPS",
+    "SN703A-D": "SURESIGN VS4",
+    "SN SANM094-19-037": "SN US42762114",
+    "AKD 20903210130": "AKL 20501310582",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Dental Unit",
+    "SANI": "TRIDENT",
+    "SN703A-D": "RIX-70 WITH I-VIEW",
+    "SN SANM094-19-037": "SN ID241774",
+    "AKD 20903210130": "AKL 20601220025",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "KARIXA",
+    "SN703A-D": "KA27-02A",
+    "SN SANM094-19-037": "SN 20101150302010",
+    "AKD 20903210130": "AKD 11501700162",
+    "Instalasi ICU HCU": "Poli Penyakit Dalam",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "KARIXA",
+    "SN703A-D": "KA27-02A",
+    "SN SANM094-19-037": "SN 20101150302006",
+    "AKD 20903210130": "AKD 11501700162",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "KARIXA",
+    "SN703A-D": "KA27-02A",
+    "SN SANM094-19-037": "SN 20101150302005",
+    "AKD 20903210130": "AKD 11501700162",
+    "Instalasi ICU HCU": "Instalasi Gawat Darurat",
+    "Instalasi ICU/HCU": "Instalasi Gawat Darurat"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "POLY JAYA",
+    "SN703A-D": "POLY 069 DOUBLE",
+    "SN SANM094-19-037": "SN 069D40W-22-0012",
+    "AKD 20903210130": "AKD 11501410013",
+    "Instalasi ICU HCU": "Instalasi Rawat Inap",
+    "Instalasi ICU/HCU": "Instalasi Rawat Inap"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "Elitech",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Bedah Sentral",
+    "Instalasi ICU/HCU": "Instalasi Bedah Sentral"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "FYROM",
+    "SN703A-D": "LUMO-FW-01-2B",
+    "SN SANM094-19-037": "SN 070020507230006",
+    "AKD 20903210130": "AKD 11501121967",
+    "Instalasi ICU HCU": "Poli Paru",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "CMI",
+    "SN703A-D": "CMI 8338 D (d)",
+    "SN SANM094-19-037": "SN 8338 D (d)",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi ICU HCU",
+    "Instalasi ICU/HCU": "Instalasi ICU/HCU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "CMI",
+    "SN703A-D": "CMI 8338 D (d)",
+    "SN SANM094-19-037": "SN 8338 D (d)",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi NICU Perinatologi",
+    "Instalasi ICU/HCU": "Instalasi Perinatologi dan NICU"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "POLY JAYA",
+    "SN703A-D": "POLY-069 (DS40W)",
+    "SN SANM094-19-037": "SN 069DS40W-24-0009",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Jantung",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "HASA",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Bedah",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "HASA",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Saraf",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "HASA",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli Anak",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Film Viewer",
+    "SANI": "",
+    "SN703A-D": "",
+    "SN SANM094-19-037": "",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Poli THT",
+    "Instalasi ICU/HCU": "Instalasi Rawat Jalan"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-Ray Mobile",
+    "SANI": "INDORAY",
+    "SN703A-D": "IR100D",
+    "SN SANM094-19-037": "SN 1006239-IR",
+    "AKD 20903210130": "AKD 21501310364",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-Ray Mobile",
+    "SANI": "Remex",
+    "SN703A-D": "KA6",
+    "SN SANM094-19-037": "SN KA6-CX11021",
+    "AKD 20903210130": "",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": ""
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-ray Panoramic",
+    "SANI": "PLANMECA",
+    "SN703A-D": "PROMAX 2D",
+    "SN SANM094-19-037": "SN RPXV2056864",
+    "AKD 20903210130": "AKL 20601124523",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  },
+  {
+    "Suction Pump - Low Vacuum": "X-Ray Stationery",
+    "SANI": "DEL",
+    "SN703A-D": "DFMT",
+    "SN SANM094-19-037": "SN 02949-1019-W",
+    "AKD 20903210130": "AKL 21501410046",
+    "Instalasi ICU HCU": "Instalasi Radiologi",
+    "Instalasi ICU/HCU": "Instalasi Radiologi"
+  }
+]
