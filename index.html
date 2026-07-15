@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK Cloudless - Sistem Management Alat Kesehatan v24.2</title>
+    <title>SiMAK Cloudless - Sistem Management Alat Kesehatan v24.3</title>
     
     <link rel="icon" type="image/png" href="logo.png">
     
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="p-4 border-t border-slate-800 bg-slate-950/40 text-center text-[10px] text-slate-500 font-mono">
-                    <i class="fa-solid fa-circle-nodes text-emerald-400 mr-1"></i> GitHub Ecosystem v24.2
+                    <i class="fa-solid fa-circle-nodes text-emerald-400 mr-1"></i> GitHub Ecosystem v24.3
                 </div>
             </div>
         </div>
@@ -158,7 +158,9 @@
                                         <th class="p-3 text-center">Rekam Jejak & Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table-alat-body" class="divide-y text-gray-700 bg-white/70"></tbody>
+                                <tbody id="table-alat-body" class="divide-y text-gray-700 bg-white/70">
+                                    <tr><td colspan="7" class="p-4 text-center text-gray-400 italic">Memuat database aset alkes...</td></tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -387,7 +389,7 @@
     </div>
 
     <script>
-        // 🚨 CONFIG GITHUB PAGES: WAJIB GANTI USERNAME DENGAN USERNAME ASLI ANDA 🚨
+        // 🚨 CONFIG GITHUB PAGES: GANTI AKUN DI SINI SESUAI USERNAME REPO ANDA 🚨
         const GITHUB_USERNAME = "ftth11"; 
         const GITHUB_REPO = "SiMAK"; 
         const JSON_URL = `https://raw.githubusercontent.com/${ftth11}/${SiMAK}/main/database.json`;
@@ -406,34 +408,28 @@
         let opsFisik = ["Main Unit & Casing Bersih", "Kabel Power Utuh & Kokoh", "Roda & Kunci Pengaman Lancar"];
         let opsFungsi = ["Sistem Control & Tombol Normal", "Layar Display & Alarm Berfungsi", "Kondisi Internal Battery Prima"];
 
+        // 🚨 MUAT DATABASE DENGAN PROTEKSI ISOLASI TOTAL (ANTI FREEZE)
         async function muatDatabaseDariGitHub() {
             const dot = document.getElementById('status-dot');
             const text = document.getElementById('status-text');
             try {
                 const response = await fetch(JSON_URL + '?nocache=' + new Date().getTime());
-                if (!response.ok) throw new Error("Gagal load file JSON");
-                const resData = await response.json();
+                if (!response.ok) throw new Error("File JSON tidak ditemukan/salah URL");
                 
+                const resData = await response.json();
                 let rawAlat = resData.dataAlat || [];
                 
-                // 🚨 FAULT-TOLERANCE ENGINE: Normalisasi pemetaan properti database yang terbalik
+                // Normalisasi pemetaan properti database alkes secara aman
                 dataAlat = rawAlat.map(a => {
-                    let namaFix = a.nama || '-';
-                    let merkFix = a.kode || '-';
-                    let tipeFix = a.merk || '-';
-                    let seriFix = a.tipe || '-';
-                    let edarFix = a.seri || '-';
-                    let lokasiFix = (a.edar && a.edar !== 'Baik') ? a.edar : (a.lokasi || 'Instalasi');
-                    
                     return {
                         id: a.id || "ALK-" + Math.floor(Math.random() * 100000),
-                        kode: "ALK-" + Math.floor(1000 + Math.random() * 9000),
-                        nama: namaFix,
-                        merk: merkFix,
-                        tipe: tipeFix,
-                        seri: seriFix,
-                        edar: edarFix,
-                        lokasi: lokasiFix,
+                        kode: a.kode || "ALK-" + Math.floor(1000 + Math.random() * 9000),
+                        nama: a.nama || '-',
+                        merk: a.merk || '-',
+                        tipe: a.tipe || '-',
+                        seri: a.seri || '-',
+                        edar: a.edar || '-',
+                        lokasi: (a.edar && a.edar !== 'Baik') ? a.edar : (a.lokasi || 'Instalasi'),
                         status: a.status || "Siap Digunakan"
                     };
                 });
@@ -445,12 +441,16 @@
 
                 dot.className = "w-2.5 h-2.5 bg-green-500 rounded-full";
                 text.innerText = "GitHub DB Terkoneksi";
-                renderAll();
             } catch (err) {
-                dot.className = "w-2.5 h-2.5 bg-yellow-500 rounded-full animate-bounce";
-                text.innerText = "Mode Offline (Local)";
+                console.error(err);
+                dot.className = "w-2.5 h-2.5 bg-red-500 rounded-full animate-bounce";
+                text.innerText = "Koneksi Gagal (Safe Mode)";
+                
+                // Ambil data lokal jika ada cadangan di browser
                 dataAlat = JSON.parse(localStorage.getItem('simak_local_alat')) || [];
                 dataKalibrasi = JSON.parse(localStorage.getItem('simak_local_kalibrasi')) || [];
+            } finally {
+                // Apapun yang terjadi (sukses/gagal), jalankan render agar tombol-tombol AKTIF & BISA DIKLIK!
                 renderAll();
             }
         }
@@ -468,7 +468,7 @@
             localStorage.setItem('simak_local_alat', JSON.stringify(dataAlat));
             localStorage.setItem('simak_local_kalibrasi', JSON.stringify(dataKalibrasi));
             
-            alert("Perubahan Berhasil!\n\nFile database.json terupdate otomatis diunduh ke laptop. Silakan upload/replace file tersebut ke GitHub agar data di HP sinkron.");
+            alert("Perubahan Berhasil Tersimpan Lokal!\n\nFile database.json baru otomatis terunduh. Ganti file lama di GitHub Anda agar sinkron ke device lain.");
         }
 
         function toggleSidebarMenu(show) {
@@ -724,13 +724,18 @@
         function renderAll() {
             updateStats(); populasikanDropdownAlatDiLembarKerja();
             const tbody = document.getElementById('table-alat-body');
-            if(dataAlat.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-400 italic">Membaca file database...</td></tr>`; return; }
+            if(!tbody) return;
+            
+            if(dataAlat.length === 0) { 
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-amber-500 font-medium italic">Database terhubung namun kosong. Sila isi melalui menu "+ Tambah Manual" di kanan atas.</td></tr>`; 
+                return; 
+            }
             
             let filteredAlat = dataAlat;
             if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
             
             tbody.innerHTML = filteredAlat.map(a => `
-                <tr class="border-b hover:bg-slate-50/80 transition">
+                <tr class="border-b hover:bg-slate-50/80 transition text-slate-700">
                     <td class="p-3 font-bold text-slate-900 text-xs">${a.nama}</td>
                     <td class="p-3 text-xs">${a.merk}</td>
                     <td class="p-3 text-xs">${a.tipe}</td>
@@ -745,24 +750,25 @@
             `).join('');
 
             const tCalBody = document.getElementById('table-kalibrasi-body');
-            if(dataKalibrasi.length === 0) { tCalBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Belum ada sertifikat kalibrasi terupload.</td></tr>`; } 
-            else {
-                tCalBody.innerHTML = dataKalibrasi.map(c => {
-                    const a = dataAlat.find(item => item.id == c.alatId) || { nama: '-', seri: '-' };
-                    return `<tr class="border-b bg-white/40"><td class="p-4"><b>${a.nama}</b><br><span class="text-[10px] text-gray-400 font-mono">SN: ${a.seri}</span></td><td class="p-4 font-mono">${c.tgl}</td><td class="p-4 font-mono text-red-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="p-4"><button onclick="lihatFileLangsung('${c.certPdf}', 'pdf', 'Sertifikat')" class="text-[11px] bg-red-50 text-red-700 px-3 py-1 rounded-lg font-bold"><i class="fa-solid fa-file-pdf mr-1 text-red-500"></i> Lihat PDF</button></td><td class="p-4"><span class="px-2 py-0.5 bg-green-100 text-green-800 font-bold text-[10px] rounded">${c.hasil}</span></td></tr>`;
-                }).join('');
+            if(tCalBody) {
+                if(dataKalibrasi.length === 0) { tCalBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Belum ada sertifikat kalibrasi terupload.</td></tr>`; } 
+                else {
+                    tCalBody.innerHTML = dataKalibrasi.map(c => {
+                        const a = dataAlat.find(item => item.id == c.alatId) || { nama: '-', seri: '-' };
+                        return `<tr class="border-b bg-white/40"><td class="p-4"><b>${a.nama}</b><br><span class="text-[10px] text-gray-400 font-mono">SN: ${a.seri}</span></td><td class="p-4 font-mono">${c.tgl}</td><td class="p-4 font-mono text-red-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="p-4"><button onclick="lihatFileLangsung('${c.certPdf}', 'pdf', 'Sertifikat')" class="text-[11px] bg-red-50 text-red-700 px-3 py-1 rounded-lg font-bold"><i class="fa-solid fa-file-pdf mr-1 text-red-500"></i> Lihat PDF</button></td><td class="p-4"><span class="px-2 py-0.5 bg-green-100 text-green-800 font-bold text-[10px] rounded">${c.hasil}</span></td></tr>`;
+                    }).join('');
+                }
             }
         }
 
         function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
         function updateStats() {
-            document.getElementById('stat-total').innerText = dataAlat.length;
-            document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
-            document.getElementById('stat-broken').innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
-            document.getElementById('stat-logs').innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
+            const t = document.getElementById('stat-total'); if(t) t.innerText = dataAlat.length;
+            const r = document.getElementById('stat-ready'); if(r) r.innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
+            const b = document.getElementById('stat-broken'); if(b) b.innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
+            const l = document.getElementById('stat-logs'); if(l) l.innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
         }
 
-        // FILTER PENCARIAN LIVE
         function filterAlat() {
             const q = document.getElementById('search-alat').value.toLowerCase();
             const trs = document.getElementById('table-alat-body').getElementsByTagName('tr');
@@ -774,7 +780,6 @@
             body.innerHTML = `<iframe src="${base64Data}" class="w-full h-full border rounded font-bold" type="application/pdf"></iframe>`; toggleModal('modal-preview', true);
         }
 
-        // SKRIP TANDA TANGAN ELEKTRONIK
         const signatures = ['sig-teknisi', 'sig-user', 'sig-pj'];
         function initSignatures() {
             signatures.forEach(id => {
