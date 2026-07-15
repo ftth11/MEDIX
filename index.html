@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK Cloudless - UPTD RSUD Pondokgede v24.4</title>
+    <title>SiMAK</title>
     
     <link rel="icon" type="image/png" href="logo.png">
     
@@ -35,6 +35,9 @@
         .sidebar-translate {
             transition: transform 0.3s ease-in-out;
         }
+        canvas {
+            touch-action: none;
+        }
         @media print {
             body * { visibility: hidden; }
             #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible; }
@@ -45,9 +48,8 @@
 </head>
 <body id="main-app-body" class="font-sans text-gray-800 transition-all duration-500">
 
-    <div id="db-status-loader" class="fixed bottom-4 right-4 bg-slate-900/90 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center space-x-2 text-xs font-bold z-50 border border-slate-700">
-        <div class="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse" id="status-dot"></div>
-        <span id="status-text">Menghubungkan GitHub...</span>
+    <div id="db-status-loader" class="fixed bottom-4 right-4 bg-slate-900/80 p-3 rounded-full shadow-2xl flex items-center justify-center z-50 border border-slate-700/60 backdrop-blur-sm">
+        <div class="w-3.5 h-3.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]" id="status-dot"></div>
     </div>
 
     <div class="flex h-screen overflow-hidden bg-slate-950/50 backdrop-blur-[1px] w-full h-full relative">
@@ -88,8 +90,8 @@
                     </nav>
                 </div>
 
-                <div class="p-4 border-t border-slate-800 bg-slate-950/40 text-center text-[10px] text-slate-500 font-mono">
-                    <i class="fa-solid fa-circle-nodes text-emerald-400 mr-1"></i> GitHub Ecosystem v24.4
+                <div class="p-4 border-t border-slate-800 bg-slate-950/50 text-center text-xs text-slate-400 font-mono tracking-widest font-bold">
+                     <i class="fa-solid fa-code-branch text-blue-500 mr-1.5 animate-pulse"></i>ftth11
                 </div>
             </div>
         </div>
@@ -159,7 +161,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table-alat-body" class="divide-y text-gray-700 bg-white/70">
-                                    <tr><td colspan="7" class="p-4 text-center text-gray-400 italic">Memuat database aset dari server GitHub...</td></tr>
+                                    <tr><td colspan="7" class="p-4 text-center text-gray-400 italic">Memuat data internal repositori...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -287,21 +289,30 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-4 pt-4 text-xs">
-                        <div class="text-center space-y-1">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 text-xs">
+                        <div class="text-center space-y-1.5">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
-                            <div class="border-2 border-dashed border-gray-300 rounded bg-gray-50 h-20 relative"><canvas id="sig-teknisi" class="w-full h-full"></canvas></div>
-                            <p class="font-bold text-gray-800 underline">Baits Abdul Pattah</p>
+                            <div class="border-2 border-dashed border-slate-300 rounded bg-slate-50 h-32 relative shadow-inner overflow-hidden">
+                                <canvas id="sig-teknisi" class="w-full h-full absolute inset-0 z-10"></canvas>
+                            </div>
+                            <button type="button" onclick="clearCanvasSignature('sig-teknisi')" class="text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-1 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser mr-1"></i>Hapus Tanda Tangan</button>
+                            <p class="font-bold text-gray-800 underline mt-1">Baits Abdul Pattah</p>
                         </div>
-                        <div class="text-center space-y-1">
+                        <div class="text-center space-y-1.5">
                             <p class="font-semibold text-gray-500">User Ruangan / Saksi</p>
-                            <div class="border-2 border-dashed border-gray-300 rounded bg-gray-50 h-20 relative"><canvas id="sig-user" class="w-full h-full"></canvas></div>
-                            <p id="dlk-nama-saksi" class="font-bold text-gray-800 underline">Kepala Unit Ruangan</p>
+                            <div class="border-2 border-dashed border-slate-300 rounded bg-slate-50 h-32 relative shadow-inner overflow-hidden">
+                                <canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas>
+                            </div>
+                            <button type="button" onclick="clearCanvasSignature('sig-user')" class="text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-1 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser mr-1"></i>Hapus Tanda Tangan</button>
+                            <p id="dlk-nama-saksi" class="font-bold text-gray-800 underline mt-1">Kepala Unit Ruangan</p>
                         </div>
-                        <div class="text-center space-y-1">
+                        <div class="text-center space-y-1.5">
                             <p class="font-semibold text-gray-500">PJ IPSRS Alkes</p>
-                            <div class="border-2 border-dashed border-gray-300 rounded bg-gray-50 h-20 relative"><canvas id="sig-pj" class="w-full h-full"></canvas></div>
-                            <p class="font-bold text-gray-800 underline">Arrief Nurcahyo, S.Tr.Em.</p>
+                            <div class="border-2 border-dashed border-slate-300 rounded bg-slate-50 h-32 relative shadow-inner overflow-hidden">
+                                <canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas>
+                            </div>
+                            <button type="button" onclick="clearCanvasSignature('sig-pj')" class="text-[10px] bg-red-100 text-red-700 hover:bg-red-200 px-2 py-1 rounded font-bold shadow-sm border border-red-300"><i class="fa-solid fa-eraser mr-1"></i>Hapus Tanda Tangan</button>
+                            <p class="font-bold text-gray-800 underline mt-1">Arrief Nurcahyo, S.Tr.Em.</p>
                         </div>
                     </div>
 
@@ -389,10 +400,7 @@
     </div>
 
     <script>
-        // 🚨 CONFIG REPOSITORI FIRE-PROOF (CASE-SENSITIVE FIXED) 🚨
-        const GITHUB_USERNAME = "ftth11"; 
-        const GITHUB_REPO = "SiMAK"; 
-        const JSON_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/database.json`;
+        const LOCAL_JSON_PATH = "./database.json";
 
         let dataAlat = [];
         let dataKalibrasi = [];
@@ -410,15 +418,13 @@
 
         async function muatDatabaseDariGitHub() {
             const dot = document.getElementById('status-dot');
-            const text = document.getElementById('status-text');
             try {
-                const response = await fetch(JSON_URL + '?nocache=' + new Date().getTime());
-                if (!response.ok) throw new Error("File database.json tidak ditemukan. Periksa nama Repositori/File.");
+                const response = await fetch(LOCAL_JSON_PATH + '?nocache=' + new Date().getTime());
+                if (!response.ok) throw new Error("Gagal load database lokal");
                 
                 const resData = await response.json();
                 let rawAlat = resData.dataAlat || [];
                 
-                // 🚨 SINKRONISASI & AUTO-FIX POSISI KOLOM EXCEL KORRUPT 🚨
                 dataAlat = rawAlat.map(a => {
                     let namaFix = a.nama || '-';
                     let merkFix = a.merk || '-';
@@ -427,10 +433,9 @@
                     let edarFix = a.edar || '-';
                     let lokasiFix = a.lokasi || 'Instalasi';
                     
-                    // Deteksi jika converter melempar kolom ruangan ke dalam properti 'edar'
-                    if (edarFix && edarFix.toLowerCase().includes("instalasi") || edarFix.toLowerCase().includes("poli") || edarFix.toLowerCase().includes("ambulance")) {
+                    if (edarFix && (edarFix.toLowerCase().includes("instalasi") || edarFix.toLowerCase().includes("poli") || edarFix.toLowerCase().includes("ambulance") || edarFix.toLowerCase().includes("gawat"))) {
                         lokasiFix = edarFix;
-                        edarFix = (seriFix && seriFix.startsWith("AK")) ? seriFix : "-";
+                        edarFix = (seriFix && (seriFix.startsWith("AKD") || seriFix.startsWith("AKL"))) ? seriFix : "-";
                         seriFix = (tipeFix && tipeFix.startsWith("SN")) ? tipeFix : "-";
                         tipeFix = merkFix;
                         merkFix = a.kode || "-";
@@ -454,12 +459,12 @@
                 dataPM = resData.dataPM || [];
                 dataInspeksi = resData.dataInspeksi || [];
 
-                dot.className = "w-2.5 h-2.5 bg-green-500 rounded-full";
-                text.innerText = "GitHub Terkoneksi (SiMAK)";
+                // 🟢 SUKSES: Logo menjadi Hijau Bersinar Estetik
+                dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.7)]";
             } catch (err) {
                 console.error(err);
-                dot.className = "w-2.5 h-2.5 bg-red-500 rounded-full animate-bounce";
-                text.innerText = "Koneksi Terputus (Safe Mode)";
+                // 🔴 GAGAL / OFFLINE: Logo menjadi Merah Berkedip
+                dot.className = "w-3.5 h-3.5 bg-rose-600 rounded-full animate-ping shadow-[0_0_12px_rgba(225,29,72,0.7)]";
                 
                 dataAlat = JSON.parse(localStorage.getItem('simak_local_alat')) || [];
                 dataKalibrasi = JSON.parse(localStorage.getItem('simak_local_kalibrasi')) || [];
@@ -481,7 +486,7 @@
             localStorage.setItem('simak_local_alat', JSON.stringify(dataAlat));
             localStorage.setItem('simak_local_kalibrasi', JSON.stringify(dataKalibrasi));
             
-            alert("Tindakan Berhasil!\n\nFile database.json baru otomatis diunduh ke laptop Anda. Silakan upload/replace file ini di repositori GitHub Anda agar HP tersinkronisasi.");
+            alert("Perubahan Berhasil Tersimpan!\n\nFile database.json terupdate otomatis diunduh. Upload ke GitHub agar device lain sinkron.");
         }
 
         function toggleSidebarMenu(show) {
@@ -600,7 +605,8 @@
             document.getElementById('dlk-select-alat').value = ""; sinkronisasiDataAlatKeWorksheet("");
             document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; renderOpsiChecklistVisual();
             const areaLK = document.getElementById('area-lembar-kerja-resmi');
-            areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); initSignatures();
+            areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(initSignatures, 300);
             if(window.innerWidth < 768) toggleSidebarMenu(false);
         }
 
@@ -617,7 +623,8 @@
             document.getElementById('dlk-select-alat').value = record.alatId; sinkronisasiDataAlatKeWorksheet(record.alatId);
             document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc || record.fungsi || ""; renderOpsiChecklistVisual();
             const areaLK = document.getElementById('area-lembar-kerja-resmi');
-            areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); initSignatures();
+            areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(initSignatures, 300);
         }
 
         function simpanPenuhIsianWorksheetDinamis() {
@@ -742,7 +749,7 @@
             if(!tbody) return;
             
             if(dataAlat.length === 0) { 
-                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-400 font-medium italic">Database tidak terbaca. Periksa koneksi internet atau nama akun GitHub Anda.</td></tr>`; 
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-400 font-medium italic">Menghubungkan berkas data repositori...</td></tr>`; 
                 return; 
             }
             
@@ -755,7 +762,7 @@
                     <td class="p-3 text-xs">${a.merk}</td>
                     <td class="p-3 text-xs">${a.tipe}</td>
                     <td class="p-3 font-mono font-bold text-xs">${a.seri}</td>
-                    <td class="p-3 text-xs"><span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-semibold">${a.lokasi}</span></td>
+                    <td class="p-3 text-xs"><span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-semibold text-[11px] border border-slate-200">${a.lokasi}</span></td>
                     <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status==='Siap Digunakan'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${a.status}</span></td>
                     <td class="p-3 text-center space-x-1">
                         <button onclick="pemicuEditAlatLangsung('${a.id}')" class="bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded font-bold text-[10px]"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
@@ -777,6 +784,7 @@
         }
 
         function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
+        
         function updateStats() {
             const t = document.getElementById('stat-total'); if(t) t.innerText = dataAlat.length;
             const r = document.getElementById('stat-ready'); if(r) r.innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
@@ -795,18 +803,60 @@
             body.innerHTML = `<iframe src="${base64Data}" class="w-full h-full border rounded font-bold" type="application/pdf"></iframe>`; toggleModal('modal-preview', true);
         }
 
+        function clearCanvasSignature(id) {
+            const canvas = document.getElementById(id);
+            if(canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+            }
+        }
+
         const signatures = ['sig-teknisi', 'sig-user', 'sig-pj'];
         function initSignatures() {
             signatures.forEach(id => {
-                const canvas = document.getElementById(id); if(!canvas) return; canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
-                const ctx = canvas.getContext('2d'); let act = false; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = '#0f172a';
-                function start(e) { act = true; draw(e); } function end() { act = false; ctx.beginPath(); }
+                const canvas = document.getElementById(id); 
+                if(!canvas) return; 
+                
+                canvas.width = canvas.offsetWidth; 
+                canvas.height = canvas.offsetHeight;
+                
+                const ctx = canvas.getContext('2d'); 
+                let act = false; 
+                ctx.lineWidth = 2.5; 
+                ctx.lineCap = 'round'; 
+                ctx.strokeStyle = '#0f172a';
+                
+                function start(e) { 
+                    act = true; 
+                    draw(e); 
+                } 
+                function end() { 
+                    act = false; 
+                    ctx.beginPath(); 
+                } 
                 function draw(e) {
-                    if(!act) return; const r = canvas.getBoundingClientRect();
-                    const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY;
-                    ctx.lineTo(cx - r.left, cy - r.top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx - r.left, cy - r.top);
+                    if(!act) return; 
+                    if(e.cancelable) e.preventDefault();
+                    
+                    const r = canvas.getBoundingClientRect();
+                    const cx = e.touches ? e.touches[0].clientX : e.clientX; 
+                    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                    
+                    ctx.lineTo(cx - r.left, cy - r.top); 
+                    ctx.stroke(); 
+                    ctx.beginPath(); 
+                    ctx.moveTo(cx - r.left, cy - r.top);
                 }
-                canvas.addEventListener('mousedown', start); canvas.addEventListener('mouseup', end); canvas.addEventListener('mousemove', draw);
+                
+                canvas.addEventListener('mousedown', start); 
+                canvas.addEventListener('mouseup', end); 
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseleave', end);
+                
+                canvas.addEventListener('touchstart', start, { passive: false }); 
+                canvas.addEventListener('touchend', end, { passive: false }); 
+                canvas.addEventListener('touchmove', draw, { passive: false });
             });
         }
         
