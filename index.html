@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK</title>
+    <title>SiMAK Cloudless - UPTD RSUD Pondokgede v27.14</title>
     
     <link rel="icon" type="image/png" href="logo.png">
     
@@ -818,14 +818,13 @@
             renderOpsiDropdownAwal(); 
             aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi');
             
-            // 🚨 FIX: Pastikan dropdown nama langsung terisi saat membuat lembar kerja baru 🚨
-            populasikanDropdownNamaTanda Tangan();
+            // 🚨 HOTFIX: Spasi dibersihkan agar fungsi terpanggil sempurna 🚨
+            populasikanDropdownNamaTandaTangan();
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
             areaLK.classList.remove('hidden'); 
             areaLK.scrollIntoView({ behavior: 'smooth' });
             
-            // Berikan jeda agar elemen render sempurna di DOM sebelum inisialisasi koordinat tanda tangan
             setTimeout(initSignatures, 400); 
             toggleSidebarMenu(false);
         }
@@ -984,7 +983,6 @@
             signatures.forEach(id => {
                 const canvas = document.getElementById(id); if(!canvas) return; 
                 
-                // 🚨 FIX LOGIC: Ambil dimensi kontainer asli saat ini agar kanvas tidak berukuran 0x0 🚨
                 canvas.width = canvas.parentElement.clientWidth || canvas.offsetWidth || 250; 
                 canvas.height = canvas.parentElement.clientHeight || canvas.offsetHeight || 96;
                 
@@ -998,7 +996,6 @@
                     ctx.lineTo(cx - r.left, cy - r.top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx - r.left, cy - r.top);
                 }
                 
-                // Hapus event listener lama untuk mencegah penumpukan fungsi (stacking)
                 canvas.replaceWith(canvas.cloneNode(true));
                 const newCanvas = document.getElementById(id);
                 const newCtx = newCanvas.getContext('2d');
