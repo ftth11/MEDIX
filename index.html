@@ -533,7 +533,7 @@
             renderTabelPusatDokumen();
         }
 
-        function populasikanDropdownNamaTanda Tangan() {
+        function populasikanDropdownNamaTandaTangan() {
             document.getElementById('dlk-select-nama-teknisi').innerHTML = 
                 `<option value="">-- PILIH TEKNISI --</option>` + 
                 listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('') + 
@@ -648,7 +648,6 @@
 
         function resetFilterStatusAlat() { globalFilterStatus = "all"; renderAll(); }
 
-        // Mencegah reload halaman saat menekan enter pada input di dalam modal
         function submitFormAlatMaster(e) {
             e.preventDefault(); const formId = document.getElementById('form-alat-id').value;
             const payload = {
