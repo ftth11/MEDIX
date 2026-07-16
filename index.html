@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiMAK</title>
     
+    <!-- LOGO PADA ALAMAT URL (FAVICON) -->
     <link rel="icon" type="image/png" href="logo.png">
     
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- SDK Firebase Legacy (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -42,7 +46,6 @@
             touch-action: none;
         }
         
-        /* DESAIN FRAME PREVIEW CETAK RESMI */
         #box-bingkai-foto-cetak {
             display: none;
         }
@@ -53,26 +56,27 @@
             #area-lembar-kerja-resmi { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: black !important; display: block !important; }
             .no-print { display: none !important; }
             
-            /* Menampilkan frame foto rapi saat dicetak */
             #box-bingkai-foto-cetak {
                 display: block !important;
-                border: 2px dashed #000000;
-                border-radius: 8px;
-                padding: 12px;
+                border: 1.5px solid #000000;
+                border-radius: 6px;
+                padding: 8px;
                 text-align: center;
-                background-color: #fafafa !important;
+                background-color: #ffffff !important;
             }
         }
     </style>
 </head>
 <body id="main-app-body" class="font-sans text-gray-800 transition-all duration-500">
 
+    <!-- INDIKATOR STATUS BULATAN MINIMALIS -->
     <div id="db-status-loader" class="fixed bottom-4 right-4 bg-slate-900/80 p-3 rounded-full shadow-2xl flex items-center justify-center z-50 border border-slate-700/60 backdrop-blur-sm">
         <div class="w-3.5 h-3.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]" id="status-dot"></div>
     </div>
 
     <div class="flex h-screen overflow-hidden bg-slate-950/50 backdrop-blur-[1px] w-full h-full relative">
         
+        <!-- SIDEBAR UTAMA -->
         <div id="app-sidebar" class="sidebar-translate fixed md:sticky top-0 left-0 h-full w-64 bg-slate-900/95 text-white flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-800/50 -translate-x-full md:translate-x-0">
             <div class="flex flex-col h-full justify-between overflow-y-auto">
                 <div>
@@ -108,13 +112,13 @@
                         </div>
                     </nav>
                 </div>
-
                 <div class="p-4 border-t border-slate-800 bg-slate-950/50 text-center text-xs text-slate-400 font-mono tracking-widest font-bold">
                      <i class="fa-solid fa-code-branch text-blue-500 mr-1.5 animate-pulse"></i>ftth11
                 </div>
             </div>
         </div>
 
+        <!-- AREA KONTEN UTAMA -->
         <div class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent">
             
             <header class="bg-white/95 backdrop-blur shadow-md px-6 py-5 flex items-center no-print border-b border-slate-200">
@@ -122,17 +126,14 @@
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
                 <div class="flex flex-col">
-                    <h1 class="text-4xl font-extrabold tracking-tighter bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent drop-shadow-sm select-none">
-                        SiMAK
-                    </h1>
-                    <span class="text-xs font-bold text-slate-500 tracking-widest uppercase mt-1 block pl-0.5">
-                        Sistem Management Alat Kesehatan
-                    </span>
+                    <h1 class="text-4xl font-extrabold tracking-tighter bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent drop-shadow-sm select-none">SiMAK</h1>
+                    <span class="text-xs font-bold text-slate-500 tracking-widest uppercase mt-1 block pl-0.5">Sistem Management Alat Kesehatan</span>
                 </div>
             </header>
 
             <main class="p-6 max-w-7xl w-full mx-auto space-y-6 bg-transparent">
 
+                <!-- TAB 1: DASHBOARD STATISTIK -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-5 rounded-xl shadow border flex items-center justify-between cursor-pointer hover:scale-105 transition border-blue-400/30">
@@ -154,6 +155,7 @@
                     </div>
                 </div>
 
+                <!-- TAB 2: MASTER DATA ALAT MEDIS -->
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-md">Master Data Aset RSUD Pondokgede</h2>
@@ -195,6 +197,7 @@
                     </div>
                 </div>
 
+                <!-- TAB 3: PUSAT RIWAYAT & DOKUMEN -->
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center no-print flex-wrap gap-4">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-lg">Pusat Riwayat & Dokumen Aset</h2>
@@ -229,7 +232,8 @@
                     </div>
                 </div>
 
-                <div id="area-lembar-kerja-resmi" class="bg-white p-8 rounded-xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-6 hidden relative">
+                <!-- LEMBAR KERJA DIGITAL RESMI -->
+                <div id="area-lembar-kerja-resmi" class="bg-white p-8 rounded-xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-5 hidden relative">
                     <button onclick="window.print()" type="button" class="no-print absolute top-4 right-4 bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow hover:bg-blue-700 flex items-center space-x-1">
                         <i class="fa-solid fa-print"></i> <span>Cetak Dokumen Resmi</span>
                     </button>
@@ -254,7 +258,7 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-center space-x-12 text-xs font-bold border-y py-2.5 bg-slate-50">
+                    <div class="flex justify-center space-x-12 text-xs font-bold border-y py-2 bg-slate-50">
                         <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Inspection" checked> <span>Inspection</span></label>
                         <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Preventive Maintenance" class="w-4 h-4"> <span>Preventive Maintenance</span></label>
                         <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Corrective Maintenance" class="w-4 h-4"> <span>Corrective Maintenance</span></label>
@@ -282,79 +286,96 @@
                         </div>
                     </div>
 
-                    <div class="border p-4 rounded-lg text-xs bg-white shadow-sm no-print">
-                        <label class="block font-bold text-slate-800 border-b pb-1.5 mb-2"><i class="fa-solid fa-camera text-indigo-600 mr-1.5"></i>Ambil Gambar/Foto Kondisi Alat Lapangan <span class="text-emerald-600 font-bold">(Auto-Compressed)</span></label>
-                        <div class="flex items-center space-x-3 pt-1">
-                            <input type="file" id="dlk-input-foto" accept="image/*" capture="environment" onchange="previewFotoDipilih(this)" class="w-full border p-1 rounded bg-slate-50">
-                            <div id="box-preview-foto" class="w-16 h-16 border rounded bg-slate-100 hidden overflow-hidden flex items-center justify-center shadow-inner"></div>
+                    <!-- 🚨 MODIFIKASI: 2 KOLOM HORIZONTAL (AMBIL FOTO & KONDISI LINGKUNGAN) 🚨 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Kolom Kiri: Ambil Foto (Kotak Kecil Kompak) -->
+                        <div class="border p-3 rounded-lg text-xs bg-white shadow-sm flex flex-col justify-between">
+                            <div>
+                                <label class="block font-bold text-slate-800 border-b pb-1 mb-2 no-print"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Ambil Foto Alat Lapangan</label>
+                                <label class="block font-bold text-slate-800 border-b pb-1 mb-2 hidden print-block">Lampiran Foto Lapangan</label>
+                                <div class="no-print mb-2">
+                                    <input type="file" id="dlk-input-foto" accept="image/*" capture="environment" onchange="previewFotoDipilih(this)" class="w-full border p-1 rounded bg-slate-50 text-[11px]">
+                                </div>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <div id="box-preview-foto" class="w-full h-32 border rounded bg-slate-100 flex items-center justify-center overflow-hidden shadow-inner font-mono text-gray-400 italic text-[10px]">[ Belum Ada Foto ]</div>
+                            </div>
+                        </div>
+
+                        <!-- Kolom Kanan: Kondisi Lingkungan -->
+                        <div class="border p-3 rounded-lg text-xs bg-white shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold border-b pb-1 mb-3 text-slate-800 flex items-center"><i class="fa-solid fa-temperature-three-quarters mr-2 text-orange-500"></i>1. Kondisi Lingkungan Kerja</h4>
+                                <div class="space-y-3 pt-2">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-24 text-gray-600 font-medium">Suhu Ruangan:</span>
+                                        <input type="number" id="dlk-env-suhu" class="w-16 border p-1 rounded text-center font-bold bg-slate-50" value="23">
+                                        <span class="font-semibold">°C</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-24 text-gray-600 font-medium">Kelembaban:</span>
+                                        <input type="number" id="dlk-env-lembab" class="w-16 border p-1 rounded text-center font-bold bg-slate-50" value="55">
+                                        <span class="font-semibold">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-slate-400 italic font-mono pt-4 border-t mt-2">
+                                * Diukur langsung di instalasi unit ruangan alkes.
+                            </div>
                         </div>
                     </div>
-                    
+
+                    <!-- BINGKAI FOTO ELEGAN SAAT PRINTER / CETAK PDF AKAN SEJAJAR -->
                     <div id="box-bingkai-foto-cetak">
-                        <p class="text-xs font-bold uppercase tracking-wider mb-2 text-left text-black border-b pb-1">Lampiran Dokumen Foto Fisik Aset Lapangan:</p>
-                        <div id="wadah-foto-cetakan-print" class="w-full h-72 flex items-center justify-center overflow-hidden bg-white border">
-                            <span class="text-gray-400 italic text-xs">[ Tidak Ada Lampiran Foto Fisik Lapangan ]</span>
-                        </div>
+                        <div id="wadah-foto-cetakan-print" class="w-full h-48 flex items-center justify-center overflow-hidden bg-white border"></div>
                     </div>
 
-                    <div class="border p-4 rounded-lg text-xs space-y-2 bg-white">
-                        <h4 class="font-bold border-b pb-1 text-slate-800 flex items-center"><i class="fa-solid fa-temperature-three-quarters mr-2 text-orange-500"></i>1. Kondisi Lingkungan</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-                            <div class="flex items-center space-x-2"><span>Suhu Ruangan:</span><input type="number" id="dlk-env-suhu" class="w-16 border p-1 rounded text-center font-bold" value="23"><span>°C</span></div>
-                            <div class="flex items-center space-x-2"><span>Kelembaban:</span><input type="number" id="dlk-env-lembab" class="w-16 border p-1 rounded text-center font-bold" value="55"><span>%</span></div>
-                        </div>
-                    </div>
-
+                    <!-- 🚨 MODIFIKASI: UTILITY INPUT DROPDOWN PARAMETER DINAMIS (NO-PRINT) 🚨 -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs no-print">
-                        <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Alat Kerja Digunakan</h4>
-                                <div class="flex space-x-1 mb-2">
-                                    <select id="drop-alatkerja" class="w-full border p-1.5 bg-white rounded outline-none text-[11px]"></select>
-                                    <button type="button" onclick="tambahOpsiChecklistDinamis('alatkerja')" class="bg-slate-700 text-white px-2 rounded font-bold shadow-sm">+</button>
-                                </div>
+                        <div class="border p-3 rounded-lg bg-slate-50/50 space-y-2">
+                            <h4 class="font-bold border-b pb-1 text-slate-800">Pilih Alat Kerja</h4>
+                            <div class="flex space-x-1">
+                                <select id="drop-alatkerja" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
+                                <button type="button" onclick="tambahPoinAkumulatif('alatkerja')" class="bg-blue-600 text-white px-2.5 rounded font-bold shadow-sm">+</button>
                             </div>
                         </div>
-                        <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Pemeriksaan Fisik & Kebersihan</h4>
-                                <div class="flex space-x-1 mb-2">
-                                    <select id="drop-fisik" class="w-full border p-1.5 bg-white rounded outline-none text-[11px]"></select>
-                                    <button type="button" onclick="tambahOpsiChecklistDinamis('fisik')" class="bg-slate-700 text-white px-2 rounded font-bold shadow-sm">+</button>
-                                </div>
+                        <div class="border p-3 rounded-lg bg-slate-50/50 space-y-2">
+                            <h4 class="font-bold border-b pb-1 text-slate-800">Pemeriksaan Fisik</h4>
+                            <div class="flex space-x-1">
+                                <select id="drop-fisik" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
+                                <button type="button" onclick="tambahPoinAkumulatif('fisik')" class="bg-blue-600 text-white px-2.5 rounded font-bold shadow-sm">+</button>
                             </div>
                         </div>
-                        <div class="border p-3 rounded-lg bg-slate-50/50 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold border-b pb-1 mb-2 text-slate-800">Pemeriksaan Fungsi & Kelengkapan</h4>
-                                <div class="flex space-x-1 mb-2">
-                                    <select id="drop-fungsi" class="w-full border p-1.5 bg-white rounded outline-none text-[11px]"></select>
-                                    <button type="button" onclick="tambahOpsiChecklistDinamis('fungsi')" class="bg-slate-700 text-white px-2 rounded font-bold shadow-sm">+</button>
-                                </div>
+                        <div class="border p-3 rounded-lg bg-slate-50/50 space-y-2">
+                            <h4 class="font-bold border-b pb-1 text-slate-800">Pemeriksaan Fungsi</h4>
+                            <div class="flex space-x-1">
+                                <select id="drop-fungsi" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
+                                <button type="button" onclick="tambahPoinAkumulatif('fungsi')" class="bg-blue-600 text-white px-2.5 rounded font-bold shadow-sm">+</button>
                             </div>
                         </div>
                     </div>
 
+                    <!-- 🚨 MUNCUL PERSIS DI BAWAHNYA MENJADI SATU KOTAK TABEL TERPADU KUMULATIF 🚨 -->
                     <div class="border rounded-lg overflow-hidden bg-white shadow-sm">
                         <table class="w-full text-left text-xs border-collapse">
                             <thead class="bg-slate-100 font-bold text-gray-700 border-b">
                                 <tr>
-                                    <th class="p-2.5 w-1/3 border-r">Kategori Parameter Kerja</th>
-                                    <th class="p-2.5">Detail Parameter Lapangan Medis</th>
+                                    <th class="p-2 w-1/3 border-r">Kategori Spesifikasi Pemeliharaan</th>
+                                    <th class="p-2">Daftar Hasil Periksa Komponen Lapangan (Kumulatif)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y text-gray-800">
+                            <tbody class="divide-y text-gray-800 font-medium">
                                 <tr>
-                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r">Alat Kerja Digunakan</td>
-                                    <td class="p-2.5 font-mono" id="cell-print-alatkerja">-</td>
+                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r vertical-align-top">Alat Kerja Digunakan</td>
+                                    <td class="p-2 text-slate-900"><div id="box-list-alatkerja" class="space-y-1"></div></td>
                                 </tr>
                                 <tr>
-                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r">Pemeriksaan Fisik & Kebersihan</td>
-                                    <td class="p-2.5" id="cell-print-fisik">-</td>
+                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r vertical-align-top">Pemeriksaan Fisik & Kebersihan</td>
+                                    <td class="p-2 text-slate-900"><div id="box-list-fisik" class="space-y-1"></div></td>
                                 </tr>
                                 <tr>
-                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r">Pemeriksaan Fungsi & Kelengkapan</td>
-                                    <td class="p-2.5" id="cell-print-fungsi">-</td>
+                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r vertical-align-top">Pemeriksaan Fungsi & Kelengkapan</td>
+                                    <td class="p-2 text-slate-900"><div id="box-list-fungsi" class="space-y-1"></div></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -362,7 +383,7 @@
 
                     <div class="border p-4 rounded-lg text-xs space-y-2 bg-white">
                         <h4 class="font-bold border-b pb-1 text-slate-800"><i class="fa-solid fa-paste mr-2 text-blue-600"></i>2. Deskripsi Pekerjaan Pemeliharaan</h4>
-                        <textarea id="dlk-txt-deskripsi-tunggal" rows="8" class="w-full border p-3 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white focus:border-blue-600 shadow-inner" placeholder="Tuliskan catatan detail lapangan medis di sini..."></textarea>
+                        <textarea id="dlk-txt-deskripsi-tunggal" rows="6" class="w-full border p-3 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white focus:border-blue-600 shadow-inner" placeholder="Tuliskan catatan detail lapangan medis di sini..."></textarea>
                     </div>
 
                     <div class="border p-4 rounded-lg text-xs bg-slate-50 shadow-sm">
@@ -374,6 +395,7 @@
                         </div>
                     </div>
 
+                    <!-- AREA TANDA TANGAN DENGAN MENU PANAH DROPDOWN NAMA -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 text-xs">
                         <div class="text-center space-y-1.5">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
@@ -415,6 +437,7 @@
                     </div>
                 </div>
 
+                <!-- POPUPS MODAL PREVIEW -->
                 <div id="modal-preview" class="fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-4xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button></div>
@@ -422,6 +445,7 @@
                     </div>
                 </div>
 
+                <!-- MODAL KARTU LOG REKAM JEJAK -->
                 <div id="modal-kartu" class="fixed inset-0 bg-slate-900/60 z-40 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-5xl rounded-xl shadow-xl overflow-hidden h-[90vh] flex flex-col text-slate-800">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
@@ -449,6 +473,7 @@
                     </div>
                 </div>
 
+                <!-- MODAL REGISTER ALAT MANUAL -->
                 <div id="modal-alat" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitFormAlatMaster(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg">
                         <div id="modal-alat-title" class="px-5 py-4 bg-gray-50 border-b font-bold text-slate-800 text-sm">Registrasi Alat Manual</div>
@@ -465,6 +490,7 @@
                     </form>
                 </div>
 
+                <!-- MODAL CERTIFICATE KALIBRASI -->
                 <div id="modal-kalibrasi" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitKalibrasi(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg text-slate-800">
                         <div class="p-4 font-bold bg-gray-50 border-b flex justify-between items-center">
@@ -506,19 +532,15 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let dataAlat = [];
-        let dataKalibrasi = [];
-        let dataPerbaikan = [];
-        let dataPM = [];
-        let dataInspeksi = [];
-        
-        let globalFilterStatus = "all";
-        let subTabDokumenAktif = "all";
-        let stringFotoBase64 = "-";
+        let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = [];
+        let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-";
 
-        let opsAlatKerja = ["Digital Multimeter", "Toolset Pack", "Cleaning Solvent", "Electrical Safety Analyzer"];
-        let opsFisik = ["Main Unit & Casing Bersih", "Kabel Power Utuh & Kokoh", "Roda & Kunci Pengaman Lancar"];
-        let opsFungsi = ["Sistem Control & Tombol Normal", "Layar Display & Alarm Berfungsi", "Kondisi Internal Battery Prima"];
+        // Variabel penampung array dinamis untuk tumpukan isi tabel
+        let terpakaiAlatKerja = []; let terpakaiFisik = []; let terpakaiFungsi = [];
+
+        let opsAlatKerja = ["Digital Multimeter", "Toolset Pack", "Cleaning Solvent", "Electrical Safety Analyzer", "Gas Flow Analyzer", "+ Ketik Manual Kustom"];
+        let opsFisik = ["Main Unit & Casing Bersih", "Kabel Power Utuh & Kokoh", "Roda & Kunci Pengaman Lancar", "Kondisi Fisik Mulus Bersih", "+ Ketik Manual Kustom"];
+        let opsFungsi = ["Sistem Control & Tombol Normal", "Layar Display & Alarm Berfungsi", "Kondisi Internal Battery Prima", "Akurasi Output Nilai Sesuai", "+ Ketik Manual Kustom"];
         
         let listNamaTeknisi = ["Baits Abdul Pattah", "Arrief Nurcahyo, S.Tr.Em.", "Teknisi Medis A", "Teknisi Medis B"];
         let listNamaSaksi = ["Kepala Unit Ruangan", "Saksi Ruangan A", "Saksi Ruangan B"];
@@ -599,12 +621,8 @@
         }
 
         function simpanPenuhIsianWorksheetDinamis() {
-            const selectAlatEl = document.getElementById('dlk-select-alat');
-            const alatIdRaw = selectAlatEl.value;
-            
-            if(!alatIdRaw || alatIdRaw.trim() === "") {
-                return alert("Silakan pilih salah satu Alat Kesehatan dari database terlebih dahulu!");
-            }
+            const selectAlatEl = document.getElementById('dlk-select-alat'); const alatIdRaw = selectAlatEl.value;
+            if(!alatIdRaw || alatIdRaw.trim() === "") return alert("Silakan pilih Alat Kesehatan terlebih dahulu!");
             
             const payload = {
                 alatId: alatIdRaw.trim(), noLk: document.getElementById('dlk-no').value, tgl: document.getElementById('dlk-tgl').value,
@@ -613,50 +631,39 @@
                 teknisiTtd: document.getElementById('dlk-select-nama-teknisi').value, saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
                 pjTtd: document.getElementById('dlk-select-nama-pj').value, fotoAlat: stringFotoBase64, createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 
-                // Menyimpan data dropdown tabel terpadu parameter alkes ke dalam database cloud
-                paramAlatKerja: document.getElementById('drop-alatkerja').value,
-                paramFisik: document.getElementById('drop-fisik').value,
-                paramFungsi: document.getElementById('drop-fungsi').value
+                // Menyimpan array kumulatif parameter ke dalam Cloud Firestore
+                paramAlatKerja: JSON.stringify(terpakaiAlatKerja),
+                paramFisik: JSON.stringify(terpakaiFisik),
+                paramFungsi: JSON.stringify(terpakaiFungsi)
             };
 
             db.collection("lembarKerja").add(payload).then(() => {
                 db.collection("dataAlat").doc(alatIdRaw.trim()).update({ status: (payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan") });
                 document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
                 alert("🎉 Sukses! Lembar Kerja cloud berhasil tersimpan.");
-            }).catch(err => {
-                alert("Gagal menyimpan ke Cloud: " + err.message);
-            });
+            }).catch(err => alert("Gagal menyimpan ke Cloud: " + err.message));
         }
 
         function previewFotoDipilih(input) {
             const file = input.files[0];
             if(file) {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
+                const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = function(event) {
-                    const img = new Image();
-                    img.src = event.target.result;
+                    const img = new Image(); img.src = event.target.result;
                     img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const MAX_WIDTH = 600; const MAX_HEIGHT = 600;
+                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                        const MAX_WIDTH = 500; const MAX_HEIGHT = 500;
                         let width = img.width; let height = img.height;
                         
-                        if (width > height) {
-                            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                        } else {
-                            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                        }
+                        if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
+                        else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
                         
                         canvas.width = width; canvas.height = height;
                         ctx.drawImage(img, 0, 0, width, height);
                         stringFotoBase64 = canvas.toDataURL('image/jpeg', 0.6);
                         
-                        document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="w-full h-full object-cover">`; 
-                        document.getElementById('box-preview-foto').classList.remove('hidden');
-                        
-                        // Sinkronisasikan foto ke area frame cetak lembar kerja printer
-                        document.getElementById('wadah-foto-cetakan-print').innerHTML = `<img src="${stringFotoBase64}" class="max-h-64 object-contain shadow rounded">`;
+                        document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="w-full h-full object-cover rounded shadow">`;
+                        document.getElementById('wadah-foto-cetakan-print').innerHTML = `<img src="${stringFotoBase64}" class="max-h-44 object-contain shadow rounded">`;
                     }
                 }
             }
@@ -686,15 +693,11 @@
         function resetFilterStatusAlat() { globalFilterStatus = "all"; renderAll(); }
 
         function submitFormAlatMaster(e) {
-            e.preventDefault(); 
-            const formId = document.getElementById('form-alat-id').value;
+            e.preventDefault(); const formId = document.getElementById('form-alat-id').value;
             const payload = {
-                nama: document.getElementById('form-alat-nama').value, 
-                merk: document.getElementById('form-alat-merk').value,
-                tipe: document.getElementById('form-alat-tipe').value, 
-                seri: document.getElementById('form-alat-seri').value,
-                edar: document.getElementById('form-alat-edar').value, 
-                lokasi: document.getElementById('form-alat-lokasi').value
+                nama: document.getElementById('form-alat-nama').value, merk: document.getElementById('form-alat-merk').value,
+                tipe: document.getElementById('form-alat-tipe').value, seri: document.getElementById('form-alat-seri').value,
+                edar: document.getElementById('form-alat-edar').value, lokasi: document.getElementById('form-alat-lokasi').value
             };
 
             if(formId && formId.trim() !== "") {
@@ -704,30 +707,21 @@
             }
         }
 
-        // 🚨 MEMBUAT FUNGSI openModalAlatManual BERJALAN LANCAR KETIKA DIKLIK 🚨
         function openModalAlatManual() {
             document.getElementById('modal-alat-title').innerText = "Registrasi Alat Baru Manual";
-            document.getElementById('form-alat-id').value = ""; 
-            document.getElementById('form-alat-nama').value = ""; 
-            document.getElementById('form-alat-merk').value = ""; 
-            document.getElementById('form-alat-tipe').value = ""; 
-            document.getElementById('form-alat-seri').value = ""; 
-            document.getElementById('form-alat-edar').value = ""; 
-            document.getElementById('form-alat-lokasi').value = ""; 
-            toggleModal('modal-alat', true);
+            document.getElementById('form-alat-id').value = ""; document.getElementById('form-alat-nama').value = ""; 
+            document.getElementById('form-alat-merk').value = ""; document.getElementById('form-alat-tipe').value = ""; 
+            document.getElementById('form-alat-seri').value = ""; document.getElementById('form-alat-edar').value = ""; 
+            document.getElementById('form-alat-lokasi').value = ""; toggleModal('modal-alat', true);
         }
 
         function pemicuEditAlatLangsung(id) {
             const a = dataAlat.find(item => item.id == id); if(!a) return;
             document.getElementById('modal-alat-title').innerText = "Edit Data Asset Alat Kesehatan";
-            document.getElementById('form-alat-id').value = a.id; 
-            document.getElementById('form-alat-nama').value = a.nama || ''; 
-            document.getElementById('form-alat-merk').value = a.merk || ''; 
-            document.getElementById('form-alat-tipe').value = a.tipe || ''; 
-            document.getElementById('form-alat-seri').value = a.seri || ''; 
-            document.getElementById('form-alat-edar').value = a.edar || ''; 
-            document.getElementById('form-alat-lokasi').value = a.lokasi || ''; 
-            toggleModal('modal-alat', true);
+            document.getElementById('form-alat-id').value = a.id; document.getElementById('form-alat-nama').value = a.nama || ''; 
+            document.getElementById('form-alat-merk').value = a.merk || ''; document.getElementById('form-alat-tipe').value = a.tipe || ''; 
+            document.getElementById('form-alat-seri').value = a.seri || ''; document.getElementById('form-alat-edar').value = a.edar || ''; 
+            document.getElementById('form-alat-lokasi').value = a.lokasi || ''; toggleModal('modal-alat', true);
         }
 
         async function submitKalibrasi(e) {
@@ -751,31 +745,55 @@
             selectEl.innerHTML = htmlOpts; if(calSelectEl) calSelectEl.innerHTML = htmlOpts;
         }
 
-        // 🚨 ATUR RENDER DROPDOWN DENGAN ELEMEN INTERAKTIF 🚨
-        function renderOpsiDropdownDinamis() {
-            const createOpts = (arr) => arr.map(item => `<option value="${item}">${item}</option>`).join('');
-            
-            const dAlat = document.getElementById('drop-alatkerja');
-            const dFisik = document.getElementById('drop-fisik');
-            const dFungsi = document.getElementById('drop-fungsi');
-            
-            if(dAlat) { dAlat.innerHTML = createOpts(opsAlatKerja); updateTabelTerpaduRealtime('alatkerja', dAlat.value); dAlat.onchange = (e) => updateTabelTerpaduRealtime('alatkerja', e.target.value); }
-            if(dFisik) { dFisik.innerHTML = createOpts(opsFisik); updateTabelTerpaduRealtime('fisik', dFisik.value); dFisik.onchange = (e) => updateTabelTerpaduRealtime('fisik', e.target.value); }
-            if(dFungsi) { dFungsi.innerHTML = createOpts(opsFungsi); updateTabelTerpaduRealtime('fungsi', dFungsi.value); dFungsi.onchange = (e) => updateTabelTerpaduRealtime('fungsi', e.target.value); }
+        // 🚨 PENGATURAN DROPDOWN DINAMIS AWAL 🚨
+        function renderOpsiDropdownAwal() {
+            const build = (arr) => arr.map(i => `<option value="${i}">${i}</option>`).join('');
+            document.getElementById('drop-alatkerja').innerHTML = build(opsAlatKerja);
+            document.getElementById('drop-fisik').innerHTML = build(opsFisik);
+            document.getElementById('drop-fungsi').innerHTML = build(opsFungsi);
         }
 
-        function updateTabelTerpaduRealtime(kategori, value) {
-            const targetCell = document.getElementById('cell-print-' + kategori);
-            if(targetCell) targetCell.innerText = value || '-';
+        // 🚨 AKUMULATOR DAN RENDER DAFTAR POIN YANG AKAN MENUMPUK DI SATU KOTAK TABEL 🚨
+        function tambahPoinAkumulatif(kategori) {
+            const drop = document.getElementById('drop-' + kategori);
+            let value = drop.value;
+            
+            if(value === "+ Ketik Manual Kustom") {
+                let kustom = prompt("Ketik parameter manual kustom Anda:");
+                if(!kustom || kustom.trim() === "") return;
+                value = kustom.trim();
+            }
+
+            if(kategori === 'alatkerja' && !terpakaiAlatKerja.includes(value)) terpakaiAlatKerja.push(value);
+            if(kategori === 'fisik' && !terpakaiFisik.includes(value)) terpakaiFisik.push(value);
+            if(kategori === 'fungsi' && !terpakaiFungsi.includes(value)) terpakaiFungsi.push(value);
+            
+            aktualisasikanTampilanKotakTabel(kategori);
         }
 
-        function tambahOpsiChecklistDinamis(kategori) {
-            let nilai = prompt("Masukkan opsi kustom parameter baru:"); 
-            if(!nilai || nilai.trim() === "") return;
+        function hapusPoinSpesifik(kategori, index) {
+            if(kategori === 'alatkerja') terpakaiAlatKerja.splice(index, 1);
+            if(kategori === 'fisik') terpakaiFisik.splice(index, 1);
+            if(kategori === 'fungsi') terpakaiFungsi.splice(index, 1);
             
-            if(kategori === 'alatkerja') { opsAlatKerja.push(nilai.trim()); renderOpsiDropdownDinamis(); document.getElementById('drop-alatkerja').value = nilai.trim(); updateTabelTerpaduRealtime('alatkerja', nilai.trim()); }
-            if(kategori === 'fisik') { opsFisik.push(nilai.trim()); renderOpsiDropdownDinamis(); document.getElementById('drop-fisik').value = nilai.trim(); updateTabelTerpaduRealtime('fisik', nilai.trim()); }
-            if(kategori === 'fungsi') { opsFungsi.push(nilai.trim()); renderOpsiDropdownDinamis(); document.getElementById('drop-fungsi').value = nilai.trim(); updateTabelTerpaduRealtime('fungsi', nilai.trim()); }
+            aktualisasikanTampilanKotakTabel(kategori);
+        }
+
+        function aktualisasikanTampilanKotakTabel(kategori) {
+            const box = document.getElementById('box-list-' + kategori);
+            let dataArr = (kategori === 'alatkerja') ? terpakaiAlatKerja : (kategori === 'fisik') ? terpakaiFisik : terpakaiFungsi;
+            
+            if(dataArr.length === 0) {
+                box.innerHTML = `<span class="text-gray-400 italic text-[11px]">[ Kosong - Belum Ada Parameter Ditambahkan ]</span>`;
+                return;
+            }
+
+            box.innerHTML = dataArr.map((text, idx) => `
+                <div class="flex items-center justify-between bg-slate-50 border p-1 rounded text-[11px] font-mono group">
+                    <span>• ${text}</span>
+                    <button type="button" onclick="hapusPoinSpesifik('${kategori}', ${idx})" class="no-print text-red-500 hover:text-red-700 font-bold px-1 ml-2 text-xs">×</button>
+                </div>
+            `).join('');
         }
 
         function sinkronisasiDataAlatKeWorksheet(alatId) {
@@ -791,14 +809,22 @@
 
         function bukaLembarKerjaBaruKosong() {
             stringFotoBase64 = "-";
+            terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = [];
+            
             populasikanDropdownAlatDiLembarKerja();
             document.getElementById('dlk-no').value = "RSUDPG/IPSRS/LK-" + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10);
             document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
-            document.getElementById('box-preview-foto').classList.add('hidden');
-            document.getElementById('wadah-foto-cetakan-print').innerHTML = `<span class="text-gray-400 italic text-xs">[ Tidak Ada Lampiran Foto Fisik Lapangan ]</span>`;
             
-            renderOpsiDropdownDinamis(); populasikanDropdownNamaTandaTangan();
+            document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`;
+            document.getElementById('wadah-foto-cetakan-print').innerHTML = ``;
+            
+            renderOpsiDropdownAwal(); 
+            aktualisasikanTampilanKotakTabel('alatkerja'); 
+            aktualisasikanTampilanKotakTabel('fisik'); 
+            aktualisasikanTampilanKotakTabel('fungsi');
+            populasikanDropdownNamaTandaTangan();
+            
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
             setTimeout(initSignatures, 300); toggleSidebarMenu(false);
         }
@@ -820,18 +846,24 @@
             sinkronisasiDataAlatKeWorksheet(record.alatId.trim());
             document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc || record.fungsi || "";
             
-            renderOpsiDropdownDinamis();
+            renderOpsiDropdownAwal();
             
-            // Set data log parameter tersimpan ke dropdown dan tabel
-            if(record.paramAlatKerja) { document.getElementById('drop-alatkerja').value = record.paramAlatKerja; updateTabelTerpaduRealtime('alatkerja', record.paramAlatKerja); }
-            if(record.paramFisik) { document.getElementById('drop-fisik').value = record.paramFisik; updateTabelTerpaduRealtime('fisik', record.paramFisik); }
-            if(record.paramFungsi) { document.getElementById('drop-fungsi').value = record.paramFungsi; updateTabelTerpaduRealtime('fungsi', record.paramFungsi); }
+            // Parsing log JSON string kumulatif agar kembali tersusun di kotak tabel terpadu
+            try { terpakaiAlatKerja = record.paramAlatKerja ? JSON.parse(record.paramAlatKerja) : []; } catch(e) { terpakaiAlatKerja = []; }
+            try { terpakaiFisik = record.paramFisik ? JSON.parse(record.paramFisik) : []; } catch(e) { terpakaiFisik = []; }
+            try { terpakaiFungsi = record.paramFungsi ? JSON.parse(record.paramFungsi) : []; } catch(e) { terpakaiFungsi = []; }
+
+            aktualisasikanTampilanKotakTabel('alatkerja');
+            aktualisasikanTampilanKotakTabel('fisik');
+            aktualisasikanTampilanKotakTabel('fungsi');
 
             if(record.fotoAlat && record.fotoAlat !== '-') {
                 stringFotoBase64 = record.fotoAlat;
-                document.getElementById('wadah-foto-cetakan-print').innerHTML = `<img src="${record.fotoAlat}" class="max-h-64 object-contain shadow rounded">`;
+                document.getElementById('box-preview-foto').innerHTML = `<img src="${record.fotoAlat}" class="w-full h-full object-cover rounded shadow">`;
+                document.getElementById('wadah-foto-cetakan-print').innerHTML = `<img src="${record.fotoAlat}" class="max-h-44 object-contain shadow rounded">`;
             } else {
-                document.getElementById('wadah-foto-cetakan-print').innerHTML = `<span class="text-gray-400 italic text-xs">[ Tidak Ada Lampiran Foto Fisik Lapangan ]</span>`;
+                document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`;
+                document.getElementById('wadah-foto-cetakan-print').innerHTML = ``;
             }
             
             populasikanDropdownNamaTandaTangan();
@@ -875,7 +907,7 @@
             const gabungLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             gabungLk.forEach(lk => {
                 const a = dataAlat.find(item => item.id == lk.alatId) || { nama: 'Alat Medis', seri: '-' };
-                wadahSemuaDokumen.push({ id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Teknisi: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Selesai' });
+                wadahSemuaDokumen.push({ id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Tim: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Selesai' });
             });
 
             if(subTabDokumenAktif === 'kalibrasi') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
@@ -930,6 +962,7 @@
             for(let tr of trs) { tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none'; }
         }
 
+        // Statistik Dashboard Penghitung Otomatis
         function updateStats() {
             if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = dataAlat.length;
             if(document.getElementById('stat-ready')) document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
@@ -957,8 +990,7 @@
                 canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
                 const ctx = canvas.getContext('2d'); let act = false; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.strokeStyle = '#0f172a';
                 
-                function start(e) { act = true; draw(e); } 
-                function end() { act = false; ctx.beginPath(); } 
+                function start(e) { act = true; draw(e); } function end() { act = false; ctx.beginPath(); } 
                 function draw(e) {
                     if(!act) return; if(e.cancelable) e.preventDefault();
                     const r = canvas.getBoundingClientRect();
@@ -970,7 +1002,7 @@
             });
         }
         
-        window.onload = function() { muatDatabaseDariGitHub(); renderOpsiDropdownDinamis(); gantiSubTabDokumen('all'); };
+        window.onload = function() { muatDatabaseDariGitHub(); renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); };
     </script>
 </body>
 </html>
