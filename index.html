@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK</title>
+    <title>SiMAK Cloudless - UPTD RSUD Pondokgede v27.7</title>
     
-    <!-- LOGO PADA ALAMAT URL (FAVICON) -->
     <link rel="icon" type="image/png" href="logo.png">
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- SDK Firebase Legacy (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -69,14 +65,12 @@
 </head>
 <body id="main-app-body" class="font-sans text-gray-800 transition-all duration-500">
 
-    <!-- INDIKATOR STATUS BULATAN MINIMALIS -->
     <div id="db-status-loader" class="fixed bottom-4 right-4 bg-slate-900/80 p-3 rounded-full shadow-2xl flex items-center justify-center z-50 border border-slate-700/60 backdrop-blur-sm">
         <div class="w-3.5 h-3.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]" id="status-dot"></div>
     </div>
 
     <div class="flex h-screen overflow-hidden bg-slate-950/50 backdrop-blur-[1px] w-full h-full relative">
         
-        <!-- SIDEBAR UTAMA -->
         <div id="app-sidebar" class="sidebar-translate fixed md:sticky top-0 left-0 h-full w-64 bg-slate-900/95 text-white flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-800/50 -translate-x-full md:translate-x-0">
             <div class="flex flex-col h-full justify-between overflow-y-auto">
                 <div>
@@ -118,7 +112,6 @@
             </div>
         </div>
 
-        <!-- AREA KONTEN UTAMA -->
         <div class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent">
             
             <header class="bg-white/95 backdrop-blur shadow-md px-6 py-5 flex items-center no-print border-b border-slate-200">
@@ -133,7 +126,6 @@
 
             <main class="p-6 max-w-7xl w-full mx-auto space-y-6 bg-transparent">
 
-                <!-- TAB 1: DASHBOARD STATISTIK -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-5 rounded-xl shadow border flex items-center justify-between cursor-pointer hover:scale-105 transition border-blue-400/30">
@@ -155,7 +147,6 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: MASTER DATA ALAT MEDIS -->
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-md">Master Data Aset RSUD Pondokgede</h2>
@@ -197,7 +188,6 @@
                     </div>
                 </div>
 
-                <!-- TAB 3: PUSAT RIWAYAT & DOKUMEN -->
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center no-print flex-wrap gap-4">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-lg">Pusat Riwayat & Dokumen Aset</h2>
@@ -232,7 +222,6 @@
                     </div>
                 </div>
 
-                <!-- LEMBAR KERJA DIGITAL RESMI -->
                 <div id="area-lembar-kerja-resmi" class="bg-white p-8 rounded-xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-5 hidden relative">
                     <button onclick="window.print()" type="button" class="no-print absolute top-4 right-4 bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow hover:bg-blue-700 flex items-center space-x-1">
                         <i class="fa-solid fa-print"></i> <span>Cetak Dokumen Resmi</span>
@@ -286,9 +275,7 @@
                         </div>
                     </div>
 
-                    <!-- 🚨 MODIFIKASI: 2 KOLOM HORIZONTAL (AMBIL FOTO & KONDISI LINGKUNGAN) 🚨 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Kolom Kiri: Ambil Foto (Kotak Kecil Kompak) -->
                         <div class="border p-3 rounded-lg text-xs bg-white shadow-sm flex flex-col justify-between">
                             <div>
                                 <label class="block font-bold text-slate-800 border-b pb-1 mb-2 no-print"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Ambil Foto Alat Lapangan</label>
@@ -302,7 +289,6 @@
                             </div>
                         </div>
 
-                        <!-- Kolom Kanan: Kondisi Lingkungan -->
                         <div class="border p-3 rounded-lg text-xs bg-white shadow-sm flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-3 text-slate-800 flex items-center"><i class="fa-solid fa-temperature-three-quarters mr-2 text-orange-500"></i>1. Kondisi Lingkungan Kerja</h4>
@@ -325,60 +311,43 @@
                         </div>
                     </div>
 
-                    <!-- BINGKAI FOTO ELEGAN SAAT PRINTER / CETAK PDF AKAN SEJAJAR -->
                     <div id="box-bingkai-foto-cetak">
                         <div id="wadah-foto-cetakan-print" class="w-full h-48 flex items-center justify-center overflow-hidden bg-white border"></div>
                     </div>
 
-                    <!-- 🚨 MODIFIKASI: UTILITY INPUT DROPDOWN PARAMETER DINAMIS (NO-PRINT) 🚨 -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs no-print">
-                        <div class="border p-3 rounded-lg bg-slate-50/50 space-y-2">
-                            <h4 class="font-bold border-b pb-1 text-slate-800">Pilih Alat Kerja</h4>
-                            <div class="flex space-x-1">
-                                <select id="drop-alatkerja" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
-                                <button type="button" onclick="tambahPoinAkumulatif('alatkerja')" class="bg-blue-600 text-white px-2.5 rounded font-bold shadow-sm">+</button>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div class="border p-3 rounded-lg bg-white shadow-sm space-y-3">
+                            <div>
+                                <h4 class="font-bold border-b pb-1 text-slate-800 mb-2">Alat Kerja Digunakan</h4>
+                                <div class="flex space-x-1 no-print mb-2">
+                                    <select id="drop-alatkerja" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
+                                    <button type="button" onclick="tambahPoinAkumulatif('alatkerja')" class="bg-blue-600 text-white px-2 rounded font-bold shadow-sm">+</button>
+                                </div>
                             </div>
+                            <div id="box-list-alatkerja" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
                         </div>
-                        <div class="border p-3 rounded-lg bg-slate-50/50 space-y-2">
-                            <h4 class="font-bold border-b pb-1 text-slate-800">Pemeriksaan Fisik</h4>
-                            <div class="flex space-x-1">
-                                <select id="drop-fisik" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
-                                <button type="button" onclick="tambahPoinAkumulatif('fisik')" class="bg-blue-600 text-white px-2.5 rounded font-bold shadow-sm">+</button>
-                            </div>
-                        </div>
-                        <div class="border p-3 rounded-lg bg-slate-50/50 space-y-2">
-                            <h4 class="font-bold border-b pb-1 text-slate-800">Pemeriksaan Fungsi</h4>
-                            <div class="flex space-x-1">
-                                <select id="drop-fungsi" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
-                                <button type="button" onclick="tambahPoinAkumulatif('fungsi')" class="bg-blue-600 text-white px-2.5 rounded font-bold shadow-sm">+</button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- 🚨 MUNCUL PERSIS DI BAWAHNYA MENJADI SATU KOTAK TABEL TERPADU KUMULATIF 🚨 -->
-                    <div class="border rounded-lg overflow-hidden bg-white shadow-sm">
-                        <table class="w-full text-left text-xs border-collapse">
-                            <thead class="bg-slate-100 font-bold text-gray-700 border-b">
-                                <tr>
-                                    <th class="p-2 w-1/3 border-r">Kategori Spesifikasi Pemeliharaan</th>
-                                    <th class="p-2">Daftar Hasil Periksa Komponen Lapangan (Kumulatif)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y text-gray-800 font-medium">
-                                <tr>
-                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r vertical-align-top">Alat Kerja Digunakan</td>
-                                    <td class="p-2 text-slate-900"><div id="box-list-alatkerja" class="space-y-1"></div></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r vertical-align-top">Pemeriksaan Fisik & Kebersihan</td>
-                                    <td class="p-2 text-slate-900"><div id="box-list-fisik" class="space-y-1"></div></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2.5 font-bold bg-slate-50/50 border-r vertical-align-top">Pemeriksaan Fungsi & Kelengkapan</td>
-                                    <td class="p-2 text-slate-900"><div id="box-list-fungsi" class="space-y-1"></div></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="border p-3 rounded-lg bg-white shadow-sm space-y-3">
+                            <div>
+                                <h4 class="font-bold border-b pb-1 text-slate-800 mb-2">Pemeriksaan Fisik & Kebersihan</h4>
+                                <div class="flex space-x-1 no-print mb-2">
+                                    <select id="drop-fisik" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
+                                    <button type="button" onclick="tambahPoinAkumulatif('fisik')" class="bg-blue-600 text-white px-2 rounded font-bold shadow-sm">+</button>
+                                </div>
+                            </div>
+                            <div id="box-list-fisik" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
+                        </div>
+
+                        <div class="border p-3 rounded-lg bg-white shadow-sm space-y-3">
+                            <div>
+                                <h4 class="font-bold border-b pb-1 text-slate-800 mb-2">Pemeriksaan Fungsi & Kelengkapan</h4>
+                                <div class="flex space-x-1 no-print mb-2">
+                                    <select id="drop-fungsi" class="w-full border p-1 bg-white rounded outline-none text-[11px]"></select>
+                                    <button type="button" onclick="tambahPoinAkumulatif('fungsi')" class="bg-blue-600 text-white px-2 rounded font-bold shadow-sm">+</button>
+                                </div>
+                            </div>
+                            <div id="box-list-fungsi" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
+                        </div>
                     </div>
 
                     <div class="border p-4 rounded-lg text-xs space-y-2 bg-white">
@@ -395,7 +364,6 @@
                         </div>
                     </div>
 
-                    <!-- AREA TANDA TANGAN DENGAN MENU PANAH DROPDOWN NAMA -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 text-xs">
                         <div class="text-center space-y-1.5">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
@@ -437,7 +405,6 @@
                     </div>
                 </div>
 
-                <!-- POPUPS MODAL PREVIEW -->
                 <div id="modal-preview" class="fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-4xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button></div>
@@ -445,7 +412,6 @@
                     </div>
                 </div>
 
-                <!-- MODAL KARTU LOG REKAM JEJAK -->
                 <div id="modal-kartu" class="fixed inset-0 bg-slate-900/60 z-40 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-5xl rounded-xl shadow-xl overflow-hidden h-[90vh] flex flex-col text-slate-800">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
@@ -473,7 +439,6 @@
                     </div>
                 </div>
 
-                <!-- MODAL REGISTER ALAT MANUAL -->
                 <div id="modal-alat" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitFormAlatMaster(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg">
                         <div id="modal-alat-title" class="px-5 py-4 bg-gray-50 border-b font-bold text-slate-800 text-sm">Registrasi Alat Manual</div>
@@ -490,7 +455,6 @@
                     </form>
                 </div>
 
-                <!-- MODAL CERTIFICATE KALIBRASI -->
                 <div id="modal-kalibrasi" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitKalibrasi(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg text-slate-800">
                         <div class="p-4 font-bold bg-gray-50 border-b flex justify-between items-center">
@@ -535,7 +499,6 @@
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = [];
         let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-";
 
-        // Variabel penampung array dinamis untuk tumpukan isi tabel
         let terpakaiAlatKerja = []; let terpakaiFisik = []; let terpakaiFungsi = [];
 
         let opsAlatKerja = ["Digital Multimeter", "Toolset Pack", "Cleaning Solvent", "Electrical Safety Analyzer", "Gas Flow Analyzer", "+ Ketik Manual Kustom"];
@@ -631,7 +594,6 @@
                 teknisiTtd: document.getElementById('dlk-select-nama-teknisi').value, saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
                 pjTtd: document.getElementById('dlk-select-nama-pj').value, fotoAlat: stringFotoBase64, createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 
-                // Menyimpan array kumulatif parameter ke dalam Cloud Firestore
                 paramAlatKerja: JSON.stringify(terpakaiAlatKerja),
                 paramFisik: JSON.stringify(terpakaiFisik),
                 paramFungsi: JSON.stringify(terpakaiFungsi)
@@ -745,7 +707,6 @@
             selectEl.innerHTML = htmlOpts; if(calSelectEl) calSelectEl.innerHTML = htmlOpts;
         }
 
-        // 🚨 PENGATURAN DROPDOWN DINAMIS AWAL 🚨
         function renderOpsiDropdownAwal() {
             const build = (arr) => arr.map(i => `<option value="${i}">${i}</option>`).join('');
             document.getElementById('drop-alatkerja').innerHTML = build(opsAlatKerja);
@@ -753,7 +714,6 @@
             document.getElementById('drop-fungsi').innerHTML = build(opsFungsi);
         }
 
-        // 🚨 AKUMULATOR DAN RENDER DAFTAR POIN YANG AKAN MENUMPUK DI SATU KOTAK TABEL 🚨
         function tambahPoinAkumulatif(kategori) {
             const drop = document.getElementById('drop-' + kategori);
             let value = drop.value;
@@ -779,12 +739,13 @@
             aktualisasikanTampilanKotakTabel(kategori);
         }
 
+        // 🚨 MENAMPILKAN HASILNYA SECARA KUMULATIF DENGAN BERSIH TANPA STATUS TEKS KOSONG 🚨
         function aktualisasikanTampilanKotakTabel(kategori) {
             const box = document.getElementById('box-list-' + kategori);
             let dataArr = (kategori === 'alatkerja') ? terpakaiAlatKerja : (kategori === 'fisik') ? terpakaiFisik : terpakaiFungsi;
             
             if(dataArr.length === 0) {
-                box.innerHTML = `<span class="text-gray-400 italic text-[11px]">[ Kosong - Belum Ada Parameter Ditambahkan ]</span>`;
+                box.innerHTML = ``;
                 return;
             }
 
@@ -848,7 +809,6 @@
             
             renderOpsiDropdownAwal();
             
-            // Parsing log JSON string kumulatif agar kembali tersusun di kotak tabel terpadu
             try { terpakaiAlatKerja = record.paramAlatKerja ? JSON.parse(record.paramAlatKerja) : []; } catch(e) { terpakaiAlatKerja = []; }
             try { terpakaiFisik = record.paramFisik ? JSON.parse(record.paramFisik) : []; } catch(e) { terpakaiFisik = []; }
             try { terpakaiFungsi = record.paramFungsi ? JSON.parse(record.paramFungsi) : []; } catch(e) { terpakaiFungsi = []; }
@@ -962,7 +922,6 @@
             for(let tr of trs) { tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none'; }
         }
 
-        // Statistik Dashboard Penghitung Otomatis
         function updateStats() {
             if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = dataAlat.length;
             if(document.getElementById('stat-ready')) document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
