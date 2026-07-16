@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiMAK</title>
     
+    <!-- LOGO PADA ALAMAT URL (FAVICON) -->
     <link rel="icon" type="image/png" href="logo.png">
     
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- SDK Firebase Legacy (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -77,12 +81,14 @@
 </head>
 <body id="main-app-body" class="font-sans text-gray-800 transition-all duration-500">
 
+    <!-- INDIKATOR STATUS BULATAN MINIMALIS -->
     <div id="db-status-loader" class="fixed bottom-4 right-4 bg-slate-900/80 p-3 rounded-full shadow-2xl flex items-center justify-center z-50 border border-slate-700/60 backdrop-blur-sm">
         <div class="w-3.5 h-3.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]" id="status-dot"></div>
     </div>
 
     <div class="flex h-screen overflow-hidden bg-slate-950/50 backdrop-blur-[1px] w-full h-full relative">
         
+        <!-- SIDEBAR UTAMA -->
         <div id="app-sidebar" class="sidebar-translate fixed md:sticky top-0 left-0 h-full w-64 bg-slate-900/95 text-white flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-800/50 -translate-x-full md:translate-x-0">
             <div class="flex flex-col h-full justify-between overflow-y-auto">
                 <div>
@@ -124,6 +130,7 @@
             </div>
         </div>
 
+        <!-- AREA KONTEN UTAMA -->
         <div class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent">
             
             <header class="bg-white/95 backdrop-blur shadow-md px-6 py-5 flex items-center no-print border-b border-slate-200">
@@ -138,6 +145,7 @@
 
             <main class="p-6 max-w-7xl w-full mx-auto space-y-6 bg-transparent">
 
+                <!-- TAB 1: DASHBOARD STATISTIK -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-5 rounded-xl shadow border flex items-center justify-between cursor-pointer hover:scale-105 transition border-blue-400/30">
@@ -159,6 +167,7 @@
                     </div>
                 </div>
 
+                <!-- TAB 2: MASTER DATA ALAT MEDIS -->
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-md">Master Data Aset RSUD Pondokgede</h2>
@@ -200,6 +209,7 @@
                     </div>
                 </div>
 
+                <!-- TAB 3: PUSAT RIWAYAT & DOKUMEN -->
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center no-print flex-wrap gap-4">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-lg">Pusat Riwayat & Dokumen Aset</h2>
@@ -234,6 +244,7 @@
                     </div>
                 </div>
 
+                <!-- LEMBAR KERJA DIGITAL RESMI -->
                 <div id="area-lembar-kerja-resmi" class="hidden bg-white p-6 print:p-2 rounded-xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-4 print:space-y-2 relative">
                     <button onclick="window.print()" type="button" class="no-print absolute top-4 right-4 bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow hover:bg-blue-700 flex items-center space-x-1">
                         <i class="fa-solid fa-print"></i> <span>Cetak Dokumen Resmi</span>
@@ -287,7 +298,9 @@
                         </div>
                     </div>
 
+                    <!-- PREVIEW CETAK SEJAJAR 1 BARIS -->
                     <div class="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-4 print:gap-2">
+                        <!-- Kolom Kiri: Foto Lapangan -->
                         <div class="border p-2 rounded-lg text-[11px] bg-white shadow-sm flex flex-col justify-between">
                             <div>
                                 <label class="block font-bold text-slate-800 border-b pb-0.5 mb-1 no-print"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Ambil Foto Alat Lapangan</label>
@@ -301,6 +314,7 @@
                             </div>
                         </div>
 
+                        <!-- Kolom Rencana Kondisi Lingkungan -->
                         <div class="border p-2 rounded-lg text-[11px] bg-white shadow-sm flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold border-b pb-0.5 mb-2 text-slate-800 flex items-center"><i class="fa-solid fa-temperature-three-quarters mr-1.5 text-orange-500"></i>1. Kondisi Lingkungan</h4>
@@ -323,6 +337,7 @@
                         </div>
                     </div>
 
+                    <!-- GRIDS INPUT WADAH POIN KUMULATIF -->
                     <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 print:gap-2 text-[11px]">
                         <div class="border p-2 rounded-lg bg-white shadow-sm space-y-2">
                             <div>
@@ -369,6 +384,7 @@
                         </div>
                     </div>
 
+                    <!-- AREA DROPDOWN NAMA TANDA TANGAN -->
                     <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-2 pt-2 text-[11px]">
                         <div class="text-center space-y-1">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
@@ -410,6 +426,7 @@
                     </div>
                 </div>
 
+                <!-- POPUPS MODAL PREVIEW -->
                 <div id="modal-preview" class="fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-4xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button></div>
@@ -417,6 +434,7 @@
                     </div>
                 </div>
 
+                <!-- MODAL KARTU LOG REKAM JEJAK -->
                 <div id="modal-kartu" class="fixed inset-0 bg-slate-900/60 z-40 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-5xl rounded-xl shadow-xl overflow-hidden h-[90vh] flex flex-col text-slate-800">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
@@ -444,6 +462,7 @@
                     </div>
                 </div>
 
+                <!-- MODAL REGISTER ALAT MANUAL -->
                 <div id="modal-alat" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitFormAlatMaster(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg">
                         <div id="modal-alat-title" class="px-5 py-4 bg-gray-50 border-b font-bold text-slate-800 text-sm">Registrasi Alat Manual</div>
@@ -460,6 +479,7 @@
                     </form>
                 </div>
 
+                <!-- MODAL CERTIFICATE KALIBRASI -->
                 <div id="modal-kalibrasi" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden text-xs no-print">
                     <form onsubmit="submitKalibrasi(event)" class="bg-white w-full max-w-md rounded-xl shadow-lg text-slate-800">
                         <div class="p-4 font-bold bg-gray-50 border-b flex justify-between items-center">
@@ -818,7 +838,6 @@
             renderOpsiDropdownAwal(); 
             aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi');
             
-            // 🚨 HOTFIX: Spasi dibersihkan agar fungsi terpanggil sempurna 🚨
             populasikanDropdownNamaTandaTangan();
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
@@ -983,26 +1002,60 @@
             signatures.forEach(id => {
                 const canvas = document.getElementById(id); if(!canvas) return; 
                 
+                // Set ukuran resolusi internal kanvas agar presisi
                 canvas.width = canvas.parentElement.clientWidth || canvas.offsetWidth || 250; 
                 canvas.height = canvas.parentElement.clientHeight || canvas.offsetHeight || 96;
                 
-                const ctx = canvas.getContext('2d'); let act = false; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.strokeStyle = '#0f172a';
+                const ctx = canvas.getContext('2d'); 
+                let isDrawing = false; 
+                ctx.lineWidth = 3.0; 
+                ctx.lineCap = 'round'; 
+                ctx.lineJoin = 'round';
+                ctx.strokeStyle = '#0f172a'; // Warna tinta gelap
                 
-                function start(e) { act = true; draw(e); } function end() { act = false; ctx.beginPath(); } 
-                function draw(e) {
-                    if(!act) return; if(e.cancelable) e.preventDefault();
-                    const r = canvas.getBoundingClientRect();
-                    const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY;
-                    ctx.lineTo(cx - r.left, cy - r.top); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx - r.left, cy - r.top);
+                // Mengambil koordinat posisi sentuhan atau mouse yang akurat
+                function getPos(e) {
+                    const rect = canvas.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    return { x: clientX - rect.left, y: clientY - rect.top };
                 }
                 
-                canvas.replaceWith(canvas.cloneNode(true));
-                const newCanvas = document.getElementById(id);
-                const newCtx = newCanvas.getContext('2d');
-                newCtx.lineWidth = 2.5; newCtx.lineCap = 'round'; newCtx.strokeStyle = '#0f172a';
+                function startDrawing(e) {
+                    isDrawing = true;
+                    const pos = getPos(e);
+                    ctx.beginPath();
+                    ctx.moveTo(pos.x, pos.y);
+                    if (e.cancelable) e.preventDefault();
+                }
                 
-                newCanvas.addEventListener('mousedown', start); newCanvas.addEventListener('mouseup', end); newCanvas.addEventListener('mousemove', draw);
-                newCanvas.addEventListener('touchstart', start, { passive: false }); newCanvas.addEventListener('touchend', end, { passive: false }); newCanvas.addEventListener('touchmove', draw, { passive: false });
+                function draw(e) {
+                    if (!isDrawing) return;
+                    const pos = getPos(e);
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                    if (e.cancelable) e.preventDefault();
+                }
+                
+                function stopDrawing() { isDrawing = false; }
+                
+                // Bersihkan event listener lama dengan metode re-binding murni tanpa merusak node DOM
+                canvas.removeEventListener('mousedown', startDrawing);
+                canvas.removeEventListener('mousemove', draw);
+                window.removeEventListener('mouseup', stopDrawing);
+                
+                canvas.removeEventListener('touchstart', startDrawing);
+                canvas.removeEventListener('touchmove', draw);
+                canvas.removeEventListener('touchend', stopDrawing);
+                
+                // Pasang event listener fresh langsung ke kanvas
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                window.addEventListener('mouseup', stopDrawing);
+                
+                canvas.addEventListener('touchstart', startDrawing, { passive: false });
+                canvas.addEventListener('touchmove', draw, { passive: false });
+                canvas.addEventListener('touchend', stopDrawing);
             });
         }
         
