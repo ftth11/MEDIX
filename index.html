@@ -868,37 +868,67 @@
         }
 
         function renderTabelPusatDokumen() {
-            const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return; let wadahSemuaDokumen = [];
+            const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return;
+            let wadahSemuaDokumen = [];
             
+            // 1. Ambil data Sertifikat Kalibrasi
             dataKalibrasi.forEach(c => {
                 const a = dataAlat.find(item => item.id == c.alatId) || { nama: 'Alat Medis', seri: '-' };
-                wadahSemuaDokumen.push({ id: c.id, namaAlat: a.nama, seri: a.seri, jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil });
+                wadahSemuaDokumen.push({ 
+                    id: c.id, namaAlat: a.nama, seri: a.seri, jenis: 'Sertifikat Kalibrasi Resmi', 
+                    tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' 
+                });
             });
-
+        
+            // 2. Ambil data Lembar Kerja (CM, PM, Inspeksi)
             const gabungLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             gabungLk.forEach(lk => {
                 const a = dataAlat.find(item => item.id == lk.alatId) || { nama: 'Alat Medis', seri: '-' };
-                wadahSemuaDokumen.push({ id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Tim: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Selesai' });
+                wadahSemuaDokumen.push({ 
+                    id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', 
+                    tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Tim: ${lk.teknisiTtd || '-'}`, file: lk.id, 
+                    type: 'lk-print', hasil: lk.hasilTunggal || 'Selesai', koleksiDb: 'lembarKerja' 
+                });
             });
-
+        
+            // Filter Sub-Tab
             if(subTabDokumenAktif === 'kalibrasi') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
             if(subTabDokumenAktif === 'mandiri') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi');
-            if(wadahSemuaDokumen.length === 0) { tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Tidak ditemukan arsip dokumen.</td></tr>`; return; }
+        
+            if(wadahSemuaDokumen.length === 0) { 
+                tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Tidak ditemukan arsip dokumen.</td></tr>`; return; 
+            }
             wadahSemuaDokumen.sort((a,b) => String(b.tgl).localeCompare(String(a.tgl)));
-
-            tBody.innerHTML = wadahSemuaDokumen.map(d => `
-                <tr class="border-b bg-white/40">
-                    <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-gray-400 font-mono">SN: ${d.seri}</span></td>
-                    <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-100 text-amber-800':'bg-indigo-100 text-indigo-800'}">${d.jenis}</span></td>
-                    <td class="p-4 font-mono">${d.tgl}</td>
-                    <td class="p-4 text-gray-600 max-w-xs truncate">${d.desc}</td>
-                    <td class="p-4 text-center">
-                        ${d.type==='pdf'? `<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-red-50 text-red-700 px-3 py-1 rounded font-bold text-[10px]"><i class="fa-solid fa-file-pdf"></i> Buka PDF</button>` : 
-                          `<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-indigo-600 text-white px-3 py-1 rounded font-bold text-[10px]"><i class="fa-solid fa-print"></i> Cetak LK</button>`}
-                    </td>
-                    <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${d.hasil}</span></td>
-                </tr>
-            `).join('');
+        
+            tBody.innerHTML = wadahSemuaDokumen.map(d => {
+                // Logika penentuan tombol preview & cetak berdasarkan tipe file
+                let aksiTombol = '';
+                if (d.type === 'pdf') {
+                    aksiTombol = `
+                        <button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Preview PDF"><i class="fa-solid fa-eye"></i></button>
+                        <button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-gray-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Cetak PDF"><i class="fa-solid fa-print"></i></button>
+                    `;
+                } else {
+                    aksiTombol = `
+                        <button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Preview Lembar Kerja"><i class="fa-solid fa-eye"></i></button>
+                        <button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-indigo-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Cetak Lembar Kerja"><i class="fa-solid fa-print"></i></button>
+                    `;
+                }
+        
+                return `
+                    <tr class="border-b bg-white/40">
+                        <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-gray-400 font-mono">SN: ${d.seri}</span></td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-100 text-amber-800':'bg-indigo-100 text-indigo-800'}">${d.jenis}</span></td>
+                        <td class="p-4 font-mono">${d.tgl}</td>
+                        <td class="p-4 text-gray-600 max-w-xs truncate">${d.desc}</td>
+                        <td class="p-4 text-center space-x-1 flex justify-center items-center h-full mt-2">
+                            ${aksiTombol}
+                            <button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-red-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Hapus Dokumen"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${d.hasil}</span></td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function renderAll() {
@@ -922,6 +952,18 @@
                         </tr>
                     `).join('');
         renderTabelPusatDokumen();
+        }
+
+        function hapusDokumenPusatRiwayat(id, koleksiDb) {
+            if(confirm("Apakah Anda yakin ingin menghapus dokumen arsip ini secara permanen dari Firebase Cloud? Data di Log Rekam Jejak alat juga akan otomatis ikut terhapus.")) {
+                db.collection(koleksiDb).doc(id).delete()
+                .then(() => {
+                    alert("🎉 Sukses! Dokumen resmi berhasil terhapus dari cloud database.");
+                })
+                .catch(err => {
+                    alert("Gagal menghapus dokumen cloud: " + err.message);
+                });
+            }
         }
         
         function hapusAlatMasterFirebase(id, namaAlat) {
