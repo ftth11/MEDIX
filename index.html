@@ -1084,8 +1084,32 @@
             document.getElementById('dlk-nokal').value = `${yyyy}-${mm}-${dd}`;
         }
 
-        function bukaLembarKerjaBaruKosong() { stringFotoBase64 = "-"; terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; populasikanDropdownAlatDiLembarKerja(); hitungDanSetNomorLembarKerjaOtomatis(); document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`; renderOpsiDropdownAwal(); aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi'); populasikanDropdownNamaTanda Tangan(); const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); setTimeout(initSignatures, 400); toggleSidebarMenu(false); }
-
+        function bukaLembarKerjaBaruKosong() { 
+            stringFotoBase64 = "-"; 
+            terpakaiAlatKerja = []; 
+            terpakaiFisik = []; 
+            terpakaiFungsi = []; 
+            populasikanDropdownAlatDiLembarKerja(); 
+            hitungDanSetNomorLembarKerjaOtomatis(); 
+            document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); 
+            document.getElementById('dlk-select-alat').value = ""; 
+            document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
+            document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`; 
+            renderOpsiDropdownAwal(); 
+            aktualisasikanTampilanKotakTabel('alatkerja'); 
+            aktualisasikanTampilanKotakTabel('fisik'); 
+            aktualisasikanTampilanKotakTabel('fungsi'); 
+            
+            // PERBAIKAN DI SINI: Spasi dihilangkan agar fungsi terbaca utuh
+            populasikanDropdownNamaTandaTangan(); 
+            
+            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
+            areaLK.classList.remove('hidden'); 
+            areaLK.scrollIntoView({ behavior: 'smooth' }); 
+            setTimeout(initSignatures, 400); 
+            toggleSidebarMenu(false); 
+        }
+        
         function bukaLembarKerjaDinamisDariLog(id) {
             toggleModal('modal-kartu', false); populasikanDropdownAlatDiLembarKerja();
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
