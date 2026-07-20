@@ -75,7 +75,7 @@
         <div id="app-sidebar" class="sidebar-translate fixed md:sticky top-0 left-0 h-full w-64 bg-slate-900/95 text-white flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-800/50 -translate-x-full md:translate-x-0">
             <div class="flex flex-col h-full justify-between overflow-y-auto">
                 <div>
-                    <!-- LOGO BRAND SIDEBAR: KLIK OTOMATIS KE DASHBOARD UTAMA -->
+                    <!-- LOGO BRAND SIDEBAR -->
                     <div onclick="switchTab('dashboard')" class="p-5 flex items-center space-x-3 border-b border-slate-800 cursor-pointer hover:bg-white/[0.02] transition duration-200">
                         <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-500/30 shadow-[0_0_12px_rgba(34,211,238,0.4)] flex items-center justify-center">
                             <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')" class="w-full h-full object-cover" alt="Logo">
@@ -112,7 +112,7 @@
         <!-- AREA UTAMA APLIKASI -->
         <div class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent">
             
-            <!-- HEADER APLIKASI: KLIK TULISAN MEDIX OTOMATIS KE DASHBOARD UTAMA -->
+            <!-- HEADER APLIKASI -->
             <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center no-print border-b border-slate-800/80">
                 <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 mr-5 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
                     <i class="fa-solid fa-bars text-xl"></i>
@@ -136,7 +136,6 @@
 
                 <!-- KONTEN: DASHBOARD STATISTIK MEWAH & CHART INTERAKTIF -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
-                    <!-- Kartu Indikator Atas -->
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-5 rounded-2xl shadow-2xl flex items-center justify-between cursor-pointer hover:scale-[1.03] hover:border-blue-500/30 transition">
                             <div><p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Total Aset</p><h3 id="stat-total" class="text-3xl font-black text-white mt-1">0</h3></div>
@@ -156,7 +155,6 @@
                         </div>
                     </div>
 
-                    <!-- AREA GRAFIK DUA KOLOM -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between items-center lg:col-span-1 min-h-[320px]">
                             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center w-full border-b border-white/5 pb-2">Persentase Kelaikan Aset</h4>
@@ -480,6 +478,113 @@
         </div>
     </div>
 
+    <!-- MODAL KARTU LOG ASSET (VERSI FULL SCREEN KELUAR DARI CONTAINER) -->
+    <div id="modal-kartu" class="fixed inset-0 bg-slate-950/80 z-[999] flex items-center justify-center hidden no-print backdrop-blur-md">
+        <div class="bg-slate-900 w-full h-full flex flex-col text-slate-200">
+            <!-- HEADER MODAL -->
+            <div class="p-4 bg-slate-950 text-white flex justify-between items-center shadow-md">
+                <h3 class="font-bold text-sm flex items-center">
+                    <i class="fa-solid fa-address-card mr-2 text-blue-400"></i>REKAM JEJAK PEMELIHARAAN & LOG KALIBRASI ASSET
+                </h3>
+                <button type="button" onclick="toggleModal('modal-kartu', false)" class="text-gray-400 hover:text-white bg-slate-800/50 hover:bg-slate-800 px-3 py-1.5 rounded-xl transition">
+                    <i class="fa-solid fa-xmark text-lg mr-1"></i> Tutup Log
+                </button>
+            </div>
+            
+            <!-- RINGKASAN DATA ASET HEADER -->
+            <div class="p-4 bg-slate-950/40 border-b border-white/5 text-xs grid grid-cols-2 md:grid-cols-4 gap-4 shadow-inner">
+                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-sm">-</p></div>
+                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-sm">-</p></div>
+                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-sm">-</p></div>
+                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-sm">-</p></div>
+            </div>
+            
+            <!-- NAVIGASI SUB-TAB LOG -->
+            <div class="flex border-b border-white/5 text-xs bg-slate-950/20 font-medium">
+                <button type="button" onclick="switchKartuTab('tab-k-corrective')" id="btn-k-corrective" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 active text-slate-400">Corrective Log</button>
+                <button type="button" onclick="switchKartuTab('tab-k-preventive')" id="btn-k-preventive" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-slate-400">Preventive Log (PM)</button>
+                <button type="button" onclick="switchKartuTab('tab-k-inspeksi')" id="btn-k-inspeksi" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-slate-400">Inspection Log</button>
+                <button type="button" onclick="switchKartuTab('tab-k-kalibrasi')" id="btn-k-kalibrasi" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-indigo-400 font-bold">Kalibrasi Resmi</button>
+            </div>
+            
+            <!-- KONTEN TABEL LOG -->
+            <div class="flex-1 overflow-y-auto p-6 bg-slate-950/10 text-xs">
+                <div id="tab-k-corrective" class="kartu-content-box space-y-3">
+                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
+                                <tr>
+                                    <th class="p-4">Log Uraian Kerja / Pelaksana</th>
+                                    <th class="p-4 text-center">Foto Lapangan</th>
+                                    <th class="p-4">Hasil Analisa</th>
+                                    <th class="p-4 text-center">Aksi Manajemen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kartu-list-corrective" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="tab-k-preventive" class="kartu-content-box hidden space-y-3">
+                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
+                                <tr>
+                                    <th class="p-4">Tanggal Pelaksanaan / Tim</th>
+                                    <th class="p-4 text-center">Foto Lapangan</th>
+                                    <th class="p-4">Hasil PM</th>
+                                    <th class="p-4 text-center">Aksi Manajemen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kartu-list-preventive" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="tab-k-inspeksi" class="kartu-content-box hidden space-y-3">
+                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
+                                <tr>
+                                    <th class="p-4">Waktu Inspeksi / Tim</th>
+                                    <th class="p-4 text-center">Foto Lapangan</th>
+                                    <th class="p-4">Hasil Inspeksi</th>
+                                    <th class="p-4 text-center">Aksi Manajemen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kartu-list-inspeksi" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="tab-k-kalibrasi" class="kartu-content-box hidden space-y-3">
+                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
+                                <tr>
+                                    <th class="p-4">Tanggal Uji Alat</th>
+                                    <th class="p-4">Masa Berlaku Kalibrasi</th>
+                                    <th class="p-4">Vendor Lembaga Penguji</th>
+                                    <th class="p-4 text-center">Arsip Digital</th>
+                                    <th class="p-4 text-center">Hapus Berkas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kartu-list-kalibrasi" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PREVIEW FOTO/PDF -->
+    <div id="modal-preview" class="fixed inset-0 bg-slate-900/80 z-[1000] flex items-center justify-center p-4 hidden no-print backdrop-blur-md">
+        <div class="bg-white/10 backdrop-blur-md w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/10">
+            <div class="p-4 bg-slate-950 text-white flex justify-between items-center"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
+            <div id="preview-body" class="flex-1 bg-slate-900 p-2 flex items-center justify-center overflow-auto"></div>
+        </div>
+    </div>
+
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyC9TDnm98rLYGmrbF51OjQp4u4I0zOxu18",
@@ -539,7 +644,6 @@
         }
 
         function renderGrafikDashboardDinamis() {
-            // Proteksi jika data kosong agar tidak membuat JavaScript crash
             if(dataAlat.length === 0) return;
 
             const jumlahReady = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
@@ -639,7 +743,7 @@
                     listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp)));
                     tglKalibrasi = listCal[0].tgl || "-"; expKalibrasi = listCal[0].exp || "-"; vendor = listCal[0].vendor || "-";
                 }
-                return { "No": index + 1, "Nama Alat Medis": a.nama || "-", "Merk": a.merk || "-", "Model / Tipe": "-", "Nomor Seri (SN)": a.tipe || "-", "Unit / Ruangan": a.edar || "-", "Status Operasional": a.status || "-", "Tgl Kalibrasi Terakhir": tglKalibrasi, "Habis Masa Berlaku": expKalibrasi, "Vendor Penguji": vendor };
+                return { "No": index + 1, "Nama Alat Medis": a.nama || "-", "Merk": a.kode || "-", "Model / Tipe": a.merk || "-", "Nomor Seri (SN)": a.tipe || "-", "Unit / Ruangan": a.edar || "-", "Status Operasional": a.status || "-", "Tgl Kalibrasi Terakhir": tglKalibrasi, "Habis Masa Berlaku": expKalibrasi, "Vendor Penguji": vendor };
             });
             const worksheet = XLSX.utils.json_to_sheet(dataBersihExcel); const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Master Aset Medis");
@@ -724,16 +828,12 @@
                     infoCal = `<br><span class="text-[9px] text-indigo-400 font-bold font-mono">Cal Exp: ${listCal[0].exp}</span>`;
                 }
         
-                // ========================================================
-                // STRUKTUR PEMETAAN DATA FIREBASE ASLI (100% SESUAI GAMBAR)
-                // ========================================================
                 let displayNama   = a.nama || '-';
-                let displayMerk   = a.kode || '-';     // 'kode' di DB berisi Merk (Contoh: HEART GUARDIAN)
-                let displayTipe   = a.merk || '-';     // 'merk' di DB berisi Tipe/Model (Contoh: HR-501)
-                let displaySeri   = a.tipe || '-';     // 'tipe' di DB berisi Nomor Seri (Contoh: SN D0122...)
-                let displayLokasi = a.edar || '-';     // 'edar' di DB berisi Ruangan (Contoh: Ambulance Hiace)
+                let displayMerk   = a.kode || '-';     
+                let displayTipe   = a.merk || '-';     
+                let displaySeri   = a.tipe || '-';     
+                let displayLokasi = a.edar || '-';     
         
-                // Jalur antisipasi jika ada format data variasi lain di database Anda
                 if (String(a.lokasi).toLowerCase() !== 'baik' && a.seri && a.seri !== '-') {
                     displayNama   = a.nama || '-';
                     displayMerk   = a.merk || '-';
@@ -838,6 +938,7 @@
             }
         }
 
+        /* TABS HANDLER */
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -919,7 +1020,7 @@
         function bukaKartuPemeliharaan(alatId) {
             const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
             let sLokasi = alat.lokasi === 'Baik' ? alat.edar : alat.lokasi; let sSeri = alat.lokasi === 'Baik' ? alat.tipe : alat.seri;
-            document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-merk').innerText = alat.merk || '-'; document.getElementById('kartu-seri').innerText = sSeri || '-'; document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
+            document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-merk').innerText = alat.kode || '-'; document.getElementById('kartu-seri').innerText = sSeri || '-'; document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto Lapangan')" class="text-xs bg-slate-800 p-1 border border-white/5 rounded-lg text-slate-300 font-bold hover:bg-slate-700 transition">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
 
@@ -960,114 +1061,6 @@
         }
         
         window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
-    
-                    <!-- MODAL KARTU LOG ASSET (VERSI FULL SCREEN & OVERLAY TERATAS) -->
-                    <div id="modal-kartu" class="fixed inset-0 bg-slate-950/80 z-[999] flex items-center justify-center hidden no-print backdrop-blur-md">
-                        <div class="bg-slate-900 w-full h-full flex flex-col text-slate-200">
-                            <!-- HEADER MODAL -->
-                            <div class="p-4 bg-slate-950 text-white flex justify-between items-center shadow-md">
-                                <h3 class="font-bold text-sm flex items-center">
-                                    <i class="fa-solid fa-address-card mr-2 text-blue-400"></i>REKAM JEJAK PEMELIHARAAN & LOG KALIBRASI ASSET
-                                </h3>
-                                <button type="button" onclick="toggleModal('modal-kartu', false)" class="text-gray-400 hover:text-white bg-slate-800/50 hover:bg-slate-800 px-3 py-1.5 rounded-xl transition">
-                                    <i class="fa-solid fa-xmark text-lg mr-1"></i> Tutup Log
-                                </button>
-                            </div>
-                            
-                            <!-- RINGKASAN DATA ASET HEADER -->
-                            <div class="p-4 bg-slate-950/40 border-b border-white/5 text-xs grid grid-cols-2 md:grid-cols-4 gap-4 shadow-inner">
-                                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-sm">-</p></div>
-                                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-sm">-</p></div>
-                                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-sm">-</p></div>
-                                <div><p class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-sm">-</p></div>
-                            </div>
-                            
-                            <!-- NAVIGASI SUB-TAB LOG -->
-                            <div class="flex border-b border-white/5 text-xs bg-slate-950/20 font-medium">
-                                <button type="button" onclick="switchKartuTab('tab-k-corrective')" id="btn-k-corrective" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 active text-slate-400">Corrective Log</button>
-                                <button type="button" onclick="switchKartuTab('tab-k-preventive')" id="btn-k-preventive" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-slate-400">Preventive Log (PM)</button>
-                                <button type="button" onclick="switchKartuTab('tab-k-inspeksi')" id="btn-k-inspeksi" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-slate-400">Inspection Log</button>
-                                <button type="button" onclick="switchKartuTab('tab-k-kalibrasi')" id="btn-k-kalibrasi" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-indigo-400 font-bold">Kalibrasi Resmi</button>
-                            </div>
-                            
-                            <!-- KONTEN TABEL LOG (SEKARANG JAUH LEBIH LUAS) -->
-                            <div class="flex-1 overflow-y-auto p-6 bg-slate-950/10 text-xs">
-                                <div id="tab-k-corrective" class="kartu-content-box space-y-3">
-                                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
-                                        <table class="w-full text-left">
-                                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
-                                                <tr>
-                                                    <th class="p-4">Log Uraian Kerja / Pelaksana</th>
-                                                    <th class="p-4 text-center">Foto Lapangan</th>
-                                                    <th class="p-4">Hasil Analisa</th>
-                                                    <th class="p-4 text-center">Aksi Manajemen</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="kartu-list-corrective" class="divide-y divide-white/5"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                
-                                <div id="tab-k-preventive" class="kartu-content-box hidden space-y-3">
-                                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
-                                        <table class="w-full text-left">
-                                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
-                                                <tr>
-                                                    <th class="p-4">Tanggal Pelaksanaan / Tim</th>
-                                                    <th class="p-4 text-center">Foto Lapangan</th>
-                                                    <th class="p-4">Hasil PM</th>
-                                                    <th class="p-4 text-center">Aksi Manajemen</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="kartu-list-preventive" class="divide-y divide-white/5"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                
-                                <div id="tab-k-inspeksi" class="kartu-content-box hidden space-y-3">
-                                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
-                                        <table class="w-full text-left">
-                                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
-                                                <tr>
-                                                    <th class="p-4">Waktu Inspeksi / Tim</th>
-                                                    <th class="p-4 text-center">Foto Lapangan</th>
-                                                    <th class="p-4">Hasil Inspeksi</th>
-                                                    <th class="p-4 text-center">Aksi Manajemen</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="kartu-list-inspeksi" class="divide-y divide-white/5"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                
-                                <div id="tab-k-kalibrasi" class="kartu-content-box hidden space-y-3">
-                                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 shadow-2xl">
-                                        <table class="w-full text-left">
-                                            <thead class="bg-slate-950 border-b border-white/5 font-semibold text-slate-400">
-                                                <tr>
-                                                    <th class="p-4">Tanggal Uji Alat</th>
-                                                    <th class="p-4">Masa Berlaku Kalibrasi</th>
-                                                    <th class="p-4">Vendor Lembaga Penguji</th>
-                                                    <th class="p-4 text-center">Arsip Digital</th>
-                                                    <th class="p-4 text-center">Hapus Berkas</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="kartu-list-kalibrasi" class="divide-y divide-white/5"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                        <!-- MODAL PREVIEW FOTO/PDF -->
-                        <div id="modal-preview" class="fixed inset-0 bg-slate-900/80 z-70 flex items-center justify-center p-4 hidden no-print backdrop-blur-md">
-                            <div class="bg-white/10 backdrop-blur-md w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/10">
-                                <div class="p-4 bg-slate-950 text-white flex justify-between items-center"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
-                                <div id="preview-body" class="flex-1 bg-slate-900 p-2 flex items-center justify-center overflow-auto"></div>
-                            </div>
-                        </div>
-
     </script>
 </body>
 </html>
