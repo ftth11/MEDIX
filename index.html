@@ -156,9 +156,8 @@
                         </div>
                     </div>
 
-                    <!-- AREA GRAFIK DUA KOLOM (DASHBOARD WAHPANEL) -->
+                    <!-- AREA GRAFIK DUA KOLOM -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">
-                        <!-- Grafik Distribusi Kondisi Alat (Pie Chart) -->
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between items-center lg:col-span-1 min-h-[320px]">
                             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center w-full border-b border-white/5 pb-2">Persentase Kelaikan Aset</h4>
                             <div class="w-full max-w-[180px] flex-1 flex items-center justify-center">
@@ -166,7 +165,6 @@
                             </div>
                         </div>
                         
-                        <!-- Grafik Lokasi Terbanyak (Bar Chart) -->
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between lg:col-span-2 min-h-[320px]">
                             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-white/5 pb-2">Sebaran 5 Ruangan Terbanyak</h4>
                             <div class="w-full flex-1">
@@ -262,7 +260,7 @@
                     </div>
                 </div>
 
-                <!-- DOKUMEN CETAK RESMI -->
+                <!-- AREA WORKSPACE PEMELIHARAAN -->
                 <div id="area-lembar-kerja-resmi" class="hidden bg-white p-6 print:p-2 rounded-2xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-4 print:space-y-2 relative">
                     <button onclick="window.print()" type="button" class="no-print absolute top-4 right-4 bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow hover:bg-blue-700 flex items-center space-x-1">
                         <i class="fa-solid fa-print"></i> <span>Cetak Dokumen Resmi</span>
@@ -484,9 +482,6 @@
                         <div class="p-5 space-y-3">
                             <div><label class="block mb-0.5 font-bold text-slate-400">Nama Alat Kesehatan *</label><input type="text" id="form-alat-nama" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none focus:border-blue-500"></div>
                             <div><label class="block mb-0.5 font-bold text-slate-400">Merk</label><input type="text" id="form-alat-merk" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none focus:border-blue-500"></div>
-                            <div><label class="block mb-0.5 font-bold text-slate-400">Model / Tipe</label><input type="text" id="form-alat-tipe" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none focus:border-blue-500"></div>
-                            <div><label class="block mb-0.5 font-bold text-slate-400">Nomor Seri (SN) *</label><input type="text" id="form-alat-seri" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white font-mono outline-none focus:border-blue-500"></div>
-                            <div><label class="block mb-0.5 font-bold text-slate-400">Izin Edar Resmi</label><input type="text" id="form-alat-edar" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none focus:border-blue-500"></div>
                             <div><label class="block mb-1 font-bold text-slate-400">Instalasi / Ruangan *</label><input type="text" id="form-alat-lokasi" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none focus:border-blue-500"></div>
                         </div>
                         <div class="px-5 py-3 border-t border-white/5 bg-slate-950 flex justify-end space-x-2"><button type="button" onclick="toggleModal('modal-alat', false)" class="px-4 py-1.5 border border-white/10 rounded-xl">Batal</button><button type="submit" class="px-5 py-1.5 bg-blue-600 hover:bg-blue-700 font-semibold rounded-xl shadow text-white transition">Simpan Aset</button></div>
@@ -538,7 +533,6 @@
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = [];
         let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-";
         
-        // Objek Global Chart.js untuk mencegah eror Canvas Re-use
         let instanceChartKondisi = null; let instanceChartRuangan = null;
 
         let terpakaiAlatKerja = []; let terpakaiFisik = []; let terpakaiFungsi = [];
@@ -580,13 +574,10 @@
             if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]";
         }
 
-        // ==========================================================
-        // FITUR BARU: GENERATE GRAFIK CHART.JS DINAMIS (NEON LUX)
-        // ==========================================================
         function renderGrafikDashboardDinamis() {
+            // Proteksi jika data kosong agar tidak membuat JavaScript crash
             if(dataAlat.length === 0) return;
 
-            // 1. Data untuk Pie Chart (Kondisi Kelaikan Alat)
             const jumlahReady = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
             const jumlahBroken = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
 
@@ -611,7 +602,6 @@
                 });
             }
 
-            // 2. Data untuk Bar Chart (Top 5 Ruangan Terbanyak)
             const hitungRuangan = {};
             dataAlat.forEach(a => {
                 let namaRuang = a.edar || a.lokasi || 'Tidak Diketahui';
@@ -619,22 +609,19 @@
                 hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
             });
 
-            const ruanganTerurut = Object.entries(hitungRuangan)
-                .sort((x, y) => y[1] - x[1])
-                .slice(0, 5);
-
+            const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]).slice(0, 5);
             const labelRuangan = ruanganTerurut.map(item => item[0]);
             const skorRuangan = ruanganTerurut.map(item => item[1]);
 
             const ctxRuangan = document.getElementById('chartSebaranRuangan');
-            if (ctxRuangan) {
+            if (ctxRuangan && labelRuangan.length > 0) {
                 if (instanceChartRuangan) instanceChartRuangan.destroy();
                 instanceChartRuangan = new Chart(ctxRuangan, {
                     type: 'bar',
                     data: {
                         labels: labelRuangan,
                         datasets: [{
-                            label: 'Jumlah Instrumen',
+                            label: 'Jumlah Aset',
                             data: skorRuangan,
                             backgroundColor: 'rgba(59, 130, 246, 0.4)',
                             borderColor: '#3b82f6',
@@ -765,6 +752,11 @@
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
             let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
             
+            if(filteredAlat.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">Database Kosong. Silakan suntik data JSON Anda kembali.</td></tr>`;
+                return;
+            }
+
             tbody.innerHTML = filteredAlat.map(a => {
                 const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
                 let infoCal = `<br><span class="text-[9px] text-slate-500 italic tracking-wider">Belum Kalibrasi</span>`;
@@ -889,10 +881,10 @@
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             if(document.getElementById('btn-' + tabId)) document.getElementById('btn-' + tabId).classList.add('active');
             toggleSidebarMenu(false);
-            if(tabId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 200);
+            if(tabId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300);
         }
 
-        function toggleSidebarMenu(show) { const sidebar = document.getElementById('app-sidebar'); if (show) sidebar.classList.remove('-translate-x-full'); else sidebar.classList.add('-translate-x-full'); }
+        function toggleSidebarMenu(show) { const sidebar = document.getElementById('app-sidebar'); if (sidebar) { if (show) sidebar.classList.remove('-translate-x-full'); else sidebar.classList.add('-translate-x-full'); } }
         function clickDashboardStat(type) { if(type === 'all') { globalFilterStatus = "all"; switchTab('data-alat'); } else if(type === 'ready') { globalFilterStatus = "Siap Digunakan"; switchTab('data-alat'); } else if(type === 'broken') { globalFilterStatus = "Dalam Perbaikan"; switchTab('data-alat'); } else if(type === 'docs') { switchTab('kalibrasi'); gantiSubTabDokumen('all'); } renderAll(); }
         function resetFilterStatusAlat() { globalFilterStatus = "all"; renderAll(); }
 
@@ -902,8 +894,8 @@
             if(id) { db.collection("dataAlat").doc(id).update(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Diperbarui!"); }); } else { payload.status = 'Siap Digunakan'; db.collection("dataAlat").add(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Didaftarkan!"); }); }
         }
 
-        function openModalAlatManual() { document.getElementById('form-alat-id').value = ""; document.getElementById('form-alat-nama').value = ""; document.getElementById('form-alat-merk').value = ""; document.getElementById('form-alat-tipe').value = ""; document.getElementById('form-alat-seri').value = ""; document.getElementById('form-alat-edar').value = ""; document.getElementById('form-alat-lokasi').value = ""; toggleModal('modal-alat', true); }
-        function pemicuEditAlatLangsung(id) { const a = dataAlat.find(item => item.id == id); if(!a) return; document.getElementById('form-alat-id').value = a.id; document.getElementById('form-alat-nama').value = a.nama || ''; document.getElementById('form-alat-merk').value = a.merk || ''; document.getElementById('form-alat-tipe').value = a.tipe || ''; document.getElementById('form-alat-seri').value = a.seri || ''; document.getElementById('form-alat-edar').value = a.edar || ''; document.getElementById('form-alat-lokasi').value = (a.lokasi === 'Baik') ? (a.edar || '') : (a.lokasi || ''); toggleModal('modal-alat', true); }
+        function openModalAlatManual() { document.getElementById('form-alat-id').value = ""; document.getElementById('form-alat-nama').value = ""; document.getElementById('form-alat-merk').value = ""; toggleModal('modal-alat', true); }
+        function pemicuEditAlatLangsung(id) { const a = dataAlat.find(item => item.id == id); if(!a) return; document.getElementById('form-alat-id').value = a.id; document.getElementById('form-alat-nama').value = a.nama || ''; document.getElementById('form-alat-merk').value = a.merk || ''; document.getElementById('form-alat-lokasi').value = (a.lokasi === 'Baik') ? (a.edar || '') : (a.lokasi || ''); toggleModal('modal-alat', true); }
 
         function submitKalibrasi(e) {
             e.preventDefault(); const aId = document.getElementById('form-cal-alat').value; const hasil = document.getElementById('form-cal-hasil').value;
@@ -939,7 +931,7 @@
             }
         }
 
-        function bukaLembarKerjaBaruKosong() { stringFotoBase64 = "-"; terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; populasikanDropdownAlatDiLembarKerja(); hitungDanSetNomorLembarKerjaOtomatis(); document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`; renderOpsiDropdownAwal(); aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi'); populasikanDropdownNamaTandaTangan(); const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth'); setTimeout(initSignatures, 400); toggleSidebarMenu(false); }
+        function bukaLembarKerjaBaruKosong() { stringFotoBase64 = "-"; terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; populasikanDropdownAlatDiLembarKerja(); hitungDanSetNomorLembarKerjaOtomatis(); document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`; renderOpsiDropdownAwal(); aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi'); populasikanDropdownNamaTandaTangan(); const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); setTimeout(initSignatures, 400); toggleSidebarMenu(false); }
 
         function bukaLembarKerjaDinamisDariLog(id) {
             toggleModal('modal-kartu', false); populasikanDropdownAlatDiLembarKerja();
@@ -1004,7 +996,7 @@
             });
         }
         
-        window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 600); };
+        window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
     </script>
 </body>
 </html>
