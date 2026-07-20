@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMAK</title>
+    <title>MEDIX</title>
     
     <!-- LOGO PADA ALAMAT URL (FAVICON) -->
     <link rel="icon" type="image/png" href="logo.png">
@@ -13,7 +13,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Firebase SDK Legacy (v8) Bawaan Asli Cloud -->
+    <!-- SDK Firebase Legacy (v8) Core & Firestore Cloud -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
@@ -88,7 +88,7 @@
 
     <div class="flex h-screen overflow-hidden bg-slate-950/50 backdrop-blur-[1px] w-full h-full relative">
         
-        <!-- SIDEBAR MENU UTAMA -->
+        <!-- SIDEBAR MENU UTAMA MEDIX -->
         <div id="app-sidebar" class="sidebar-translate fixed md:sticky top-0 left-0 h-full w-64 bg-slate-900/95 text-white flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-800/50 -translate-x-full md:translate-x-0">
             <div class="flex flex-col h-full justify-between overflow-y-auto">
                 <div>
@@ -96,9 +96,9 @@
                         <div class="flex items-center space-x-3">
                             <div class="w-9 h-9 bg-white rounded p-0.5 flex items-center justify-center overflow-hidden border">
                                 <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')" class="w-full h-full object-contain" alt="Logo">
-                                <i id="fallback-icon" class="fa-solid fa-cloud text-lg text-blue-500 hidden"></i>
+                                <i id="fallback-icon" class="fa-solid fa-square-h text-lg text-blue-500 hidden"></i>
                             </div>
-                            <span class="text-lg font-black tracking-wider bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">SiMAK</span>
+                            <span class="text-lg font-black tracking-wider bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">MEDIX</span>
                         </div>
                         <button onclick="toggleSidebarMenu(false)" class="md:hidden text-gray-400 hover:text-white p-1">
                             <i class="fa-solid fa-xmark text-xl"></i>
@@ -125,12 +125,12 @@
                     </nav>
                 </div>
                 <div class="p-4 border-t border-slate-800 bg-slate-950/50 text-center text-xs text-slate-400 font-mono tracking-widest font-bold">
-                     <i class="fa-solid fa-cloud text-blue-500 mr-1.5"></i>Firebase Cloud
+                     <i class="fa-solid fa-cloud-arrow-up text-blue-500 mr-1.5 animate-pulse"></i>MEDIX Cloud v28.00
                 </div>
             </div>
         </div>
 
-        <!-- AREA KONTEN UTAMA APLIKASI -->
+        <!-- AREA UTAMA APLIKASI -->
         <div class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent">
             
             <header class="bg-white/95 backdrop-blur shadow-md px-6 py-5 flex items-center no-print border-b border-slate-200">
@@ -138,14 +138,14 @@
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
                 <div class="flex flex-col">
-                    <h1 class="text-4xl font-extrabold tracking-tighter bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent drop-shadow-sm select-none">SiMAK</h1>
-                    <span class="text-xs font-bold text-slate-500 tracking-widest uppercase mt-1 block pl-0.5">Sistem Management Alat Kesehatan</span>
+                    <h1 class="text-4xl font-extrabold tracking-tighter bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent drop-shadow-sm select-none">MEDIX</h1>
+                    <span class="text-xs font-bold text-slate-500 tracking-widest uppercase mt-1 block pl-0.5">Medical Inventory & Maintenance Excellence</span>
                 </div>
             </header>
 
             <main class="p-6 max-w-7xl w-full mx-auto space-y-6 bg-transparent">
 
-                <!-- TAB: DASHBOARD STATISTIK -->
+                <!-- KONTEN: DASHBOARD STATISTIK -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-5 rounded-xl shadow border flex items-center justify-between cursor-pointer hover:scale-105 transition border-blue-400/30">
@@ -167,7 +167,7 @@
                     </div>
                 </div>
 
-                <!-- TAB: MASTER DATA ALAT MEDIS -->
+                <!-- KONTEN: MASTER DATA ALAT MEDIS -->
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-md">Master Data Aset RSUD Pondokgede</h2>
@@ -209,7 +209,7 @@
                     </div>
                 </div>
 
-                <!-- TAB: PUSAT DOKUMEN & RIWAYAT -->
+                <!-- KONTEN: PUSAT DOKUMEN & RIWAYAT -->
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center no-print flex-wrap gap-4">
                         <h2 class="text-xl font-bold text-white bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700 shadow-lg">Pusat Riwayat & Dokumen Aset</h2>
@@ -234,7 +234,7 @@
                                         <th class="p-4">Jenis Dokumen</th>
                                         <th class="p-4">Tanggal Dibuat</th>
                                         <th class="p-4">Deskripsi / Vendor / Tim</th>
-                                        <th class="p-4 text-center">File Arsip / Cetak</th>
+                                        <th class="p-4 text-center">Aksi Manajemen Berkas</th>
                                         <th class="p-4">Status / Hasil</th>
                                     </tr>
                                 </thead>
@@ -244,7 +244,7 @@
                     </div>
                 </div>
 
-                <!-- FORM LEMBAR KERJA DIGITAL RESMI -->
+                <!-- FORM LEMBAR KERJA DIGITAL RESMI (SIAP CETAK A4) -->
                 <div id="area-lembar-kerja-resmi" class="hidden bg-white p-6 print:p-2 rounded-xl shadow-2xl border max-w-5xl mx-auto text-slate-900 space-y-4 print:space-y-2 relative">
                     <button onclick="window.print()" type="button" class="no-print absolute top-4 right-4 bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow hover:bg-blue-700 flex items-center space-x-1">
                         <i class="fa-solid fa-print"></i> <span>Cetak Dokumen Resmi</span>
@@ -298,7 +298,7 @@
                         </div>
                     </div>
 
-                    <!-- FOTO LAPANGAN DENGAN KONDISI LINGKUNGAN -->
+                    <!-- FOTO LAPANGAN & KONDISI LINGKUNGAN -->
                     <div class="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-4 print:gap-2">
                         <div class="border p-2 rounded-lg text-[11px] bg-white shadow-sm flex flex-col justify-between">
                             <div>
@@ -335,7 +335,7 @@
                         </div>
                     </div>
 
-                    <!-- POIN AKUMULATIF CHECKLIST -->
+                    <!-- GRIDS CHECKLIST POIN -->
                     <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 print:gap-2 text-[11px]">
                         <div class="border p-2 rounded-lg bg-white shadow-sm space-y-2">
                             <div>
@@ -382,7 +382,7 @@
                         </div>
                     </div>
 
-                    <!-- AREA TANDA TANGAN TIM KESEHATAN -->
+                    <!-- AREA CANVAS TANDA TANGAN -->
                     <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-2 pt-2 text-[11px]">
                         <div class="text-center space-y-1">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
@@ -424,7 +424,7 @@
                     </div>
                 </div>
 
-                <!-- MODALS WINDOW PREVIEW -->
+                <!-- MODAL PREVIEW FOTO/PDF -->
                 <div id="modal-preview" class="fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 hidden no-print">
                     <div class="bg-white w-full max-w-4xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden">
                         <div class="p-4 bg-slate-900 text-white flex justify-between items-center"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button></div>
@@ -507,24 +507,23 @@
 
     <script>
         // =========================================================
-        // PENTING: GANTI DENGAN KUNCI CONFIG FIREBASE ASLI ANDA
+        // KUNCI KREDENSIAL PRIBADI CLOUD FIREBASE ANDA (SINKRON)
         // =========================================================
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-              apiKey: "AIzaSyDfg719ZJwUSM_9jgIkDmWlCJLEpcBlVsM",
-              authDomain: "simak-rsudpg11.firebaseapp.com",
-              projectId: "simak-rsudpg11",
-              storageBucket: "simak-rsudpg11.firebasestorage.app",
-              messagingSenderId: "97606453725",
-              appId: "1:97606453725:web:778622f3a04716ca4a4e34",
-              measurementId: "G-QCBM7G4S55"
+            apiKey: "AIzaSyDfg719ZJwUSM_9jgIkDmWlCJLEpcBlVsM",
+            authDomain: "simak-rsudpg11.firebaseapp.com",
+            projectId: "simak-rsudpg11",
+            storageBucket: "simak-rsudpg11.appspot.com", // Disesuaikan untuk engine v8 legacy
+            messagingSenderId: "97606453725",
+            appId: "1:97606453725:web:778622f3a04716ca4a4e34",
+            measurementId: "G-QCBM7G4S55"
         };
         
-        // Inisialisasi Firebase Engine
+        // Inisialisasi MEDIX Engine
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        // Variabel Lokal
+        // Variabel Array Global
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = [];
         let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-";
 
@@ -538,7 +537,9 @@
         let listNamaSaksi = ["Kepala Unit Ruangan", "Saksi Ruangan A", "Saksi Ruangan B"];
         let listNamaPj = ["Arrief Nurcahyo, S.Tr.Em.", "Baits Abdul Pattah"];
 
-        // LISTENER REAL-TIME DATA DARI CLOUD DATABASE
+        // ==========================================================
+        // REAL-TIME AUTO-SYNC LISTENER CLOUD FIREBASE
+        // ==========================================================
         db.collection("dataAlat").onSnapshot((querySnapshot) => {
             dataAlat = [];
             querySnapshot.forEach((doc) => { dataAlat.push({ id: doc.id, ...doc.data() }); });
@@ -567,12 +568,85 @@
             if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]";
         }
 
-        function hapusDokumenLogRealtime(id, koleksi) {
-            if(confirm("Apakah Anda yakin ingin menghapus arsip lembar dokumen ini dari Firebase Cloud secara permanen?")) {
-                db.collection(koleksi).doc(id).delete()
-                .then(() => alert("🎉 Berkas log dokumen berhasil dihapus!"))
+        // ==========================================================
+        // MANAJEMEN PENGHAPUSAN ASSET UTAMA CLOUD
+        // ==========================================================
+        function hapusAlatMasterFirebase(id, namaAlat) {
+            if(confirm(`Apakah Anda yakin ingin menghapus aset "${namaAlat}" secara permanen dari Database MEDIX? Tindakan ini tidak dapat dibatalkan.`)) {
+                db.collection("dataAlat").doc(id).delete()
+                .then(() => { alert("🎉 Sukses! Aset berhasil dihapus dari Cloud Database."); })
+                .catch((error) => { alert("Gagal menghapus aset: " + error.message); });
+            }
+        }
+
+        // ==========================================================
+        // 3 AKSI TOMBOL PADA PUSAT DOKUMEN (PREVIEW, CETAK, HAPUS AUTOMATIS LOG)
+        // ==========================================================
+        function hapusDokumenPusatRiwayat(id, koleksiDb) {
+            if(confirm("Apakah Anda yakin ingin menghapus berkas dokumen resmi ini secara permanen? Log rekam jejak pada kartu instrumen alkes juga akan otomatis terhapus seketika.")) {
+                db.collection(koleksiDb).doc(id).delete()
+                .then(() => alert("🎉 Berkas dokumen log berhasil dibersihkan dari database cloud!"))
                 .catch(err => alert("Gagal menghapus dokumen: " + err.message));
             }
+        }
+
+        function renderTabelPusatDokumen() {
+            const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return;
+            let wadahSemuaDokumen = [];
+            
+            dataKalibrasi.forEach(c => {
+                const a = dataAlat.find(item => item.id == c.alatId) || { nama: 'Alat Medis', seri: '-' };
+                wadahSemuaDokumen.push({ 
+                    id: c.id, namaAlat: a.nama, seri: a.seri, jenis: 'Sertifikat Kalibrasi Resmi', 
+                    tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' 
+                });
+            });
+
+            const gabungLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
+            boxLk = gabungLk.forEach(lk => {
+                const a = dataAlat.find(item => item.id == lk.alatId) || { nama: 'Alat Medis', seri: '-' };
+                wadahSemuaDokumen.push({ 
+                    id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', 
+                    tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Tim: ${lk.teknisiTtd || '-'}`, file: lk.id, 
+                    type: 'lk-print', hasil: lk.hasilTunggal || 'Selesai', koleksiDb: 'lembarKerja' 
+                });
+            });
+
+            if(subTabDokumenAktif === 'kalibrasi') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
+            if(subTabDokumenAktif === 'mandiri') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi');
+            if(wadahSemuaDokumen.length === 0) { tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Tidak ditemukan arsip dokumen.</td></tr>`; return; }
+            wadahSemuaDokumen.sort((a,b) => String(b.tgl).localeCompare(String(a.tgl)));
+
+            tBody.innerHTML = wadahSemuaDokumen.map(d => {
+                let aksiTombol = '';
+                if (d.type === 'pdf') {
+                    aksiTombol = `
+                        <button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold text-[10px]" title="Preview PDF"><i class="fa-solid fa-eye"></i> Preview</button>
+                        <button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-gray-600 text-white px-2.5 py-1 rounded font-bold text-[10px]" title="Cetak PDF"><i class="fa-solid fa-print"></i> Cetak</button>
+                    `;
+                } else {
+                    aksiTombol = `
+                        <button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold text-[10px]" title="Preview Lembar Kerja"><i class="fa-solid fa-eye"></i> Preview</button>
+                        <button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-indigo-600 text-white px-2.5 py-1 rounded font-bold text-[10px]" title="Cetak Lembar Kerja"><i class="fa-solid fa-print"></i> Cetak</button>
+                    `;
+                }
+
+                return `
+                    <tr class="border-b bg-white/40">
+                        <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-gray-400 font-mono">SN: ${d.seri}</span></td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-100 text-amber-800':'bg-indigo-100 text-indigo-800'}">${d.jenis}</span></td>
+                        <td class="p-4 font-mono">${d.tgl}</td>
+                        <td class="p-4 text-gray-600 max-w-xs truncate">${d.desc}</td>
+                        <td class="p-4 text-center space-x-1">
+                            <div class="inline-flex space-x-1 items-center justify-center">
+                                ${aksiTombol}
+                                <button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-red-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Hapus Dokumen"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${d.hasil}</span></td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function eksekusiUrutanLokal(kriteria) {
@@ -640,7 +714,7 @@
             })
             .then(() => {
                 document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                alert("🎉 Sukses! Lembar Kerja resmi berhasil tersimpan di Cloud Database.");
+                alert("🎉 Sukses! Lembar Kerja resmi berhasil tersimpan di Database MEDIX Cloud.");
             })
             .catch(err => alert("Gagal menyimpan data ke Cloud: " + err.message));
         }
@@ -691,7 +765,7 @@
 
         function resetFilterStatusAlat() { globalFilterStatus = "all"; renderAll(); }
 
-        function submitFormAlatMaster(e) {
+        document.forms && (submitFormAlatMaster = function(e) {
             e.preventDefault(); const id = document.getElementById('form-alat-id').value;
             const payload = {
                 nama: document.getElementById('form-alat-nama').value, merk: document.getElementById('form-alat-merk').value,
@@ -700,12 +774,12 @@
             };
 
             if(id) {
-                db.collection("dataAlat").doc(id).update(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Diperbarui!"); });
+                db.collection("dataAlat").doc(id).update(payload).then(() => { toggleModal('modal-alat', false); alert("Aset MEDIX Diperbarui!"); });
             } else {
                 payload.status = 'Siap Digunakan';
                 db.collection("dataAlat").add(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Baru Berhasil Didaftarkan!"); });
             }
-        }
+        });
 
         function openModalAlatManual() {
             document.getElementById('modal-alat-title').innerText = "Registrasi Alat Baru Manual";
@@ -855,10 +929,10 @@
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-600 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto Lapangan')" class="text-xs bg-slate-100 p-1 border rounded font-bold">Foto</button></td>` : `<td class="p-3 text-center text-gray-400 italic">No Photo</td>`;
 
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenLogRealtime('${r.id}', 'lembarKerja')" class="bg-red-600 text-white px-1 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenLogRealtime('${p.id}', 'lembarKerja')" class="bg-red-600 text-white px-1 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenLogRealtime('${i.id}', 'lembarKerja')" class="bg-red-600 text-white px-1 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
-            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-red-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-red-50 text-red-700 px-2 py-0.5 rounded text-[10px]">PDF</button></td><td class="text-center"><button onclick="hapusDokumenLogRealtime('${c.id}', 'dataKalibrasi')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenPusatRiwayat('${r.id}', 'lembarKerja')" class="bg-red-600 text-white px-1 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenPusatRiwayat('${p.id}', 'lembarKerja')" class="bg-red-600 text-white px-1 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] mr-1">Buka</button><button onclick="hapusDokumenPusatRiwayat('${i.id}', 'lembarKerja')" class="bg-red-600 text-white px-1 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-red-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-red-50 text-red-700 px-2 py-0.5 rounded text-[10px]">PDF</button></td><td class="text-center"><button onclick="hapusDokumenPusatRiwayat('${c.id}', 'dataKalibrasi')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
             switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
         }
 
@@ -867,119 +941,31 @@
             document.getElementById(tabId).classList.remove('hidden');
         }
 
-        function renderTabelPusatDokumen() {
-            const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return;
-            let wadahSemuaDokumen = [];
-            
-            // 1. Ambil data Sertifikat Kalibrasi
-            dataKalibrasi.forEach(c => {
-                const a = dataAlat.find(item => item.id == c.alatId) || { nama: 'Alat Medis', seri: '-' };
-                wadahSemuaDokumen.push({ 
-                    id: c.id, namaAlat: a.nama, seri: a.seri, jenis: 'Sertifikat Kalibrasi Resmi', 
-                    tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' 
-                });
-            });
-        
-            // 2. Ambil data Lembar Kerja (CM, PM, Inspeksi)
-            const gabungLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
-            gabungLk.forEach(lk => {
-                const a = dataAlat.find(item => item.id == lk.alatId) || { nama: 'Alat Medis', seri: '-' };
-                wadahSemuaDokumen.push({ 
-                    id: lk.id, namaAlat: a.nama, seri: a.seri, jenis: lk.jenisKerja || 'Lembar Kerja Mandiri', 
-                    tgl: lk.tgl, desc: `No: ${lk.noLk || '-'} | Tim: ${lk.teknisiTtd || '-'}`, file: lk.id, 
-                    type: 'lk-print', hasil: lk.hasilTunggal || 'Selesai', koleksiDb: 'lembarKerja' 
-                });
-            });
-        
-            // Filter Sub-Tab
-            if(subTabDokumenAktif === 'kalibrasi') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
-            if(subTabDokumenAktif === 'mandiri') wadahSemuaDokumen = wadahSemuaDokumen.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi');
-        
-            if(wadahSemuaDokumen.length === 0) { 
-                tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400 italic">Tidak ditemukan arsip dokumen.</td></tr>`; return; 
-            }
-            wadahSemuaDokumen.sort((a,b) => String(b.tgl).localeCompare(String(a.tgl)));
-        
-            tBody.innerHTML = wadahSemuaDokumen.map(d => {
-                // Logika penentuan tombol preview & cetak berdasarkan tipe file
-                let aksiTombol = '';
-                if (d.type === 'pdf') {
-                    aksiTombol = `
-                        <button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Preview PDF"><i class="fa-solid fa-eye"></i></button>
-                        <button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-gray-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Cetak PDF"><i class="fa-solid fa-print"></i></button>
-                    `;
-                } else {
-                    aksiTombol = `
-                        <button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Preview Lembar Kerja"><i class="fa-solid fa-eye"></i></button>
-                        <button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-indigo-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Cetak Lembar Kerja"><i class="fa-solid fa-print"></i></button>
-                    `;
-                }
-        
-                return `
-                    <tr class="border-b bg-white/40">
-                        <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-gray-400 font-mono">SN: ${d.seri}</span></td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-100 text-amber-800':'bg-indigo-100 text-indigo-800'}">${d.jenis}</span></td>
-                        <td class="p-4 font-mono">${d.tgl}</td>
-                        <td class="p-4 text-gray-600 max-w-xs truncate">${d.desc}</td>
-                        <td class="p-4 text-center space-x-1 flex justify-center items-center h-full mt-2">
-                            ${aksiTombol}
-                            <button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-red-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Hapus Dokumen"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${d.hasil}</span></td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
+        // RENDER MASTER ASSET DENGAN BRANDING BARU & TOMBOL HAPUS
         function renderAll() {
             updateStats(); populasikanDropdownAlatDiLembarKerja();
-              const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
-                let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
-    
-                tbody.innerHTML = filteredAlat.map(a => `
-                        <tr class="border-b hover:bg-slate-50/80 transition text-slate-700">
-                            <td class="p-3 font-bold text-slate-900 text-xs">${a.nama}</td>
-                            <td class="p-3 text-xs">${a.merk}</td>
-                            <td class="p-3 text-xs">${a.tipe}</td>
-                            <td class="p-3 font-mono font-bold text-xs">${a.seri}</td>
-                            <td class="p-3 text-xs"><span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-semibold border">${a.lokasi}</span></td>
-                            <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status==='Siap Digunakan'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${a.status}</span></td>
-                            <td class="p-3 text-center space-x-1">
-                                <button onclick="pemicuEditAlatLangsung('${a.id}')" class="bg-amber-500 text-white px-2 py-1 rounded font-bold text-[10px]" title="Edit Aset"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold shadow text-[10px]" title="Lihat Log">Log</button>
-                                <button onclick="hapusAlatMasterFirebase('${a.id}', '${a.nama}')" class="bg-red-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Hapus Aset Permanen"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `).join('');
-        renderTabelPusatDokumen();
-        }
-
-        function hapusDokumenPusatRiwayat(id, koleksiDb) {
-            if(confirm("Apakah Anda yakin ingin menghapus dokumen arsip ini secara permanen dari Firebase Cloud? Data di Log Rekam Jejak alat juga akan otomatis ikut terhapus.")) {
-                db.collection(koleksiDb).doc(id).delete()
-                .then(() => {
-                    alert("🎉 Sukses! Dokumen resmi berhasil terhapus dari cloud database.");
-                })
-                .catch(err => {
-                    alert("Gagal menghapus dokumen cloud: " + err.message);
-                });
-            }
-        }
-        
-        function hapusAlatMasterFirebase(id, namaAlat) {
-            if(confirm(`Apakah Anda yakin ingin menghapus aset "${namaAlat}" secara permanen dari Firebase Cloud? Tindakan ini tidak dapat dibatalkan.`)) {
-                db.collection("dataAlat").doc(id).delete()
-                .then(() => {
-                    alert("🎉 Sukses! Aset berhasil dihapus dari Cloud Database.");
-                })
-                .catch((error) => {
-                    alert("Gagal menghapus aset: " + error.message);
-                });
-            }
+            const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
+            let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
+            
+            tbody.innerHTML = filteredAlat.map(a => `
+                <tr class="border-b hover:bg-slate-50/80 transition text-slate-700">
+                    <td class="p-3 font-bold text-slate-900 text-xs">${a.nama}</td>
+                    <td class="p-3 text-xs">${a.merk}</td>
+                    <td class="p-3 text-xs">${a.tipe}</td>
+                    <td class="p-3 font-mono font-bold text-xs">${a.seri}</td>
+                    <td class="p-3 text-xs"><span class="bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-semibold border">${a.lokasi}</span></td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status==='Siap Digunakan'?'bg-green-100 text-green-800':'bg-red-100 text-red-800'}">${a.status}</span></td>
+                    <td class="p-3 text-center space-x-1">
+                        <button onclick="pemicuEditAlatLangsung('${a.id}')" class="bg-amber-500 text-white px-2 py-1 rounded font-bold text-[10px]" title="Edit Aset"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold shadow text-[10px]" title="Lihat Rekam Log">Log</button>
+                        <button onclick="hapusAlatMasterFirebase('${a.id}', '${a.nama}')" class="bg-red-600 text-white px-2 py-1 rounded font-bold text-[10px]" title="Hapus Aset Permanen"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            renderTabelPusatDokumen();
         }
 
         function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
-        
         function filterAlat() {
             const q = document.getElementById('search-alat').value.toLowerCase();
             const trs = document.getElementById('table-alat-body').getElementsByTagName('tr');
@@ -1006,6 +992,7 @@
             if(canvas) { const ctx = canvas.getContext('2d'); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.beginPath(); }
         }
 
+        // PROTEKSI SENTUHAN INTERFACE SIGNATURE PAD UNTUK MOBILE TABLET
         const signatures = ['sig-teknisi', 'sig-user', 'sig-pj'];
         function initSignatures() {
             signatures.forEach(id => {
