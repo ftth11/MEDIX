@@ -752,11 +752,6 @@
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
             let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
             
-            if(filteredAlat.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">Database Kosong. Silakan suntik data JSON Anda kembali.</td></tr>`;
-                return;
-            }
-
             tbody.innerHTML = filteredAlat.map(a => {
                 const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
                 let infoCal = `<br><span class="text-[9px] text-slate-500 italic tracking-wider">Belum Kalibrasi</span>`;
@@ -764,21 +759,25 @@
                     listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp)));
                     infoCal = `<br><span class="text-[9px] text-indigo-400 font-bold font-mono">Cal Exp: ${listCal[0].exp}</span>`;
                 }
-
+        
+                // ========================================================
+                // KOREKSI PENUKARAN KOLOM MERK ➔ TIPE (AUTO-SWAP VISUAL)
+                // ========================================================
                 let displayNama   = a.nama || '-';
-                let displayMerk   = a.merk || '-';
-                let displayTipe   = '-';
+                let displayMerk   = '-';               // Kosongkan merk karena aslinya ini adalah tipe
+                let displayTipe   = a.merk || '-';     // Pindahkan isi properti 'merk' dari DB ke kolom Tipe/Model
                 let displaySeri   = a.seri || '-';
                 let displayLokasi = a.lokasi || '-';
-
+        
+                // Deteksi jika field lokasi berisi teks kondisi ('Baik') seperti struktur JSON Anda
                 if (String(a.lokasi).toLowerCase() === 'baik') {
                     displayNama   = a.nama || '-';
-                    displayMerk   = a.merk || '-';
-                    displayTipe   = '-';
-                    displaySeri   = a.tipe || '-';
-                    displayLokasi = a.edar || '-';
+                    displayMerk   = '-';               // Setel strip untuk Merk karena data asli bertindak sebagai Tipe
+                    displayTipe   = a.merk || '-';     // Pindahkan isi properti 'merk' (misal: HR-501) ke kolom Model/Tipe
+                    displaySeri   = a.tipe || '-';     // Ambil data Nomor Seri asli dari properti 'tipe'
+                    displayLokasi = a.edar || '-';     // Ambil data Ruangan asli dari properti 'edar'
                 }
-
+        
                 return `
                     <tr class="border-b border-white/5 hover:bg-white/[0.02] transition text-slate-300">
                         <td class="p-3 font-bold text-white text-xs">${displayNama}</td>
@@ -799,7 +798,6 @@
             }).join('');
             renderTabelPusatDokumen();
         }
-
         function eksekusiUrutanLokal(kriteria) {
             if (kriteria === 'nama-asc') dataAlat.sort((a, b) => (a.nama || '').localeCompare(b.nama || ''));
             else if (kriteria === 'nama-desc') dataAlat.sort((a, b) => (b.nama || '').localeCompare(a.nama || ''));
