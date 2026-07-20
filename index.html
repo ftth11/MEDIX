@@ -156,9 +156,10 @@
                         </div>
                     </nav>
                 </div>
+                <!-- BAGIAN BAWAH SIDEBAR DIUBAH MENJADI COPYRIGHT -->
                 <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-                    <span>v2.5-Dynamic</span>
-                    <button onclick="location.reload()" class="hover:text-rose-400"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+                    <span>© 2026 RSUD Pondokgede</span>
+                    <button onclick="location.reload()" class="hover:text-rose-400" title="Keluar"><i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>
             </div>
         </div>
@@ -212,7 +213,7 @@
                             <div class="w-full max-w-[180px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 200px; max-width: 200px;"></canvas></div>
                         </div>
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between lg:col-span-2 min-h-[320px]">
-                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-white/5 pb-2">Sebaran 5 Ruangan Terbanyak</h4>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-white/5 pb-2">Sebaran Seluruh Ruangan</h4>
                             <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; min-height: 200px;"></canvas></div>
                         </div>
                     </div>
@@ -303,7 +304,6 @@
                                     </select>
                                 </div>
 
-                                <!-- DAFTAR CEKLIS MENUS DINAMIS -->
                                 <div class="bg-slate-950/60 p-3 rounded-xl border border-white/5 space-y-2">
                                     <label class="block font-bold text-cyan-400 border-b border-white/5 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses Menu:</label>
                                     <div class="space-y-1.5 pt-1">
@@ -564,9 +564,9 @@
         let currentActiveRole = "Teknisi"; 
         let targetLoginRole = "";
         let currentUserNama = "-";
-        let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; // Izin menu akun aktif
+        let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; 
         
-        let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = [];
+        let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
         let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-";
         let instanceChartKondisi = null; let instanceChartRuangan = null; let qrcodeInstance = null;
 
@@ -574,7 +574,6 @@
         let opsAlatKerja = []; let opsFisik = []; let opsFungsi = [];
         let listNamaTeknisi = []; let listNamaSaksi = [];
 
-        // HAK LIHAT/SEMBUNYIKAN PASSWORD
         function toggleLihatPassword(inputId, tombolEl) {
             const field = document.getElementById(inputId);
             const icon = tombolEl.querySelector('i');
@@ -584,7 +583,6 @@
             }
         }
 
-        // NAVIGATION FORM LOGIN CONTROL
         function pilihRoleSebelumLogin(role) {
             targetLoginRole = role;
             document.getElementById('box-pilih-role').classList.add('hidden');
@@ -601,7 +599,6 @@
             document.getElementById('gate-subtitle').innerText = "Pilih hak akses operasional Anda";
         }
 
-        // VALIDASI MASUK KREDENSIAL DENGAN MENDUKUNG CEKLIS MENU HAK AKSES
         function validasiKredensialUser(e) {
             e.preventDefault();
             const uName = document.getElementById('login-username').value.trim();
@@ -634,7 +631,6 @@
                       const profilCard = document.querySelector('#app-sidebar p.text-white.truncate');
                       if (profilCard) profilCard.innerText = currentUserNama;
 
-                      // KENDALI PENUH / SUPER-ADMIN MANAJEMEN RESMI
                       if (currentActiveRole === 'Manajemen') {
                           document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
                           document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.remove('hidden'));
@@ -644,28 +640,24 @@
                           document.getElementById('btn-ticket-system').classList.remove('hidden');
                           document.getElementById('btn-kalibrasi').classList.remove('hidden');
                           
-                          document.getElementById('box-form-buat-ticket').classLabel = "hidden";
                           document.getElementById('box-form-buat-ticket').classList.add('hidden');
                           switchTab('dashboard');
                       } else {
-                          // IMPLEMENTASI CEKLIS IZIN SECARA DINAMIS
                           document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.add('hidden'));
                           
                           if (currentActiveRole === 'Teknisi') {
                               document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
                               document.getElementById('box-form-buat-ticket').classList.add('hidden');
-                          } else { // User Ruangan
+                          } else { 
                               document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.add('hidden'));
                               document.getElementById('box-form-buat-ticket').classList.remove('hidden');
                           }
 
-                          // Tampilkan tombol menu hanya jika ada di array perizinan ceklis
                           document.getElementById('btn-dashboard').classList.toggle('hidden', !userAksesMenuArray.includes('dashboard'));
                           document.getElementById('btn-data-alat').classList.toggle('hidden', !userAksesMenuArray.includes('master'));
                           document.getElementById('btn-ticket-system').classList.toggle('hidden', !userAksesMenuArray.includes('ticket'));
                           document.getElementById('btn-kalibrasi').classList.toggle('hidden', !userAksesMenuArray.includes('riwayat'));
 
-                          // Alihkan otomatis ke halaman pertama yang diizinkan
                           if(userAksesMenuArray.includes('dashboard')) switchTab('dashboard');
                           else if(userAksesMenuArray.includes('master')) switchTab('data-alat');
                           else if(userAksesMenuArray.includes('ticket')) switchTab('ticket-system');
@@ -688,7 +680,6 @@
               });
         }
 
-        // PENDAFTARAN AKUN BARU DISERTAI MEMORI ARRAY CEKLIS IZIN MENU
         function buatAkunUserBaruOlehAdmin(e) {
             e.preventDefault();
             const nama = document.getElementById('user-form-nama').value;
@@ -696,7 +687,6 @@
             const password = document.getElementById('user-form-password').value;
             const role = document.getElementById('user-form-role').value;
 
-            // Membaca status ceklis menu
             let listIzinMenu = [];
             if(document.getElementById('akses-menu-dashboard').checked) listIzinMenu.push('dashboard');
             if(document.getElementById('akses-menu-master').checked) listIzinMenu.push('master');
@@ -713,7 +703,7 @@
                     nama, username, password, role,
                     menuAkses: listIzinMenu
                 }).then(() => {
-                    alert("🎉 Akun karyawan baru dengan konfigurasi ceklis izin berhasil disimpan!");
+                    alert("🎉 Akun karyawan baru berhasil disimpan!");
                     document.getElementById('user-form-nama').value = "";
                     document.getElementById('user-form-username').value = "";
                     document.getElementById('user-form-password').value = "";
@@ -727,7 +717,6 @@
             }
         }
 
-        // REAL-TIME SYNC MANAGEMENT ACCOUNT LIST
         db.collection("users").onSnapshot((querySnapshot) => {
             dataUserSistem = [];
             querySnapshot.forEach((doc) => { dataUserSistem.push({ id: doc.id, ...doc.data() }); });
@@ -753,7 +742,6 @@
             }
         });
 
-        // CORE FIREBASE EVENT LISTENERS
         db.collection("dataAlat").onSnapshot((querySnapshot) => {
             dataAlat = []; querySnapshot.forEach((doc) => { dataAlat.push({ id: doc.id, ...doc.data() }); });
             aktualisasikanDotKoneksiHijau(); evaluasiJatuhTempoKalibrasiMassal(); renderAll(); populasikanDropdownAlatDiTicketForm();
@@ -767,6 +755,11 @@
         db.collection("troubleTickets").onSnapshot((querySnapshot) => {
             dataTiket = []; querySnapshot.forEach((doc) => { dataTiket.push({ id: doc.id, ...doc.data() }); });
             renderDaftarTiketMasuk();
+        });
+
+        db.collection("laporanKeluhanLog").onSnapshot((querySnapshot) => {
+            dataKeluhanLog = []; querySnapshot.forEach((doc) => { dataKeluhanLog.push({ id: doc.id, ...doc.data() }); });
+            renderAll();
         });
 
         db.collection("lembarKerja").onSnapshot((querySnapshot) => {
@@ -788,7 +781,7 @@
             if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]";
         }
 
-        // CHARTS DASHBOARD LOGIC (SAFE PROTECTION)
+        // RENDER GRAFIK SEBARAN SELURUH RUANGAN TANPA BATASAN
         function renderGrafikDashboardDinamis() {
             try {
                 if(dataAlat.length === 0) return;
@@ -815,7 +808,8 @@
                     hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
                 });
 
-                const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]).slice(0, 5);
+                // Menampilkan seluruh ruangan (tidak di-slice menjadi 5 saja)
+                const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]);
                 const labelRuangan = ruanganTerurut.map(item => item[0]);
                 const skorRuangan = ruanganTerurut.map(item => item[1]);
 
@@ -859,23 +853,38 @@
             if(htmlWarning !== "") { warningList.innerHTML = htmlWarning; warningBox.classList.remove('hidden'); } else { warningBox.classList.add('hidden'); }
         }
 
-        // WORKFLOW TICKETING SYSTEM - DENGAN HAK KENDALI PENUH ADMIN
         function populasikanDropdownAlatDiTicketForm() {
             const selectEl = document.getElementById('ticket-form-alat'); if(!selectEl) return;
             selectEl.innerHTML = `<option value="">-- PILIH ALAT MEDIS --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
         }
 
+        // PELAPORAN KERUSAKAN TERINTEGRASI KE LOG (TANPA MENGHAPUS MASTER ASET)
         function kirimTiketKeluhanKerusakan(e) {
             e.preventDefault();
             const alatId = document.getElementById('ticket-form-alat').value;
             const keluhan = document.getElementById('ticket-form-keluhan').value;
             if(!alatId) return alert("Pilih alat terlebih dahulu!");
 
-            const payload = { alatId, keluhan, statusTiket: "Menunggu Tindakan", tglLapor: new Date().toISOString().substring(0, 10) };
-            db.collection("troubleTickets").add(payload).then(() => {
-                db.collection("dataAlat").doc(alatId).update({ status: "Dalam Perbaikan" });
+            const tglLaporStr = new Date().toISOString().substring(0, 10);
+            const payloadTicket = { alatId, keluhan, statusTiket: "Menunggu Tindakan", tglLapor: tglLaporStr };
+            
+            // Simpan ke collection troubleTickets dan simpan juga arsipnya ke collection laporanKeluhanLog agar masuk Total Dokumen
+            db.collection("troubleTickets").add(payloadTicket).then(() => {
+                return db.collection("laporanKeluhanLog").add({
+                    alatId: alatId,
+                    noLk: "TICKET-LOG",
+                    jenisKerja: "Laporan Kerusakan",
+                    textTgl: tglLaporStr,
+                    desc_kerja: "Keluhan: " + keluhan,
+                    hasilTunggal: "Menunggu Penanganan",
+                    teknisiTtd: "-"
+                });
+            }).then(() => {
+                // Status alat diperbarui menjadi Dalam Perbaikan TANPA MENGHAPUS master data alat itu sendiri
+                return db.collection("dataAlat").doc(alatId).update({ status: "Dalam Perbaikan" });
+            }).then(() => {
                 document.getElementById('ticket-form-keluhan').value = "";
-                alert("🎉 Tiket kerusakan berhasil dikirim!");
+                alert("🎉 Tiket kerusakan berhasil dikirim dan tercatat dalam log!");
             });
         }
 
@@ -888,7 +897,6 @@
                 let aksiAksi = "";
 
                 if (t.statusTiket !== 'Selesai') {
-                    // Tombol tindakan dibuka penuh baik untuk akses Teknisi maupun Admin (Manajemen)
                     if (currentActiveRole === 'Teknisi' || currentActiveRole === 'Manajemen') {
                         let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka Lembar Kerja' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
                         let warnaTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-amber-600 hover:bg-amber-700';
@@ -940,7 +948,6 @@
             }
         }
 
-        // SECURITY QR CODE VERIFICATION LOGIC
         function perbaruiSistemVerifikasiQRCodeResmi(noLk, namaTeknisi) {
             try {
                 const hashBox = document.getElementById('dlk-lbl-hash'); const qrBox = document.getElementById('dlk-qrcode-box');
@@ -954,7 +961,6 @@
             } catch (error) { console.log("QR Engine deferred."); }
         }
 
-        // CORE RENDER & WORKSHEET SYSTEM
         function renderAll() {
             updateStats(); populasikanDropdownAlatDiLembarKerja();
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
@@ -1059,7 +1065,6 @@
             setTimeout(initSignatures, 400);
         }
 
-        // AUTO-Akumulasi Poin Lembar Kerja
         function populasikanDropdownAlatDiLembarKerja() { 
             const selectEl = document.getElementById('dlk-select-alat'); const calSelectEl = document.getElementById('form-cal-alat'); if(!selectEl) return;
             let htmlOpts = `<option value="">-- PILIH ALAT MEDIS SESUAI DATABASE --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} - [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
@@ -1116,18 +1121,24 @@
         function renderTabelPusatDokumen() {
             const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return; let docs = [];
             dataKalibrasi.forEach(c => { const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: c.id, namaAlat: a.nama, seri: a.tipe || a.seri || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); });
+            
             const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             combinedLk.forEach(lk => { const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lk.id, namaAlat: a.nama, seri: a.tipe || lk.seri || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || lk.tgl.substring(0,10), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal, koleksiDb: 'lembarKerja' }); });
+            
+            // Integrasi log pelaporan kerusakan ke tabel pusat dokumen & total dokumen
+            dataKeluhanLog.forEach(lg => { const a = dataAlat.find(i => i.id == lg.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lg.id, namaAlat: a.nama, seri: a.tipe || a.seri || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal, koleksiDb: 'laporanKeluhanLog' }); });
+
             if(subTabDokumenAktif === 'kalibrasi') docs = docs.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
             if(subTabDokumenAktif === 'mandiri') docs = docs.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi');
             docs.sort((x,y) => String(y.tgl).localeCompare(String(x.tgl)));
+            
             if(docs.length === 0) { tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Tidak ada berkas.</td></tr>`; return; }
             tBody.innerHTML = docs.map(d => `
                 <tr class="border-b border-white/5 hover:bg-white/[0.01]">
                     <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-slate-500 font-mono">SN: ${d.seri}</span></td>
-                    <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
+                    <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':d.jenis.includes('Laporan')?'bg-rose-500/10 text-rose-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
                     <td class="p-4 font-mono">${d.tgl}</td><td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
-                    <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${d.type==='pdf'?`<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition"><i class="fa-solid fa-eye"></i></button>`:`<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition"><i class="fa-solid fa-eye"></i></button>`}<button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition"><i class="fa-solid fa-trash"></i></button></div></td>
+                    <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${d.type==='pdf'?`<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition"><i class="fa-solid fa-eye"></i></button>`:d.type==='lk-print'?`<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition"><i class="fa-solid fa-eye"></i></button>`:`<span class="text-[10px] text-slate-500 italic px-2">Log</span>`}<button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition"><i class="fa-solid fa-trash"></i></button></div></td>
                     <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${d.hasil}</span></td>
                 </tr>
             `).join('');
@@ -1150,7 +1161,7 @@
             if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = dataAlat.length;
             if(document.getElementById('stat-ready')) document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
             if(document.getElementById('stat-broken')) document.getElementById('stat-broken').innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
-            if(document.getElementById('stat-logs')) document.getElementById('stat-logs').innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
+            if(document.getElementById('stat-logs')) document.getElementById('stat-logs').innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length + dataKeluhanLog.length;
         }
 
         function previewFotoDipilih(input) {
@@ -1212,7 +1223,7 @@
                     function getPos(e) { const r = canvas.getBoundingClientRect(); const cX = e.touches ? e.touches[0].clientX : e.clientX; const cY = e.touches ? e.touches[0].clientY : e.clientY; return { x: cX - r.left, y: cY - r.top }; }
                     function startDrawing(e) { isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); if (e.cancelable) e.preventDefault(); }
                     function draw(e) { if (!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); if (e.cancelable) e.preventDefault(); }
-                    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isDrawing = false);
+                    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isVideoPlaying = false);
                     canvas.addEventListener('touchstart', startDrawing, { passive: false }); canvas.addEventListener('touchmove', draw, { passive: false }); canvas.addEventListener('touchend', () => isDrawing = false);
                 });
             } catch(e) { console.log("Canvas signature deferred."); }
