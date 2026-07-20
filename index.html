@@ -55,24 +55,46 @@
     <!-- GATEWAY 1: SISTEM MULTI-USER LOGIN -->
     <div id="auth-gate-screen" class="fixed inset-0 bg-slate-950 z-[9999] flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-white/10 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 text-center">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 mx-auto flex items-center justify-center shadow-lg shadow-blue-500/20">
-                <i class="fa-solid fa-shield-medical text-white text-2xl"></i>
+            
+            <div class="w-16 h-16 rounded-full overflow-hidden mx-auto border-2 border-cyan-500/30 shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-gate').classList.remove('hidden')" class="w-full h-full object-cover" alt="Logo">
+                <i id="fallback-icon-gate" class="fa-solid fa-heart-pulse text-2xl text-cyan-400 hidden"></i>
             </div>
+            
             <div>
-                <h2 class="text-xl font-black text-white tracking-wide">MEDIX Gate Control</h2>
-                <p class="text-xs text-slate-400 mt-1">Pilih hak akses operasional Anda</p>
+                <h2 class="text-xl font-black text-white tracking-wide">MEDIX</h2>
+                <p id="gate-subtitle" class="text-xs text-slate-400 mt-1">Pilih hak akses operasional Anda</p>
             </div>
-            <div class="space-y-2 pt-2">
-                <button onclick="pilihRoleUserKontrol('Teknisi')" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 p-2.5 rounded-xl text-xs font-bold text-white hover:from-blue-700 transition flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-user-gear"></i> <span>Masuk sebagai Teknisi Lapangan</span>
+
+            <!-- Bagian A: Pilihan Role Awal -->
+            <div id="box-pilih-role" class="space-y-2 pt-2">
+                <button onclick="pilihRoleSebelumLogin('Teknisi')" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 p-2.5 rounded-xl text-xs font-bold text-white hover:from-blue-700 transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-user-gear"></i> <span>Teknisi</span>
                 </button>
-                <button onclick="pilihRoleUserKontrol('User Ruangan')" class="w-full bg-slate-800 p-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 transition flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-user-nurse"></i> <span>Masuk sebagai Perawat/Ruangan</span>
+                <button onclick="pilihRoleSebelumLogin('User Ruangan')" class="w-full bg-slate-800 p-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-user-nurse"></i> <span>User</span>
                 </button>
-                <button onclick="pilihRoleUserKontrol('Manajemen')" class="w-full bg-slate-800/40 border border-white/5 p-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 transition flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-user-tie"></i> <span>Masuk sebagai Direksi / Audit RS</span>
+                <button onclick="pilihRoleSebelumLogin('Manajemen')" class="w-full bg-slate-800/40 border border-white/5 p-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-user-tie"></i> <span>Admin</span>
                 </button>
             </div>
+
+            <!-- Bagian B: Form Kredensial (Tersembunyi Awalnya) -->
+            <form id="form-login-kredensial" onsubmit="validasiKredensialUser(event)" class="hidden space-y-3 pt-2 text-left">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Username</label>
+                    <input type="text" id="login-username" required class="w-full bg-slate-950 text-white text-xs border border-white/10 p-2.5 rounded-xl outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Password</label>
+                    <input type="password" id="login-password" required class="w-full bg-slate-950 text-white text-xs border border-white/10 p-2.5 rounded-xl outline-none focus:border-cyan-500">
+                </div>
+                <div class="flex space-x-2 pt-1">
+                    <button type="button" onclick="kembaliKePilihRole()" class="flex-1 bg-slate-800 text-slate-300 text-xs py-2 rounded-xl font-medium">Kembali</button>
+                    <button type="submit" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs py-2 rounded-xl font-bold transition">Masuk</button>
+                </div>
+            </form>
+
         </div>
     </div>
 
@@ -100,7 +122,7 @@
                     <div class="px-4 py-2 mt-2">
                         <div class="bg-slate-950/50 rounded-xl p-2.5 border border-white/5 flex items-center space-x-2.5">
                             <div class="w-8 h-8 rounded-lg bg-blue-600/20 flex items-center justify-center text-blue-400 border border-blue-500/20"><i class="fa-solid fa-circle-user"></i></div>
-                            <div class="overflow-hidden"><p id="sidebar-role-badge" class="text-[10px] uppercase font-bold text-cyan-400 tracking-wider">Role</p><p class="text-xs text-white truncate font-medium">B. Abdul Pattah</p></div>
+                            <div class="overflow-hidden"><p id="sidebar-role-badge" class="text-[10px] uppercase font-bold text-cyan-400 tracking-wider">Role</p><p class="text-xs text-white truncate font-medium">-</p></div>
                         </div>
                     </div>
                     
@@ -117,6 +139,9 @@
                         <button onclick="switchTab('kalibrasi')" id="btn-kalibrasi" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-gray-400 hover:text-white hover:bg-slate-800/50 transition menu-akses-teknisi">
                             <i class="fa-solid fa-file-invoice-dollar w-5 text-indigo-400"></i><span>Pusat Riwayat Dokumen</span>
                         </button>
+                        <button onclick="switchTab('kelola-akun')" id="btn-kelola-akun" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-gray-400 hover:text-white hover:bg-slate-800/50 transition menu-akses-admin-saja hidden">
+                            <i class="fa-solid fa-users-gear w-5 text-rose-400"></i><span>Kelola Akun User</span>
+                        </button>
                         
                         <div id="btn-aksi-cepat-container" class="pt-4 mt-4 border-t border-slate-800 space-y-2 menu-akses-teknisi">
                             <span class="block px-2 text-[10px] uppercase font-bold text-gray-500 tracking-wider">Aksi Cepat</span>
@@ -127,7 +152,7 @@
                     </nav>
                 </div>
                 <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-                    <span>v2.3-Workflow</span>
+                    <span>v2.4-Auth</span>
                     <button onclick="location.reload()" class="hover:text-rose-400"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
                 </div>
             </div>
@@ -241,6 +266,45 @@
                     <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-800 max-w-md text-[11px] font-bold text-slate-400 space-x-1 no-print shadow-2xl"><button onclick="gantiSubTabDokumen('all')" id="doc-tab-all" class="px-4 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white">Semua</button><button onclick="gantiSubTabDokumen('kalibrasi')" id="doc-tab-kalibrasi" class="px-4 py-2 rounded-lg flex-1 text-center">Sertifikat Kalibrasi</button><button onclick="gantiSubTabDokumen('mandiri')" id="doc-tab-mandiri" class="px-4 py-2 rounded-lg flex-1 text-center">Lembar Kerja</button></div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
                         <div class="overflow-x-auto w-full"><table class="w-full text-left text-xs min-w-[800px]"><thead class="bg-slate-900/90 font-bold text-slate-400"><tr><th class="p-4">Alat Kesehatan / SN</th><th class="p-4">Jenis Dokumen</th><th class="p-4">Tanggal Dibuat</th><th class="p-4">Deskripsi</th><th class="p-4 text-center">Aksi Berkas</th><th class="p-4">Status</th></tr></thead><tbody id="table-kalibrasi-body" class="divide-y divide-white/5 text-slate-300"></tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- KONTEN BARU KHUSUS ADMIN: KELOLA AKUN USER -->
+                <div id="tab-kelola-akun" class="tab-content hidden space-y-6">
+                    <div class="flex justify-between items-center no-print">
+                        <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Registrasi & Manajemen Akun Karyawan</h2>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Form Pendaftaran Akun Baru -->
+                        <div class="glass-panel p-5 rounded-2xl border space-y-4 lg:col-span-1 text-xs">
+                            <h3 class="text-sm font-bold text-cyan-400 border-b border-white/5 pb-2"><i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun Baru</h3>
+                            <form onsubmit="buatAkunUserBaruOlehAdmin(event)" class="space-y-3">
+                                <div><label class="block font-bold text-slate-400 mb-1">Nama Lengkap Karyawan *</label><input type="text" id="user-form-nama" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
+                                <div><label class="block font-bold text-slate-400 mb-1">Username Unik *</label><input type="text" id="user-form-username" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
+                                <div><label class="block font-bold text-slate-400 mb-1">Password Sistem *</label><input type="password" id="user-form-password" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
+                                <div>
+                                    <label class="block font-bold text-slate-400 mb-1">Hak Akses Role *</label>
+                                    <select id="user-form-role" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none font-semibold">
+                                        <option value="Teknisi">Teknisi Lapangan</option>
+                                        <option value="User Ruangan">User (Perawat/Ruangan)</option>
+                                        <option value="Manajemen">Admin (Manajemen)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-2.5 rounded-xl font-bold hover:from-blue-700 transition">Daftarkan Akun Karyawan</button>
+                            </form>
+                        </div>
+                        <!-- Tabel Daftar Pengguna Cloud -->
+                        <div class="glass-panel p-5 rounded-2xl border lg:col-span-2 space-y-3">
+                            <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2"><i class="fa-solid fa-users mr-1.5"></i> Daftar Akun Terdaftar (Real-time)</h3>
+                            <div class="overflow-x-auto w-full">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-950 text-slate-400 font-bold">
+                                        <tr><th class="p-3">Nama Lengkap</th><th class="p-3">Username</th><th class="p-3">Hak Akses</th><th class="p-3 text-center">Aksi</th></tr>
+                                    </thead>
+                                    <tbody id="table-user-body" class="divide-y divide-white/5 text-slate-300"></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -467,7 +531,10 @@
         const db = firebase.firestore();
 
         let currentActiveRole = "Teknisi"; 
-        let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = [];
+        let targetLoginRole = "";
+        let currentUserNama = "-";
+        
+        let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = [];
         let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-";
         let instanceChartKondisi = null; let instanceChartRuangan = null; let qrcodeInstance = null;
 
@@ -475,30 +542,139 @@
         let opsAlatKerja = []; let opsFisik = []; let opsFungsi = [];
         let listNamaTeknisi = []; let listNamaSaksi = [];
 
-        // GATEWAY MULTI-USER ACCESS SYSTEM
-        function pilihRoleUserKontrol(role) {
-            currentActiveRole = role;
-            document.getElementById('auth-gate-screen').classList.add('hidden');
-            document.getElementById('sidebar-role-badge').innerText = role;
-            
-            if (role === 'User Ruangan') {
-                document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.add('hidden'));
-                document.getElementById('box-form-buat-ticket').classList.remove('hidden');
-                switchTab('ticket-system');
-            } else if (role === 'Manajemen') {
-                document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.add('hidden'));
-                document.getElementById('box-form-buat-ticket').classList.add('hidden');
-                switchTab('dashboard');
-            } else {
-                // Teknisi Lapangan
-                document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
-                document.getElementById('box-form-buat-ticket').classList.add('hidden'); 
-                switchTab('dashboard');
-            }
-            
-            renderAll();
-            setTimeout(renderGrafikDashboardDinamis, 300);
+        // GATEWAY MULTI-USER ACCESS SYSTEM (PILIH ROLE & KREDENSIAL)
+        function pilihRoleSebelumLogin(role) {
+            targetLoginRole = role;
+            document.getElementById('box-pilih-role').classList.add('hidden');
+            document.getElementById('form-login-kredensial').classList.remove('hidden');
+            document.getElementById('gate-subtitle').innerText = "Masukkan kredensial untuk " + role;
+            document.getElementById('login-username').value = "";
+            document.getElementById('login-password').value = "";
         }
+
+        function kembaliKePilihRole() {
+            targetLoginRole = "";
+            document.getElementById('box-pilih-role').classList.remove('hidden');
+            document.getElementById('form-login-kredensial').classList.add('hidden');
+            document.getElementById('gate-subtitle').innerText = "Pilih hak akses operasional Anda";
+        }
+
+        function validasiKredensialUser(e) {
+            e.preventDefault();
+            const uName = document.getElementById('login-username').value.trim();
+            const uPass = document.getElementById('login-password').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            submitBtn.innerText = "Memverifikasi...";
+            submitBtn.disabled = true;
+
+            db.collection("users")
+              .where("username", "==", uName)
+              .where("password", "==", uPass)
+              .where("role", "==", targetLoginRole)
+              .get()
+              .then((querySnapshot) => {
+                  if (!querySnapshot.empty) {
+                      querySnapshot.forEach((doc) => {
+                          const uData = doc.data();
+                          currentUserNama = uData.nama || uName;
+                      });
+
+                      currentActiveRole = targetLoginRole;
+                      document.getElementById('auth-gate-screen').classList.add('hidden');
+                      document.getElementById('sidebar-role-badge').innerText = currentActiveRole;
+                      
+                      const profilCard = document.querySelector('#app-sidebar p.text-white.truncate');
+                      if (profilCard) profilCard.innerText = currentUserNama;
+
+                      // Kontrol Visibilitas Halaman Berdasarkan Aturan Baru
+                      if (currentActiveRole === 'User Ruangan') {
+                          document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.add('hidden'));
+                          document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.add('hidden'));
+                          document.getElementById('box-form-buat-ticket').classList.remove('hidden');
+                          switchTab('ticket-system');
+                      } else if (currentActiveRole === 'Manajemen') { // Hak Akses Admin
+                          document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.add('hidden'));
+                          document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.remove('hidden'));
+                          document.getElementById('box-form-buat-ticket').classList.add('hidden');
+                          switchTab('dashboard');
+                      } else { // Hak Akses Teknisi
+                          document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
+                          document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.add('hidden'));
+                          document.getElementById('box-form-buat-ticket').classList.add('hidden');
+                          switchTab('dashboard');
+                      }
+                      
+                      renderAll();
+                      setTimeout(renderGrafikDashboardDinamis, 300);
+                  } else {
+                      alert("❌ Kredensial salah atau tidak cocok dengan Role!");
+                      submitBtn.innerText = "Masuk";
+                      submitBtn.disabled = false;
+                  }
+              })
+              .catch((err) => {
+                  console.error(err);
+                  alert("Koneksi gagal.");
+                  submitBtn.innerText = "Masuk";
+                  submitBtn.disabled = false;
+              });
+        }
+
+        // HAK AKSES ADMIN: BUAT AKUN KARYAWAN BARU
+        function buatAkunUserBaruOlehAdmin(e) {
+            e.preventDefault();
+            const nama = document.getElementById('user-form-nama').value;
+            const username = document.getElementById('user-form-username').value.trim();
+            const password = document.getElementById('user-form-password').value;
+            const role = document.getElementById('user-form-role').value;
+
+            db.collection("users").where("username", "==", username).get().then((snap) => {
+                if (!snap.empty) {
+                    alert("❌ Username ini sudah terpakai! Gunakan nama unik lain.");
+                    return;
+                }
+                db.collection("users").add({ nama, username, password, role }).then(() => {
+                    alert("🎉 Akun karyawan baru berhasil didaftarkan ke basis cloud!");
+                    document.getElementById('user-form-nama').value = "";
+                    document.getElementById('user-form-username').value = "";
+                    document.getElementById('user-form-password').value = "";
+                });
+            });
+        }
+
+        function hapusAkunUserOlehAdmin(id, nama) {
+            if(confirm(`Hapus akun milik "${nama}" dari database?`)) {
+                db.collection("users").doc(id).delete().then(() => alert("🎉 Akun dibersihkan!"));
+            }
+        }
+
+        // STREAM REAL-TIME AKUN SYSTEM UNTUK TAB ADMIN
+        db.collection("users").onSnapshot((querySnapshot) => {
+            dataUserSistem = [];
+            querySnapshot.forEach((doc) => { dataUserSistem.push({ id: doc.id, ...doc.data() }); });
+            
+            // Masukkan nama teknisi secara dinamis ke dropdown Lembar Kerja
+            listNamaTeknisi = dataUserSistem.filter(u => u.role === 'Teknisi').map(u => u.nama);
+            listNamaSaksi = dataUserSistem.filter(u => u.role === 'User Ruangan').map(u => u.nama);
+            populasikanDropdownNamaTandaTangan();
+            
+            const tbody = document.getElementById('table-user-body');
+            if(tbody) {
+                if(dataUserSistem.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-500 italic">Belum ada akun terdaftar.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = dataUserSistem.map(u => `
+                    <tr class="border-b border-white/5 bg-transparent hover:bg-white/[0.01]">
+                        <td class="p-3 font-semibold text-white">${u.nama}</td>
+                        <td class="p-3 font-mono text-slate-400">${u.username}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-white/5">${u.role}</span></td>
+                        <td class="p-3 text-center"><button onclick="hapusAkunUserOlehAdmin('${u.id}','${u.nama}')" class="bg-rose-600/20 text-rose-400 px-3 py-1 rounded-xl text-[10px] hover:bg-rose-600 transition"><i class="fa-solid fa-user-minus"></i> Hapus</button></td>
+                    </tr>
+                `).join('');
+            }
+        });
 
         // FIREBASE SYNC STREAMS
         db.collection("dataAlat").onSnapshot((querySnapshot) => {
@@ -523,8 +699,6 @@
             dataInspeksi = dataLk.filter(d => d.jenisKerja === 'Inspection').map(d => ({...d, desc: d.desc_kerja}));
             
             dataLk.forEach(lk => {
-                if (lk.teknisiTtd && !listNamaTeknisi.includes(lk.teknisiTtd)) listNamaTeknisi.push(lk.teknisiTtd);
-                if (lk.saksiTtd && !listNamaSaksi.includes(lk.saksiTtd)) listNamaSaksi.push(lk.saksiTtd);
                 try { JSON.parse(lk.paramAlatKerja).forEach(i => { if(!opsAlatKerja.includes(i)) opsAlatKerja.push(i); }); } catch(e){}
                 try { JSON.parse(lk.paramFisik).forEach(i => { if(!opsFisik.includes(i)) opsFisik.push(i); }); } catch(e){}
                 try { JSON.parse(lk.paramFungsi).forEach(i => { if(!opsFungsi.includes(i)) opsFungsi.push(i); }); } catch(e){}
@@ -541,7 +715,6 @@
         function renderGrafikDashboardDinamis() {
             try {
                 if(dataAlat.length === 0) return;
-
                 const jReady = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
                 const jBroken = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
 
@@ -552,12 +725,7 @@
                         type: 'doughnut',
                         data: {
                             labels: ['Siap Digunakan', 'Dalam Perbaikan'],
-                            datasets: [{
-                                data: [jReady, jBroken],
-                                backgroundColor: ['rgba(16, 185, 129, 0.75)', 'rgba(244, 63, 94, 0.75)'],
-                                borderColor: ['#10b981', '#f43f5e'],
-                                borderWidth: 1.5
-                            }]
+                            datasets: [{ data: [jReady, jBroken], backgroundColor: ['rgba(16, 185, 129, 0.75)', 'rgba(244, 63, 94, 0.75)'], borderColor: ['#10b981', '#f43f5e'], borderWidth: 1.5 }]
                         },
                         options: { plugins: { legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } }, cutout: '70%', responsive: true, maintainAspectRatio: false }
                     });
@@ -581,14 +749,7 @@
                         type: 'bar',
                         data: {
                             labels: labelRuangan,
-                            datasets: [{
-                                label: 'Jumlah Aset',
-                                data: skorRuangan,
-                                backgroundColor: 'rgba(59, 130, 246, 0.4)',
-                                borderColor: '#3b82f6',
-                                borderWidth: 1.5,
-                                borderRadius: 6
-                            }]
+                            datasets: [{ label: 'Jumlah Aset', data: skorRuangan, backgroundColor: 'rgba(59, 130, 246, 0.4)', borderColor: '#3b82f6', borderWidth: 1.5, borderRadius: 6 }]
                         },
                         options: {
                             responsive: true, maintainAspectRatio: false,
@@ -600,9 +761,7 @@
                         }
                     });
                 }
-            } catch (error) {
-                console.log("Chart rendering deferred:", error);
-            }
+            } catch (error) { console.log("Chart rendering deferred:", error); }
         }
 
         function evaluasiJatuhTempoKalibrasiMassal() {
@@ -623,7 +782,7 @@
             if(htmlWarning !== "") { warningList.innerHTML = htmlWarning; warningBox.classList.remove('hidden'); } else { warningBox.classList.add('hidden'); }
         }
 
-        // WORKFLOW TICKETING SYSTEM - PERBAIKAN ALUR DATA AMAN
+        // WORKFLOW TICKETING SYSTEM - ALUR TIKET AMAN SEDANG DIKERJAKAN
         function populasikanDropdownAlatDiTicketForm() {
             const selectEl = document.getElementById('ticket-form-alat'); if(!selectEl) return;
             selectEl.innerHTML = `<option value="">-- PILIH ALAT MEDIS --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
@@ -690,8 +849,6 @@
             document.getElementById('dlk-select-alat').value = alatId;
             sinkronisasiDataAlatKeWorksheet(alatId);
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(r => { if(r.value === "Corrective Maintenance") r.checked = true; });
-            
-            // Mengubah status tiket agar tetap eksis dalam daftar antrean pemantauan
             db.collection("troubleTickets").doc(tiketId).update({ statusTiket: "Sedang Dikerjakan" });
         }
 
@@ -716,9 +873,7 @@
                 if (typeof QRCode !== 'undefined') {
                     qrcodeInstance = new QRCode(qrBox, { text: securePayloadString, width: 64, height: 64, colorDark: "#0f172a", colorLight: "#ffffff" });
                 }
-            } catch (error) {
-                console.log("QR Engine deferred.");
-            }
+            } catch (error) { console.log("QR Engine deferred."); }
         }
 
         // CORE RENDER & WORKSHEET SYSTEM
@@ -773,11 +928,8 @@
                 db.collection("lembarKerja").add(payload).then(() => {
                     const newStatus = payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan";
                     
-                    // Bersihkan trouble ticket yang sesuai dari antrean secara otomatis
                     db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => {
-                            db.collection("troubleTickets").doc(doc.id).delete();
-                        });
+                        querySnapshot.forEach((doc) => { db.collection("troubleTickets").doc(doc.id).delete(); });
                     });
 
                     return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
@@ -799,7 +951,7 @@
             db.collection("lembarKerja").get().then(s => {
                 let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
                 document.getElementById('dlk-no').value = generatedNo;
-                perbaruiSistemVerifikasiQRCodeResmi(generatedNo, "IPSRS");
+                perbaruiSistemVerifikasiQRCodeResmi(generatedNo, currentUserNama);
             });
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); 
@@ -868,18 +1020,19 @@
                 let dMerk = a.kode || '-', dTipe = a.merk || '-', dSeri = a.tipe || '-', dLokasi = a.edar || '-';
                 if(a.lokasi !== 'Baik') { dMerk = a.merk; dTipe = a.tipe; dSeri = a.seri; dLokasi = a.lokasi; }
                 document.getElementById('dlk-nama').value = a.nama; document.getElementById('dlk-merk').value = dMerk; document.getElementById('dlk-tipe').value = dTipe; document.getElementById('dlk-seri').value = dSeri; document.getElementById('dlk-lokasi').value = dLokasi;
-                let defaultKaru = "Karu " + dLokasi; if(!listNamaSaksi.includes(defaultKaru)) listNamaSaksi.unshift(defaultKaru);
                 populasikanDropdownNamaTandaTangan();
+                if(document.getElementById('dlk-select-nama-teknisi').innerHTML.includes(currentUserNama)) {
+                    document.getElementById('dlk-select-nama-teknisi').value = currentUserNama;
+                    perbaruiSistemVerifikasiQRCodeResmi(document.getElementById('dlk-no').value, currentUserNama);
+                }
             }
         }
         function hitungOtomatisMasaBerlakuSatuTahun(v) { if(!v) return; let d = new Date(v); d.setFullYear(d.getFullYear()+1); document.getElementById('dlk-nokal').value = d.toISOString().substring(0,10); }
         function populasikanDropdownNamaTandaTangan() {
-            document.getElementById('dlk-select-nama-teknisi').innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-baru">+ Tambah Teknisi</option>`;
-            document.getElementById('dlk-select-nama-saksi').innerHTML = `<option value="">-- PILIH USER RUANGAN --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-baru">+ Tambah User</option>`;
-            document.getElementById('dlk-select-nama-teknisi').onchange = function(e) { pemicuTambahNamaTtd(e.target, listNamaTeknisi); if(e.target.value !== 'tambah-baru') perbaruiSistemVerifikasiQRCodeResmi(document.getElementById('dlk-no').value, e.target.value); }
-            document.getElementById('dlk-select-nama-saksi').onchange = function(e) { pemicuTambahNamaTtd(e.target, listNamaSaksi); }
+            document.getElementById('dlk-select-nama-teknisi').innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('');
+            document.getElementById('dlk-select-nama-saksi').innerHTML = `<option value="">-- PILIH USER RUANGAN --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('');
+            document.getElementById('dlk-select-nama-teknisi').onchange = function(e) { perbaruiSistemVerifikasiQRCodeResmi(document.getElementById('dlk-no').value, e.target.value); }
         }
-        function pemicuTambahNamaTtd(el, arr) { if(el.value === "tambah-baru") { let n = prompt("Masukkan nama baru:"); if(n && n.trim() !== "") { let c = n.trim(); if(!arr.includes(c)) arr.unshift(c); populasikanDropdownNamaTandaTangan(); el.value = c; } else el.selectedIndex = 0; } }
         function renderTabelPusatDokumen() {
             const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return; let docs = [];
             dataKalibrasi.forEach(c => { const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: c.id, namaAlat: a.nama, seri: a.tipe || a.seri || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); });
@@ -975,9 +1128,7 @@
                     canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isDrawing = false);
                     canvas.addEventListener('touchstart', startDrawing, { passive: false }); canvas.addEventListener('touchmove', draw, { passive: false }); canvas.addEventListener('touchend', () => isDrawing = false);
                 });
-            } catch(e) {
-                console.log("Canvas signature deferred.");
-            }
+            } catch(e) { console.log("Canvas signature deferred."); }
         }
         
         window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
