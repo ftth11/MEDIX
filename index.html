@@ -127,7 +127,7 @@
                     </nav>
                 </div>
                 <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-                    <span>v2.1-Biz</span>
+                    <span>v2.2-Safe</span>
                     <button onclick="location.reload()" class="hover:text-rose-400"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
                 </div>
             </div>
@@ -179,11 +179,11 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between items-center lg:col-span-1 min-h-[320px]">
                             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center w-full border-b border-white/5 pb-2">Persentase Kelaikan Aset</h4>
-                            <div class="w-full max-w-[180px] flex-1 flex items-center justify-center"><canvas id="chartKondisiAlat"></canvas></div>
+                            <div class="w-full max-w-[180px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 200px; max-width: 200px;"></canvas></div>
                         </div>
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between lg:col-span-2 min-h-[320px]">
                             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-white/5 pb-2">Sebaran 5 Ruangan Terbanyak</h4>
-                            <div class="w-full flex-1"><canvas id="chartSebaranRuangan"></canvas></div>
+                            <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; min-height: 200px;"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -210,26 +210,23 @@
                     </div>
                 </div>
 
-                <!-- KONTEN: SYSTEM WORKFLOW TICKETING (FORM BUAT TIKET DIKONDISIKAN, DAFTAR DIOPTIMALKAN) -->
+                <!-- KONTEN: SYSTEM WORKFLOW TICKETING -->
                 <div id="tab-ticket-system" class="tab-content hidden space-y-6">
                     <div class="grid grid-cols-1 gap-6 no-print">
-                        <!-- Form Lapor Kerusakan (Hanya muncul jika yang login adalah User Ruangan) -->
                         <div id="box-form-buat-ticket" class="glass-panel p-5 rounded-2xl shadow-2xl border space-y-3 hidden">
                             <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2 flex items-center"><i class="fa-solid fa-headset mr-2 text-amber-500"></i>Buat Tiket Laporan Kerusakan Baru</h3>
                             <form onsubmit="kirimTiketKeluhanKerusakan(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                                 <div><label class="block mb-1 text-slate-400 font-bold">Pilih Alat Medis yang Bermasalah: *</label><select id="ticket-form-alat" class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none font-semibold"></select></div>
-                                <div><label class="block mb-1 text-slate-400 font-bold">Uraian Masalah / Gejala Kerusakan: *</label><input type="text" id="ticket-form-keluhan" class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none" placeholder="Contoh: Layar kedip-kedip atau mati total..."></div>
+                                <div><label class="block mb-1 text-slate-400 font-bold">Uraian Masalah / Gejala Kerusakan: *</label><input type="text" id="ticket-form-keluhan" class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none" placeholder="Contoh: Layar mati total..."></div>
                                 <div class="md:col-span-2 flex justify-end"><button type="submit" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold px-6 py-2 rounded-xl hover:from-amber-600 shadow transition flex items-center space-x-2"><i class="fa-solid fa-paper-plane"></i> <span>Kirim Tiket Keluhan</span></button></div>
                             </form>
                         </div>
-                        
-                        <!-- Daftar Antrean Tiket Lapangan (Selalu tampil untuk semua) -->
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl border space-y-3">
                             <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2 flex items-center"><i class="fa-solid fa-list-check mr-2 text-cyan-400"></i>Daftar Trouble Ticket Masuk (Real-time Cloud)</h3>
                             <div class="overflow-x-auto w-full">
                                 <table class="w-full text-left text-xs min-w-[600px]">
                                     <thead class="bg-slate-950 text-slate-400 font-bold">
-                                        <tr><th class="p-3">Alat / Ruangan</th><th class="p-3">Keluhan Masalah</th><th class="p-3">Tanggal Masuk</th><th class="p-3">Status Tiket</th><th class="p-3 text-center">Tindakan Lapangan</th></tr>
+                                        <tr><th class="p-3">Alat / Ruangan</th><th class="p-3">Keluhan Masalah</th><th class="p-3">Tanggal Lapor</th><th class="p-3">Status Tiket</th><th class="p-3 text-center">Tindakan Lapangan</th></tr>
                                     </thead>
                                     <tbody id="table-ticket-body" class="divide-y divide-white/5 text-slate-300"></tbody>
                                 </table>
@@ -478,13 +475,12 @@
         let opsAlatKerja = []; let opsFisik = []; let opsFungsi = [];
         let listNamaTeknisi = []; let listNamaSaksi = [];
 
-        // FIXED USER ACCESS & VIEW VISIBILITY CONTROL
+        // GATEWAY MULTI-USER ACCESS SYSTEM
         function pilihRoleUserKontrol(role) {
             currentActiveRole = role;
             document.getElementById('auth-gate-screen').classList.add('hidden');
             document.getElementById('sidebar-role-badge').innerText = role;
             
-            // Mengatur visibilitas menu sidebar tanpa mematikan data kontainer utama
             if (role === 'User Ruangan') {
                 document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.add('hidden'));
                 document.getElementById('box-form-buat-ticket').classList.remove('hidden');
@@ -496,16 +492,15 @@
             } else {
                 // Teknisi Lapangan
                 document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
-                document.getElementById('box-form-buat-ticket').classList.add('hidden'); // Form disembunyikan untuk teknisi
+                document.getElementById('box-form-buat-ticket').classList.add('hidden'); 
                 switchTab('dashboard');
             }
             
-            // Re-render data & grafik secara instan
             renderAll();
-            setTimeout(renderGrafikDashboardDinamis, 200);
+            setTimeout(renderGrafikDashboardDinamis, 300);
         }
 
-        // FIREBASE REAL-TIME STREAMS
+        // FIREBASE SYNC STREAMS
         db.collection("dataAlat").onSnapshot((querySnapshot) => {
             dataAlat = []; querySnapshot.forEach((doc) => { dataAlat.push({ id: doc.id, ...doc.data() }); });
             aktualisasikanDotKoneksiHijau(); evaluasiJatuhTempoKalibrasiMassal(); renderAll(); populasikanDropdownAlatDiTicketForm();
@@ -542,67 +537,71 @@
             if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]";
         }
 
-        // CHART GENERATOR WITH ANTI-BLANK MANAGEMENT
+        // AMAN DARI BLANK/FREEZE: DIBUNGKUS TRY-CATCH
         function renderGrafikDashboardDinamis() {
-            if(dataAlat.length === 0) return;
+            try {
+                if(dataAlat.length === 0) return;
 
-            const jReady = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
-            const jBroken = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
+                const jReady = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
+                const jBroken = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
 
-            const ctxKondisi = document.getElementById('chartKondisiAlat');
-            if (ctxKondisi) {
-                if (instanceChartKondisi) instanceChartKondisi.destroy();
-                instanceChartKondisi = new Chart(ctxKondisi, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Siap Digunakan', 'Dalam Perbaikan'],
-                        datasets: [{
-                            data: [jReady, jBroken],
-                            backgroundColor: ['rgba(16, 185, 129, 0.75)', 'rgba(244, 63, 94, 0.75)'],
-                            borderColor: ['#10b981', '#f43f5e'],
-                            borderWidth: 1.5
-                        }]
-                    },
-                    options: { plugins: { legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } }, cutout: '70%', responsive: true, maintainAspectRatio: false }
-                });
-            }
-
-            const hitungRuangan = {};
-            dataAlat.forEach(a => {
-                let namaRuang = a.edar || a.lokasi || 'Umum';
-                if(namaRuang === 'Baik') namaRuang = a.edar || 'Umum'; 
-                hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
-            });
-
-            const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]).slice(0, 5);
-            const labelRuangan = ruanganTerurut.map(item => item[0]);
-            const skorRuangan = ruanganTerurut.map(item => item[1]);
-
-            const ctxRuangan = document.getElementById('chartSebaranRuangan');
-            if (ctxRuangan && labelRuangan.length > 0) {
-                if (instanceChartRuangan) instanceChartRuangan.destroy();
-                instanceChartRuangan = new Chart(ctxRuangan, {
-                    type: 'bar',
-                    data: {
-                        labels: labelRuangan,
-                        datasets: [{
-                            label: 'Jumlah Aset',
-                            data: skorRuangan,
-                            backgroundColor: 'rgba(59, 130, 246, 0.4)',
-                            borderColor: '#3b82f6',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        }]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        scales: {
-                            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } },
-                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                const ctxKondisi = document.getElementById('chartKondisiAlat');
+                if (ctxKondisi) {
+                    if (instanceChartKondisi) instanceChartKondisi.destroy();
+                    instanceChartKondisi = new Chart(ctxKondisi, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Siap Digunakan', 'Dalam Perbaikan'],
+                            datasets: [{
+                                data: [jReady, jBroken],
+                                backgroundColor: ['rgba(16, 185, 129, 0.75)', 'rgba(244, 63, 94, 0.75)'],
+                                borderColor: ['#10b981', '#f43f5e'],
+                                borderWidth: 1.5
+                            }]
                         },
-                        plugins: { legend: { display: false } }
-                    }
+                        options: { plugins: { legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } }, cutout: '70%', responsive: true, maintainAspectRatio: false }
+                    });
+                }
+
+                const hitungRuangan = {};
+                dataAlat.forEach(a => {
+                    let namaRuang = a.edar || a.lokasi || 'Umum';
+                    if(namaRuang === 'Baik') namaRuang = a.edar || 'Umum'; 
+                    hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
                 });
+
+                const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]).slice(0, 5);
+                const labelRuangan = ruanganTerurut.map(item => item[0]);
+                const skorRuangan = ruanganTerurut.map(item => item[1]);
+
+                const ctxRuangan = document.getElementById('chartSebaranRuangan');
+                if (ctxRuangan && labelRuangan.length > 0) {
+                    if (instanceChartRuangan) instanceChartRuangan.destroy();
+                    instanceChartRuangan = new Chart(ctxRuangan, {
+                        type: 'bar',
+                        data: {
+                            labels: labelRuangan,
+                            datasets: [{
+                                label: 'Jumlah Aset',
+                                data: skorRuangan,
+                                backgroundColor: 'rgba(59, 130, 246, 0.4)',
+                                borderColor: '#3b82f6',
+                                borderWidth: 1.5,
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            scales: {
+                                x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log("Chart rendering deferred:", error);
             }
         }
 
@@ -624,7 +623,7 @@
             if(htmlWarning !== "") { warningList.innerHTML = htmlWarning; warningBox.classList.remove('hidden'); } else { warningBox.classList.add('hidden'); }
         }
 
-        // OPTIMIZED WORKFLOW TICKETING SYSTEM
+        // TROUBLE TICKETING SYSTEM FUNCTIONS
         function populasikanDropdownAlatDiTicketForm() {
             const selectEl = document.getElementById('ticket-form-alat'); if(!selectEl) return;
             selectEl.innerHTML = `<option value="">-- PILIH ALAT MEDIS --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
@@ -699,12 +698,18 @@
 
         // SECURITY QR CODE VERIFICATION LOGIC
         function perbaruiSistemVerifikasiQRCodeResmi(noLk, namaTeknisi) {
-            const hashBox = document.getElementById('dlk-lbl-hash'); const qrBox = document.getElementById('dlk-qrcode-box');
-            if(!qrBox) return; qrBox.innerHTML = "";
-            const securePayloadString = `MEDIX-VERIFIED\nNo: ${noLk}\nTeknisi: ${namaTeknisi || 'IPSRS'}\nStatus: Dokumen Sah Kemenkes/Auditor`;
-            hashBox.innerText = "MDX-" + btoa(noLk || "LK").substring(0, 8).toUpperCase();
-            if(!qrcodeInstance) qrcodeInstance = new QRCode(qrBox, { text: securePayloadString, width: 64, height: 64, colorDark: "#0f172a", colorLight: "#ffffff" });
-            else { qrcodeInstance.clear(); qrcodeInstance.makeCode(securePayloadString); }
+            try {
+                const hashBox = document.getElementById('dlk-lbl-hash'); const qrBox = document.getElementById('dlk-qrcode-box');
+                if(!qrBox) return; qrBox.innerHTML = "";
+                const securePayloadString = `MEDIX-VERIFIED\nNo: ${noLk}\nTeknisi: ${namaTeknisi || 'IPSRS'}\nStatus: Dokumen Sah Kemenkes/Auditor`;
+                hashBox.innerText = "MDX-" + btoa(noLk || "LK").substring(0, 8).toUpperCase();
+                
+                if (typeof QRCode !== 'undefined') {
+                    qrcodeInstance = new QRCode(qrBox, { text: securePayloadString, width: 64, height: 64, colorDark: "#0f172a", colorLight: "#ffffff" });
+                }
+            } catch (error) {
+                console.log("QR Engine deferred.");
+            }
         }
 
         // CORE RENDER & WORKSHEET SYSTEM
@@ -772,7 +777,7 @@
             document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
             document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`; 
             renderOpsiDropdownAwal(); aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi'); 
-            populasikanDropdownNamaTanda Tangan();
+            populasikanDropdownNamaTandaTangan();
             
             db.collection("lembarKerja").get().then(s => {
                 let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
@@ -804,9 +809,10 @@
             perbaruiSistemVerifikasiQRCodeResmi(record.noLk, record.teknisiTtd);
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(initSignatures, 400);
         }
 
-        // GLOBAL SHared UTILITIES
+        // GLOBAL SHARED UTILITIES
         function populasikanDropdownAlatDiLembarKerja() { 
             const selectEl = document.getElementById('dlk-select-alat'); const calSelectEl = document.getElementById('form-cal-alat'); if(!selectEl) return;
             let htmlOpts = `<option value="">-- PILIH ALAT MEDIS SESUAI DATABASE --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} - [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
@@ -940,17 +946,21 @@
         }
 
         function initSignatures() {
-            ['sig-teknisi', 'sig-user', 'sig-pj'].forEach(id => {
-                const canvas = document.getElementById(id); if(!canvas || !canvas.parentElement) return; 
-                canvas.width = canvas.parentElement.clientWidth || 250; canvas.height = canvas.parentElement.clientHeight || 96;
-                const ctx = canvas.getContext('2d'); let isDrawing = false;
-                ctx.lineWidth = 3.0; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0f172a';
-                function getPos(e) { const r = canvas.getBoundingClientRect(); const cX = e.touches ? e.touches[0].clientX : e.clientX; const cY = e.touches ? e.touches[0].clientY : e.clientY; return { x: cX - r.left, y: cY - r.top }; }
-                function startDrawing(e) { isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); if (e.cancelable) e.preventDefault(); }
-                function draw(e) { if (!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); if (e.cancelable) e.preventDefault(); }
-                canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isDrawing = false);
-                canvas.addEventListener('touchstart', startDrawing, { passive: false }); canvas.addEventListener('touchmove', draw, { passive: false }); canvas.addEventListener('touchend', () => isDrawing = false);
-            });
+            try {
+                ['sig-teknisi', 'sig-user', 'sig-pj'].forEach(id => {
+                    const canvas = document.getElementById(id); if(!canvas || !canvas.parentElement) return; 
+                    canvas.width = canvas.parentElement.clientWidth || 250; canvas.height = canvas.parentElement.clientHeight || 96;
+                    const ctx = canvas.getContext('2d'); let isDrawing = false;
+                    ctx.lineWidth = 3.0; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0f172a';
+                    function getPos(e) { const r = canvas.getBoundingClientRect(); const cX = e.touches ? e.touches[0].clientX : e.clientX; const cY = e.touches ? e.touches[0].clientY : e.clientY; return { x: cX - r.left, y: cY - r.top }; }
+                    function startDrawing(e) { isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); if (e.cancelable) e.preventDefault(); }
+                    function draw(e) { if (!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); if (e.cancelable) e.preventDefault(); }
+                    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isDrawing = false);
+                    canvas.addEventListener('touchstart', startDrawing, { passive: false }); canvas.addEventListener('touchmove', draw, { passive: false }); canvas.addEventListener('touchend', () => isDrawing = false);
+                });
+            } catch(e) {
+                console.log("Canvas signature deferred.");
+            }
         }
         
         window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
