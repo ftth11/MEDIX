@@ -224,7 +224,7 @@
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Master Data Aset Medis</h2>
                         <div class="flex space-x-2" id="master-action-buttons-container">
-                            <!-- Tombol Export & Tambah Manual hanya muncul untuk Manajemen -->
+                            <!-- Tombol Export, Import & Tambah Manual dinamis berdasarkan role -->
                         </div>
                     </div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
@@ -630,12 +630,16 @@
                       const profilCard = document.querySelector('#app-sidebar p.text-white.truncate');
                       if (profilCard) profilCard.innerText = currentUserNama;
 
-                      // Kontrol Tampilan Tombol Manajemen Aset berdasarkan Role Aktif
+                      // Kontrol Tombol Manajemen Aset (Export, Import Excel, Tambah Manual) berdasarkan Role
                       const containerMasterAction = document.getElementById('master-action-buttons-container');
                       if (containerMasterAction) {
                           if (currentActiveRole === 'Manajemen') {
                               containerMasterAction.innerHTML = `
                                   <button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>
+                                  <label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer">
+                                      <i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel
+                                      <input type="file" id="file-excel-input" accept=".xlsx, .xls, .csv" onchange="importDataDariExcel(event)" class="hidden">
+                                  </label>
                                   <button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>
                               `;
                           } else {
@@ -690,6 +694,66 @@
                   submitBtn.innerText = "Masuk";
                   submitBtn.disabled = false;
               });
+        }
+
+        // FUNGSI IMPORT DATA DARI EXCEL SECARA MASSAL KE FIREBASE
+        function importDataDariExcel(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (currentActiveRole !== 'Manajemen') {
+                alert("❌ Hanya akun Manajemen (Admin) yang diizinkan melakukan import database!");
+                e.target.value = "";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonRows = XLSX.utils.sheet_to_json(worksheet);
+
+                    if (jsonRows.length === 0) {
+                        alert("❌ File Excel kosong atau format tidak sesuai!");
+                        return;
+                    }
+
+                    if (confirm(`Ditemukan ${jsonRows.length} data aset dalam file Excel. Lanjutkan proses import massal ke database cloud?`)) {
+                        let suksesCount = 0;
+                        jsonRows.forEach((row) => {
+                            const namaAlat = row["Nama Alat Medis"] || row["Nama Alat"] || row["nama"] || "Alat Medis";
+                            const merkAlat = row["Merk"] || row["merk"] || "-";
+                            const tipeAlat = row["Model / Tipe"] || row["Tipe"] || row["tipe"] || "-";
+                            const seriAlat = row["Nomor Seri (SN)"] || row["Nomor Seri"] || row["seri"] || "-";
+                            const ruangAlat = row["Unit / Ruangan"] || row["Ruangan"] || row["Lokasi"] || row["lokasi"] || "Umum";
+
+                            const payloadAlat = {
+                                nama: String(namaAlat),
+                                merk: String(merkAlat),
+                                tipe: String(tipeAlat),
+                                seri: String(seriAlat),
+                                edar: String(ruangAlat),
+                                lokasi: "Baik",
+                                status: "Siap Digunakan"
+                            };
+
+                            db.collection("dataAlat").add(payloadAlat).then(() => {
+                                suksesCount++;
+                            }).catch(err => console.error("Gagal import baris:", err));
+                        });
+
+                        alert(`🎉 Proses import sedang berjalan! Data berhasil dimasukkan ke sistem.`);
+                        document.getElementById('file-excel-input').value = "";
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert("❌ Terjadi kesalahan saat membaca file Excel.");
+                }
+            };
+            reader.readAsArrayBuffer(file);
         }
 
         function buatAkunUserBaruOlehAdmin(e) {
@@ -980,7 +1044,6 @@
                 let dNama = a.nama || '-', dMerk = a.merk || a.kode || '-', dTipe = a.tipe || a.merk || '-', dSeri = a.seri || a.tipe || '-', dLokasi = a.lokasi || a.edar || '-';
                 if(a.lokasi === 'Baik') { dMerk = a.kode; dTipe = a.merk; dSeri = a.tipe; dLokasi = a.edar; }
 
-                // Pembatasan Aksi Tabel Berdasarkan Role (Hanya Manajemen yang bisa Edit, Log, Hapus Master Aset)
                 let aksiManajemenHTML = "";
                 if (currentActiveRole === 'Manajemen') {
                     aksiManajemenHTML = `
