@@ -306,8 +306,14 @@
                             <div><label class="block text-gray-500 font-medium">Nomor Seri (S/N):</label><input type="text" id="dlk-seri" class="w-full border-b p-0.5 bg-transparent font-mono font-bold" readonly></div>
                             <div><label class="block text-gray-500 font-medium">Instalasi / Ruangan:</label><input type="text" id="dlk-lokasi" class="w-full border-b p-0.5 bg-transparent font-medium" readonly></div>
                             <div class="grid grid-cols-2 gap-2">
-                                <div><label class="block text-blue-700 font-bold">No Kalibrasi:</label><input type="text" id="dlk-nokal" class="w-full border-b p-0.5 bg-transparent font-bold outline-none" readonly placeholder="Otomatis"></div>
-                                <div><label class="block text-blue-700 font-bold">Tgl Kalibrasi:</label><input type="text" id="dlk-tglcal" class="w-full border-b p-0.5 bg-transparent font-bold outline-none" readonly placeholder="Otomatis"></div>
+                                <div>
+                                    <label class="block text-blue-700 font-bold">Tgl Kalibrasi:</label>
+                                    <input type="date" id="dlk-tglcal" onchange="hitungOtomatisMasaBerlakuSatuTahun(this.value)" class="w-full border-b p-0.5 bg-transparent font-bold outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-blue-700 font-bold">Tgl Berakhir:</label>
+                                    <input type="date" id="dlk-nokal" class="w-full border-b p-0.5 bg-transparent font-bold outline-none bg-slate-50" readonly placeholder="Otomatis 1 Tahun">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -478,7 +484,7 @@
         </div>
     </div>
 
-    <!-- MODAL KARTU LOG ASSET (VERSI FULL SCREEN KELUAR DARI CONTAINER) -->
+    <!-- MODAL KARTU LOG ASSET (VERSI LAYAR PENUH DI LUAR CONTAINER UTAMA) -->
     <div id="modal-kartu" class="fixed inset-0 bg-slate-950/80 z-[999] flex items-center justify-center hidden no-print backdrop-blur-md">
         <div class="bg-slate-900 w-full h-full flex flex-col text-slate-200">
             <!-- HEADER MODAL -->
@@ -938,7 +944,6 @@
             }
         }
 
-        /* TABS HANDLER */
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -970,7 +975,21 @@
             }
         }
 
-        function populasikanDropdownAlatDiLembarKerja() { const selectEl = document.getElementById('dlk-select-alat'); const calSelectEl = document.getElementById('form-cal-alat'); if(!selectEl) return; let htmlOpts = `<option value="">-- PILIH ALAT MEDIS SESUAI DATABASE --</option>`; dataAlat.forEach(a => { let sn = a.lokasi === 'Baik' ? a.tipe : a.seri; htmlOpts += `<option value="${a.id}">${a.nama} [SN: ${sn||'-'}] - Ruang: ${a.edar||a.lokasi}</option>`; }); selectEl.innerHTML = htmlOpts; if(calSelectEl) calSelectEl.innerHTML = htmlOpts; }
+        function populasikanDropdownAlatDiLembarKerja() { 
+            const selectEl = document.getElementById('dlk-select-alat'); 
+            const calSelectEl = document.getElementById('form-cal-alat'); 
+            if(!selectEl) return; 
+            
+            let htmlOpts = `<option value="">-- PILIH ALAT MEDIS SESUAI DATABASE --</option>`; 
+            dataAlat.forEach(a => { 
+                let rLokasi = a.edar || a.lokasi || 'Ruangan';
+                if(rLokasi === 'Baik') rLokasi = a.edar || 'Ruangan';
+                htmlOpts += `<option value="${a.id}">${a.nama} - [${rLokasi}]</option>`; 
+            }); 
+            selectEl.innerHTML = htmlOpts; 
+            if(calSelectEl) calSelectEl.innerHTML = htmlOpts; 
+        }
+
         function renderOpsiDropdownAwal() { const build = (arr) => arr.map(i => `<option value="${i}">${i}</option>`).join(''); document.getElementById('drop-alatkerja').innerHTML = build(opsAlatKerja); document.getElementById('drop-fisik').innerHTML = build(opsFisik); document.getElementById('drop-fungsi').innerHTML = build(opsFungsi); }
 
         function tambahPoinAkumulatif(kategori) {
@@ -985,14 +1004,46 @@
         function aktualisasikanTampilanKotakTabel(kategori) { const box = document.getElementById('box-list-' + kategori); let dataArr = (kategori === 'alatkerja') ? terpakaiAlatKerja : (kategori === 'fisik') ? terpakaiFisik : terpakaiFungsi; if(dataArr.length === 0) { box.innerHTML = ``; return; } box.innerHTML = dataArr.map((text, idx) => `<div class="flex items-center justify-between bg-slate-900/60 border border-white/5 p-1 rounded-lg text-[11px] font-mono group"><span>• ${text}</span><button type="button" onclick="hapusPoinSpesifik('${kategori}', ${idx})" class="no-print text-rose-500 font-bold px-1 ml-2 text-xs">×</button></div>`).join(''); }
 
         function hitungDanSetNomorLembarKerjaOtomatis() { document.getElementById('dlk-no').value = "RSUDPG/IPSRS/LK-" + Math.floor(100 + Math.random() * 900); }
+        
         function sinkronisasiDataAlatKeWorksheet(alatId) {
             if(!alatId) return; const a = dataAlat.find(item => item.id == alatId);
             if(a) {
-                let rLokasi = a.lokasi === 'Baik' ? a.edar : a.lokasi; let rSeri = a.lokasi === 'Baik' ? a.tipe : a.seri;
-                document.getElementById('dlk-nama').value = a.nama; document.getElementById('dlk-merk').value = a.merk || '-'; document.getElementById('dlk-tipe').value = '-'; document.getElementById('dlk-seri').value = rSeri || '-'; document.getElementById('dlk-lokasi').value = rLokasi || 'Ruangan';
-                let defaultKaru = "Karu " + (rLokasi || 'Ruangan');
+                let displayMerk   = a.kode || '-';     
+                let displayTipe   = a.merk || '-';     
+                let displaySeri   = a.tipe || '-';     
+                let displayLokasi = a.edar || '-';     
+
+                if (String(a.lokasi).toLowerCase() !== 'baik' && a.seri && a.seri !== '-') {
+                    displayMerk   = a.merk || '-';
+                    displayTipe   = a.tipe || '-';
+                    displaySeri   = a.seri || '-';
+                    displayLokasi = a.lokasi || '-';
+                }
+
+                document.getElementById('dlk-nama').value = a.nama || '-'; 
+                document.getElementById('dlk-merk').value = displayMerk; 
+                document.getElementById('dlk-tipe').value = displayTipe; 
+                document.getElementById('dlk-seri').value = displaySeri; 
+                document.getElementById('dlk-lokasi').value = displayLokasi;
+                
+                document.getElementById('dlk-tglcal').value = "";
+                document.getElementById('dlk-nokal').value = "";
+
+                let defaultKaru = "Karu " + displayLokasi;
                 document.getElementById('dlk-select-nama-saksi').innerHTML = `<option value="">-- PILIH USER / SAKSI --</option>` + `<option value="${defaultKaru}">${defaultKaru}</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-baru">+ Tambah Nama</option>`;
             }
+        }
+
+        function hitungOtomatisMasaBerlakuSatuTahun(tanggalInput) {
+            if(!tanggalInput) return;
+            const tanggal = new Date(tanggalInput);
+            tanggal.setFullYear(tanggal.getFullYear() + 1);
+            
+            const yyyy = tanggal.getFullYear();
+            const mm = String(tanggal.getMonth() + 1).padStart(2, '0');
+            const dd = String(tanggal.getDate()).padStart(2, '0');
+            
+            document.getElementById('dlk-nokal').value = `${yyyy}-${mm}-${dd}`;
         }
 
         function bukaLembarKerjaBaruKosong() { stringFotoBase64 = "-"; terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; populasikanDropdownAlatDiLembarKerja(); hitungDanSetNomorLembarKerjaOtomatis(); document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); document.getElementById('dlk-select-alat').value = ""; document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; document.getElementById('box-preview-foto').innerHTML = `[ Belum Ada Foto ]`; renderOpsiDropdownAwal(); aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi'); populasikanDropdownNamaTandaTangan(); const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); setTimeout(initSignatures, 400); toggleSidebarMenu(false); }
