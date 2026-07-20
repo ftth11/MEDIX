@@ -63,7 +63,8 @@
             
             <div>
                 <h2 class="text-xl font-black text-white tracking-wide">MEDIX</h2>
-                <p id="gate-subtitle" class="text-xs text-slate-400 mt-1">Pilih hak akses operasional Anda</p>
+                <!-- TEKS GATEWAY SESUAI PERMINTAAN -->
+                <p id="gate-subtitle" class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-1">Medical Inventory & Maintenance Excellence</p>
             </div>
 
             <!-- Bagian A: Pilihan Role Awal -->
@@ -156,7 +157,7 @@
                         </div>
                     </nav>
                 </div>
-                <!-- BAGIAN BAWAH SIDEBAR DIUBAH MENJADI COPYRIGHT -->
+                <!-- COPYRIGHT FOOTER SIDEBAR -->
                 <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-[10px] text-slate-500 font-mono">
                     <span>© 2026 RSUD Pondokgede</span>
                     <button onclick="location.reload()" class="hover:text-rose-400" title="Keluar"><i class="fa-solid fa-right-from-bracket"></i></button>
@@ -596,7 +597,7 @@
             targetLoginRole = "";
             document.getElementById('box-pilih-role').classList.remove('hidden');
             document.getElementById('form-login-kredensial').classList.add('hidden');
-            document.getElementById('gate-subtitle').innerText = "Pilih hak akses operasional Anda";
+            document.getElementById('gate-subtitle').innerText = "Medical Inventory & Maintenance Excellence";
         }
 
         function validasiKredensialUser(e) {
@@ -781,7 +782,6 @@
             if(dot) dot.className = "w-3.5 h-3.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]";
         }
 
-        // RENDER GRAFIK SEBARAN SELURUH RUANGAN TANPA BATASAN
         function renderGrafikDashboardDinamis() {
             try {
                 if(dataAlat.length === 0) return;
@@ -808,7 +808,6 @@
                     hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
                 });
 
-                // Menampilkan seluruh ruangan (tidak di-slice menjadi 5 saja)
                 const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]);
                 const labelRuangan = ruanganTerurut.map(item => item[0]);
                 const skorRuangan = ruanganTerurut.map(item => item[1]);
@@ -858,7 +857,6 @@
             selectEl.innerHTML = `<option value="">-- PILIH ALAT MEDIS --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
         }
 
-        // PELAPORAN KERUSAKAN TERINTEGRASI KE LOG (TANPA MENGHAPUS MASTER ASET)
         function kirimTiketKeluhanKerusakan(e) {
             e.preventDefault();
             const alatId = document.getElementById('ticket-form-alat').value;
@@ -868,7 +866,6 @@
             const tglLaporStr = new Date().toISOString().substring(0, 10);
             const payloadTicket = { alatId, keluhan, statusTiket: "Menunggu Tindakan", tglLapor: tglLaporStr };
             
-            // Simpan ke collection troubleTickets dan simpan juga arsipnya ke collection laporanKeluhanLog agar masuk Total Dokumen
             db.collection("troubleTickets").add(payloadTicket).then(() => {
                 return db.collection("laporanKeluhanLog").add({
                     alatId: alatId,
@@ -880,7 +877,6 @@
                     teknisiTtd: "-"
                 });
             }).then(() => {
-                // Status alat diperbarui menjadi Dalam Perbaikan TANPA MENGHAPUS master data alat itu sendiri
                 return db.collection("dataAlat").doc(alatId).update({ status: "Dalam Perbaikan" });
             }).then(() => {
                 document.getElementById('ticket-form-keluhan').value = "";
@@ -1125,7 +1121,6 @@
             const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             combinedLk.forEach(lk => { const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lk.id, namaAlat: a.nama, seri: a.tipe || lk.seri || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || lk.tgl.substring(0,10), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal, koleksiDb: 'lembarKerja' }); });
             
-            // Integrasi log pelaporan kerusakan ke tabel pusat dokumen & total dokumen
             dataKeluhanLog.forEach(lg => { const a = dataAlat.find(i => i.id == lg.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lg.id, namaAlat: a.nama, seri: a.tipe || a.seri || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal, koleksiDb: 'laporanKeluhanLog' }); });
 
             if(subTabDokumenAktif === 'kalibrasi') docs = docs.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
@@ -1208,7 +1203,7 @@
 
             document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
             document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
             document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button></td></tr>`).join('');
             switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
         }
@@ -1223,7 +1218,7 @@
                     function getPos(e) { const r = canvas.getBoundingClientRect(); const cX = e.touches ? e.touches[0].clientX : e.clientX; const cY = e.touches ? e.touches[0].clientY : e.clientY; return { x: cX - r.left, y: cY - r.top }; }
                     function startDrawing(e) { isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); if (e.cancelable) e.preventDefault(); }
                     function draw(e) { if (!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); if (e.cancelable) e.preventDefault(); }
-                    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isVideoPlaying = false);
+                    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isDrawing = false);
                     canvas.addEventListener('touchstart', startDrawing, { passive: false }); canvas.addEventListener('touchmove', draw, { passive: false }); canvas.addEventListener('touchend', () => isDrawing = false);
                 });
             } catch(e) { console.log("Canvas signature deferred."); }
