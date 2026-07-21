@@ -71,10 +71,10 @@
                 <button onclick="pilihRoleSebelumLogin('Teknisi')" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 p-2.5 rounded-xl text-xs font-bold text-white hover:from-blue-700 transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-user-gear"></i> <span>Teknisi</span>
                 </button>
-                <button onclick="pilihRoleSebelumLogin('User Ruangan')" class="w-full bg-slate-800 p-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 transition flex items-center justify-center space-x-2">
+                <button onclick="pilihRoleSebelumLogin('User')" class="w-full bg-slate-800 p-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-user-nurse"></i> <span>User</span>
                 </button>
-                <button onclick="pilihRoleSebelumLogin('Manajemen')" class="w-full bg-slate-800/40 border border-white/5 p-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 transition flex items-center justify-center space-x-2">
+                <button onclick="pilihRoleSebelumLogin('Admin')" class="w-full bg-slate-800/40 border border-white/5 p-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-user-tie"></i> <span>Admin</span>
                 </button>
             </div>
@@ -224,7 +224,7 @@
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Master Data Aset Medis</h2>
                         <div class="flex space-x-2" id="master-action-buttons-container">
-                            <!-- Tombol Export, Import & Tambah Manual dinamis berdasarkan role -->
+                            <!-- Tombol dinamis berdasarkan role -->
                         </div>
                     </div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
@@ -277,13 +277,14 @@
                 <!-- KONTEN ADMIN: KELOLA AKUN USER & HAK CEKLIS -->
                 <div id="tab-kelola-akun" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center no-print">
-                        <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Registrasi & Manajemen Akun Karyawan</h2>
+                        <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Registrasi & Manajemen Akun User</h2>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="glass-panel p-5 rounded-2xl border space-y-4 lg:col-span-1 text-xs">
-                            <h3 class="text-sm font-bold text-cyan-400 border-b border-white/5 pb-2"><i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun Baru</h3>
-                            <form onsubmit="buatAkunUserBaruOlehAdmin(event)" class="space-y-3">
-                                <div><label class="block font-bold text-slate-400 mb-1">Nama Lengkap Karyawan *</label><input type="text" id="user-form-nama" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
+                            <h3 id="form-user-title" class="text-sm font-bold text-cyan-400 border-b border-white/5 pb-2"><i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun Baru</h3>
+                            <form onsubmit="submitFormUserAdmin(event)" class="space-y-3">
+                                <input type="hidden" id="user-form-id">
+                                <div><label class="block font-bold text-slate-400 mb-1">Nama Lengkap *</label><input type="text" id="user-form-nama" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
                                 <div><label class="block font-bold text-slate-400 mb-1">Username Unik *</label><input type="text" id="user-form-username" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
                                 <div>
                                     <label class="block font-bold text-slate-400 mb-1">Password Sistem *</label>
@@ -297,9 +298,9 @@
                                 <div>
                                     <label class="block font-bold text-slate-400 mb-1">Hak Akses Kategori *</label>
                                     <select id="user-form-role" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none font-semibold">
-                                        <option value="Teknisi">Teknisi Lapangan</option>
-                                        <option value="User Ruangan">User (Perawat/Ruangan)</option>
-                                        <option value="Manajemen">Admin (Manajemen)</option>
+                                        <option value="Teknisi">Teknisi</option>
+                                        <option value="User">User</option>
+                                        <option value="Admin">Admin</option>
                                     </select>
                                 </div>
 
@@ -325,7 +326,10 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-2.5 rounded-xl font-bold hover:from-blue-700 transition shadow-lg">Daftarkan Akun Karyawan</button>
+                                <div class="flex space-x-2">
+                                    <button type="button" id="btn-cancel-edit-user" onclick="resetFormUser()" class="hidden flex-1 bg-slate-800 text-slate-300 p-2.5 rounded-xl font-bold">Batal</button>
+                                    <button type="submit" id="btn-submit-user" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-2.5 rounded-xl font-bold hover:from-blue-700 transition shadow-lg">Daftarkan Akun</button>
+                                </div>
                             </form>
                         </div>
                         <div class="glass-panel p-5 rounded-2xl border lg:col-span-2 space-y-3">
@@ -630,10 +634,9 @@
                       const profilCard = document.querySelector('#app-sidebar p.text-white.truncate');
                       if (profilCard) profilCard.innerText = currentUserNama;
 
-                      // Kontrol Tombol Manajemen Aset (Export, Import Excel, Tambah Manual) berdasarkan Role
                       const containerMasterAction = document.getElementById('master-action-buttons-container');
                       if (containerMasterAction) {
-                          if (currentActiveRole === 'Manajemen') {
+                          if (currentActiveRole === 'Admin') {
                               containerMasterAction.innerHTML = `
                                   <button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>
                                   <label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer">
@@ -647,7 +650,7 @@
                           }
                       }
 
-                      if (currentActiveRole === 'Manajemen') {
+                      if (currentActiveRole === 'Admin') {
                           document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
                           document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.remove('hidden'));
                           
@@ -696,13 +699,12 @@
               });
         }
 
-        // FUNGSI IMPORT DATA DARI EXCEL SECARA MASSAL KE FIREBASE
         function importDataDariExcel(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            if (currentActiveRole !== 'Manajemen') {
-                alert("❌ Hanya akun Manajemen (Admin) yang diizinkan melakukan import database!");
+            if (currentActiveRole !== 'Admin') {
+                alert("❌ Hanya akun Admin yang diizinkan melakukan import database!");
                 e.target.value = "";
                 return;
             }
@@ -756,8 +758,9 @@
             reader.readAsArrayBuffer(file);
         }
 
-        function buatAkunUserBaruOlehAdmin(e) {
+        function submitFormUserAdmin(e) {
             e.preventDefault();
+            const editId = document.getElementById('user-form-id').value;
             const nama = document.getElementById('user-form-nama').value;
             const username = document.getElementById('user-form-username').value.trim();
             const password = document.getElementById('user-form-password').value;
@@ -769,22 +772,63 @@
             if(document.getElementById('akses-menu-ticket').checked) listIzinMenu.push('ticket');
             if(document.getElementById('akses-menu-riwayat').checked) listIzinMenu.push('riwayat');
 
-            db.collection("users").where("username", "==", username).get().then((snap) => {
-                if (!snap.empty) {
-                    alert("❌ Username ini sudah terpakai! Gunakan nama unik lain.");
-                    return;
-                }
-                
-                db.collection("users").add({
-                    nama, username, password, role,
-                    menuAkses: listIzinMenu
-                }).then(() => {
-                    alert("🎉 Akun karyawan baru berhasil disimpan!");
-                    document.getElementById('user-form-nama').value = "";
-                    document.getElementById('user-form-username').value = "";
-                    document.getElementById('user-form-password').value = "";
+            const payload = { nama, username, password, role, menuAkses: listIzinMenu };
+
+            if (editId) {
+                // Update Akun
+                db.collection("users").doc(editId).update(payload).then(() => {
+                    alert("🎉 Akun berhasil diperbarui!");
+                    resetFormUser();
                 });
-            });
+            } else {
+                // Buat Akun Baru
+                db.collection("users").where("username", "==", username).get().then((snap) => {
+                    if (!snap.empty) {
+                        alert("❌ Username ini sudah terpakai! Gunakan nama unik lain.");
+                        return;
+                    }
+                    db.collection("users").add(payload).then(() => {
+                        alert("🎉 Akun baru berhasil disimpan!");
+                        resetFormUser();
+                    });
+                });
+            }
+        }
+
+        function editAkunUserOlehAdmin(id) {
+            const user = dataUserSistem.find(u => u.id === id);
+            if(!user) return;
+            document.getElementById('user-form-id').value = user.id;
+            document.getElementById('user-form-nama').value = user.nama || '';
+            document.getElementById('user-form-username').value = user.username || '';
+            document.getElementById('user-form-password').value = user.password || '';
+            document.getElementById('user-form-role').value = user.role || 'Teknisi';
+
+            const menu = user.menuAkses || [];
+            document.getElementById('akses-menu-dashboard').checked = menu.includes('dashboard');
+            document.getElementById('akses-menu-master').checked = menu.includes('master');
+            document.getElementById('akses-menu-ticket').checked = menu.includes('ticket');
+            document.getElementById('akses-menu-riwayat').checked = menu.includes('riwayat');
+
+            document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-pen mr-1.5"></i> Edit Akun User`;
+            document.getElementById('btn-submit-user').innerText = "Perbarui Akun";
+            document.getElementById('btn-cancel-edit-user').classList.remove('hidden');
+        }
+
+        function resetFormUser() {
+            document.getElementById('user-form-id').value = "";
+            document.getElementById('user-form-nama').value = "";
+            document.getElementById('user-form-username').value = "";
+            document.getElementById('user-form-password').value = "";
+            document.getElementById('user-form-role').value = "Teknisi";
+            document.getElementById('akses-menu-dashboard').checked = true;
+            document.getElementById('akses-menu-master').checked = false;
+            document.getElementById('akses-menu-ticket').checked = false;
+            document.getElementById('akses-menu-riwayat').checked = false;
+
+            document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun Baru`;
+            document.getElementById('btn-submit-user').innerText = "Daftarkan Akun";
+            document.getElementById('btn-cancel-edit-user').classList.add('hidden');
         }
 
         function hapusAkunUserOlehAdmin(id, nama) {
@@ -798,7 +842,7 @@
             querySnapshot.forEach((doc) => { dataUserSistem.push({ id: doc.id, ...doc.data() }); });
             
             listNamaTeknisi = dataUserSistem.filter(u => u.role === 'Teknisi').map(u => u.nama);
-            listNamaSaksi = dataUserSistem.filter(u => u.role === 'User Ruangan').map(u => u.nama);
+            listNamaSaksi = dataUserSistem.filter(u => u.role === 'User').map(u => u.nama);
             populasikanDropdownNamaTandaTangan();
             
             const tbody = document.getElementById('table-user-body');
@@ -812,7 +856,10 @@
                         <td class="p-3 font-semibold text-white">${u.nama}</td>
                         <td class="p-3 font-mono text-slate-400">${u.username}</td>
                         <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-white/5">${u.role}</span></td>
-                        <td class="p-3 text-center"><button onclick="hapusAkunUserOlehAdmin('${u.id}','${u.nama}')" class="bg-rose-600/20 text-rose-400 px-3 py-1 rounded-xl text-[10px] hover:bg-rose-600 transition"><i class="fa-solid fa-user-minus"></i> Hapus</button></td>
+                        <td class="p-3 text-center space-x-1">
+                            <button onclick="editAkunUserOlehAdmin('${u.id}')" class="bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-xl text-[10px] hover:bg-amber-500 transition" title="Edit Akun"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                            <button onclick="hapusAkunUserOlehAdmin('${u.id}','${u.nama}')" class="bg-rose-600/20 text-rose-400 px-2.5 py-1 rounded-xl text-[10px] hover:bg-rose-600 transition" title="Hapus Akun"><i class="fa-solid fa-user-minus"></i> Hapus</button>
+                        </td>
                     </tr>
                 `).join('');
             }
@@ -968,7 +1015,7 @@
                 let aksiAksi = "";
 
                 if (t.statusTiket !== 'Selesai') {
-                    if (currentActiveRole === 'Teknisi' || currentActiveRole === 'Manajemen') {
+                    if (currentActiveRole === 'Teknisi' || currentActiveRole === 'Admin') {
                         let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka Lembar Kerja' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
                         let warnaTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-amber-600 hover:bg-amber-700';
 
@@ -1045,7 +1092,7 @@
                 if(a.lokasi === 'Baik') { dMerk = a.kode; dTipe = a.merk; dSeri = a.tipe; dLokasi = a.edar; }
 
                 let aksiManajemenHTML = "";
-                if (currentActiveRole === 'Manajemen') {
+                if (currentActiveRole === 'Admin') {
                     aksiManajemenHTML = `
                         <div class="inline-flex rounded-xl border border-white/5 overflow-hidden">
                             <button onclick="pemicuEditAlatLangsung('${a.id}')" class="bg-amber-500/20 text-amber-400 px-3 py-2 text-[11px] hover:bg-amber-500 transition border-r border-white/5" title="Edit Aset"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -1196,7 +1243,7 @@
         function hitungOtomatisMasaBerlakuSatuTahun(v) { if(!v) return; let d = new Date(v); d.setFullYear(d.getFullYear()+1); document.getElementById('dlk-nokal').value = d.toISOString().substring(0,10); }
         function populasikanDropdownNamaTandaTangan() {
             document.getElementById('dlk-select-nama-teknisi').innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('');
-            document.getElementById('dlk-select-nama-saksi').innerHTML = `<option value="">-- PILIH USER RUANGAN --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('');
+            document.getElementById('dlk-select-nama-saksi').innerHTML = `<option value="">-- PILIH USER --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('');
             document.getElementById('dlk-select-nama-teknisi').onchange = function(e) { perbaruiSistemVerifikasiQRCodeResmi(document.getElementById('dlk-no').value, e.target.value); }
         }
         
