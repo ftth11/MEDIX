@@ -552,13 +552,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyC9TDnm98rLYGmrbF51OjQp4u4I0zOxu18",
-            authDomain: "medix-rsudpg.firebaseapp.com",
-            projectId: "medix-rsudpg",
-            storageBucket: "medix-rsudpg.appspot.com",
-            messagingSenderId: "180949383110",
-            appId: "1:180949383110:web:cdda6afad7c54c555e24c7",
-            measurementId: "G-MZ45688DDB"
+            apiKey: "AIzaSyCj4k85tSPEOsKv-aoEXwbCwgfK_0-zcTQ",
+            authDomain: "medix-rspg.firebaseapp.com",
+            projectId: "medix-rspg",
+            storageBucket: "medix-rspg.firebasestorage.app",
+            messagingSenderId: "590166353315",
+            appId: "1:590166353315:web:d14d25934662092839e616",
+            measurementId: "G-NNNGN124EQ"
         };
         
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
@@ -611,10 +611,16 @@
             submitBtn.innerText = "Memverifikasi...";
             submitBtn.disabled = true;
 
+            // Mengizinkan fleksibilitas role Admin/Manajemen
+            let rolePencarian = [targetLoginRole];
+            if (targetLoginRole === 'Admin') {
+                rolePencarian = ['Admin', 'Manajemen', 'administrator', 'admin'];
+            }
+
             db.collection("users")
               .where("username", "==", uName)
               .where("password", "==", uPass)
-              .where("role", "==", targetLoginRole)
+              .where("role", "in", rolePencarian)
               .get()
               .then((querySnapshot) => {
                   if (!querySnapshot.empty) {
@@ -775,13 +781,11 @@
             const payload = { nama, username, password, role, menuAkses: listIzinMenu };
 
             if (editId) {
-                // Update Akun
                 db.collection("users").doc(editId).update(payload).then(() => {
                     alert("🎉 Akun berhasil diperbarui!");
                     resetFormUser();
                 });
             } else {
-                // Buat Akun Baru
                 db.collection("users").where("username", "==", username).get().then((snap) => {
                     if (!snap.empty) {
                         alert("❌ Username ini sudah terpakai! Gunakan nama unik lain.");
