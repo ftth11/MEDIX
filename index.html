@@ -285,7 +285,7 @@
 
                 <!-- KONTEN: PUSAT DOKUMEN & RIWAYAT -->
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
-                    <div class="flex justify-between items-center no-print"><h2 class="text-lg font-bold text-white bg-slate-900/60 px-4 py-1.5 rounded-xl border border-slate-800">Pusat Riwayat & Dokumen Aset</h2><button onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition"><i class="fa-solid fa-file-arrow-up mr-1"></i> Upload Berkas PDF Baru</button></div>
+                    <div class="flex justify-between items-center no-print"><h2 class="text-lg font-bold text-white bg-slate-900/60 px-4 py-1.5 rounded-xl border border-slate-800">Pusat Riwayat & Dokumen Aset</h2><button id="btn-upload-pdf-baru" onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition"><i class="fa-solid fa-file-arrow-up mr-1"></i> Upload Berkas PDF Baru</button></div>
                     <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-800 max-w-md text-[11px] font-bold text-slate-400 space-x-1 no-print shadow-2xl"><button onclick="gantiSubTabDokumen('all')" id="doc-tab-all" class="px-4 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white">Semua</button><button onclick="gantiSubTabDokumen('kalibrasi')" id="doc-tab-kalibrasi" class="px-4 py-2 rounded-lg flex-1 text-center">Sertifikat Kalibrasi</button><button onclick="gantiSubTabDokumen('mandiri')" id="doc-tab-mandiri" class="px-4 py-2 rounded-lg flex-1 text-center">Lembar Kerja</button></div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
                         <div class="overflow-x-auto w-full"><table class="w-full text-left text-xs min-w-[800px]"><thead class="bg-slate-900/90 font-bold text-slate-400"><tr><th class="p-4">Alat Kesehatan / SN</th><th class="p-4">Jenis Dokumen</th><th class="p-4">Tanggal Dibuat</th><th class="p-4">Deskripsi</th><th class="p-4 text-center">Aksi Berkas</th><th class="p-4">Status</th></tr></thead><tbody id="table-kalibrasi-body" class="divide-y divide-white/5 text-slate-300"></tbody></table></div>
@@ -387,6 +387,8 @@
                             <p>Date: <input type="date" id="dlk-tgl" class="border-b outline-none font-bold"> </p>
                         </div>
                     </div>
+
+                    <input type="hidden" id="dlk-firebase-id" value="">
 
                     <div class="flex justify-center space-x-12 text-[10px] font-bold border-y py-1 bg-slate-50">
                         <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Inspection" checked> <span>Inspection</span></label>
@@ -517,7 +519,7 @@
 
                     <div class="no-print border-t pt-3 flex justify-end space-x-2">
                         <button type="button" onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" class="bg-gray-400 text-white px-4 py-1.5 rounded-lg text-xs">Tutup</button>
-                        <button type="button" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data Baru</button>
+                        <button type="button" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data Baru / Perbarui</button>
                     </div>
                 </div>
 
@@ -627,7 +629,6 @@
         let listNamaTeknisi = []; let listNamaSaksi = [];
         let globalSelectedAlatIdUntukLog = ""; 
 
-        // GLOBAL LISTENER UNTUK MENUTUP DROPDOWN KETIKA KLIK DI LUAR
         document.addEventListener('click', function(e) {
             if (!e.target.closest('#input-search-alat-ticket') && !e.target.closest('#ticket-form-alat')) {
                 const el = document.getElementById('ticket-form-alat');
@@ -719,6 +720,13 @@
                           } else {
                               containerMasterAction.innerHTML = `<span class="text-[11px] text-slate-400 italic">Akses View Only (Manajemen Data Oleh Admin)</span>`;
                           }
+                      }
+
+                      // PENYESUAIAN HAK AKSES UI BERDASARKAN ROLE USER
+                      const btnUploadPdf = document.getElementById('btn-upload-pdf-baru');
+                      if(btnUploadPdf) {
+                          if(currentActiveRole === 'User') btnUploadPdf.classList.add('hidden');
+                          else btnUploadPdf.classList.remove('hidden');
                       }
 
                       if (currentActiveRole === 'Admin') {
@@ -1046,7 +1054,6 @@
             if(htmlWarning !== "") { warningList.innerHTML = htmlWarning; warningBox.classList.remove('hidden'); } else { warningBox.classList.add('hidden'); }
         }
 
-        // FUNGSI UNTUK MENAMPILKAN DROPDOWN SAAT KOTAK PENCARIAN DIKLIK
         function showDropdownAlat(targetType) {
             if(targetType === 'ticket') {
                 document.getElementById('ticket-form-alat').style.display = "block";
@@ -1186,6 +1193,14 @@
                                 <button onclick="selesaikanTiketTroubleManual('${t.id}','${t.alatId}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition"><i class="fa-solid fa-check"></i> Selesai</button>
                             </div>
                         `;
+                    } else if (currentActiveRole === 'User') {
+                        // USER DIIZINKAN MENGHAPUS/MEMBATALKAN LAPORAN KERUSAKAN MEREKA SENDIRI
+                        aksiAksi = `
+                            <div class="inline-flex space-x-1">
+                                <span class="text-[10px] text-amber-400 italic">Menunggu Teknisi</span>
+                                <button onclick="hapusTiketUser('${t.id}', '${t.alatId}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition" title="Batalkan / Hapus Laporan"><i class="fa-solid fa-trash"></i> Batal</button>
+                            </div>
+                        `;
                     } else {
                         aksiAksi = `<span class="text-slate-500 italic text-[10px]">Menunggu Teknisi</span>`;
                     }
@@ -1210,6 +1225,16 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        function hapusTiketUser(tiketId, alatId) {
+            if(confirm("Batalkan atau hapus laporan kerusakan ini? Status alat akan dikembalikan menjadi Siap Pakai.")) {
+                db.collection("troubleTickets").doc(tiketId).delete().then(() => {
+                    return db.collection("dataAlat").doc(alatId).update({ status: "Siap Digunakan" });
+                }).then(() => {
+                    alert("🎉 Laporan kerusakan dibatalkan.");
+                });
+            }
         }
 
         function eksekusiTiketLangsungKerjakan(tiketId, alatId, fotoBeforeVal) {
@@ -1260,10 +1285,17 @@
                             <button onclick="hapAlatMasterFirebase('${a.id}', '${a.nama}')" class="bg-rose-600/20 text-rose-400 px-3 py-2 text-[11px] hover:bg-rose-600 transition" title="Hapus Aset"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     `;
-                } else {
+                } else if (currentActiveRole === 'Teknisi') {
                     aksiManajemenHTML = `
                         <div class="inline-flex rounded-xl border border-white/5 overflow-hidden">
                             <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-600/20 text-blue-400 px-3 py-2 text-[11px] hover:bg-blue-600 transition" title="Log Pemeliharaan"><i class="fa-solid fa-book-medical mr-1"></i> Lihat Log</button>
+                        </div>
+                    `;
+                } else {
+                    // AKUN USER: HANYA BISA MELIHAT LOG, TANPA AKSES EDIT/HAPUS MASTER ASET
+                    aksiManajemenHTML = `
+                        <div class="inline-flex rounded-xl border border-white/5 overflow-hidden">
+                            <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-600/20 text-blue-400 px-3 py-2 text-[11px] hover:bg-blue-600 transition" title="Log Pemeliharaan"><i class="fa-solid fa-eye mr-1"></i> Lihat Log</button>
                         </div>
                     `;
                 }
@@ -1286,46 +1318,65 @@
             const tekNama = document.getElementById('dlk-select-nama-teknisi').value;
             if(!tekNama) return alert("Silakan pilih Nama Teknisi!");
 
-            db.collection("lembarKerja").get().then((snap) => {
-                let currentNoLk = "RSUDPG/IPSRS/LK-" + String(snap.size + 1).padStart(3, '0');
-                const payload = {
-                    alatId: alatIdRaw, noLk: currentNoLk, textTgl: document.getElementById('dlk-tgl').value,
-                    desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal').value, jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
-                    hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, 
-                    ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
-                    ttdUser: document.getElementById('sig-user').toDataURL(),
-                    teknisiTtd: tekNama, saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
-                    pjTtd: "Arrief Nurcahyo, S.Tr. Em.", 
-                    fotoAlat: stringFotoBase64,          
-                    fotoBefore: stringFotoBeforeBase64,  
-                    paramAlatKerja: JSON.stringify(terpakaiAlatKerja), paramFisik: JSON.stringify(terpakaiFisik), paramFungsi: JSON.stringify(terpakaiFungsi),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
+            const existingFirebaseId = document.getElementById('dlk-firebase-id').value;
 
-                db.collection("lembarKerja").add(payload).then(() => {
-                    const newStatus = payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan";
-                    
-                    db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => { 
-                            db.collection("troubleTickets").doc(doc.id).delete(); 
-                        });
-                    });
+            const payload = {
+                alatId: alatIdRaw, 
+                noLk: document.getElementById('dlk-no').value, 
+                textTgl: document.getElementById('dlk-tgl').value,
+                desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal').value, 
+                jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
+                hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, 
+                ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
+                ttdUser: document.getElementById('sig-user').toDataURL(),
+                teknisiTtd: tekNama, 
+                saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
+                pjTtd: "Arrief Nurcahyo, S.Tr. Em.", 
+                fotoAlat: stringFotoBase64,          
+                fotoBefore: stringFotoBeforeBase64,  
+                paramAlatKerja: JSON.stringify(terpakaiAlatKerja), 
+                paramFisik: JSON.stringify(terpakaiFisik), 
+                paramFungsi: JSON.stringify(terpakaiFungsi),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
 
-                    db.collection("laporanKeluhanLog").where("alatId", "==", alatIdRaw).get().then((qLog) => {
-                        qLog.forEach((docLog) => {
-                            db.collection("laporanKeluhanLog").doc(docLog.id).delete();
-                        });
-                    });
+            const newStatus = payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan";
 
+            if (existingFirebaseId) {
+                // JIKA EDIT DOKUMEN YANG SUDAH ADA: CUKUP UPDATE DATA AGAR TIDAK MENJADI DOUBLE RIWAYAT
+                db.collection("lembarKerja").doc(existingFirebaseId).update(payload).then(() => {
                     return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
                 }).then(() => {
                     document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                    alert(`🎉 Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan & Riwayat Laporan Dibersihkan dari Double Log!`);
+                    alert(`🎉 Lembar Kerja #${payload.noLk} Berhasil Diperbarui Tanpa Double Riwayat!`);
                 });
-            });
+            } else {
+                // JIKA DOKUMEN BARU: BUAT NOMOR LK OTOMATIS & TAMBAHKAN KE DATABASE
+                db.collection("lembarKerja").get().then((snap) => {
+                    let currentNoLk = "RSUDPG/IPSRS/LK-" + String(snap.size + 1).padStart(3, '0');
+                    payload.noLk = currentNoLk;
+                    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+
+                    db.collection("lembarKerja").add(payload).then(() => {
+                        db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get().then((querySnapshot) => {
+                            querySnapshot.forEach((doc) => { db.collection("troubleTickets").doc(doc.id).delete(); });
+                        });
+
+                        db.collection("laporanKeluhanLog").where("alatId", "==", alatIdRaw).get().then((qLog) => {
+                            qLog.forEach((docLog) => { db.collection("laporanKeluhanLog").doc(docLog.id).delete(); });
+                        });
+
+                        return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
+                    }).then(() => {
+                        document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
+                        alert(`🎉 Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan!`);
+                    });
+                });
+            }
         }
 
         function bukaLembarKerjaBaruKosong() { 
+            document.getElementById('dlk-firebase-id').value = ""; // Reset ID supaya tersimpan sebagai dokumen baru
             stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
             terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; 
             document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); 
@@ -1365,6 +1416,9 @@
             toggleModal('modal-kartu', false);
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             if(!record) return alert("Dokumen tidak ditemukan.");
+            
+            document.getElementById('dlk-firebase-id').value = record.id; // SIMPAN ID FIREBASE SUPAYA SAAT DISIMPAN TIDAK MENJADI DOUBLE
+
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => { if(radio.value === record.jenisKerja) radio.checked = true; });
             document.getElementById('dlk-no').value = record.noLk; document.getElementById('dlk-tgl').value = record.textTgl || record.tgl.substring(0,10);
             document.getElementById('dlk-select-alat').value = record.alatId; sinkronisasiDataAlatKeWorksheet(record.alatId); document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc_kerja || "";
@@ -1402,7 +1456,6 @@
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
             
-            // Muat ulang tanda tangan digital tersimpan ke canvas
             setTimeout(() => {
                 initSignatures();
                 if(record.ttdTeknisi) muatTandaTanganKeCanvas('sig-teknisi', record.ttdTeknisi);
@@ -1536,15 +1589,37 @@
             docs.sort((x,y) => String(y.tgl).localeCompare(String(x.tgl)));
             
             if(docs.length === 0) { tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Tidak ada berkas.</td></tr>`; return; }
-            tBody.innerHTML = docs.map(d => `
-                <tr class="border-b border-white/5 hover:bg-white/[0.01]">
-                    <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-slate-500 font-mono">SN: ${d.seri}</span></td>
-                    <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':d.jenis.includes('Laporan')?'bg-rose-500/10 text-rose-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
-                    <td class="p-4 font-mono">${d.tgl}</td><td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
-                    <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${d.type==='pdf'?`<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition"><i class="fa-solid fa-eye"></i></button>`:d.type==='lk-print'?`<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition"><i class="fa-solid fa-eye"></i></button>`:`<span class="text-[10px] text-slate-500 italic px-2">Log</span>`}<button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition"><i class="fa-solid fa-trash"></i></button></div></td>
-                    <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${d.hasil}</span></td>
-                </tr>
-            `).join('');
+            
+            tBody.innerHTML = docs.map(d => {
+                let tombolAksiHapus = "";
+                // JIKA ROLE USER: TOMBOL HAPUS DISEMBUNYIKAN KECUALI LAPORAN KERUSAKAN MILIK MEREKA SENDIRI
+                if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
+                    tombolAksiHapus = `<button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition" title="Hapus Berkas"><i class="fa-solid fa-trash"></i></button>`;
+                } else if (currentActiveRole === 'User' && d.jenis === 'Laporan Kerusakan') {
+                    tombolAksiHapus = `<button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition" title="Batalkan Laporan"><i class="fa-solid fa-trash"></i></button>`;
+                } else {
+                    tombolAksiHapus = `<span class="p-1.5 text-slate-600"><i class="fa-solid fa-lock text-[10px]"></i></span>`;
+                }
+
+                let tombolLihat = "";
+                if(d.type === 'pdf') {
+                    tombolLihat = `<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Lihat Dokumen"><i class="fa-solid fa-eye"></i></button>`;
+                } else if(d.type === 'lk-print') {
+                    tombolLihat = `<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Lihat / Edit LK"><i class="fa-solid fa-eye"></i></button>`;
+                } else {
+                    tombolLihat = `<span class="text-[10px] text-slate-500 italic px-2">Log</span>`;
+                }
+
+                return `
+                    <tr class="border-b border-white/5 hover:bg-white/[0.01]">
+                        <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-slate-500 font-mono">SN: ${d.seri}</span></td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':d.jenis.includes('Laporan')?'bg-rose-500/10 text-rose-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
+                        <td class="p-4 font-mono">${d.tgl}</td><td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
+                        <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${tombolLihat}${tombolAksiHapus}</div></td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${d.hasil}</span></td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function switchTab(tId) { document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); document.getElementById('tab-' + tId).classList.remove('hidden'); document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); if(document.getElementById('btn-' + tId)) document.getElementById('btn-' + tId).classList.add('active'); toggleSidebarMenu(false); if(tId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300); }
@@ -1615,6 +1690,10 @@
         function hapAlatMasterFirebase(id, namaAlat) { if(confirm(`Hapus aset "${namaAlat}" permanen?`)) { db.collection("dataAlat").doc(id).delete().then(() => alert("🎉 Aset dihapus!")); } }
         
         function hapusDokumenLogSpesifik(docId, koleksiNama) {
+            if(currentActiveRole === 'User' && koleksiNama !== 'laporanKeluhanLog') {
+                alert("❌ Akses ditolak! Akun User hanya dapat melihat dokumen.");
+                return;
+            }
             if(confirm("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?")) {
                 db.collection(koleksiNama).doc(docId).delete().then(() => {
                     alert("🎉 Dokumen log berhasil dihapus!");
@@ -1626,7 +1705,14 @@
             }
         }
 
-        function hapusDokumenPusatRiwayat(id, kol) { if(confirm("Hapus dokumen arsip ini?")) { db.collection(kol).doc(id).delete().then(() => alert("🎉 Dokumen dibersihkan!")); } }
+        function hapusDokumenPusatRiwayat(id, kol) { 
+            if(currentActiveRole === 'User' && kol !== 'laporanKeluhanLog') {
+                alert("❌ Akses ditolak! Akun User hanya dapat melihat dokumen.");
+                return;
+            }
+            if(confirm("Hapus dokumen arsip ini?")) { db.collection(kol).doc(id).delete().then(() => alert("🎉 Dokumen dibersihkan!")); } 
+        }
+
         function lihatFileLangsung(b, j, jdl) { const body = document.getElementById('preview-body'); document.getElementById('preview-title').innerText = "Live Preview: " + jdl; if(j === 'pdf') body.innerHTML = `<iframe src="${b}" class="w-full h-full border rounded-xl" type="application/pdf"></iframe>`; else body.innerHTML = `<div class="max-w-full p-2 flex justify-center"><img src="${b}" class="max-h-[70vh] rounded-xl object-contain"></div>`; toggleModal('modal-preview', true); }
         function clearCanvasSignature(id) { const c = document.getElementById(id); if(c) { const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height); ctx.beginPath(); } }
         function switchKartuTab(tId) { document.querySelectorAll('.kartu-tab').forEach(el => el.classList.remove('active')); if(document.getElementById('btn-'+tId.replace('tab-',''))) document.getElementById('btn-'+tId.replace('tab-','')).classList.add('active'); document.querySelectorAll('.kartu-content-box').forEach(el => el.classList.add('hidden')); document.getElementById(tId).classList.remove('hidden'); }
@@ -1639,10 +1725,12 @@
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
 
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button><button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Dokumen Log"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button><button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Dokumen Log"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button><button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Dokumen Log"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
-            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button><button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Sertifikat Kalibrasi"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            let tombolAksiLog = currentActiveRole === 'User' ? '' : `<button onclick="hapusDokumenLogSpesifik(r.id, 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Dokumen Log"><i class="fa-solid fa-trash"></i></button>`;
+
+            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
             switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
         }
 
