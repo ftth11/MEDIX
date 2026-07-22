@@ -573,10 +573,14 @@
         let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-";
         let instanceChartKondisi = null; let instanceChartRuangan = null; let qrcodeInstance = null;
 
-        let terpakaiAlatKerja = []; let terpakaiFisik = []; let terpakaiFungsi = [];
+        // Mengubah struktur data tersimpan agar mendukung objek detail dengan status Ceklis (Baik / Tidak / N/A)
+        let terpakaiAlatKerja = []; 
+        let terpakaiFisik = []; 
+        let terpakaiFungsi = [];
+
         let opsAlatKerja = []; let opsFisik = []; let opsFungsi = [];
         let listNamaTeknisi = []; let listNamaSaksi = [];
-        let globalSelectedAlatIdUntukLog = ""; // Menyimpan ID alat yang sedang dibuka lognya
+        let globalSelectedAlatIdUntukLog = ""; 
 
         function toggleLihatPassword(inputId, tombolEl) {
             const field = document.getElementById(inputId);
@@ -612,7 +616,6 @@
             submitBtn.innerText = "Memverifikasi...";
             submitBtn.disabled = true;
 
-            // Mengizinkan fleksibilitas role Admin/Manajemen
             let rolePencarian = [targetLoginRole];
             if (targetLoginRole === 'Admin') {
                 rolePencarian = ['Admin', 'Manajemen', 'administrator', 'admin'];
@@ -731,7 +734,6 @@
                     }
 
                     if (confirm(`Ditemukan ${jsonRows.length} data aset dalam file Excel. Lanjutkan proses import massal ke database cloud?`)) {
-                        let suksesCount = 0;
                         jsonRows.forEach((row) => {
                             const namaAlat = row["Nama Alat Medis"] || row["Nama Alat"] || row["nama"] || "Alat Medis";
                             const merkAlat = row["Merk"] || row["merk"] || "-";
@@ -749,9 +751,7 @@
                                 status: "Siap Digunakan"
                             };
 
-                            db.collection("dataAlat").add(payloadAlat).then(() => {
-                                suksesCount++;
-                            }).catch(err => console.error("Gagal import baris:", err));
+                            db.collection("dataAlat").add(payloadAlat).catch(err => console.error("Gagal import baris:", err));
                         });
 
                         alert(`🎉 Proses import sedang berjalan! Data berhasil dimasukkan ke sistem.`);
@@ -897,9 +897,15 @@
             dataInspeksi = dataLk.filter(d => d.jenisKerja === 'Inspection').map(d => ({...d, desc: d.desc_kerja}));
             
             dataLk.forEach(lk => {
-                try { JSON.parse(lk.paramAlatKerja).forEach(i => { if(!opsAlatKerja.includes(i)) opsAlatKerja.push(i); }); } catch(e){}
-                try { JSON.parse(lk.paramFisik).forEach(i => { if(!opsFisik.includes(i)) opsFisik.push(i); }); } catch(e){}
-                try { JSON.parse(lk.paramFungsi).forEach(i => { if(!opsFungsi.includes(i)) opsFungsi.push(i); }); } catch(e){}
+                try { 
+                    JSON.parse(lk.paramAlatKerja).forEach(i => { let namaItem = typeof i === 'object' ? i.nama : i; if(!opsAlatKerja.includes(namaItem)) opsAlatKerja.push(namaItem); }); 
+                } catch(e){}
+                try { 
+                    JSON.parse(lk.paramFisik).forEach(i => { let namaItem = typeof i === 'object' ? i.nama : i; if(!opsFisik.includes(namaItem)) opsFisik.push(namaItem); }); 
+                } catch(e){}
+                try { 
+                    JSON.parse(lk.paramFungsi).forEach(i => { let namaItem = typeof i === 'object' ? i.nama : i; if(!opsFungsi.includes(namaItem)) opsFungsi.push(namaItem); }); 
+                } catch(e){}
             });
             renderAll();
         });
@@ -1184,9 +1190,15 @@
             document.getElementById('dlk-no').value = record.noLk; document.getElementById('dlk-tgl').value = record.textTgl || record.tgl.substring(0,10);
             document.getElementById('dlk-select-alat').value = record.alatId; sinkronisasiDataAlatKeWorksheet(record.alatId); document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc_kerja || "";
             
-            try { terpakaiAlatKerja = JSON.parse(record.paramAlatKerja) || []; } catch(e){}
-            try { terpakaiFisik = JSON.parse(record.paramFisik) || []; } catch(e){}
-            try { terpakaiFungsi = JSON.parse(record.paramFungsi) || []; } catch(e){}
+            try { 
+                terpakaiAlatKerja = JSON.parse(record.paramAlatKerja || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); 
+            } catch(e){ terpakaiAlatKerja = []; }
+            try { 
+                terpakaiFisik = JSON.parse(record.paramFisik || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); 
+            } catch(e){ terpakaiFisik = []; }
+            try { 
+                terpakaiFungsi = JSON.parse(record.paramFungsi || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); 
+            } catch(e){ terpakaiFungsi = []; }
             
             aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi');
             if(record.fotoAlat && record.fotoAlat !== '-') { document.getElementById('box-preview-foto').innerHTML = `<img src="${record.fotoAlat}" class="w-full h-full object-contain max-h-[140px] print:max-h-[130px] mx-auto rounded">`; }
@@ -1204,11 +1216,13 @@
             let htmlOpts = `<option value="">-- PILIH ALAT MEDIS SESUAI DATABASE --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} - [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
             selectEl.innerHTML = htmlOpts; if(calSelectEl) calSelectEl.innerHTML = htmlOpts; 
         }
+
         function renderOpsiDropdownAwal() { 
             document.getElementById('drop-alatkerja').innerHTML = `<option value="">-- PILIH ALAT KERJA --</option>` + opsAlatKerja.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Alat Kerja</option>`; 
             document.getElementById('drop-fisik').innerHTML = `<option value="">-- PILIH KONDISI FISIK --</option>` + opsFisik.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Kondisi Fisik</option>`; 
             document.getElementById('drop-fungsi').innerHTML = `<option value="">-- PILIH KONDISI FUNGSI --</option>` + opsFungsi.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Kondisi Fungsi</option>`; 
         }
+
         function tambahPoinAkumulatif(kategori) {
             const drop = document.getElementById('drop-' + kategori); let val = drop.value; if(!val) return;
             if(val === "tambah-baru") {
@@ -1223,14 +1237,50 @@
             } else { eksekusiPushPoinUnik(kategori, val); }
             drop.selectedIndex = 0;
         }
+
         function eksekusiPushPoinUnik(kategori, txt) {
-            if(kategori === 'alatkerja' && !terpakaiAlatKerja.includes(txt)) terpakaiAlatKerja.push(txt);
-            if(kategori === 'fisik' && !terpakaiFisik.includes(txt)) terpakaiFisik.push(txt);
-            if(kategori === 'fungsi' && !terpakaiFungsi.includes(txt)) terpakaiFungsi.push(txt);
+            let itemObj = { nama: txt, status: 'Baik' };
+            if(kategori === 'alatkerja' && !terpakaiAlatKerja.some(i => i.nama === txt)) terpakaiAlatKerja.push(itemObj);
+            if(kategori === 'fisik' && !terpakaiFisik.some(i => i.nama === txt)) terpakaiFisik.push(itemObj);
+            if(kategori === 'fungsi' && !terpakaiFungsi.some(i => i.nama === txt)) terpakaiFungsi.push(itemObj);
             aktualisasikanTampilanKotakTabel(kategori);
         }
-        function hapusPoinSpesifik(kategori, idx) { if(kategori === 'alatkerja') terpakaiAlatKerja.splice(idx,1); if(kategori === 'fisik') terpakaiFisik.splice(idx,1); if(kategori === 'fungsi') terpakaiFungsi.splice(idx,1); aktualisasikanTampilanKotakTabel(kategori); }
-        function aktualisasikanTampilanKotakTabel(kategori) { const box = document.getElementById('box-list-' + kategori); let arr = (kategori === 'alatkerja') ? terpakaiAlatKerja : (kategori === 'fisik') ? terpakaiFisik : terpakaiFungsi; box.innerHTML = arr.map((t, i) => `<div class="flex items-center justify-between bg-slate-900/60 border border-white/5 p-1 rounded-lg"><span>• ${t}</span><button type="button" onclick="hapusPoinSpesifik('${kategori}', ${i})" class="no-print text-rose-500 font-bold px-1 text-xs">×</button></div>`).join(''); }
+
+        function updateStatusPoinCeklis(kategori, idx, valStatus) {
+            if(kategori === 'alatkerja' && terpakaiAlatKerja[idx]) terpakaiAlatKerja[idx].status = valStatus;
+            if(kategori === 'fisik' && terpakaiFisik[idx]) terpakaiFisik[idx].status = valStatus;
+            if(kategori === 'fungsi' && terpakaiFungsi[idx]) terpakaiFungsi[idx].status = valStatus;
+        }
+
+        function hapusPoinSpesifik(kategori, idx) { 
+            if(kategori === 'alatkerja') terpakaiAlatKerja.splice(idx,1); 
+            if(kategori === 'fisik') terpakaiFisik.splice(idx,1); 
+            if(kategori === 'fungsi') terpakaiFungsi.splice(idx,1); 
+            aktualisasikanTampilanKotakTabel(kategori); 
+        }
+
+        function aktualisasikanTampilanKotakTabel(kategori) { 
+            const box = document.getElementById('box-list-' + kategori); 
+            let arr = (kategori === 'alatkerja') ? terpakaiAlatKerja : (kategori === 'fisik') ? terpakaiFisik : terpakaiFungsi; 
+            
+            box.innerHTML = arr.map((item, i) => {
+                let namaItem = typeof item === 'object' ? item.nama : item;
+                let statusItem = typeof item === 'object' ? (item.status || 'Baik') : 'Baik';
+
+                return `
+                    <div class="flex items-center justify-between bg-slate-900/60 border border-white/5 p-1 rounded-lg gap-2 text-[10px]">
+                        <span class="flex-1 font-medium truncate">• ${namaItem}</span>
+                        <div class="flex items-center space-x-1 no-print">
+                            <label class="cursor-pointer text-[9px]"><input type="radio" name="chk_${kategori}_${i}" ${statusItem==='Baik'?'checked':''} onclick="updateStatusPoinCeklis('${kategori}', ${i}, 'Baik')"> Baik</label>
+                            <label class="cursor-pointer text-[9px]"><input type="radio" name="chk_${kategori}_${i}" ${statusItem==='Tidak'?'checked':''} onclick="updateStatusPoinCeklis('${kategori}', ${i}, 'Tidak')"> Tidak</label>
+                            <label class="cursor-pointer text-[9px]"><input type="radio" name="chk_${kategori}_${i}" ${statusItem==='N/A'?'checked':''} onclick="updateStatusPoinCeklis('${kategori}', ${i}, 'N/A')"> N/A</label>
+                        </div>
+                        <span class="print:inline hidden font-bold">[${statusItem}]</span>
+                        <button type="button" onclick="hapusPoinSpesifik('${kategori}', ${i})" class="no-print text-rose-400 hover:text-rose-600 font-bold px-1.5 text-xs" title="Hapus Item">×</button>
+                    </div>
+                `;
+            }).join(''); 
+        }
         
         function sinkronisasiDataAlatKeWorksheet(id) {
             const a = dataAlat.find(item => item.id == id);
@@ -1288,7 +1338,6 @@
                 globalFilterStatus = "Siap Digunakan"; 
                 switchTab('data-alat'); 
             } else if(t === 'broken'){ 
-                // Terintegrasi langsung membuka menu Pelaporan Kerusakan (Ticket System)
                 switchTab('ticket-system'); 
             } else if(t === 'docs'){ 
                 switchTab('kalibrasi'); 
@@ -1311,7 +1360,6 @@
             if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = dataAlat.length;
             if(document.getElementById('stat-ready')) document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
             if(document.getElementById('stat-broken')) document.getElementById('stat-broken').innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
-            // Total dokumen hanya menghitung dokumen resmi (kalibrasi + LK lembar kerja pemeliharaan), tidak menyertakan log keluhan mentah
             if(document.getElementById('stat-logs')) document.getElementById('stat-logs').innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
         }
 
@@ -1346,12 +1394,11 @@
 
         function hapAlatMasterFirebase(id, namaAlat) { if(confirm(`Hapus aset "${namaAlat}" permanen?`)) { db.collection("dataAlat").doc(id).delete().then(() => alert("🎉 Aset dihapus!")); } }
         
-        // Memperbaiki fungsi hapus agar menghapus dokumen log spesifik, bukan menghapus data aset utamanya
         function hapusDokumenLogSpesifik(docId, koleksiNama) {
             if(confirm("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?")) {
                 db.collection(koleksiNama).doc(docId).delete().then(() => {
                     alert("🎉 Dokumen log berhasil dihapus!");
-                    bukaKartuPemeliharaan(globalSelectedAlatIdUntukLog); // Refresh isi modal kartu
+                    bukaKartuPemeliharaan(globalSelectedAlatIdUntukLog); 
                 }).catch(err => {
                     console.error(err);
                     alert("Gagal menghapus dokumen.");
@@ -1365,7 +1412,7 @@
         function switchKartuTab(tId) { document.querySelectorAll('.kartu-tab').forEach(el => el.classList.remove('active')); if(document.getElementById('btn-'+tId.replace('tab-',''))) document.getElementById('btn-'+tId.replace('tab-','')).classList.add('active'); document.querySelectorAll('.kartu-content-box').forEach(el => el.classList.add('hidden')); document.getElementById(tId).classList.remove('hidden'); }
         
         function bukaKartuPemeliharaan(alatId) {
-            globalSelectedAlatIdUntukLog = alatId; // Simpan ID aktif
+            globalSelectedAlatIdUntukLog = alatId; 
             const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
             let sLokasi = alat.lokasi === 'Baik' ? alat.edar : alat.lokasi; let sSeri = alat.lokasi === 'Baik' ? alat.tipe : alat.seri;
             document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-merk').innerText = alat.kode || '-'; document.getElementById('kartu-seri').innerText = sSeri || '-'; document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
