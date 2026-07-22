@@ -464,10 +464,10 @@
                         </div>
                     </div>
 
-                    <!-- KOTAK FOTO AFTER & URAIAN PEKERJAAN SEJAJAR DALAM 1 BARIS -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 print:gap-2 text-[11px]">
+                    <!-- KOTAK FOTO AFTER & URAIAN PEKERJAAN SEJAJAR DALAM 1 BARIS (GRID 3 KOLOM) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 print:gap-2 text-[11px]">
                         <!-- Foto After (Teknisi) - Lebar 1 Kolom -->
-                        <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[150px] print:h-[130px]">
+                        <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[135px]">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto After (Teknisi)</h4>
                                 <div class="no-print mb-0.5"><input type="file" id="dlk-input-foto" accept="image/*" capture="environment" onchange="previewFotoDipilih(this)" class="w-full border p-0.5 rounded bg-slate-50 text-[9px]"></div>
@@ -478,9 +478,9 @@
                         </div>
 
                         <!-- Uraian Detail Pekerjaan - Lebar 2 Kolom -->
-                        <div class="border p-3 print:p-2 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 flex flex-col justify-between">
+                        <div class="border p-3 print:p-2 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between h-[155px] print:h-[135px]">
                             <h4 class="font-bold border-b pb-0.5 text-slate-800"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                            <textarea id="dlk-txt-deskripsi-tunggal" rows="4" class="w-full border p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                            <textarea id="dlk-txt-deskripsi-tunggal" rows="4" class="w-full flex-1 border p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[11px]" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
                         </div>
                     </div>
 
@@ -493,7 +493,7 @@
                         </div>
                     </div>
 
-                    <!-- TANDA TANGAN DIGITAL (BARCODE DI BAWAH SUDAH DIHAPUS) -->
+                    <!-- TANDA TANGAN DIGITAL -->
                     <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-2 pt-2 text-[11px] items-end">
                         <div class="text-center space-y-1">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
@@ -626,6 +626,22 @@
         let opsAlatKerja = []; let opsFisik = []; let opsFungsi = [];
         let listNamaTeknisi = []; let listNamaSaksi = [];
         let globalSelectedAlatIdUntukLog = ""; 
+
+        // GLOBAL LISTENER UNTUK MENUTUP DROPDOWN KETIKA KLIK DI LUAR
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#input-search-alat-ticket') && !e.target.closest('#ticket-form-alat')) {
+                const el = document.getElementById('ticket-form-alat');
+                if(el) el.style.display = 'none';
+            }
+            if (!e.target.closest('#input-search-alat-worksheet') && !e.target.closest('#dlk-select-alat')) {
+                const el = document.getElementById('dlk-select-alat');
+                if(el) el.style.display = 'none';
+            }
+            if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#form-cal-alat')) {
+                const el = document.getElementById('form-cal-alat');
+                if(el) el.style.display = 'none';
+            }
+        });
 
         function toggleLihatPassword(inputId, tombolEl) {
             const field = document.getElementById(inputId);
@@ -1082,14 +1098,14 @@
 
             if(targetType === 'ticket') {
                 document.getElementById('input-search-alat-ticket').value = selectedOptText;
-                selectEl.style.display = "none"; // Sembunyikan setelah dipilih
+                selectEl.style.display = "none";
             } else if(targetType === 'worksheet') {
                 document.getElementById('input-search-alat-worksheet').value = selectedOptText;
-                selectEl.style.display = "none"; // Sembunyikan setelah dipilih
+                selectEl.style.display = "none";
                 sinkronisasiDataAlatKeWorksheet(selectedVal);
             } else if(targetType === 'kalibrasi') {
                 document.getElementById('input-search-alat-kalibrasi').value = selectedOptText;
-                selectEl.style.display = "none"; // Sembunyikan setelah dipilih
+                selectEl.style.display = "none";
             }
         }
 
@@ -1143,7 +1159,7 @@
                 return db.collection("dataAlat").doc(alatId).update({ status: "Dalam Perbaikan" });
             }).then(() => {
                 document.getElementById('ticket-form-keluhan').value = "";
-                document.getElementById('input-search-alat-ticket').value = ""; // Bersihkan text pencarian
+                document.getElementById('input-search-alat-ticket').value = "";
                 document.getElementById('ticket-form-foto').value = "";
                 document.getElementById('ticket-preview-foto-box').classList.add('hidden');
                 stringFotoBeforeBase64 = "-";
@@ -1275,7 +1291,9 @@
                 const payload = {
                     alatId: alatIdRaw, noLk: currentNoLk, textTgl: document.getElementById('dlk-tgl').value,
                     desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal').value, jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
-                    hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
+                    hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, 
+                    ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
+                    ttdUser: document.getElementById('sig-user').toDataURL(),
                     teknisiTtd: tekNama, saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
                     pjTtd: "Arrief Nurcahyo, S.Tr. Em.", 
                     fotoAlat: stringFotoBase64,          
@@ -1313,7 +1331,6 @@
             document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); 
             document.getElementById('dlk-select-alat').value = ""; 
             
-            // Sembunyikan dropdown & text search saat buka baru
             document.getElementById('dlk-select-alat').style.display = "none";
             document.getElementById('input-search-alat-worksheet').value = "";
 
@@ -1321,7 +1338,6 @@
             document.getElementById('box-preview-foto').innerHTML = `[ Ambil Foto Selesai ]`; 
             document.getElementById('box-preview-foto-before').innerHTML = `[ Tidak Ada Foto Before ]`;
             
-            // Reset Data Alat
             document.getElementById('dlk-nama').value = ""; document.getElementById('dlk-merk').value = "";
             document.getElementById('dlk-tipe').value = ""; document.getElementById('dlk-seri').value = "";
             document.getElementById('dlk-lokasi').value = ""; document.getElementById('dlk-tglcal').value = "";
@@ -1336,7 +1352,13 @@
             });
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); 
-            setTimeout(initSignatures, 400); toggleSidebarMenu(false); 
+            setTimeout(() => {
+                initSignatures();
+                clearCanvasSignature('sig-teknisi');
+                clearCanvasSignature('sig-user');
+                clearCanvasSignature('sig-pj');
+            }, 400); 
+            toggleSidebarMenu(false); 
         }
 
         function bukaLembarKerjaDinamisDariLog(id) {
@@ -1361,8 +1383,10 @@
             
             if(record.fotoAlat && record.fotoAlat !== '-') { 
                 document.getElementById('box-preview-foto').innerHTML = `<img src="${record.fotoAlat}" class="w-full h-full object-contain rounded">`; 
+                stringFotoBase64 = record.fotoAlat;
             } else {
                 document.getElementById('box-preview-foto').innerHTML = `[ Ambil Foto Selesai ]`;
+                stringFotoBase64 = "-";
             }
 
             stringFotoBeforeBase64 = record.fotoBefore || "-";
@@ -1377,7 +1401,25 @@
             document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(initSignatures, 400);
+            
+            // Muat ulang tanda tangan digital tersimpan ke canvas
+            setTimeout(() => {
+                initSignatures();
+                if(record.ttdTeknisi) muatTandaTanganKeCanvas('sig-teknisi', record.ttdTeknisi);
+                if(record.ttdUser) muatTandaTanganKeCanvas('sig-user', record.ttdUser);
+            }, 400);
+        }
+
+        function muatTandaTanganKeCanvas(canvasId, dataUrl) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas || !dataUrl || dataUrl === '-') return;
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.src = dataUrl;
+            img.onload = function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
         }
 
         function renderOpsiDropdownAwal() { 
