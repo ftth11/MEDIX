@@ -576,6 +576,7 @@
         let terpakaiAlatKerja = []; let terpakaiFisik = []; let terpakaiFungsi = [];
         let opsAlatKerja = []; let opsFisik = []; let opsFungsi = [];
         let listNamaTeknisi = []; let listNamaSaksi = [];
+        let globalSelectedAlatIdUntukLog = ""; // Menyimpan ID alat yang sedang dibuka lognya
 
         function toggleLihatPassword(inputId, tombolEl) {
             const field = document.getElementById(inputId);
@@ -1278,7 +1279,24 @@
 
         function switchTab(tId) { document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); document.getElementById('tab-' + tId).classList.remove('hidden'); document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); if(document.getElementById('btn-' + tId)) document.getElementById('btn-' + tId).classList.add('active'); toggleSidebarMenu(false); if(tId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300); }
         function toggleSidebarMenu(s) { const sb = document.getElementById('app-sidebar'); if(sb) { if(s) sb.classList.remove('-translate-x-full'); else sb.classList.add('-translate-x-full'); } }
-        function clickDashboardStat(t) { if(t==='all'){ globalFilterStatus="all"; switchTab('data-alat'); } else if(t==='ready'){ globalFilterStatus="Siap Digunakan"; switchTab('data-alat'); } else if(t==='broken'){ globalFilterStatus="Dalam Perbaikan"; switchTab('data-alat'); } else if(t==='docs'){ switchTab('kalibrasi'); gantiSubTabDokumen('all'); } renderAll(); }
+        
+        function clickDashboardStat(t) { 
+            if(t === 'all'){ 
+                globalFilterStatus = "all"; 
+                switchTab('data-alat'); 
+            } else if(t === 'ready'){ 
+                globalFilterStatus = "Siap Digunakan"; 
+                switchTab('data-alat'); 
+            } else if(t === 'broken'){ 
+                // Terintegrasi langsung membuka menu Pelaporan Kerusakan (Ticket System)
+                switchTab('ticket-system'); 
+            } else if(t === 'docs'){ 
+                switchTab('kalibrasi'); 
+                gantiSubTabDokumen('all'); 
+            } 
+            renderAll(); 
+        }
+
         function openModalAlatManual() { document.getElementById('form-alat-id').value = ""; document.getElementById('form-alat-nama').value = ""; document.getElementById('form-alat-merk').value = ""; toggleModal('modal-alat', true); }
         
         function pemicuEditAlatLangsung(id) { const a = dataAlat.find(i => i.id == id); if(!a) return; document.getElementById('form-alat-id').value = a.id; document.getElementById('form-alat-nama').value = a.nama || ''; document.getElementById('form-alat-merk').value = a.merk || ''; document.getElementById('form-alat-lokasi').value = a.lokasi === 'Baik' ? a.edar : a.lokasi; toggleModal('modal-alat', true); }
@@ -1293,7 +1311,8 @@
             if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = dataAlat.length;
             if(document.getElementById('stat-ready')) document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
             if(document.getElementById('stat-broken')) document.getElementById('stat-broken').innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
-            if(document.getElementById('stat-logs')) document.getElementById('stat-logs').innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length + dataKeluhanLog.length;
+            // Total dokumen hanya menghitung dokumen resmi (kalibrasi + LK lembar kerja pemeliharaan), tidak menyertakan log keluhan mentah
+            if(document.getElementById('stat-logs')) document.getElementById('stat-logs').innerText = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
         }
 
         function previewFotoDipilih(input) {
@@ -1326,22 +1345,37 @@
         }
 
         function hapAlatMasterFirebase(id, namaAlat) { if(confirm(`Hapus aset "${namaAlat}" permanen?`)) { db.collection("dataAlat").doc(id).delete().then(() => alert("🎉 Aset dihapus!")); } }
+        
+        // Memperbaiki fungsi hapus agar menghapus dokumen log spesifik, bukan menghapus data aset utamanya
+        function hapusDokumenLogSpesifik(docId, koleksiNama) {
+            if(confirm("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?")) {
+                db.collection(koleksiNama).doc(docId).delete().then(() => {
+                    alert("🎉 Dokumen log berhasil dihapus!");
+                    bukaKartuPemeliharaan(globalSelectedAlatIdUntukLog); // Refresh isi modal kartu
+                }).catch(err => {
+                    console.error(err);
+                    alert("Gagal menghapus dokumen.");
+                });
+            }
+        }
+
         function hapusDokumenPusatRiwayat(id, kol) { if(confirm("Hapus dokumen arsip ini?")) { db.collection(kol).doc(id).delete().then(() => alert("🎉 Dokumen dibersihkan!")); } }
         function lihatFileLangsung(b, j, jdl) { const body = document.getElementById('preview-body'); document.getElementById('preview-title').innerText = "Live Preview: " + jdl; if(j === 'pdf') body.innerHTML = `<iframe src="${b}" class="w-full h-full border rounded-xl" type="application/pdf"></iframe>`; else body.innerHTML = `<div class="max-w-full p-2 flex justify-center"><img src="${b}" class="max-h-[70vh] rounded-xl object-contain"></div>`; toggleModal('modal-preview', true); }
         function clearCanvasSignature(id) { const c = document.getElementById(id); if(c) { const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height); ctx.beginPath(); } }
         function switchKartuTab(tId) { document.querySelectorAll('.kartu-tab').forEach(el => el.classList.remove('active')); if(document.getElementById('btn-'+tId.replace('tab-',''))) document.getElementById('btn-'+tId.replace('tab-','')).classList.add('active'); document.querySelectorAll('.kartu-content-box').forEach(el => el.classList.add('hidden')); document.getElementById(tId).classList.remove('hidden'); }
         
         function bukaKartuPemeliharaan(alatId) {
+            globalSelectedAlatIdUntukLog = alatId; // Simpan ID aktif
             const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
             let sLokasi = alat.lokasi === 'Baik' ? alat.edar : alat.lokasi; let sSeri = alat.lokasi === 'Baik' ? alat.tipe : alat.seri;
             document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-merk').innerText = alat.kode || '-'; document.getElementById('kartu-seri').innerText = sSeri || '-'; document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
 
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
-            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button></td></tr>`).join('');
+            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button><button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Dokumen Log"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button><button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Dokumen Log"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button><button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Dokumen Log"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
+            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button><button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]" title="Hapus Sertifikat Kalibrasi"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
             switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
         }
 
