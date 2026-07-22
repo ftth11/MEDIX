@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <!-- Firebase SDK (v8 Legacy) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -248,10 +247,10 @@
                             <form onsubmit="kirimTiketKeluhanKerusakan(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                                 <div>
                                     <label class="block mb-1 text-slate-400 font-bold">Pilih Alat Medis yang Bermasalah: *</label>
-                                    <!-- Input Search Box untuk Dropdown Alat -->
+                                    <!-- Searchable Select Alat (Ticket) -->
                                     <div class="relative">
-                                        <input type="text" id="input-search-alat-ticket" oninput="filterDropdownAlatSearch('ticket')" placeholder="🔍 Ketik untuk cari alat..." class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none mb-1 text-xs font-semibold">
-                                        <select id="ticket-form-alat" size="4" class="w-full bg-slate-950 text-white border border-white/10 p-2 rounded-xl outline-none font-semibold cursor-pointer">
+                                        <input type="text" id="input-search-alat-ticket" oninput="handleSearchInputAlat('ticket', this.value)" placeholder="🔍 Ketik untuk cari alat..." class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none mb-1 text-xs font-semibold">
+                                        <select id="ticket-form-alat" size="4" onchange="pilihItemAlatDariDropdown('ticket', this)" class="w-full bg-slate-950 text-white border border-white/10 p-2 rounded-xl outline-none font-semibold cursor-pointer">
                                             <option value="">-- PILIH ALAT --</option>
                                         </select>
                                     </div>
@@ -397,14 +396,14 @@
 
                     <div class="no-print bg-slate-50 p-3 rounded-lg border border-slate-200">
                         <label class="block font-bold mb-1 text-blue-700">Pilih Nama Alat Medis Dari Database:</label>
-                        <!-- Input Search Box untuk Dropdown Alat di Worksheet -->
+                        <!-- Searchable Select Alat (Worksheet) -->
                         <div class="relative">
-                            <input type="text" id="input-search-alat-worksheet" oninput="filterDropdownAlatSearch('worksheet')" placeholder="🔍 Ketik untuk cari alat..." class="w-full border p-1 rounded bg-white text-xs outline-none mb-1 font-semibold">
-                            <select id="dlk-select-alat" size="3" onchange="sinkronisasiDataAlatKeWorksheet(this.value)" class="w-full border p-1 rounded bg-white font-bold outline-none focus:border-blue-600 shadow-sm cursor-pointer"></select>
+                            <input type="text" id="input-search-alat-worksheet" oninput="handleSearchInputAlat('worksheet', this.value)" placeholder="🔍 Ketik untuk cari alat..." class="w-full border p-1 rounded bg-white text-xs outline-none mb-1 font-semibold">
+                            <select id="dlk-select-alat" size="3" onchange="pilihItemAlatDariDropdown('worksheet', this)" class="w-full border p-1 rounded bg-white font-bold outline-none focus:border-blue-600 shadow-sm cursor-pointer"></select>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-4 print:grid-cols-4 gap-3 print:gap-2 text-[11px]">
+                    <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 print:gap-2 text-[11px]">
                         <!-- Kotak 1: Kondisi Lingkungan -->
                         <div class="border p-3 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[185px] print:h-[165px]">
                             <div>
@@ -427,18 +426,7 @@
                             </div>
                         </div>
 
-                        <!-- Kotak 3: Foto After (Dari Teknisi) -->
-                        <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[185px] print:h-[165px]">
-                            <div>
-                                <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto After (Teknisi)</h4>
-                                <div class="no-print mb-0.5"><input type="file" id="dlk-input-foto" accept="image/*" capture="environment" onchange="previewFotoDipilih(this)" class="w-full border p-0.5 rounded bg-slate-50 text-[9px]"></div>
-                            </div>
-                            <div class="flex-1 flex justify-center items-center overflow-hidden w-full relative bg-slate-50 rounded">
-                                <div id="box-preview-foto" class="w-full h-full flex items-center justify-center overflow-hidden font-mono text-gray-400 italic text-[9px] text-center p-1">[ Ambil Foto Selesai ]</div>
-                            </div>
-                        </div>
-
-                        <!-- Kotak 4: Data Alat -->
+                        <!-- Kotak 3: Data Alat -->
                         <div class="border p-3 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[185px] print:h-[165px] overflow-y-auto">
                             <div>
                                 <h4 class="font-bold border-b pb-1 mb-1.5 text-slate-800 flex items-center"><i class="fa-solid fa-microscope mr-1.5 text-blue-600"></i>Data Alat</h4>
@@ -476,9 +464,24 @@
                         </div>
                     </div>
 
-                    <div class="border p-3 print:p-2 rounded-lg text-[11px] space-y-1 bg-white">
-                        <h4 class="font-bold border-b pb-0.5 text-slate-800"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                        <textarea id="dlk-txt-deskripsi-tunggal" rows="3" class="w-full border p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                    <!-- KOTAK FOTO AFTER & URAIAN PEKERJAAN SEJAJAR DALAM 1 BARIS -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 print:gap-2 text-[11px]">
+                        <!-- Foto After (Teknisi) - Lebar 1 Kolom -->
+                        <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[150px] print:h-[130px]">
+                            <div>
+                                <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto After (Teknisi)</h4>
+                                <div class="no-print mb-0.5"><input type="file" id="dlk-input-foto" accept="image/*" capture="environment" onchange="previewFotoDipilih(this)" class="w-full border p-0.5 rounded bg-slate-50 text-[9px]"></div>
+                            </div>
+                            <div class="flex-1 flex justify-center items-center overflow-hidden w-full relative bg-slate-50 rounded">
+                                <div id="box-preview-foto" class="w-full h-full flex items-center justify-center overflow-hidden font-mono text-gray-400 italic text-[9px] text-center p-1">[ Ambil Foto Selesai ]</div>
+                            </div>
+                        </div>
+
+                        <!-- Uraian Detail Pekerjaan - Lebar 2 Kolom -->
+                        <div class="border p-3 print:p-2 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 flex flex-col justify-between">
+                            <h4 class="font-bold border-b pb-0.5 text-slate-800"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
+                            <textarea id="dlk-txt-deskripsi-tunggal" rows="4" class="w-full border p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                        </div>
                     </div>
 
                     <div class="border p-2.5 print:p-1.5 rounded-lg text-[11px] bg-slate-50 shadow-sm">
@@ -490,8 +493,8 @@
                         </div>
                     </div>
 
-                    <!-- TANDA TANGAN & DIGITAL VERIFICATION QR CODE -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 print:grid-cols-4 gap-4 print:gap-2 pt-2 text-[11px] items-end">
+                    <!-- TANDA TANGAN DIGITAL (BARCODE DI BAWAH SUDAH DIHAPUS) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-2 pt-2 text-[11px] items-end">
                         <div class="text-center space-y-1">
                             <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
                             <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-24 print:h-20 relative overflow-hidden"><canvas id="sig-teknisi" class="w-full h-full absolute inset-0 z-10"></canvas></div>
@@ -509,11 +512,6 @@
                             <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-24 print:h-20 relative overflow-hidden"><canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                             <button type="button" onclick="clearCanvasSignature('sig-pj')" class="no-print text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded border border-red-300">Hapus</button>
                             <div class="pt-1 font-bold text-gray-800 border-b pb-0.5">Arrief Nurcahyo, S.Tr. Em.</div>
-                        </div>
-                        <div class="flex flex-col items-center justify-center p-2 border rounded-xl bg-slate-50/50 h-[130px] print:h-[115px]">
-                            <p class="text-[8px] uppercase font-bold text-slate-500 tracking-tight mb-1 text-center">Security Verification</p>
-                            <div id="dlk-qrcode-box" class="w-16 h-16 flex items-center justify-center bg-white p-1 rounded shadow-inner"></div>
-                            <p class="text-[7px] font-mono text-slate-400 mt-1 text-center truncate w-full" id="dlk-lbl-hash">MEDIX-SECURE-GEN</p>
                         </div>
                     </div>
 
@@ -544,10 +542,10 @@
                         <div class="p-5 space-y-3">
                             <div>
                                 <label class="block mb-1 font-bold text-cyan-400">Pilih Instrumen Medis Dari Database: *</label>
-                                <!-- Input Search Box untuk Modal Kalibrasi -->
+                                <!-- Searchable Select Alat (Kalibrasi) -->
                                 <div class="relative">
-                                    <input type="text" id="input-search-alat-kalibrasi" oninput="filterDropdownAlatSearch('kalibrasi')" placeholder="🔍 Ketik untuk cari alat..." class="w-full bg-slate-950 text-white border border-white/10 p-2 rounded-xl outline-none mb-1 text-xs font-semibold">
-                                    <select id="form-cal-alat" size="3" required class="w-full bg-slate-950 text-white border border-white/10 p-2 rounded-xl outline-none cursor-pointer"></select>
+                                    <input type="text" id="input-search-alat-kalibrasi" oninput="handleSearchInputAlat('kalibrasi', this.value)" placeholder="🔍 Ketik untuk cari alat..." class="w-full bg-slate-950 text-white border border-white/10 p-2 rounded-xl outline-none mb-1 text-xs font-semibold">
+                                    <select id="form-cal-alat" size="3" onchange="pilihItemAlatDariDropdown('kalibrasi', this)" required class="w-full bg-slate-950 text-white border border-white/10 p-2 rounded-xl outline-none cursor-pointer"></select>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
@@ -619,7 +617,7 @@
         
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
         let globalFilterStatus = "all"; let subTabDokumenAktif = "all"; let stringFotoBase64 = "-"; let stringFotoBeforeBase64 = "-";
-        let instanceChartKondisi = null; let instanceChartRuangan = null; let qrcodeInstance = null;
+        let instanceChartKondisi = null; let instanceChartRuangan = null;
 
         let terpakaiAlatKerja = []; 
         let terpakaiFisik = []; 
@@ -919,7 +917,7 @@
 
         db.collection("dataAlat").onSnapshot((querySnapshot) => {
             dataAlat = []; querySnapshot.forEach((doc) => { dataAlat.push({ id: doc.id, ...doc.data() }); });
-            aktualisasikanDotKoneksiHijau(); evaluasiJatuhTempoKalibrasiMassal(); renderAll(); populasikanDropdownAlatDiTicketForm(); populasikanDropdownAlatDiLembarKerja();
+            aktualisasikanDotKoneksiHijau(); evaluasiJatuhTempoKalibrasiMassal(); renderAll(); populasikanDropdownAlatDiTicketForm(); populasikanDropdownAlatDiLembarKerja(); populasikanDropdownAlatDiKalibrasi();
         });
 
         db.collection("dataKalibrasi").onSnapshot((querySnapshot) => {
@@ -1032,7 +1030,7 @@
             if(htmlWarning !== "") { warningList.innerHTML = htmlWarning; warningBox.classList.remove('hidden'); } else { warningBox.classList.add('hidden'); }
         }
 
-        // Fungsi Filter Search untuk Dropdown Alat (User Ticket, Worksheet, Kalibrasi)
+        // Searchable Select Mekanisme: Sembunyikan dropdown setelah dipilih, tampilkan lagi jika search diubah
         function populasikanDropdownAlatDiTicketForm(keyword = "") {
             const selectEl = document.getElementById('ticket-form-alat'); if(!selectEl) return;
             const kw = keyword.toLowerCase();
@@ -1054,13 +1052,34 @@
             selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">${a.nama} - [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
         }
 
-        function filterDropdownAlatSearch(targetType) {
+        function handleSearchInputAlat(targetType, kw) {
             if(targetType === 'ticket') {
-                populasikanDropdownAlatDiTicketForm(document.getElementById('input-search-alat-ticket').value);
+                populasikanDropdownAlatDiTicketForm(kw);
+                document.getElementById('ticket-form-alat').style.display = kw.trim() === "" ? "block" : "block";
             } else if(targetType === 'worksheet') {
-                populasikanDropdownAlatDiLembarKerja(document.getElementById('input-search-alat-worksheet').value);
+                populasikanDropdownAlatDiLembarKerja(kw);
+                document.getElementById('dlk-select-alat').style.display = "block";
             } else if(targetType === 'kalibrasi') {
-                populasikanDropdownAlatDiKalibrasi(document.getElementById('input-search-alat-kalibrasi').value);
+                populasikanDropdownAlatDiKalibrasi(kw);
+                document.getElementById('form-cal-alat').style.display = "block";
+            }
+        }
+
+        function pilihItemAlatDariDropdown(targetType, selectEl) {
+            const selectedVal = selectEl.value;
+            const selectedOptText = selectEl.options[selectEl.selectedIndex]?.text || "";
+            if(!selectedVal) return;
+
+            if(targetType === 'ticket') {
+                document.getElementById('input-search-alat-ticket').value = selectedOptText;
+                selectEl.style.display = "none"; // Sembunyikan setelah dipilih
+            } else if(targetType === 'worksheet') {
+                document.getElementById('input-search-alat-worksheet').value = selectedOptText;
+                selectEl.style.display = "none"; // Sembunyikan setelah dipilih
+                sinkronisasiDataAlatKeWorksheet(selectedVal);
+            } else if(targetType === 'kalibrasi') {
+                document.getElementById('input-search-alat-kalibrasi').value = selectedOptText;
+                selectEl.style.display = "none"; // Sembunyikan setelah dipilih
             }
         }
 
@@ -1172,7 +1191,6 @@
             sinkronisasiDataAlatKeWorksheet(alatId);
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(r => { if(r.value === "Corrective Maintenance") r.checked = true; });
             
-            // Masukkan foto before ke workspace worksheet
             stringFotoBeforeBase64 = fotoBeforeVal || "-";
             const boxBefore = document.getElementById('box-preview-foto-before');
             if(stringFotoBeforeBase64 !== '-') {
@@ -1192,19 +1210,6 @@
                     alert("🎉 Status tiket berhasil diselesaikan!");
                 });
             }
-        }
-
-        function perbaruiSistemVerifikasiQRCodeResmi(noLk, namaTeknisi) {
-            try {
-                const hashBox = document.getElementById('dlk-lbl-hash'); const qrBox = document.getElementById('dlk-qrcode-box');
-                if(!qrBox) return; qrBox.innerHTML = "";
-                const securePayloadString = `MEDIX-VERIFIED\nNo: ${noLk}\nTeknisi: ${namaTeknisi || 'IPSRS'}\nStatus: Dokumen Sah Kemenkes/Auditor`;
-                hashBox.innerText = "MDX-" + btoa(noLk || "LK").substring(0, 8).toUpperCase();
-                
-                if (typeof QRCode !== 'undefined') {
-                    qrcodeInstance = new QRCode(qrBox, { text: securePayloadString, width: 64, height: 64, colorDark: "#0f172a", colorLight: "#ffffff" });
-                }
-            } catch (error) { console.log("QR Engine deferred."); }
         }
 
         function renderAll() {
@@ -1262,8 +1267,8 @@
                     hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
                     teknisiTtd: tekNama, saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
                     pjTtd: "Arrief Nurcahyo, S.Tr. Em.", 
-                    fotoAlat: stringFotoBase64,          // Foto After oleh Teknisi
-                    fotoBefore: stringFotoBeforeBase64,  // Foto Before oleh User
+                    fotoAlat: stringFotoBase64,          
+                    fotoBefore: stringFotoBeforeBase64,  
                     paramAlatKerja: JSON.stringify(terpakaiAlatKerja), paramFisik: JSON.stringify(terpakaiFisik), paramFungsi: JSON.stringify(terpakaiFungsi),
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
@@ -1272,13 +1277,22 @@
                     const newStatus = payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan";
                     
                     db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => { db.collection("troubleTickets").doc(doc.id).delete(); });
+                        querySnapshot.forEach((doc) => { 
+                            db.collection("troubleTickets").doc(doc.id).delete(); 
+                        });
+                    });
+
+                    // Bersihkan juga log keluhan mentah agar riwayat tidak menjadi double
+                    db.collection("laporanKeluhanLog").where("alatId", "==", alatIdRaw).get().then((qLog) => {
+                        qLog.forEach((docLog) => {
+                            db.collection("laporanKeluhanLog").doc(docLog.id).delete();
+                        });
                     });
 
                     return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
                 }).then(() => {
                     document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                    alert(`🎉 Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan dengan Dwi-Foto (Before & After)!`);
+                    alert(`🎉 Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan & Riwayat Laporan Dibersihkan dari Double Log!`);
                 });
             });
         }
@@ -1296,7 +1310,6 @@
             db.collection("lembarKerja").get().then(s => {
                 let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
                 document.getElementById('dlk-no').value = generatedNo;
-                perbaruiSistemVerifikasiQRCodeResmi(generatedNo, currentUserNama);
             });
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); 
@@ -1323,14 +1336,12 @@
             
             aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi');
             
-            // Render Foto After (Teknisi)
             if(record.fotoAlat && record.fotoAlat !== '-') { 
                 document.getElementById('box-preview-foto').innerHTML = `<img src="${record.fotoAlat}" class="w-full h-full object-contain rounded">`; 
             } else {
                 document.getElementById('box-preview-foto').innerHTML = `[ Ambil Foto Selesai ]`;
             }
 
-            // Render Foto Before (User)
             stringFotoBeforeBase64 = record.fotoBefore || "-";
             if(stringFotoBeforeBase64 !== '-') {
                 document.getElementById('box-preview-foto-before').innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`;
@@ -1341,7 +1352,6 @@
             populasikanDropdownNamaTandaTangan();
             document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
             document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
-            perbaruiSistemVerifikasiQRCodeResmi(record.noLk, record.teknisiTtd);
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
             setTimeout(initSignatures, 400);
@@ -1421,7 +1431,6 @@
                 populasikanDropdownNamaTandaTangan();
                 if(document.getElementById('dlk-select-nama-teknisi').innerHTML.includes(currentUserNama)) {
                     document.getElementById('dlk-select-nama-teknisi').value = currentUserNama;
-                    perbaruiSistemVerifikasiQRCodeResmi(document.getElementById('dlk-no').value, currentUserNama);
                 }
             }
         }
@@ -1429,7 +1438,6 @@
         function populasikanDropdownNamaTandaTangan() {
             document.getElementById('dlk-select-nama-teknisi').innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('');
             document.getElementById('dlk-select-nama-saksi').innerHTML = `<option value="">-- PILIH USER --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('');
-            document.getElementById('dlk-select-nama-teknisi').onchange = function(e) { perbaruiSistemVerifikasiQRCodeResmi(document.getElementById('dlk-no').value, e.target.value); }
         }
         
         function renderTabelPusatDokumen() {
@@ -1439,7 +1447,14 @@
             const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             combinedLk.forEach(lk => { const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lk.id, namaAlat: a.nama, seri: a.tipe || lk.seri || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || lk.tgl.substring(0,10), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal, koleksiDb: 'lembarKerja' }); });
             
-            dataKeluhanLog.forEach(lg => { const a = dataAlat.find(i => i.id == lg.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lg.id, namaAlat: a.nama, seri: a.tipe || lg.seri || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal, koleksiDb: 'laporanKeluhanLog' }); });
+            // Sembunyikan log keluhan mentah jika alat tersebut sudah memiliki Lembar Kerja (LK) tersimpan agar tidak double
+            dataKeluhanLog.forEach(lg => {
+                const sudahAdaLk = combinedLk.some(lk => lk.alatId === lg.alatId);
+                if (!sudahAdaLk) {
+                    const a = dataAlat.find(i => i.id == lg.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
+                    docs.push({ id: lg.id, namaAlat: a.nama, seri: a.tipe || lg.seri || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal, koleksiDb: 'laporanKeluhanLog' });
+                }
+            });
 
             if(subTabDokumenAktif === 'kalibrasi') docs = docs.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
             if(subTabDokumenAktif === 'mandiri') docs = docs.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi');
