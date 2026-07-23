@@ -275,7 +275,7 @@
                             <div class="overflow-x-auto w-full">
                                 <table class="w-full text-left text-xs min-w-[600px]">
                                     <thead class="bg-slate-950 text-slate-400 font-bold">
-                                        <tr><th class="p-3">Alat / Ruangan</th><th class="p-3">Keluhan Masalah</th><th class="p-3 text-center">Foto Before</th><th class="p-3">Tanggal Lapor</th><th class="p-3">Status Tiket</th><th class="p-3 text-center">Tindakan Lapangan</th></tr>
+                                        <tr><th class="p-3">Alat / Ruangan</th><th class="p-3">Keluhan Masalah</th><th class="p-3 text-center">Foto Before</th><th class="p-3">Waktu Lapor</th><th class="p-3">Status Tiket</th><th class="p-3 text-center">Tindakan Lapangan</th></tr>
                                     </thead>
                                     <tbody id="table-ticket-body" class="divide-y divide-white/5 text-slate-300"></tbody>
                                 </table>
@@ -289,7 +289,7 @@
                     <div class="flex justify-between items-center no-print"><h2 class="text-lg font-bold text-white bg-slate-900/60 px-4 py-1.5 rounded-xl border border-slate-800">Pusat Riwayat & Dokumen Aset</h2><button id="btn-upload-pdf-baru" onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition"><i class="fa-solid fa-file-arrow-up mr-1"></i> Upload Berkas PDF Baru</button></div>
                     <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-800 max-w-md text-[11px] font-bold text-slate-400 space-x-1 no-print shadow-2xl"><button onclick="gantiSubTabDokumen('all')" id="doc-tab-all" class="px-4 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white">Semua</button><button onclick="gantiSubTabDokumen('kalibrasi')" id="doc-tab-kalibrasi" class="px-4 py-2 rounded-lg flex-1 text-center">Sertifikat Kalibrasi</button><button onclick="gantiSubTabDokumen('mandiri')" id="doc-tab-mandiri" class="px-4 py-2 rounded-lg flex-1 text-center">Lembar Kerja</button></div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
-                        <div class="overflow-x-auto w-full"><table class="w-full text-left text-xs min-w-[800px]"><thead class="bg-slate-900/90 font-bold text-slate-400"><tr><th class="p-4">Alat Kesehatan / SN</th><th class="p-4">Jenis Dokumen</th><th class="p-4">Tanggal Dibuat</th><th class="p-4">Deskripsi</th><th class="p-4 text-center">Aksi Berkas</th><th class="p-4">Status</th></tr></thead><tbody id="table-kalibrasi-body" class="divide-y divide-white/5 text-slate-300"></tbody></table></div>
+                        <div class="overflow-x-auto w-full"><table class="w-full text-left text-xs min-w-[800px]"><thead class="bg-slate-900/90 font-bold text-slate-400"><tr><th class="p-4">Alat Kesehatan / SN</th><th class="p-4">Jenis Dokumen</th><th class="p-4">Waktu Dibuat</th><th class="p-4">Deskripsi</th><th class="p-4 text-center">Aksi Berkas</th><th class="p-4">Status</th></tr></thead><tbody id="table-kalibrasi-body" class="divide-y divide-white/5 text-slate-300"></tbody></table></div>
                     </div>
                 </div>
 
@@ -385,7 +385,7 @@
                         <h3 class="text-sm font-bold underline uppercase tracking-wide">LEMBAR KERJA PEMELIHARAAN ALAT KESEHATAN</h3>
                         <div class="flex justify-center space-x-4 text-[10px] font-mono">
                             <p>No Lembar Kerja: <input type="text" id="dlk-no" class="border-b font-bold outline-none text-blue-600 w-52 bg-slate-50 text-center" readonly placeholder="Otomatis Setelah Save..."></p>
-                            <p>Date: <input type="date" id="dlk-tgl" class="border-b outline-none font-bold"> </p>
+                            <p>Waktu Pengerjaan: <input type="datetime-local" id="dlk-tgl" class="border-b outline-none font-bold"> </p>
                         </div>
                     </div>
 
@@ -517,7 +517,7 @@
 
                     <div class="no-print border-t pt-3 flex justify-end space-x-2">
                         <button type="button" onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" class="bg-gray-400 text-white px-4 py-1.5 rounded-lg text-xs">Tutup</button>
-                        <button type="button" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data Baru / Perbarui</button>
+                        <button type="button" id="btn-simpan-lk-aksi" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data Baru / Perbarui</button>
                     </div>
                 </div>
 
@@ -580,7 +580,7 @@
             </div>
             <div class="flex-1 overflow-y-auto p-6 bg-slate-950/10 text-xs">
                 <div id="tab-k-corrective" class="kartu-content-box space-y-3"><div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5"><table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Log Uraian Kerja</th><th class="p-4 text-center">Foto</th><th class="p-4">Hasil</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="kartu-list-corrective" class="divide-y divide-white/5"></tbody></table></div></div>
-                <div id="tab-k-preventive" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5"><table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Tanggal Pelaksanaan</th><th class="p-4 text-center">Foto</th><th class="p-4">Hasil</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="kartu-list-preventive" class="divide-y divide-white/5"></tbody></table></div></div>
+                <div id="tab-k-preventive" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5"><table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Waktu Pelaksanaan</th><th class="p-4 text-center">Foto</th><th class="p-4">Hasil</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="kartu-list-preventive" class="divide-y divide-white/5"></tbody></table></div></div>
                 <div id="tab-k-inspeksi" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5"><table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Waktu Inspeksi</th><th class="p-4 text-center">Foto</th><th class="p-4">Hasil</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="kartu-list-inspeksi" class="divide-y divide-white/5"></tbody></table></div></div>
                 <div id="tab-k-kalibrasi" class="kartu-content-box hidden space-y-3"><div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5"><table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Tanggal Uji Alat</th><th class="p-4">Masa Berlaku</th><th class="p-4">Vendor Penguji</th><th class="p-4 text-center">Arsip Digital</th></tr></thead><tbody id="kartu-list-kalibrasi" class="divide-y divide-white/5"></tbody></table></div></div>
             </div>
@@ -1138,7 +1138,9 @@
             const keluhan = document.getElementById('ticket-form-keluhan').value;
             if(!alatId) return alert("Pilih alat terlebih dahulu dari daftar!");
 
-            const tglLaporStr = new Date().toISOString().substring(0, 10);
+            const now = new Date();
+            const tglLaporStr = now.toISOString().substring(0, 10) + ' ' + now.toTimeString().substring(0, 5);
+            
             const payloadTicket = { 
                 alatId, 
                 keluhan, 
@@ -1198,7 +1200,7 @@
                         aksiAksi = `<span class="text-slate-500 italic text-[10px]">Menunggu Teknisi</span>`;
                     }
                 } else {
-                    // KETIKA SUDAH SELESAI, USER BISA MELIHAT LEMBAR KERJA (LK)
+                    // KETIKA SUDAH SELESAI, USER BISA MELIHAT LEMBAR KERJA (LK) (READ-ONLY)
                     let matchingLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi].find(lk => lk.alatId === t.alatId);
                     let tombolBukaLkUser = matchingLk ? `<button onclick="bukaLembarKerjaDinamisDariLog('${matchingLk.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] transition"><i class="fa-solid fa-file-lines mr-1"></i> Buka LK</button>` : `<span class="text-[10px] text-slate-500 italic">Arsip Selesai</span>`;
 
@@ -1220,7 +1222,7 @@
                         <td class="p-3"><b>${alat.nama}</b><br><span class="text-[10px] text-slate-500">${alat.edar || alat.lokasi || '-'}</span></td>
                         <td class="p-3 text-slate-400 font-mono">${t.keluhan}</td>
                         <td class="p-3 text-center">${fotoBeforeThm}</td>
-                        <td class="p-3 text-[11px] font-mono text-slate-500">${t.tglLapor || '-'}</td>
+                        <td class="p-3 text-[11px] font-mono text-slate-400">${t.tglLapor || '-'}</td>
                         <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${kelasBadgeStatus}">${t.statusTiket}</span></td>
                         <td class="p-3 text-center">${aksiAksi}</td>
                     </tr>
@@ -1313,6 +1315,11 @@
         }
 
         function simpanPenuhIsianWorksheetDinamis() {
+            if (currentActiveRole === 'User') {
+                alert("❌ Akses ditolak! Akun User hanya dapat melihat Lembar Kerja (Read-Only).");
+                return;
+            }
+
             const alatIdRaw = document.getElementById('dlk-selected-alat-id').value;
             if(!alatIdRaw) return alert("Belum ada alat yang terpilih/dilaporkan pada Lembar Kerja ini!");
             const tekNama = document.getElementById('dlk-select-nama-teknisi').value;
@@ -1346,7 +1353,6 @@
                 db.collection("lembarKerja").doc(existingFirebaseId).update(payload).then(() => {
                     return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
                 }).then(() => {
-                    // Update status tiket jadi Selesai jika ada tiket terkait
                     return db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get();
                 }).then((qSnap) => {
                     qSnap.forEach(docT => {
@@ -1386,7 +1392,10 @@
             resetFotoAfterDisplay();
             
             terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; 
-            document.getElementById('dlk-tgl').value = new Date().toISOString().substring(0, 10); 
+            
+            const now = new Date();
+            const currentDateTimeLocal = now.toISOString().substring(0, 16);
+            document.getElementById('dlk-tgl').value = currentDateTimeLocal; 
             
             document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
             document.getElementById('box-preview-foto-before').innerHTML = `[ Tidak Ada Foto Before ]`;
@@ -1402,6 +1411,11 @@
             });
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' }); 
+            
+            // Aktifkan kembali tombol simpan jika sebelumnya di-disable untuk user view-only
+            const btnSimpanLk = document.getElementById('btn-simpan-lk-aksi');
+            if(btnSimpanLk) btnSimpanLk.style.display = 'inline-block';
+
             setTimeout(() => {
                 initSignatures();
                 clearCanvasSignature('sig-teknisi');
@@ -1419,7 +1433,8 @@
             document.getElementById('dlk-firebase-id').value = record.id; 
 
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => { if(radio.value === record.jenisKerja) radio.checked = true; });
-            document.getElementById('dlk-no').value = record.noLk; document.getElementById('dlk-tgl').value = record.textTgl || record.tgl.substring(0,10);
+            document.getElementById('dlk-no').value = record.noLk; 
+            document.getElementById('dlk-tgl').value = record.textTgl || (record.tgl ? record.tgl.substring(0,16) : '');
             
             sinkronisasiDataAlatKeWorksheet(record.alatId); 
             document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc_kerja || "";
@@ -1458,6 +1473,16 @@
             
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); areaLK.classList.remove('hidden'); areaLK.scrollIntoView({ behavior: 'smooth' });
             
+            // JIKA AKUN USER, SEMBUNYIKAN TOMBOL SIMPAN AGAR HANYA BISA MELIHAT/MENCETAK (READ-ONLY)
+            const btnSimpanLk = document.getElementById('btn-simpan-lk-aksi');
+            if(btnSimpanLk) {
+                if(currentActiveRole === 'User') {
+                    btnSimpanLk.style.display = 'none';
+                } else {
+                    btnSimpanLk.style.display = 'inline-block';
+                }
+            }
+
             setTimeout(() => {
                 initSignatures();
                 if(record.ttdTeknisi) muatTandaTanganKeCanvas('sig-teknisi', record.ttdTeknisi);
@@ -1585,7 +1610,7 @@
             dataKalibrasi.forEach(c => { const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: c.id, namaAlat: a.nama, seri: a.tipe || a.seri || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); });
             
             const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
-            combinedLk.forEach(lk => { const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lk.id, namaAlat: a.nama, seri: a.tipe || lk.seri || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || lk.tgl.substring(0,10), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal, koleksiDb: 'lembarKerja' }); });
+            combinedLk.forEach(lk => { const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lk.id, namaAlat: a.nama, seri: a.tipe || lk.seri || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal, koleksiDb: 'lembarKerja' }); });
             
             dataKeluhanLog.forEach(lg => {
                 const sudahAdaLk = combinedLk.some(lk => lk.alatId === lg.alatId);
@@ -1624,7 +1649,7 @@
                     <tr class="border-b border-white/5 hover:bg-white/[0.01]">
                         <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-slate-500 font-mono">SN: ${d.seri}</span></td>
                         <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':d.jenis.includes('Laporan')?'bg-rose-500/10 text-rose-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
-                        <td class="p-4 font-mono">${d.tgl}</td><td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
+                        <td class="p-4 font-mono text-[11px]">${d.tgl}</td><td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
                         <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${tombolLihat}${tombolAksiHapus}</div></td>
                         <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${d.hasil}</span></td>
                     </tr>
@@ -1749,9 +1774,9 @@
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
 
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${r.textTgl||'-'}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${p.textTgl||'-'}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${i.textTgl||'-'}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
             document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
             switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
         }
