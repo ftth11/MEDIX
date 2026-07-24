@@ -40,10 +40,30 @@
         canvas { touch-action: none; }
 
         @media print {
-            @page { size: A4 vertical; margin: 0.2cm 0.3cm 0.2cm 0.3cm; }
+            @page { size: A4 portrait; margin: 0mm; }
+            body, html { background: white !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
             body * { visibility: hidden !important; }
             #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
-            #area-lembar-kerja-resmi { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: black !important; display: block !important; padding: 5px !important; margin: 0 !important; border: none !important; box-shadow: none !important; font-size: 10px !important; }
+            #area-lembar-kerja-resmi { 
+                position: fixed !important; 
+                left: 0 !important; 
+                top: 0 !important; 
+                width: 100vw !important; 
+                height: 100vh !important; 
+                background: white !important; 
+                color: black !important; 
+                display: flex !important; 
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                padding: 10mm !important; 
+                margin: 0 !important; 
+                border: none !important; 
+                box-shadow: none !important; 
+                border-radius: 0 !important;
+                max-height: none !important;
+                overflow: visible !important;
+                z-index: 999999 !important;
+            }
             .no-print { display: none !important; }
             input, select, textarea { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
         }
@@ -62,7 +82,7 @@
             
             <div>
                 <h2 class="text-xl font-black text-white tracking-wide">MEDIX</h2>
-                <p id="gate-subtitle" class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-1">Medical Inventory & Maintenance Excellence</p>
+                <p id="gate-subtitle" class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-1">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</p>
             </div>
 
             <div id="box-pilih-role" class="space-y-2 pt-2">
@@ -167,7 +187,7 @@
                 </button>
                 <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
                     <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent select-none group-hover:from-cyan-400 group-hover:to-blue-400 transition duration-300">MEDIX</h1>
-                    <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">Medical Inventory & Maintenance Excellence</span>
+                    <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
                 </div>
             </header>
 
@@ -195,6 +215,32 @@
                         <div onclick="clickDashboardStat('docs')" class="glass-panel p-5 rounded-2xl shadow-2xl flex items-center justify-between cursor-pointer hover:scale-[1.03] hover:border-indigo-500/30 transition">
                             <div><p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Total Dokumen</p><h3 id="stat-logs" class="text-3xl font-black text-indigo-400 mt-1">0</h3></div>
                             <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20"><i class="fa-solid fa-file-waveform text-lg"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">
+                        <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between items-center lg:col-span-1 min-h-[320px]">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center w-full border-b border-white/5 pb-2">Persentase Kelaikan Aset</h4>
+                            <div class="w-full max-w-[180px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 200px; max-width: 200px;"></canvas></div>
+                        </div>
+                        <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between lg:col-span-2 min-h-[320px]">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-white/5 pb-2">Sebaran Seluruh Ruangan</h4>
+                            <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; min-height: 200px;"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-data-alat" class="tab-content hidden space-y-6">
+                    <div class="flex justify-between items-center flex-wrap gap-4 no-print">
+                        <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Master Data Aset Medis</h2>
+                        <div class="flex space-x-2" id="master-action-buttons-container"></div>
+                    </div>
+                    <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
+                        <div class="p-4 border-b border-white/5 bg-white/[0.02]"><input type="text" id="search-alat" onkeyup="filterAlat()" class="w-full max-w-md px-4 py-2 border border-white/10 rounded-xl text-xs bg-slate-950/40 text-white placeholder-slate-500 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, ruangan..."></div>
+                        <div class="overflow-x-auto max-h-[60vh]">
+                            <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                                <thead class="bg-slate-900/90 border-b border-white/5 font-bold text-slate-400 sticky top-0 z-10 backdrop-blur">
+                                    <tr><th class="p-4">Nama Alat Kesehatan</th><th class="p-4">Merk</th><th class="p-4">Model / Tipe</th><th class="p-4">Nomor Seri (SN)</th><th class="p-4">Ruangan</th><th class="p-4">Status / Kalibrasi</th><th class="p-4 text-center">Ka                            <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20"><i class="fa-solid fa-file-waveform text-lg"></i></div>
                         </div>
                     </div>
 
