@@ -1173,11 +1173,28 @@
         }
 
         function renderDaftarTiketMasuk() {
-            const body = document.getElementById('table-ticket-body'); if(!body) return;
+            const headerRow = document.querySelector('#tab-ticket-system thead tr');
+            const body = document.getElementById('table-ticket-body'); 
+            if(!headerRow || !body) return;
             
-            const headerTindakan = document.querySelector('#tab-ticket-system thead tr th:last-child');
-            if(headerTindakan) {
-                headerTindakan.style.display = (currentActiveRole === 'User') ? 'none' : '';
+            // Atur Header Tabel secara dinamis berdasarkan role
+            if (currentActiveRole === 'User') {
+                headerRow.innerHTML = `
+                    <th class="p-3">Alat / Ruangan</th>
+                    <th class="p-3">Keluhan Masalah</th>
+                    <th class="p-3 text-center">Foto Before</th>
+                    <th class="p-3">Waktu Lapor</th>
+                    <th class="p-3">Status Tiket</th>
+                `;
+            } else {
+                headerRow.innerHTML = `
+                    <th class="p-3">Alat / Ruangan</th>
+                    <th class="p-3">Keluhan Masalah</th>
+                    <th class="p-3 text-center">Foto Before</th>
+                    <th class="p-3">Waktu Lapor</th>
+                    <th class="p-3">Status Tiket</th>
+                    <th class="p-3 text-center">Tindakan Lapangan</th>
+                `;
             }
 
             if(dataTiket.length === 0) { 
@@ -1190,9 +1207,7 @@
                 const alat = dataAlat.find(a => a.id == t.alatId) || { nama: "Alat Medis", edar: "Unit" };
                 let aksiAksi = "";
 
-                if (currentActiveRole === 'User') {
-                    aksiAksi = '';
-                } else {
+                if (currentActiveRole !== 'User') {
                     if (t.statusTiket !== 'Selesai') {
                         let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka LK' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
                         let warnaTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-amber-600 hover:bg-amber-700';
@@ -1230,7 +1245,7 @@
                 `;
             }).join('');
         }
-
+        
         function hapusTiketUser(tiketId, alatId) {
             if(confirm("Batalkan atau hapus laporan kerusakan ini? Status alat akan dikembalikan menjadi Siap Pakai.")) {
                 db.collection("troubleTickets").doc(tiketId).delete().then(() => {
