@@ -1176,7 +1176,7 @@
         function renderDaftarTiketMasuk() {
             const body = document.getElementById('table-ticket-body'); if(!body) return;
             
-            // Sembunyikan atau tampilkan kolom header "Tindakan Lapangan" secara dinamis
+            // Ubah judul header kolom terakhir secara dinamis
             const headerTindakan = document.querySelector('#tab-ticket-system thead tr th:last-child');
             if(headerTindakan) {
                 headerTindakan.style.display = (currentActiveRole === 'User') ? 'none' : '';
@@ -1192,7 +1192,7 @@
                 let aksiAksi = "";
 
                 if (currentActiveRole === 'User') {
-                    // KHUSUS AKUN USER: Kolom tindakan ditiadakan kosong / disembunyikan
+                    // KHUSUS AKUN USER: Baris kolom tindakan dikosongkan total agar tidak ada ruang kosong/header sisa
                     aksiAksi = '';
                 } else {
                     // UNTUK TEKNISI & ADMIN
