@@ -66,17 +66,17 @@
             </div>
 
             <div id="box-pilih-role" class="space-y-2 pt-2">
-                <button onclick="pilihRoleSebelumLogin('Teknisi')" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 p-2.5 rounded-xl text-xs font-bold text-white hover:from-blue-700 transition flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-user-gear"></i> <span>Teknisi</span>
-                </button>
-                <button onclick="pilihRoleSebelumLogin('User')" class="w-full bg-slate-800 p-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 transition flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-user-nurse"></i> <span>User</span>
-                </button>
-                <button onclick="pilihRoleSebelumLogin('Admin')" class="w-full bg-slate-800/40 border border-white/5 p-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 transition flex items-center justify-center space-x-2">
+                <button onclick="pilihRoleSebelumLogin('Admin')" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 p-2.5 rounded-xl text-xs font-bold text-white hover:from-blue-700 transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-user-tie"></i> <span>Admin</span>
                 </button>
+                <button onclick="pilihRoleSebelumLogin('Teknisi')" class="w-full bg-slate-800 p-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-user-gear"></i> <span>Teknisi</span>
+                </button>
+                <button onclick="pilihRoleSebelumLogin('User')" class="w-full bg-slate-800/40 border border-white/5 p-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-user-nurse"></i> <span>User</span>
+                </button>
             </div>
-
+            
             <form id="form-login-kredensial" onsubmit="validasiKredensialUser(event)" class="hidden space-y-3 pt-2 text-left">
                 <div>
                     <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Username</label>
@@ -100,9 +100,9 @@
         </div>
     </div>
 
-    <!-- INDIKATOR STATUS LOAD DATABASE CLOUD -->
-    <div id="db-status-loader" class="fixed bottom-4 right-4 bg-slate-900/90 p-3 rounded-full shadow-2xl flex items-center justify-center z-50 border border-slate-700/60 backdrop-blur-sm">
-        <div class="w-3.5 h-3.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]" id="status-dot"></div>
+    <!-- INDIKATOR STATUS KONEKSI MINIMALIS -->
+    <div id="db-status-loader" class="fixed bottom-3 right-3 z-50" title="Status Database Terhubung">
+        <div class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" id="status-dot"></div>
     </div>
 
     <div class="flex h-screen overflow-hidden bg-slate-950/40 backdrop-blur-[1px] w-full h-full relative">
@@ -137,7 +137,7 @@
                             <i class="fa-solid fa-headset w-5 text-amber-400"></i><span>Pelaporan Kerusakan</span>
                         </button>
                         <button onclick="switchTab('kalibrasi')" id="btn-kalibrasi" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-gray-400 hover:text-white hover:bg-slate-800/50 transition hidden">
-                            <i class="fa-solid fa-file-invoice-dollar w-5 text-indigo-400"></i><span>Pusat Riwayat Dokumen</span>
+                            <i class="fa-solid fa-file-invoice-dollar w-5 text-indigo-400"></i><span>Riwayat Dokumen</span>
                         </button>
                         <button onclick="switchTab('kelola-akun')" id="btn-kelola-akun" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-gray-400 hover:text-white hover:bg-slate-800/50 transition menu-akses-admin-saja hidden">
                             <i class="fa-solid fa-users-gear w-5 text-rose-400"></i><span>Kelola Akun User</span>
@@ -152,7 +152,7 @@
                     </nav>
                 </div>
                 <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-                    <span>© 2026 RSUD Pondokgede</span>
+                    <span>© 2026 - SIMAX RSUD PONDOKGEDE</span>
                     <button onclick="location.reload()" class="hover:text-rose-400" title="Keluar"><i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>
             </div>
@@ -220,7 +220,7 @@
                         <div class="overflow-x-auto max-h-[60vh]">
                             <table class="w-full text-left text-xs border-collapse min-w-[700px]">
                                 <thead class="bg-slate-900/90 border-b border-white/5 font-bold text-slate-400 sticky top-0 z-10 backdrop-blur">
-                                    <tr><th class="p-4">Nama Alat Kesehatan</th><th class="p-4">Merk / Pabrikan</th><th class="p-4">Model / Tipe</th><th class="p-4">Nomor Seri (SN)</th><th class="p-4">Ruangan</th><th class="p-4">Status / Kalibrasi</th><th class="p-4 text-center">Aksi Manajemen</th></tr>
+                                    <tr><th class="p-4">Nama Alat Kesehatan</th><th class="p-4">Merk</th><th class="p-4">Model / Tipe</th><th class="p-4">Nomor Seri (SN)</th><th class="p-4">Ruangan</th><th class="p-4">Status / Kalibrasi</th><th class="p-4 text-center">Kartu Pemeliharaan</th></tr>
                                 </thead>
                                 <tbody id="table-alat-body" class="divide-y divide-white/5 text-slate-300"></tbody>
                             </table>
@@ -234,7 +234,7 @@
                             <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2 flex items-center"><i class="fa-solid fa-headset mr-2 text-amber-500"></i>Buat Tiket Laporan Kerusakan Baru</h3>
                             <form onsubmit="kirimTiketKeluhanKerusakan(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                                 <div>
-                                    <label class="block mb-1 text-slate-400 font-bold">Pilih Alat Medis yang Bermasalah: *</label>
+                                    <label class="block mb-1 text-slate-400 font-bold">Pilih Alat Medis yang Bermasalah : *</label>
                                     <div class="relative">
                                         <input type="text" id="input-search-alat-ticket" onfocus="showDropdownAlat('ticket')" oninput="handleSearchInputAlat('ticket', this.value)" placeholder="🔍 Ketik untuk cari alat..." class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none mb-1 text-xs font-semibold">
                                         <select id="ticket-form-alat" size="4" onchange="pilihItemAlatDariDropdown('ticket', this)" style="display: none;" class="w-full bg-slate-950 text-white border border-white/10 p-2 rounded-xl outline-none font-semibold cursor-pointer">
@@ -244,11 +244,11 @@
                                 </div>
                                 <div class="space-y-3">
                                     <div>
-                                        <label class="block mb-1 text-slate-400 font-bold">Uraian Masalah / Gejala Kerusakan: *</label>
+                                        <label class="block mb-1 text-slate-400 font-bold">Uraian Masalah / Gejala Kerusakan : *</label>
                                         <input type="text" id="ticket-form-keluhan" required class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none" placeholder="Contoh: Layar mati total...">
                                     </div>
                                     <div>
-                                        <label class="block mb-1 text-slate-400 font-bold"><i class="fa-solid fa-camera mr-1 text-cyan-400"></i> Foto Kondisi Kerusakan (Before):</label>
+                                        <label class="block mb-1 text-slate-400 font-bold"><i class="fa-solid fa-camera mr-1 text-cyan-400"></i> Foto Kondisi Kerusakan :</label>
                                         <div id="ticket-input-container">
                                             <input type="file" id="ticket-form-foto" accept="image/*" capture="environment" onchange="previewFotoTiketDipilih(this)" class="w-full bg-slate-950 text-white border border-white/10 p-1.5 rounded-xl text-[10px]">
                                         </div>
@@ -259,7 +259,7 @@
                             </form>
                         </div>
                         <div class="glass-panel p-5 rounded-2xl shadow-2xl border space-y-3">
-                            <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2 flex items-center"><i class="fa-solid fa-list-check mr-2 text-cyan-400"></i>Daftar Trouble Ticket Masuk (Real-time Cloud)</h3>
+                            <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2 flex items-center"><i class="fa-solid fa-list-check mr-2 text-cyan-400"></i>Daftar Trouble Ticket Masuk</h3>
                             <div class="overflow-x-auto w-full">
                                 <table class="w-full text-left text-xs min-w-[600px]">
                                     <thead id="ticket-table-header" class="bg-slate-950 text-slate-400 font-bold"></thead>
@@ -271,7 +271,7 @@
                 </div>
 
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
-                    <div class="flex justify-between items-center no-print"><h2 class="text-lg font-bold text-white bg-slate-900/60 px-4 py-1.5 rounded-xl border border-slate-800">Pusat Riwayat & Dokumen Aset</h2><button id="btn-upload-pdf-baru" onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition"><i class="fa-solid fa-file-arrow-up mr-1"></i> Upload Berkas PDF Baru</button></div>
+                    <div class="flex justify-between items-center no-print"><h2 class="text-lg font-bold text-white bg-slate-900/60 px-4 py-1.5 rounded-xl border border-slate-800">Riwayat & Dokumen Aset</h2><button id="btn-upload-pdf-baru" onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition"><i class="fa-solid fa-file-arrow-up mr-1"></i> Upload Berkas PDF</button></div>
                     <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-800 max-w-md text-[11px] font-bold text-slate-400 space-x-1 no-print shadow-2xl"><button onclick="gantiSubTabDokumen('all')" id="doc-tab-all" class="px-4 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white">Semua</button><button onclick="gantiSubTabDokumen('kalibrasi')" id="doc-tab-kalibrasi" class="px-4 py-2 rounded-lg flex-1 text-center">Sertifikat Kalibrasi</button><button onclick="gantiSubTabDokumen('mandiri')" id="doc-tab-mandiri" class="px-4 py-2 rounded-lg flex-1 text-center">Lembar Kerja</button></div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
                         <div class="overflow-x-auto w-full"><table class="w-full text-left text-xs min-w-[800px]"><thead class="bg-slate-900/90 font-bold text-slate-400"><tr><th class="p-4">Alat Kesehatan / SN</th><th class="p-4">Jenis Dokumen</th><th class="p-4">Waktu Dibuat</th><th class="p-4">Deskripsi</th><th class="p-4 text-center">Aksi Berkas</th><th class="p-4">Status</th></tr></thead><tbody id="table-kalibrasi-body" class="divide-y divide-white/5 text-slate-300"></tbody></table></div>
@@ -280,17 +280,17 @@
 
                 <div id="tab-kelola-akun" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center no-print">
-                        <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Registrasi & Manajemen Akun User</h2>
+                        <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Registrasi Akun</h2>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="glass-panel p-5 rounded-2xl border space-y-4 lg:col-span-1 text-xs">
-                            <h3 id="form-user-title" class="text-sm font-bold text-cyan-400 border-b border-white/5 pb-2"><i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun Baru</h3>
+                            <h3 id="form-user-title" class="text-sm font-bold text-cyan-400 border-b border-white/5 pb-2"><i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun</h3>
                             <form onsubmit="submitFormUserAdmin(event)" class="space-y-3">
                                 <input type="hidden" id="user-form-id">
                                 <div><label class="block font-bold text-slate-400 mb-1">Nama Lengkap *</label><input type="text" id="user-form-nama" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
-                                <div><label class="block font-bold text-slate-400 mb-1">Username Unik *</label><input type="text" id="user-form-username" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
+                                <div><label class="block font-bold text-slate-400 mb-1">Username *</label><input type="text" id="user-form-username" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none"></div>
                                 <div>
-                                    <label class="block font-bold text-slate-400 mb-1">Password Sistem *</label>
+                                    <label class="block font-bold text-slate-400 mb-1">Password *</label>
                                     <div class="relative">
                                         <input type="password" id="user-form-password" required class="w-full bg-slate-950 text-white p-2.5 pr-10 rounded-xl border border-white/10 outline-none">
                                         <button type="button" onclick="toggleLihatPassword('user-form-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 focus:outline-none">
@@ -299,16 +299,16 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block font-bold text-slate-400 mb-1">Hak Akses Kategori *</label>
+                                    <label class="block font-bold text-slate-400 mb-1">Hak Akses *</label>
                                     <select id="user-form-role" required class="w-full bg-slate-950 text-white p-2.5 rounded-xl border border-white/10 outline-none font-semibold">
-                                        <option value="Teknisi">Teknisi</option>
-                                        <option value="User">User</option>
-                                        <option value="Admin">Admin</option>
+                                        <option value="Teknisi">Admin</option>
+                                        <option value="User">Teknisi</option>
+                                        <option value="Admin">User</option>
                                     </select>
                                 </div>
 
                                 <div class="bg-slate-950/60 p-3 rounded-xl border border-white/5 space-y-2">
-                                    <label class="block font-bold text-cyan-400 border-b border-white/5 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses Menu:</label>
+                                    <label class="block font-bold text-cyan-400 border-b border-white/5 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses :</label>
                                     <div class="space-y-1.5 pt-1">
                                         <label class="flex items-center space-x-2 text-slate-300 cursor-pointer">
                                             <input type="checkbox" id="akses-menu-dashboard" checked class="rounded border-white/10 text-cyan-500">
@@ -324,7 +324,7 @@
                                         </label>
                                         <label class="flex items-center space-x-2 text-slate-300 cursor-pointer">
                                             <input type="checkbox" id="akses-menu-riwayat" class="rounded border-white/10 text-cyan-500">
-                                            <span>Pusat Riwayat Dokumen</span>
+                                            <span>Riwayat Dokumen</span>
                                         </label>
                                     </div>
                                 </div>
@@ -336,7 +336,7 @@
                             </form>
                         </div>
                         <div class="glass-panel p-5 rounded-2xl border lg:col-span-2 space-y-3">
-                            <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2"><i class="fa-solid fa-users mr-1.5"></i> Daftar Akun Terdaftar (Real-time)</h3>
+                            <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2"><i class="fa-solid fa-users mr-1.5"></i> Daftar Akun Terdaftar</h3>
                             <div class="overflow-x-auto w-full">
                                 <table class="w-full text-left text-xs">
                                     <thead class="bg-slate-950 text-slate-400 font-bold">
@@ -388,8 +388,8 @@
 
             <div class="flex justify-center space-x-12 text-[10px] font-bold border-y py-1 bg-slate-50">
                 <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Inspection" checked> <span>Inspection</span></label>
-                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Preventive Maintenance"> <span>Preventive PM</span></label>
-                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Corrective Maintenance"> <span>Corrective CM</span></label>
+                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Preventive Maintenance"> <span>Preventive</span></label>
+                <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Corrective Maintenance"> <span>Corrective</span></label>
             </div>
 
             <!-- LAYOUT ATAS: KONDISI LINGKUNGAN, FOTO BEFORE, & DATA ALAT (DENGAN DROPDOWN PILIH ALAT) -->
@@ -409,7 +409,7 @@
                 <!-- Kotak 2: Foto Before (3 Col) -->
                 <div class="md:col-span-3 print:col-span-3 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[185px] print:h-[155px]">
                     <div>
-                        <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-image text-amber-600 mr-1"></i>Foto Before (User)</h4>
+                        <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-image text-amber-600 mr-1"></i>Foto</h4>
                     </div>
                     <div class="flex-1 flex justify-center items-center overflow-hidden w-full relative bg-slate-50 rounded">
                         <div id="box-preview-foto-before" class="w-full h-full flex items-center justify-center overflow-hidden font-mono text-gray-400 italic text-[9px] text-center p-1">[ Belum Ada Laporan Foto ]</div>
@@ -465,7 +465,7 @@
                 <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[135px]">
                     <div>
                         <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center justify-between">
-                            <span class="flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto After</span>
+                            <span class="flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto</span>
                             <button type="button" onclick="resetFotoAfter()" class="no-print text-[9px] text-rose-500 hover:underline font-bold" id="btn-retake-after" style="display:none;">Foto Ulang</button>
                         </h4>
                         <div class="no-print mb-0.5" id="dlk-input-foto-container">
@@ -488,7 +488,7 @@
                 <div class="flex flex-wrap gap-4 pt-0.5 font-bold">
                     <label class="flex items-center space-x-1.5 cursor-pointer text-green-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Berfungsi Baik</span></label>
                     <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Berfungsi dengan Catatan</span></label>
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-red-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Perlu Perbaikan (Rusak)</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-red-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Rusak Perlu Perbaikan</span></label>
                 </div>
             </div>
 
@@ -520,7 +520,7 @@
 
             <div class="no-print border-t pt-3 flex justify-end space-x-2">
                 <button type="button" onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1.5 rounded-lg text-xs">Tutup</button>
-                <button type="button" id="btn-simpan-lk-aksi" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data Baru / Perbarui</button>
+                <button type="button" id="btn-simpan-lk-aksi" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data</button>
             </div>
         </div>
     </div>
@@ -528,7 +528,7 @@
     <!-- MODAL REGISTER DATA ASET MANUAL -->
     <div id="modal-alat" class="fixed inset-0 bg-slate-950/60 z-50 flex items-center justify-center p-4 hidden text-xs no-print backdrop-blur-sm">
         <form onsubmit="submitFormAlatMaster(event)" class="bg-slate-900 border border-white/10 w-full max-w-md rounded-2xl shadow-2xl text-slate-200">
-            <div id="modal-alat-title" class="px-5 py-4 bg-slate-950 border-b border-white/5 font-bold text-slate-300 text-sm">Registrasi Alat Manual</div>
+            <div id="modal-alat-title" class="px-5 py-4 bg-slate-950 border-b border-white/5 font-bold text-slate-300 text-sm">Registrasi Alat</div>
             <input type="hidden" id="form-alat-id">
             <div class="p-5 space-y-3">
                 <div><label class="block mb-0.5 font-bold text-slate-400">Nama Alat Kesehatan *</label><input type="text" id="form-alat-nama" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none"></div>
@@ -552,7 +552,7 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
-                    <div><label class="block mb-1 font-bold text-slate-400">Tanggal Uji Ulang *</label><input type="date" id="form-cal-tgl" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white"></div>
+                    <div><label class="block mb-1 font-bold text-slate-400">Tanggal Uji *</label><input type="date" id="form-cal-tgl" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white"></div>
                     <div><label class="block mb-1 font-bold text-slate-400">Masa Berlaku *</label><input type="date" id="form-cal-exp" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white"></div>
                 </div>
                 <div><label class="block mb-1 font-bold text-slate-400">Nomor Sertifikat / Lembaga Vendor</label><input type="text" id="form-cal-vendor" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white" placeholder="E.g., BPFK Jakarta"></div>
@@ -575,7 +575,7 @@
             </div>
             <div class="flex border-b border-white/5 text-xs bg-slate-950/20">
                 <button type="button" onclick="switchKartuTab('tab-k-corrective')" id="btn-k-corrective" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 active text-slate-400">Corrective Log</button>
-                <button type="button" onclick="switchKartuTab('tab-k-preventive')" id="btn-k-preventive" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-slate-400">Preventive Log (PM)</button>
+                <button type="button" onclick="switchKartuTab('tab-k-preventive')" id="btn-k-preventive" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-slate-400">Preventive Log</button>
                 <button type="button" onclick="switchKartuTab('tab-k-inspeksi')" id="btn-k-inspeksi" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-slate-400">Inspection Log</button>
                 <button type="button" onclick="switchKartuTab('tab-k-kalibrasi')" id="btn-k-kalibrasi" class="kartu-tab border-b-2 border-transparent px-6 py-3.5 text-indigo-400 font-bold">Kalibrasi Resmi</button>
             </div>
@@ -651,7 +651,7 @@
             targetLoginRole = role;
             document.getElementById('box-pilih-role').classList.add('hidden');
             document.getElementById('form-login-kredensial').classList.remove('hidden');
-            document.getElementById('gate-subtitle').innerText = "Masukkan kredensial untuk " + role;
+            document.getElementById('gate-subtitle').innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE;
             document.getElementById('login-username').value = "";
             document.getElementById('login-password').value = "";
         }
@@ -660,7 +660,7 @@
             targetLoginRole = "";
             document.getElementById('box-pilih-role').classList.remove('hidden');
             document.getElementById('form-login-kredensial').classList.add('hidden');
-            document.getElementById('gate-subtitle').innerText = "Medical Inventory & Maintenance Excellence";
+            document.getElementById('gate-subtitle').innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
         }
 
         function validasiKredensialUser(e) {
@@ -758,7 +758,7 @@
                       renderAll();
                       setTimeout(renderGrafikDashboardDinamis, 300);
                   } else {
-                      alert("❌ Kredensial salah atau tidak cocok dengan Hak Akses!");
+                      alert("❌ Username / password salah!");
                       submitBtn.innerText = "Masuk";
                       submitBtn.disabled = false;
                   }
