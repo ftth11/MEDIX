@@ -365,7 +365,7 @@
                     </div>
                 </div>
 
-                <!-- AREA WORKSPACE PEMELIHARAAN (DIUBAH MENJADI MODAL POP-UP TERPISAH) -->
+                <!-- AREA WORKSPACE PEMELIHARAAN (MODAL POP-UP TERPISAH) -->
                 <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-950/80 z-[9999] flex items-center justify-center p-4 hidden no-print backdrop-blur-md overflow-y-auto">
                     <div class="bg-white p-6 print:p-2 rounded-2xl shadow-2xl border max-w-5xl w-full mx-auto text-slate-900 space-y-4 print:space-y-2 relative max-h-[90vh] overflow-y-auto my-auto">
                         <button onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" type="button" class="absolute top-4 right-16 bg-gray-500 text-white px-3 py-1.5 rounded font-bold text-xs shadow hover:bg-gray-600 flex items-center space-x-1"><i class="fa-solid fa-xmark"></i> <span>Tutup</span></button>
@@ -718,7 +718,6 @@
                           }
                       }
 
-                      // PENYESUAIAN HAK AKSES UI BERDASARKAN ROLE USER
                       const btnUploadPdf = document.getElementById('btn-upload-pdf-baru');
                       if(btnUploadPdf) {
                           if(currentActiveRole === 'User') btnUploadPdf.classList.add('hidden');
@@ -1176,14 +1175,14 @@
         function renderDaftarTiketMasuk() {
             const body = document.getElementById('table-ticket-body'); if(!body) return;
             
-            // Ubah judul header kolom terakhir secara dinamis
             const headerTindakan = document.querySelector('#tab-ticket-system thead tr th:last-child');
             if(headerTindakan) {
                 headerTindakan.style.display = (currentActiveRole === 'User') ? 'none' : '';
             }
 
             if(dataTiket.length === 0) { 
-                body.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Tidak ada antrean laporan kerusakan aktif.</td></tr>`; 
+                let totalKolom = (currentActiveRole === 'User') ? 5 : 6;
+                body.innerHTML = `<tr><td colspan="${totalKolom}" class="p-4 text-center text-slate-500 italic">Tidak ada antrean laporan kerusakan aktif.</td></tr>`; 
                 return; 
             }
             
@@ -1192,10 +1191,8 @@
                 let aksiAksi = "";
 
                 if (currentActiveRole === 'User') {
-                    // KHUSUS AKUN USER: Baris kolom tindakan dikosongkan total agar tidak ada ruang kosong/header sisa
                     aksiAksi = '';
                 } else {
-                    // UNTUK TEKNISI & ADMIN
                     if (t.statusTiket !== 'Selesai') {
                         let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka LK' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
                         let warnaTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-amber-600 hover:bg-amber-700';
@@ -1233,7 +1230,7 @@
                 `;
             }).join('');
         }
-        
+
         function hapusTiketUser(tiketId, alatId) {
             if(confirm("Batalkan atau hapus laporan kerusakan ini? Status alat akan dikembalikan menjadi Siap Pakai.")) {
                 db.collection("troubleTickets").doc(tiketId).delete().then(() => {
@@ -1414,7 +1411,6 @@
                 document.getElementById('dlk-no').value = generatedNo;
             });
             
-            // Buka area lembar kerja modal
             aturModeTampilanWorksheetUser();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
             areaLK.classList.remove('hidden'); 
@@ -1475,7 +1471,6 @@
             document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
             document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
             
-            // ATUR MODE READ-ONLY KHUSUS USER DI SINI
             aturModeTampilanWorksheetUser();
 
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
@@ -1489,11 +1484,9 @@
             }, 400);
         }
 
-        // FUNGSI UNTUK MENGUNCI TOTAL FORM LK JIKA AKUN ADALAH USER
         function aturModeTampilanWorksheetUser() {
             const isUser = (currentActiveRole === 'User');
             
-            // Sembunyikan tombol simpan & tombol hapus tanda tangan untuk user
             const btnSimpanLk = document.getElementById('btn-simpan-lk-aksi');
             if(btnSimpanLk) btnSimpanLk.style.display = isUser ? 'none' : 'inline-block';
 
@@ -1502,7 +1495,6 @@
             if(btnClearTek) btnClearTek.style.display = isUser ? 'none' : 'inline-block';
             if(btnClearUsr) btnClearUsr.style.display = isUser ? 'none' : 'inline-block';
 
-            // Sembunyikan kotak dropdown tambah poin item di user
             const dropAk = document.getElementById('container-drop-alatkerja');
             const dropFs = document.getElementById('container-drop-fisik');
             const dropFn = document.getElementById('container-drop-fungsi');
@@ -1510,7 +1502,6 @@
             if(dropFs) dropFs.style.display = isUser ? 'none' : 'block';
             if(dropFn) dropFn.style.display = isUser ? 'none' : 'block';
 
-            // Kunci semua input, textarea, select, dan radio button
             setTimeout(() => {
                 const area = document.getElementById('area-lembar-kerja-resmi');
                 if(area) {
@@ -1568,7 +1559,7 @@
         }
 
         function updateStatusPoinCeklis(kategori, idx, valStatus) {
-            if(currentActiveRole === 'User') return; // Cegah ubah status jika user
+            if(currentActiveRole === 'User') return;
             if(kategori === 'fisik' && terpakaiFisik[idx]) terpakaiFisik[idx].status = valStatus;
             if(kategori === 'fungsi' && terpakaiFungsi[idx]) terpakaiFungsi[idx].status = valStatus;
         }
