@@ -40,22 +40,20 @@
         canvas { touch-action: none; }
 
         @media print {
-            @page { size: A4 portrait; margin: 0mm; }
+            @page { size: A4 portrait; margin: 5mm; }
             body, html { background: white !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
             body * { visibility: hidden !important; }
             #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
             #area-lembar-kerja-resmi { 
-                position: fixed !important; 
+                position: absolute !important; 
                 left: 0 !important; 
                 top: 0 !important; 
-                width: 100vw !important; 
-                height: 100vh !important; 
+                width: 100% !important; 
+                height: auto !important; 
                 background: white !important; 
                 color: black !important; 
-                display: flex !important; 
-                flex-direction: column !important;
-                justify-content: flex-start !important;
-                padding: 10mm !important; 
+                display: block !important;
+                padding: 0 !important; 
                 margin: 0 !important; 
                 border: none !important; 
                 box-shadow: none !important; 
@@ -63,6 +61,13 @@
                 max-height: none !important;
                 overflow: visible !important;
                 z-index: 999999 !important;
+            }
+            #area-lembar-kerja-resmi > div {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 2mm !important;
+                max-height: none !important;
+                width: 100% !important;
             }
             .no-print { display: none !important; }
             input, select, textarea { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
@@ -375,7 +380,7 @@
 
     <!-- AREA WORKSPACE PEMELIHARAAN (FIXED DI ROOT BODY SUPAYA TIDAK TERTUTUP SIDEBAR) -->
     <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-950/80 z-[99999] flex items-center justify-center p-4 hidden no-print backdrop-blur-md overflow-y-auto">
-        <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border max-w-5xl w-full mx-auto text-slate-900 space-y-4 print:space-y-1 relative max-h-[92vh] print:max-h-none overflow-y-auto print:overflow-visible my-auto">
+        <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border max-w-5xl w-full mx-auto text-slate-900 space-y-3 print:space-y-1 relative max-h-[92vh] print:max-h-none overflow-y-auto print:overflow-visible my-auto">
             
             <!-- TOMBOL AKSI ATAS DITATA SEJAJAR SUPAYA TIDAK TUMPANG TINDIH -->
             <div class="absolute top-4 right-4 flex items-center space-x-2 z-20 no-print">
@@ -383,22 +388,22 @@
                 <button onclick="window.print()" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded font-bold text-xs shadow flex items-center space-x-1"><i class="fa-solid fa-print"></i> <span>Cetak Dokumen</span></button>
             </div>
 
-            <div class="flex items-center justify-center space-x-5 border-b-2 border-black pb-3 text-black w-full pt-8 print:pt-2">
-                <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm">
+            <div class="flex items-center justify-center space-x-5 border-b-2 border-black pb-2 text-black w-full pt-6 print:pt-1">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm">
                     <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-kop').classList.remove('hidden')" class="w-full h-full object-contain" alt="Logo">
-                    <i id="fallback-icon-kop" class="fa-solid fa-heart-pulse text-5xl text-blue-600 hidden"></i>
+                    <i id="fallback-icon-kop" class="fa-solid fa-heart-pulse text-4xl text-blue-600 hidden"></i>
                 </div>
                 <div class="text-center md:text-left flex-1 max-w-2xl">
-                    <h1 class="text-xs md:text-sm font-bold uppercase tracking-wide text-gray-800">Pemerintah Kota Bekasi • Dinas Kesehatan</h1>
-                    <h2 class="text-lg md:text-2xl font-black uppercase tracking-wider leading-tight text-black">UPTD Rumah Sakit Umum Daerah Pondokgede</h2>
-                    <p class="text-[10px] md:text-xs text-gray-600 font-mono mt-0.5">Jl. Raya Jatiwaringin No.1, Kel. Jatiwaringin, Kec. Pondok Gede, Kota Bekasi</p>
+                    <h1 class="text-[10px] md:text-xs font-bold uppercase tracking-wide text-gray-800">Pemerintah Kota Bekasi • Dinas Kesehatan</h1>
+                    <h2 class="text-base md:text-xl font-black uppercase tracking-wider leading-tight text-black">UPTD Rumah Sakit Umum Daerah Pondokgede</h2>
+                    <p class="text-[9px] md:text-[10px] text-gray-600 font-mono mt-0.5">Jl. Raya Jatiwaringin No.1, Kel. Jatiwaringin, Kec. Pondok Gede, Kota Bekasi</p>
                 </div>
             </div>
 
             <div class="text-center space-y-0.5">
-                <h3 class="text-sm font-bold underline uppercase tracking-wide">LEMBAR KERJA PEMELIHARAAN ALAT KESEHATAN</h3>
+                <h3 class="text-xs md:text-sm font-bold underline uppercase tracking-wide">LEMBAR KERJA PEMELIHARAAN ALAT KESEHATAN</h3>
                 <div class="flex justify-center space-x-4 text-[10px] font-mono">
-                    <p>No Lembar Kerja: <input type="text" id="dlk-no" class="border-b font-bold outline-none text-blue-600 w-52 bg-slate-50 text-center" readonly placeholder="Otomatis Setelah Save..."></p>
+                    <p>No Lembar Kerja: <input type="text" id="dlk-no" class="border-b font-bold outline-none text-blue-600 w-48 bg-slate-50 text-center" readonly placeholder="Otomatis Setelah Save..."></p>
                     <p>Waktu Pengerjaan: <input type="datetime-local" id="dlk-tgl" class="border-b outline-none font-bold"> </p>
                 </div>
             </div>
@@ -415,10 +420,10 @@
             <!-- LAYOUT ATAS: KONDISI LINGKUNGAN, FOTO BEFORE, & DATA ALAT (DENGAN DROPDOWN PILIH ALAT) -->
             <div class="grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-2 text-[11px]">
                 <!-- Kotak 1: Kondisi Lingkungan (3 Col) -->
-                <div class="md:col-span-3 print:col-span-3 border p-2.5 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[185px] print:h-[145px]">
+                <div class="md:col-span-3 print:col-span-3 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px]">
                     <div>
-                        <h4 class="font-bold border-b pb-1 mb-2 text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-temperature-three-quarters mr-1 text-orange-500"></i>Kondisi Lingkungan</h4>
-                        <div class="space-y-2 pt-1 text-[10px]">
+                        <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-temperature-three-quarters mr-1 text-orange-500"></i>Kondisi Lingkungan</h4>
+                        <div class="space-y-1.5 pt-1 text-[10px]">
                             <div class="flex items-center space-x-1"><span class="w-16 text-gray-600 font-medium">Suhu:</span><input type="number" id="dlk-env-suhu" class="w-12 border p-0.5 rounded text-center font-bold bg-slate-50 text-xs" value="23"><span class="font-semibold text-slate-700">°C</span></div>
                             <div class="flex items-center space-x-1"><span class="w-16 text-gray-600 font-medium">Lembab:</span><input type="number" id="dlk-env-lembab" class="w-12 border p-0.5 rounded text-center font-bold bg-slate-50 text-xs" value="55"><span class="font-semibold text-slate-700">%</span></div>
                         </div>
@@ -427,7 +432,7 @@
                 </div>
 
                 <!-- Kotak 2: Foto Before (3 Col) -->
-                <div class="md:col-span-3 print:col-span-3 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[185px] print:h-[145px]">
+                <div class="md:col-span-3 print:col-span-3 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px]">
                     <div>
                         <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-image text-amber-600 mr-1"></i>Foto Before</h4>
                     </div>
@@ -437,7 +442,7 @@
                 </div>
 
                 <!-- Kotak 3: Data Alat (6 Col) dengan Pilihan Alat di Awal -->
-                <div class="md:col-span-6 print:col-span-6 border p-2.5 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[185px] print:h-[145px] overflow-y-auto">
+                <div class="md:col-span-6 print:col-span-6 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px] overflow-y-auto">
                     <div>
                         <div class="flex justify-between items-center border-b pb-1 mb-1">
                             <h4 class="font-bold text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-microscope mr-1 text-blue-600"></i>Data Alat Kesehatan</h4>
@@ -447,7 +452,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="space-y-1 text-[10px]">
+                        <div class="space-y-0.5 text-[10px]">
                             <div class="flex"><span class="w-14 text-gray-500 font-medium">Nama:</span><input type="text" id="dlk-nama" class="flex-1 border-b p-0.5 bg-transparent font-bold text-gray-900 truncate" readonly placeholder="Silakan pilih alat di atas..."></div>
                             <div class="flex space-x-2">
                                 <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Merk:</span><input type="text" id="dlk-merk" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
@@ -466,25 +471,25 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 print:gap-2 text-[11px]">
-                <div class="border p-2 rounded-lg bg-white shadow-sm space-y-2">
-                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-1">Alat Kerja Digunakan</h4><div id="container-drop-alatkerja" class="no-print mb-1"><select id="drop-alatkerja" onchange="tambahPoinAkumulatif('alatkerja')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-alatkerja" class="space-y-1 max-h-28 overflow-y-auto"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
+                <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
+                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Alat Kerja Digunakan</h4><div id="container-drop-alatkerja" class="no-print mb-1"><select id="drop-alatkerja" onchange="tambahPoinAkumulatif('alatkerja')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
+                    <div id="box-list-alatkerja" class="space-y-1 max-h-20 overflow-y-auto"></div>
                 </div>
-                <div class="border p-2 rounded-lg bg-white shadow-sm space-y-2">
-                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-1">Pemeriksaan Fisik</h4><div id="container-drop-fisik" class="no-print mb-1"><select id="drop-fisik" onchange="tambahPoinAkumulatif('fisik')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-fisik" class="space-y-1 max-h-28 overflow-y-auto"></div>
+                <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
+                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fisik</h4><div id="container-drop-fisik" class="no-print mb-1"><select id="drop-fisik" onchange="tambahPoinAkumulatif('fisik')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
+                    <div id="box-list-fisik" class="space-y-1 max-h-20 overflow-y-auto"></div>
                 </div>
-                <div class="border p-2 rounded-lg bg-white shadow-sm space-y-2">
-                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-1">Pemeriksaan Fungsi</h4><div id="container-drop-fungsi" class="no-print mb-1"><select id="drop-fungsi" onchange="tambahPoinAkumulatif('fungsi')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-fungsi" class="space-y-1 max-h-28 overflow-y-auto"></div>
+                <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
+                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fungsi</h4><div id="container-drop-fungsi" class="no-print mb-1"><select id="drop-fungsi" onchange="tambahPoinAkumulatif('fungsi')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
+                    <div id="box-list-fungsi" class="space-y-1 max-h-20 overflow-y-auto"></div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 print:gap-2 text-[11px]">
-                <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[140px] print:h-[120px]">
+            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
+                <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[115px] print:h-[100px]">
                     <div>
-                        <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center justify-between">
+                        <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center justify-between text-[10px]">
                             <span class="flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto After</span>
                             <button type="button" onclick="resetFotoAfter()" class="no-print text-[9px] text-rose-500 hover:underline font-bold" id="btn-retake-after" style="display:none;">Foto Ulang</button>
                         </h4>
@@ -497,15 +502,15 @@
                     </div>
                 </div>
 
-                <div class="border p-3 print:p-2 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between h-[140px] print:h-[120px]">
-                    <h4 class="font-bold border-b pb-0.5 text-slate-800"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <textarea id="dlk-txt-deskripsi-tunggal" rows="3" class="w-full flex-1 border p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[11px]" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                <div class="border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between h-[115px] print:h-[100px]">
+                    <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
+                    <textarea id="dlk-txt-deskripsi-tunggal" rows="2" class="w-full flex-1 border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px]" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
                 </div>
             </div>
 
-            <div class="border p-2.5 print:p-1.5 rounded-lg text-[11px] bg-slate-50 shadow-sm">
-                <span class="font-bold block mb-1 text-slate-800"><i class="fa-solid fa-square-poll-vertical mr-1.5 text-indigo-600"></i>3. Hasil Pemeriksaan Akhir:</span>
-                <div class="flex flex-wrap gap-4 pt-0.5 font-bold">
+            <div class="border p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
+                <span class="font-bold block mb-1 text-slate-800 text-[10px]"><i class="fa-solid fa-square-poll-vertical mr-1.5 text-indigo-600"></i>3. Hasil Pemeriksaan Akhir:</span>
+                <div class="flex flex-wrap gap-4 pt-0.5 font-bold text-[10px]">
                     <label class="flex items-center space-x-1.5 cursor-pointer text-green-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Berfungsi Baik</span></label>
                     <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Berfungsi dengan Catatan</span></label>
                     <label class="flex items-center space-x-1.5 cursor-pointer text-red-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Rusak Perlu Perbaikan</span></label>
@@ -513,32 +518,32 @@
             </div>
 
             <!-- TANDA TANGAN DIGITAL (DENGAN OPSI TAMBAH TEKNISI / USER BARU OTOMATIS) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-2 pt-1 text-[11px] items-end">
-                <div class="text-center space-y-1">
-                    <p class="font-semibold text-gray-500">Teknisi Pelaksana</p>
-                    <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-20 print:h-16 relative overflow-hidden"><canvas id="sig-teknisi" class="w-full h-full absolute inset-0 z-10"></canvas></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 pt-0.5 text-[11px] items-end">
+                <div class="text-center space-y-0.5">
+                    <p class="font-semibold text-gray-500 text-[10px]">Teknisi Pelaksana</p>
+                    <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-teknisi" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-teknisi')" class="no-print text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded border border-red-300" id="btn-clear-sig-teknisi">Hapus</button>
                     <div class="pt-0.5">
-                        <select id="dlk-select-nama-teknisi" onchange="handleDropdownNamaBaru(this, 'Teknisi')" class="w-full text-center border-b p-0.5 font-bold text-gray-800 bg-transparent outline-none cursor-pointer"></select>
+                        <select id="dlk-select-nama-teknisi" onchange="handleDropdownNamaBaru(this, 'Teknisi')" class="w-full text-center border-b p-0.5 font-bold text-gray-800 bg-transparent outline-none cursor-pointer text-[10px]"></select>
                     </div>
                 </div>
-                <div class="text-center space-y-1">
-                    <p class="font-semibold text-gray-500">User Ruangan</p>
-                    <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-20 print:h-16 relative overflow-hidden"><canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas></div>
+                <div class="text-center space-y-0.5">
+                    <p class="font-semibold text-gray-500 text-[10px]">User Ruangan</p>
+                    <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-user')" class="no-print text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded border border-red-300" id="btn-clear-sig-user">Hapus</button>
                     <div class="pt-0.5">
-                        <select id="dlk-select-nama-saksi" onchange="handleDropdownNamaBaru(this, 'User')" class="w-full text-center border-b p-0.5 font-bold text-gray-800 bg-transparent outline-none cursor-pointer"></select>
+                        <select id="dlk-select-nama-saksi" onchange="handleDropdownNamaBaru(this, 'User')" class="w-full text-center border-b p-0.5 font-bold text-gray-800 bg-transparent outline-none cursor-pointer text-[10px]"></select>
                     </div>
                 </div>
-                <div class="text-center space-y-1">
-                    <p class="font-semibold text-gray-500">PJ IPSRS Alkes</p>
-                    <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-20 print:h-16 relative overflow-hidden"><canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas></div>
+                <div class="text-center space-y-0.5">
+                    <p class="font-semibold text-gray-500 text-[10px]">PJ IPSRS Alkes</p>
+                    <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-pj')" class="no-print text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded border border-red-300" id="btn-clear-sig-pj">Hapus</button>
-                    <div class="pt-1 font-bold text-gray-800 border-b pb-0.5">Arrief Nurcahyo, S.Tr. Em.</div>
+                    <div class="pt-0.5 font-bold text-gray-800 border-b pb-0.5 text-[10px]">Arrief Nurcahyo, S.Tr. Em.</div>
                 </div>
             </div>
 
-            <div class="no-print border-t pt-3 flex justify-end space-x-2">
+            <div class="no-print border-t pt-2 flex justify-end space-x-2">
                 <button type="button" onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1.5 rounded-lg text-xs">Tutup</button>
                 <button type="button" id="btn-simpan-lk-aksi" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data</button>
             </div>
@@ -632,7 +637,7 @@
 
         let currentActiveRole = "Teknisi"; 
         let targetLoginRole = "";
-        let currentUserNama = "-";
+        let currentUserNama = "Baits Abdul Pattah";
         let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; 
         
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
@@ -1239,6 +1244,8 @@
                 const alat = dataAlat.find(a => a.id == t.alatId) || { nama: "Alat Medis", edar: "Unit" };
                 let aksiAksi = "";
 
+                let formatTglLapor = t.tglLapor ? t.tglLapor.replace('T', ' ') : '-';
+
                 if (currentActiveRole !== 'User') {
                     if (t.statusTiket !== 'Selesai') {
                         let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka LK' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
@@ -1278,7 +1285,7 @@
                         <td class="p-3"><b>${alat.nama}</b><br><span class="text-[10px] text-slate-500">${alat.edar || alat.lokasi || '-'}</span></td>
                         <td class="p-3 text-slate-400 font-mono">${t.keluhan}</td>
                         <td class="p-3 text-center">${fotoBeforeThm}</td>
-                        <td class="p-3 text-[11px] font-mono text-slate-400">${t.tglLapor || '-'}</td>
+                        <td class="p-3 text-[11px] font-mono text-slate-400">${formatTglLapor}</td>
                         <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${kelasBadgeStatus}">${t.statusTiket}</span></td>
                         ${aksiAksi}
                     </tr>
@@ -1782,11 +1789,13 @@
                     tombolLihat = `<span class="text-[10px] text-slate-500 italic px-2">Log</span>`;
                 }
 
+                let formatTglDokumen = d.tgl ? String(d.tgl).replace('T', ' ') : '-';
+
                 return `
                     <tr class="border-b border-white/5 hover:bg-white/[0.01]">
                         <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-slate-500 font-mono">SN: ${d.seri}</span></td>
                         <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':d.jenis.includes('Laporan')?'bg-rose-500/10 text-rose-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
-                        <td class="p-4 font-mono text-[11px]">${d.tgl}</td><td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
+                        <td class="p-4 font-mono text-[11px]">${formatTglDokumen}</td><td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
                         <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${tombolLihat}${tombolAksiHapus}</div></td>
                         <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${d.hasil}</span></td>
                     </tr>
@@ -1890,7 +1899,7 @@
             if(confirm("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?")) {
                 db.collection(koleksiNama).doc(docId).delete().then(() => {
                     alert("🎉 Dokumen log berhasil dihapus!");
-                    bukaKartuPemeliharaan(globalSelectedAlatIdUntukLog); 
+                    bukaKartuPemeliharaan(globalSelectedAlatIdForLog || globalSelectedAlatIdUntukLog); 
                 }).catch(err => {
                     console.error(err);
                     alert("Gagal menghapus dokumen.");
@@ -1921,9 +1930,9 @@
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
 
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${r.textTgl||'-'}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${p.textTgl||'-'}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${i.textTgl||'-'}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
             document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
             switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
         }
@@ -1932,7 +1941,7 @@
             try {
                 ['sig-teknisi', 'sig-user', 'sig-pj'].forEach(id => {
                     const canvas = document.getElementById(id); if(!canvas || !canvas.parentElement) return; 
-                    canvas.width = canvas.parentElement.clientWidth || 250; canvas.height = canvas.parentElement.clientHeight || 96;
+                    canvas.width = canvas.parentElement.clientWidth || 250; canvas.height = canvas.parentElement.clientHeight || 80;
                     const ctx = canvas.getContext('2d'); let isDrawing = false;
                     ctx.lineWidth = 3.0; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0f172a';
                     function getPos(e) { const r = canvas.getBoundingClientRect(); const cX = e.touches ? e.touches[0].clientX : e.clientX; const cY = e.touches ? e.touches[0].clientY : e.clientY; return { x: cX - r.left, y: cY - r.top }; }
