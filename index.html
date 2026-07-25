@@ -43,7 +43,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Menerapkan no-scrollbar secara global ke semua elemen penampung */
         * {
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -495,18 +494,54 @@
                 </div>
             </div>
 
+            <!-- KOTAK PARAMETER: FLEKSIBEL MENGIKUTI ISI TANPA SCROLL & INPUT CUSTOM DI DALAM KOLOM -->
             <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
                 <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
-                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Alat Kerja Digunakan</h4><div id="container-drop-alatkerja" class="no-print mb-1"><select id="drop-alatkerja" onchange="tambahPoinAkumulatif('alatkerja')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-alatkerja" class="space-y-1 max-h-20 overflow-y-auto no-scrollbar"></div>
+                    <div>
+                        <h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Alat Kerja Digunakan</h4>
+                        <div id="container-drop-alatkerja" class="no-print mb-1">
+                            <select id="drop-alatkerja" onchange="pilihDropdownAtauInputKustom('alatkerja', this)" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select>
+                        </div>
+                        <div id="input-kustom-container-alatkerja" class="no-print mb-1 hidden flex space-x-1">
+                            <input type="text" id="input-teks-kustom-alatkerja" class="w-full border p-1 rounded text-[10px] outline-none bg-slate-50" placeholder="Ketik alat kerja...">
+                            <button type="button" onclick="simpanItemKustomBaru('alatkerja')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">OK</button>
+                            <button type="button" onclick="batalItemKustomBaru('alatkerja')" class="bg-gray-400 text-white px-2 py-0.5 rounded text-[10px]">X</button>
+                        </div>
+                    </div>
+                    <!-- Dibuat fleksibel, tanpa max-h dan tanpa overflow-y-auto agar tidak perlu scroll -->
+                    <div id="box-list-alatkerja" class="space-y-1"></div>
                 </div>
+                
                 <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
-                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fisik</h4><div id="container-drop-fisik" class="no-print mb-1"><select id="drop-fisik" onchange="tambahPoinAkumulatif('fisik')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-fisik" class="space-y-1 max-h-20 overflow-y-auto no-scrollbar"></div>
+                    <div>
+                        <h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fisik</h4>
+                        <div id="container-drop-fisik" class="no-print mb-1">
+                            <select id="drop-fisik" onchange="pilihDropdownAtauInputKustom('fisik', this)" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select>
+                        </div>
+                        <div id="input-kustom-container-fisik" class="no-print mb-1 hidden flex space-x-1">
+                            <input type="text" id="input-teks-kustom-fisik" class="w-full border p-1 rounded text-[10px] outline-none bg-slate-50" placeholder="Ketik pemeriksaan fisik...">
+                            <button type="button" onclick="simpanItemKustomBaru('fisik')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">OK</button>
+                            <button type="button" onclick="batalItemKustomBaru('fisik')" class="bg-gray-400 text-white px-2 py-0.5 rounded text-[10px]">X</button>
+                        </div>
+                    </div>
+                    <!-- Dibuat fleksibel, tanpa max-h dan tanpa overflow-y-auto agar tidak perlu scroll -->
+                    <div id="box-list-fisik" class="space-y-1"></div>
                 </div>
+
                 <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
-                    <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fungsi</h4><div id="container-drop-fungsi" class="no-print mb-1"><select id="drop-fungsi" onchange="tambahPoinAkumulatif('fungsi')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-fungsi" class="space-y-1 max-h-20 overflow-y-auto no-scrollbar"></div>
+                    <div>
+                        <h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fungsi</h4>
+                        <div id="container-drop-fungsi" class="no-print mb-1">
+                            <select id="drop-fungsi" onchange="pilihDropdownAtauInputKustom('fungsi', this)" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select>
+                        </div>
+                        <div id="input-kustom-container-fungsi" class="no-print mb-1 hidden flex space-x-1">
+                            <input type="text" id="input-teks-kustom-fungsi" class="w-full border p-1 rounded text-[10px] outline-none bg-slate-50" placeholder="Ketik pemeriksaan fungsi...">
+                            <button type="button" onclick="simpanItemKustomBaru('fungsi')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">OK</button>
+                            <button type="button" onclick="batalItemKustomBaru('fungsi')" class="bg-gray-400 text-white px-2 py-0.5 rounded text-[10px]">X</button>
+                        </div>
+                    </div>
+                    <!-- Dibuat fleksibel, tanpa max-h dan tanpa overflow-y-auto agar tidak perlu scroll -->
+                    <div id="box-list-fungsi" class="space-y-1"></div>
                 </div>
             </div>
 
@@ -564,7 +599,7 @@
                     <p class="font-semibold text-gray-500 text-[10px]">PJ IPSRS Alkes</p>
                     <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-pj')" class="no-print text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded border border-red-300" id="btn-clear-sig-pj">Hapus</button>
-                    <div class="pt-0.5 font-bold text-gray-800 border-b pb-0.5 text-[10px]">PJ Alkes</div>
+                    <div class="pt-0.5 font-bold text-gray-800 border-b pb-0.5 text-[10px]">Arrief Nurcahyo, S.Tr. Em.</div>
                 </div>
             </div>
 
@@ -665,7 +700,7 @@
 
         let currentActiveRole = "Teknisi"; 
         let targetLoginRole = "";
-        let currentUserNama = "Teknisi";
+        let currentUserNama = "Baits Abdul Pattah";
         let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; 
         
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
@@ -1484,7 +1519,7 @@
                 ttdPJ: document.getElementById('sig-pj').toDataURL(), 
                 teknisiTtd: tekNama, 
                 saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
-                pjTtd: "PJ Akes", 
+                pjTtd: "Arrief Nurcahyo, S.Tr. Em.", 
                 fotoAlat: stringFotoBase64,          
                 fotoBefore: stringFotoBeforeBase64,  
                 paramAlatKerja: JSON.stringify(terpakaiAlatKerja), 
@@ -1726,19 +1761,37 @@
             document.getElementById('drop-fungsi').innerHTML = `<option value="">-- PILIH KONDISI FUNGSI --</option>` + opsFungsi.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Kondisi Fungsi</option>`; 
         }
 
-        function tambahPoinAkumulatif(kategori) {
-            const drop = document.getElementById('drop-' + kategori); let val = drop.value; if(!val) return;
+        function pilihDropdownAtauInputKustom(kategori, selectEl) {
+            const val = selectEl.value;
+            if(!val) return;
             if(val === "tambah-baru") {
-                let res = prompt("Masukkan item data kustom baru:");
-                if(res && res.trim() !== "") {
-                    let text = res.trim();
-                    if(kategori === 'alatkerja' && !opsAlatKerja.includes(text)) opsAlatKerja.push(text);
-                    if(kategori === 'fisik' && !opsFisik.includes(text)) opsFisik.push(text);
-                    if(kategori === 'fungsi' && !opsFungsi.includes(text)) opsFungsi.push(text);
-                    renderOpsiDropdownAwal(); eksekusiPushPoinUnik(kategori, text);
-                }
-            } else { eksekusiPushPoinUnik(kategori, val); }
-            drop.selectedIndex = 0;
+                document.getElementById('container-drop-' + kategori).classList.add('hidden');
+                document.getElementById('input-kustom-container-' + kategori).classList.remove('hidden');
+                document.getElementById('input-teks-kustom-' + kategori).value = "";
+                document.getElementById('input-teks-kustom-' + kategori).focus();
+            } else {
+                eksekusiPushPoinUnik(kategori, val);
+                selectEl.selectedIndex = 0;
+            }
+        }
+
+        function simpanItemKustomBaru(kategori) {
+            const inputEl = document.getElementById('input-teks-kustom-' + kategori);
+            const val = inputEl.value.trim();
+            if(val !== "") {
+                if(kategori === 'alatkerja' && !opsAlatKerja.includes(val)) opsAlatKerja.push(val);
+                if(kategori === 'fisik' && !opsFisik.includes(val)) opsFisik.push(val);
+                if(kategori === 'fungsi' && !opsFungsi.includes(val)) opsFungsi.push(val);
+                renderOpsiDropdownAwal();
+                eksekusiPushPoinUnik(kategori, val);
+            }
+            batalItemKustomBaru(kategori);
+        }
+
+        function batalItemKustomBaru(kategori) {
+            document.getElementById('input-kustom-container-' + kategori).classList.add('hidden');
+            document.getElementById('container-drop-' + kategori).classList.remove('hidden');
+            document.getElementById('drop-' + kategori).selectedIndex = 0;
         }
 
         function eksekusiPushPoinUnik(kategori, txt) {
