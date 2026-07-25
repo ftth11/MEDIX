@@ -1488,7 +1488,10 @@
         }
 
         function bukaLembarKerjaBaruKosong() { 
-            if(dataAlat.length === 0) return alert("Belum ada data Master Aset di sistem.");
+            // Validasi data alat dilonggarkan agar modal tetap terbuka walau data kosong
+            if(dataAlat.length === 0) {
+                console.log("Perhatian: Master Aset masih kosong.");
+            }
             
             document.getElementById('dlk-firebase-id').value = ""; 
             stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
@@ -1499,23 +1502,26 @@
             const now = new Date();
             const offsetMs = now.getTimezoneOffset() * 60 * 1000;
             const localIso = new Date(now.getTime() - offsetMs).toISOString().substring(0, 16);
-            document.getElementById('dlk-tgl').value = localIso; 
+            const inputTgl = document.getElementById('dlk-tgl');
+            if(inputTgl) inputTgl.value = localIso; 
             
-            document.getElementById('dlk-txt-deskripsi-tunggal').value = ""; 
-            document.getElementById('box-preview-foto-before').innerHTML = `[ Tidak Ada Foto Before ]`;
+            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
+            if(descTunggal) descTunggal.value = ""; 
             
-            document.getElementById('dlk-selected-alat-id').value = "";
+            const boxBefore = document.getElementById('box-preview-foto-before');
+            if(boxBefore) boxBefore.innerHTML = `[ Tidak Ada Foto Before ]`;
+            
+            const selectedAlatId = document.getElementById('dlk-selected-alat-id');
+            if(selectedAlatId) selectedAlatId.value = "";
+            
             const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
             if(dropdownAlat) dropdownAlat.value = "";
             
-            document.getElementById('dlk-nama').value = "";
-            document.getElementById('dlk-merk').value = "";
-            document.getElementById('dlk-tipe').value = "";
-            document.getElementById('dlk-seri').value = "";
-            document.getElementById('dlk-izin').value = "";
-            document.getElementById('dlk-lokasi').value = "";
-            document.getElementById('dlk-tglcal').value = "";
-            document.getElementById('dlk-nokal').value = "";
+            // Reset form text fields aman
+            ['dlk-nama', 'dlk-merk', 'dlk-tipe', 'dlk-seri', 'dlk-izin', 'dlk-lokasi', 'dlk-tglcal', 'dlk-nokal'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.value = "";
+            });
 
             renderOpsiDropdownAwal(); 
             aktualisasikanTampilanKotakTabel('alatkerja'); 
@@ -1525,26 +1531,30 @@
             
             db.collection("lembarKerja").get().then(s => {
                 let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
-                document.getElementById('dlk-no').value = generatedNo;
+                const elNo = document.getElementById('dlk-no');
+                if(elNo) elNo.value = generatedNo;
             }).catch(err => {
-                document.getElementById('dlk-no').value = "RSUDPG/IPSRS/LK-001";
+                const elNo = document.getElementById('dlk-no');
+                if(elNo) elNo.value = "RSUDPG/IPSRS/LK-001";
             });
             
             aturModeTampilanWorksheetUser();
             
-            // Tampilkan modal terlebih dahulu agar elemen canvas memiliki lebar/tinggi
+            // Tampilkan modal secara paksa
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
-            areaLK.classList.remove('hidden'); 
-            areaLK.scrollTop = 0;
+            if(areaLK) {
+                areaLK.classList.remove('hidden'); 
+                areaLK.scrollTop = 0;
+            }
 
-            // Inisialisasi ulang canvas tanda tangan setelah modal terbuka
+            // Inisialisasi ulang canvas tanda tangan
             setTimeout(() => {
                 initSignatures();
             }, 300); 
             
             toggleSidebarMenu(false); 
         }
-
+        
         function bukaLembarKerjaDinamisDariLog(id) {
             toggleModal('modal-kartu', false);
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
