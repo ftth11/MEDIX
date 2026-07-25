@@ -454,19 +454,21 @@
                     </div>
                 </div>
 
-                <!-- Kotak 3: Data Alat (6 Col) Tanpa Sideroll & Kembali ke Tgl Kalibrasi -->
+                <!-- Kotak 3: Data Alat (6 Col) Dengan Pencarian Berbasis SN & Nama Alat -->
                 <div class="md:col-span-6 print:col-span-6 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px]">
                     <div>
                         <div class="flex justify-between items-center border-b pb-1 mb-1">
                             <h4 class="font-bold text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-microscope mr-1 text-blue-600"></i>Data Alat Kesehatan</h4>
-                            <div class="no-print">
-                                <select id="dropdown-pilih-alat-worksheet" onchange="pilihAlatKeWorksheetDariDropdown(this.value)" class="text-[10px] font-bold border rounded p-0.5 bg-blue-50 text-blue-700 outline-none">
-                                    <option value="">-- PILIH ALAT MEDIS --</option>
+                            
+                            <!-- INPUT PENCARIAN BERBASIS SN / NAMA ALAT DI LEMBAR KERJA -->
+                            <div class="no-print relative w-44">
+                                <input type="text" id="input-search-alat-worksheet" onfocus="showDropdownWorksheetAlat()" oninput="handleSearchWorksheetAlat(this.value)" placeholder="🔍 Ketik Nama / S/N..." class="w-full text-[10px] font-bold border rounded px-1.5 py-0.5 bg-blue-50 text-blue-700 outline-none">
+                                <select id="dropdown-pilih-alat-worksheet" size="5" onchange="pilihAlatKeWorksheetDariDropdown(this)" style="display: none;" class="absolute right-0 top-full mt-1 w-72 z-50 text-[10px] font-semibold border rounded bg-white text-slate-800 shadow-xl outline-none cursor-pointer">
                                 </select>
                             </div>
                         </div>
                         <div class="space-y-0.5 text-[10px]">
-                            <div class="flex"><span class="w-14 text-gray-500 font-medium">Nama:</span><input type="text" id="dlk-nama" class="flex-1 border-b p-0.5 bg-transparent font-bold text-gray-900 truncate" readonly placeholder="Silakan pilih alat di atas..."></div>
+                            <div class="flex"><span class="w-14 text-gray-500 font-medium">Nama:</span><input type="text" id="dlk-nama" class="flex-1 border-b p-0.5 bg-transparent font-bold text-gray-900 truncate" readonly placeholder="Silakan cari alat berdasarkan S/N..."></div>
                             <div class="flex space-x-2">
                                 <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Merk:</span><input type="text" id="dlk-merk" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
                                 <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Tipe:</span><input type="text" id="dlk-tipe" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
@@ -677,6 +679,10 @@
             }
             if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#form-cal-alat')) {
                 const el = document.getElementById('form-cal-alat');
+                if(el) el.style.display = 'none';
+            }
+            if (!e.target.closest('#input-search-alat-worksheet') && !e.target.closest('#dropdown-pilih-alat-worksheet')) {
+                const el = document.getElementById('dropdown-pilih-alat-worksheet');
                 if(el) el.style.display = 'none';
             }
         });
@@ -1127,15 +1133,37 @@
             selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">${a.nama} - [${a.ruangan || a.lokasi || 'Unit'}]</option>`).join('');
         }
 
-        function populasikanDropdownAlatDiWorksheet() {
+        function populasikanDropdownAlatDiWorksheet(keyword = "") {
             const selectEl = document.getElementById('dropdown-pilih-alat-worksheet');
             if(!selectEl) return;
-            selectEl.innerHTML = `<option value="">-- PILIH ALAT MEDIS --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} (${a.ruangan || a.lokasi || 'Unit'})</option>`).join('');
+            const kw = keyword.toLowerCase();
+            const filtered = dataAlat.filter(a => {
+                let txt = `${a.nama || ''} ${a.seri || ''} ${a.ruangan || a.lokasi || ''}`.toLowerCase();
+                return txt.includes(kw);
+            });
+            selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">📌 ${a.nama} | SN: ${a.seri || '-'} (${a.ruangan || a.lokasi || 'Unit'})</option>`).join('');
         }
 
-        function pilihAlatKeWorksheetDariDropdown(alatId) {
-            if(!alatId) return;
-            sinkronisasiDataAlatKeWorksheet(alatId);
+        function showDropdownWorksheetAlat() {
+            const selectEl = document.getElementById('dropdown-pilih-alat-worksheet');
+            if(selectEl) selectEl.style.display = "block";
+        }
+
+        function handleSearchWorksheetAlat(kw) {
+            populasikanDropdownAlatDiWorksheet(kw);
+            const selectEl = document.getElementById('dropdown-pilih-alat-worksheet');
+            if(selectEl) selectEl.style.display = "block";
+        }
+
+        function pilihAlatKeWorksheetDariDropdown(selectEl) {
+            const selectedVal = selectEl.value;
+            if(!selectedVal) return;
+            sinkronisasiDataAlatKeWorksheet(selectedVal);
+            selectEl.style.display = "none";
+            const selectedObj = dataAlat.find(a => a.id == selectedVal);
+            if(selectedObj) {
+                document.getElementById('input-search-alat-worksheet').value = selectedObj.nama + " (" + (selectedObj.seri || "-") + ")";
+            }
         }
 
         function handleSearchInputAlat(targetType, kw) {
@@ -1341,9 +1369,6 @@
             
             bukaLembarKerjaBaruKosong();
             document.getElementById('dlk-selected-alat-id').value = alatId;
-            const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
-            if(dropdownAlat) dropdownAlat.value = alatId;
-
             sinkronisasiDataAlatKeWorksheet(alatId);
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(r => { if(r.value === "Corrective Maintenance") r.checked = true; });
             
@@ -1432,7 +1457,7 @@
             }
 
             const alatIdRaw = document.getElementById('dlk-selected-alat-id').value;
-            if(!alatIdRaw) return alert("Belum ada alat yang terpilih pada Lembar Kerja ini! Silakan pilih alat terlebih dahulu di dropdown pojok kanan atas kotak Data Alat.");
+            if(!alatIdRaw) return alert("Belum ada alat yang terpilih pada Lembar Kerja ini! Silakan cari dan pilih alat berdasarkan S/N.");
             const tekNama = document.getElementById('dlk-select-nama-teknisi').value;
             if(!tekNama) return alert("Silakan pilih Nama Teknisi!");
 
@@ -1526,8 +1551,8 @@
             const selectedAlatId = document.getElementById('dlk-selected-alat-id');
             if(selectedAlatId) selectedAlatId.value = "";
             
-            const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
-            if(dropdownAlat) dropdownAlat.value = "";
+            const inputSearchAlat = document.getElementById('input-search-alat-worksheet');
+            if(inputSearchAlat) inputSearchAlat.value = "";
             
             ['dlk-nama', 'dlk-merk', 'dlk-tipe', 'dlk-seri', 'dlk-lokasi', 'dlk-tglcal', 'dlk-nokal'].forEach(id => {
                 const el = document.getElementById(id);
@@ -1578,9 +1603,6 @@
             document.getElementById('dlk-no').value = record.noLk || ""; 
             document.getElementById('dlk-tgl').value = record.textTgl || (record.tgl ? record.tgl.substring(0,16) : '');
             
-            const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
-            if(dropdownAlat) dropdownAlat.value = record.alatId;
-
             sinkronisasiDataAlatKeWorksheet(record.alatId); 
             
             const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
@@ -1776,6 +1798,9 @@
                 document.getElementById('dlk-seri').value = dSeri; 
                 document.getElementById('dlk-lokasi').value = dLokasi;
                 
+                const inputSearch = document.getElementById('input-search-alat-worksheet');
+                if(inputSearch) inputSearch.value = a.nama + " (" + (a.seri || "-") + ")";
+
                 const listCal = dataKalibrasi.filter(c => c.alatId === id);
                 if(listCal.length > 0) {
                     listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp)));
