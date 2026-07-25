@@ -1332,7 +1332,10 @@
             }
         }
 
-        function eksekusiTiketLangsungKerjakan(tiketId, alatId, fotoBeforeVal) {
+        function eksekusiTiketLangsungKerjakan(tiketId, alatId) {
+            // Ambil data tiket secara spesifik dari array dataTiket berdasarkan ID
+            const targetTiket = dataTiket.find(t => t.id === tiketId);
+            
             bukaLembarKerjaBaruKosong();
             document.getElementById('dlk-selected-alat-id').value = alatId;
             const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
@@ -1341,8 +1344,10 @@
             sinkronisasiDataAlatKeWorksheet(alatId);
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(r => { if(r.value === "Corrective Maintenance") r.checked = true; });
             
-            stringFotoBeforeBase64 = fotoBeforeVal || "-";
+            // Ambil foto before dari data tiket yang tersimpan
+            stringFotoBeforeBase64 = (targetTiket && targetTiket.fotoBefore) ? targetTiket.fotoBefore : "-";
             const boxBefore = document.getElementById('box-preview-foto-before');
+            
             if(stringFotoBeforeBase64 !== '-') {
                 boxBefore.innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`;
             } else {
@@ -1351,7 +1356,7 @@
 
             db.collection("troubleTickets").doc(tiketId).update({ statusTiket: "Sedang Dikerjakan" });
         }
-
+        
         function selesaikanTiketTroubleManual(tiketId, alatId) {
             if(confirm("Apakah Anda ingin menyelesaikan trouble ticket ini dan mengubah status alat menjadi Siap Pakai?")) {
                 db.collection("troubleTickets").doc(tiketId).update({ statusTiket: "Selesai" }).then(() => {
