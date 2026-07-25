@@ -1488,17 +1488,24 @@
         }
 
         function bukaLembarKerjaBaruKosong() { 
-            // Validasi data alat dilonggarkan agar modal tetap terbuka walau data kosong
-            if(dataAlat.length === 0) {
-                console.log("Perhatian: Master Aset masih kosong.");
+            // Ambil elemen modal utama
+            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
+            if(!areaLK) {
+                alert("Elemen modal lembar kerja tidak ditemukan di HTML!");
+                return;
             }
-            
+
+            // Reset form input dasar aman
             document.getElementById('dlk-firebase-id').value = ""; 
-            stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
+            stringFotoBase64 = "-"; 
+            stringFotoBeforeBase64 = "-";
             resetFotoAfterDisplay();
             
-            terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; 
+            terpakaiAlatKerja = []; 
+            terpakaiFisik = []; 
+            terpakaiFungsi = []; 
             
+            // Atur waktu lokal saat ini
             const now = new Date();
             const offsetMs = now.getTimezoneOffset() * 60 * 1000;
             const localIso = new Date(now.getTime() - offsetMs).toISOString().substring(0, 16);
@@ -1517,7 +1524,7 @@
             const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
             if(dropdownAlat) dropdownAlat.value = "";
             
-            // Reset form text fields aman
+            // Kosongkan field teks alat
             ['dlk-nama', 'dlk-merk', 'dlk-tipe', 'dlk-seri', 'dlk-izin', 'dlk-lokasi', 'dlk-tglcal', 'dlk-nokal'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.value = "";
@@ -1529,6 +1536,7 @@
             aktualisasikanTampilanKotakTabel('fungsi'); 
             populasikanDropdownNamaTandaTangan();
             
+            // Generate nomor LK otomatis dari Firestore
             db.collection("lembarKerja").get().then(s => {
                 let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
                 const elNo = document.getElementById('dlk-no');
@@ -1540,14 +1548,11 @@
             
             aturModeTampilanWorksheetUser();
             
-            // Tampilkan modal secara paksa
-            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
-            if(areaLK) {
-                areaLK.classList.remove('hidden'); 
-                areaLK.scrollTop = 0;
-            }
+            // Buka modal secara langsung
+            areaLK.classList.remove('hidden'); 
+            areaLK.scrollTop = 0;
 
-            // Inisialisasi ulang canvas tanda tangan
+            // Inisialisasi canvas tanda tangan dengan jeda agar DOM siap
             setTimeout(() => {
                 initSignatures();
             }, 300); 
