@@ -972,11 +972,9 @@
 
         db.collection("dataAlat").onSnapshot((querySnapshot) => {
             dataAlat = []; 
-            querySnapshot.forEach((doc) => { 
-                dataAlat.push({ id: doc.id, ...doc.data() }); 
-            });
-
-            // Urutkan data secara otomatis dari A-Z berdasarkan nama alat
+            querySnapshot.forEach((doc) => { dataAlat.push({ id: doc.id, ...doc.data() }); });
+            
+            // Urutkan otomatis secara A-Z berdasarkan Nama Alat Kesehatan
             dataAlat.sort((a, b) => {
                 let namaA = (a.nama || "").toUpperCase();
                 let namaB = (b.nama || "").toUpperCase();
@@ -992,7 +990,7 @@
             populasikanDropdownAlatDiKalibrasi(); 
             populasikanDropdownAlatDiWorksheet();
         });
-        
+
         db.collection("dataKalibrasi").onSnapshot((querySnapshot) => {
             dataKalibrasi = []; querySnapshot.forEach((doc) => { dataKalibrasi.push({ id: doc.id, ...doc.data() }); });
             evaluasiJatuhTempoKalibrasiMassal(); renderAll();
@@ -1962,7 +1960,7 @@
         }
 
         function exportKeExcelMassal() {
-            if(dataAlat.length === 0) return alert("Tidak ada data aset untuk diexport!");
+            if(dataAlat.length === 0) return alert("Tidak ada data alat untuk diexport!");
             const dClean = dataAlat.map((a, index) => {
                 const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
                 let tCal = "-", eCal = "-", vdr = "-";
