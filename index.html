@@ -39,6 +39,10 @@
         .sidebar-translate { transition: transform 0.3s ease-in-out; }
         canvas { touch-action: none; }
 
+        /* Sembunyikan Scrollbar khusus area modal lembar kerja agar bersih seperti kertas A4 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         @media print {
             @page { size: A4 portrait; margin: 5mm; }
             body, html { background: white !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
@@ -387,9 +391,9 @@
         </div>
     </div>
 
-    <!-- AREA WORKSPACE PEMELIHARAAN (FIXED DI ROOT BODY SUPAYA TIDAK TERTUTUP SIDEBAR) -->
-    <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-950/80 z-[99999] flex items-center justify-center p-4 hidden no-print backdrop-blur-md overflow-y-auto">
-        <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border max-w-5xl w-full mx-auto text-slate-900 space-y-3 print:space-y-1 relative max-h-[92vh] print:max-h-none overflow-y-auto print:overflow-visible my-auto">
+    <!-- AREA WORKSPACE PEMELIHARAAN (FIXED DI ROOT BODY TANPA SCROLLBAR AGAR TERLIHAT SEPERTI A4 UTUH) -->
+    <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-950/80 z-[99999] flex items-center justify-center p-2 hidden no-print backdrop-blur-md overflow-y-auto no-scrollbar">
+        <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border max-w-4xl w-full mx-auto text-slate-900 space-y-3 print:space-y-1 relative max-h-[96vh] print:max-h-none overflow-y-auto no-scrollbar print:overflow-visible my-auto">
             
             <!-- TOMBOL AKSI ATAS DITATA SEJAJAR SUPAYA TIDAK TUMPANG TINDIH -->
             <div class="absolute top-4 right-4 flex items-center space-x-2 z-20 no-print">
@@ -483,15 +487,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
                 <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
                     <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Alat Kerja Digunakan</h4><div id="container-drop-alatkerja" class="no-print mb-1"><select id="drop-alatkerja" onchange="tambahPoinAkumulatif('alatkerja')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-alatkerja" class="space-y-1 max-h-20 overflow-y-auto"></div>
+                    <div id="box-list-alatkerja" class="space-y-1 max-h-20 overflow-y-auto no-scrollbar"></div>
                 </div>
                 <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
                     <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fisik</h4><div id="container-drop-fisik" class="no-print mb-1"><select id="drop-fisik" onchange="tambahPoinAkumulatif('fisik')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-fisik" class="space-y-1 max-h-20 overflow-y-auto"></div>
+                    <div id="box-list-fisik" class="space-y-1 max-h-20 overflow-y-auto no-scrollbar"></div>
                 </div>
                 <div class="border p-2 rounded-lg bg-white shadow-sm space-y-1">
                     <div><h4 class="font-bold border-b pb-0.5 text-slate-800 mb-0.5 text-[10px]">Pemeriksaan Fungsi</h4><div id="container-drop-fungsi" class="no-print mb-1"><select id="drop-fungsi" onchange="tambahPoinAkumulatif('fungsi')" class="w-full border p-0.5 bg-white rounded outline-none text-[10px] font-semibold text-slate-700"></select></div></div>
-                    <div id="box-list-fungsi" class="space-y-1 max-h-20 overflow-y-auto"></div>
+                    <div id="box-list-fungsi" class="space-y-1 max-h-20 overflow-y-auto no-scrollbar"></div>
                 </div>
             </div>
 
@@ -514,7 +518,7 @@
                 <!-- Uraian Detail Pekerjaan dengan Auto-Expand (Otomatis Melar Mengikuti Teks) -->
                 <div class="border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between min-h-[125px] print:min-h-[105px]">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <textarea id="dlk-txt-deskripsi-tunggal" rows="2" oninput="autoExpandTextarea(this)" class="w-full flex-1 border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                    <textarea id="dlk-txt-deskripsi-tunggal" rows="2" oninput="autoExpandTextarea(this)" class="w-full flex-1 border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
                 </div>
             </div>
 
@@ -1446,7 +1450,7 @@
                 ttdPJ: document.getElementById('sig-pj').toDataURL(), 
                 teknisiTtd: tekNama, 
                 saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
-                pjTtd: "Arrief Nurcahyo, S.Tr. Em.", 
+                pjTtd: "PJ Alkes", 
                 fotoAlat: stringFotoBase64,          
                 fotoBefore: stringFotoBeforeBase64,  
                 paramAlatKerja: JSON.stringify(terpakaiAlatKerja), 
