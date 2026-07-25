@@ -1517,25 +1517,31 @@
             document.getElementById('dlk-tglcal').value = "";
             document.getElementById('dlk-nokal').value = "";
 
-            renderOpsiDropdownAwal(); aktualisasikanTampilanKotakTabel('alatkerja'); aktualisasikanTampilanKotakTabel('fisik'); aktualisasikanTampilanKotakTabel('fungsi'); 
+            renderOpsiDropdownAwal(); 
+            aktualisasikanTampilanKotakTabel('alatkerja'); 
+            aktualisasikanTampilanKotakTabel('fisik'); 
+            aktualisasikanTampilanKotakTabel('fungsi'); 
             populasikanDropdownNamaTandaTangan();
             
             db.collection("lembarKerja").get().then(s => {
                 let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
                 document.getElementById('dlk-no').value = generatedNo;
+            }).catch(err => {
+                document.getElementById('dlk-no').value = "RSUDPG/IPSRS/LK-001";
             });
             
             aturModeTampilanWorksheetUser();
+            
+            // Tampilkan modal terlebih dahulu agar elemen canvas memiliki lebar/tinggi
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
             areaLK.classList.remove('hidden'); 
             areaLK.scrollTop = 0;
 
+            // Inisialisasi ulang canvas tanda tangan setelah modal terbuka
             setTimeout(() => {
                 initSignatures();
-                clearCanvasSignature('sig-teknisi');
-                clearCanvasSignature('sig-user');
-                clearCanvasSignature('sig-pj');
-            }, 400); 
+            }, 300); 
+            
             toggleSidebarMenu(false); 
         }
 
@@ -2038,17 +2044,55 @@
         function initSignatures() {
             try {
                 ['sig-teknisi', 'sig-user', 'sig-pj'].forEach(id => {
-                    const canvas = document.getElementById(id); if(!canvas || !canvas.parentElement) return; 
-                    canvas.width = canvas.parentElement.clientWidth || 250; canvas.height = canvas.parentElement.clientHeight || 80;
-                    const ctx = canvas.getContext('2d'); let isDrawing = false;
-                    ctx.lineWidth = 3.0; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0f172a';
-                    function getPos(e) { const r = canvas.getBoundingClientRect(); const cX = e.touches ? e.touches[0].clientX : e.clientX; const cY = e.touches ? e.touches[0].clientY : e.clientY; return { x: cX - r.left, y: cY - r.top }; }
-                    function startDrawing(e) { if(currentActiveRole === 'User') return; isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); if (e.cancelable) e.preventDefault(); }
-                    function draw(e) { if(currentActiveRole === 'User' || !isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); if (e.cancelable) e.preventDefault(); }
-                    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', () => isDrawing = false);
-                    canvas.addEventListener('touchstart', startDrawing, { passive: false }); canvas.addEventListener('touchmove', draw, { passive: false }); canvas.addEventListener('touchend', () => isDrawing = false);
+                    const canvas = document.getElementById(id); 
+                    if(!canvas) return; 
+                    
+                    // Berikan ukuran default jika parent belum merender lebar penuh
+                    const parentWidth = canvas.parentElement ? canvas.parentElement.clientWidth : 300;
+                    canvas.width = parentWidth > 50 ? parentWidth : 280; 
+                    canvas.height = 70;
+                    
+                    const ctx = canvas.getContext('2d'); 
+                    let isDrawing = false;
+                    ctx.lineWidth = 2.5; 
+                    ctx.lineCap = 'round'; 
+                    ctx.lineJoin = 'round'; 
+                    ctx.strokeStyle = '#0f172a';
+                    
+                    function getPos(e) { 
+                        const r = canvas.getBoundingClientRect(); 
+                        const cX = e.touches ? e.touches[0].clientX : e.clientX; 
+                        const cY = e.touches ? e.touches[0].clientY : e.clientY; 
+                        return { x: cX - r.left, y: cY - r.top }; 
+                    }
+                    function startDrawing(e) { 
+                        if(currentActiveRole === 'User') return; 
+                        isDrawing = true; 
+                        const p = getPos(e); 
+                        ctx.beginPath(); 
+                        ctx.moveTo(p.x, p.y); 
+                        if (e.cancelable) e.preventDefault(); 
+                    }
+                    function draw(e) { 
+                        if(currentActiveRole === 'User' || !isDrawing) return; 
+                        const p = getPos(e); 
+                        ctx.lineTo(p.x, p.y); 
+                        ctx.stroke(); 
+                        if (e.cancelable) e.preventDefault(); 
+                    }
+                    
+                    // Bersihkan event listener lama agar tidak menumpuk
+                    canvas.onmousedown = startDrawing; 
+                    canvas.onmousemove = draw; 
+                    window.onmouseup = () => isDrawing = false;
+                    
+                    canvas.ontouchstart = startDrawing; 
+                    canvas.ontouchmove = draw; 
+                    canvas.ontouchend = () => isDrawing = false;
                 });
-            } catch(e) { console.log("Canvas signature deferred."); }
+            } catch(e) { 
+                console.log("Canvas signature initialization notice:", e); 
+            }
         }
         
         window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
