@@ -1279,10 +1279,11 @@
                         let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka LK' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
                         let warnaTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-amber-600 hover:bg-amber-700';
 
+                        // PERBAIKAN: Hanya mengirim ID tiket dan ID alat ke fungsi eksekusi
                         aksiAksi = `
                             <td class="p-3 text-center">
                                 <div class="inline-flex space-x-1">
-                                    <button onclick="eksekusiTiketLangsungKerjakan('${t.id}','${t.alatId}', '${t.fotoBefore || '-'}')" class="${warnaTombolKerja} text-white font-bold px-2 py-1 rounded-lg text-[10px] transition">${textTombolKerja}</button>
+                                    <button onclick="eksekusiTiketLangsungKerjakan('${t.id}','${t.alatId}')" class="${warnaTombolKerja} text-white font-bold px-2 py-1 rounded-lg text-[10px] transition">${textTombolKerja}</button>
                                     <button onclick="selesaikanTiketTroubleManual('${t.id}','${t.alatId}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition"><i class="fa-solid fa-check"></i> Selesai</button>
                                     <button onclick="hapusTiketUser('${t.id}', '${t.alatId}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition" title="Hapus Tiket"><i class="fa-solid fa-trash"></i></button>
                                 </div>
@@ -1320,7 +1321,7 @@
                 `;
             }).join('');
         }
-
+        
         function hapusTiketUser(tiketId, alatId) {
             if(confirm("Batalkan atau hapus laporan kerusakan ini? Status alat akan dikembalikan menjadi Siap Pakai.")) {
                 db.collection("troubleTickets").doc(tiketId).delete().then(() => {
