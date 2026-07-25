@@ -241,11 +241,20 @@
                         <div class="flex space-x-2" id="master-action-buttons-container"></div>
                     </div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
-                        <div class="p-4 border-b border-white/5 bg-white/[0.02]"><input type="text" id="search-alat" onkeyup="filterAlat()" class="w-full max-w-md px-4 py-2 border border-white/10 rounded-xl text-xs bg-slate-950/40 text-white placeholder-slate-500 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, ruangan..."></div>
+                        <div class="p-4 border-b border-white/5 bg-white/[0.02]"><input type="text" id="search-alat" onkeyup="filterAlat()" class="w-full max-w-md px-4 py-2 border border-white/10 rounded-xl text-xs bg-slate-950/40 text-white placeholder-slate-500 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, izin edar, ruangan..."></div>
                         <div class="overflow-x-auto max-h-[60vh]">
-                            <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                            <table class="w-full text-left text-xs border-collapse min-w-[850px]">
                                 <thead class="bg-slate-900/90 border-b border-white/5 font-bold text-slate-400 sticky top-0 z-10 backdrop-blur">
-                                    <tr><th class="p-4">Nama Alat Kesehatan</th><th class="p-4">Merk</th><th class="p-4">Model / Tipe</th><th class="p-4">Nomor Seri (SN)</th><th class="p-4">Ruangan</th><th class="p-4">Status / Kalibrasi</th><th class="p-4 text-center">Kartu Pemeliharaan</th></tr>
+                                    <tr>
+                                        <th class="p-4">Nama Alat Kesehatan</th>
+                                        <th class="p-4">Merk</th>
+                                        <th class="p-4">Model / Tipe</th>
+                                        <th class="p-4">Nomor Seri (SN)</th>
+                                        <th class="p-4">Izin Edar</th>
+                                        <th class="p-4">Ruangan</th>
+                                        <th class="p-4">Status / Kalibrasi</th>
+                                        <th class="p-4 text-center">Kartu Pemeliharaan</th>
+                                    </tr>
                                 </thead>
                                 <tbody id="table-alat-body" class="divide-y divide-white/5 text-slate-300"></tbody>
                             </table>
@@ -460,11 +469,11 @@
                             </div>
                             <div class="flex space-x-2">
                                 <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">S/N:</span><input type="text" id="dlk-seri" class="w-full border-b p-0.5 bg-transparent font-mono font-bold text-gray-800 truncate" readonly></div>
-                                <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Ruang:</span><input type="text" id="dlk-lokasi" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
+                                <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Edar:</span><input type="text" id="dlk-izin" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
                             </div>
-                            <div class="flex space-x-2 pt-0.5">
+                            <div class="flex space-x-2">
+                                <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Ruang:</span><input type="text" id="dlk-lokasi" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
                                 <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Kalibrasi:</span><input type="date" id="dlk-tglcal" onchange="hitungOtomatisMasaBerlakuSatuTahun(this.value)" class="w-full border-b p-0 bg-transparent font-bold outline-none text-[9px]"></div>
-                                <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Berakhir:</span><input type="date" id="dlk-nokal" class="w-full border-b p-0 bg-transparent font-bold outline-none text-[9px] text-gray-600" readonly placeholder="Otomatis 1 Thn"></div>
                             </div>
                         </div>
                     </div>
@@ -558,6 +567,9 @@
             <div class="p-5 space-y-3">
                 <div><label class="block mb-0.5 font-bold text-slate-400">Nama Alat Kesehatan *</label><input type="text" id="form-alat-nama" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none"></div>
                 <div><label class="block mb-0.5 font-bold text-slate-400">Merk</label><input type="text" id="form-alat-merk" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none"></div>
+                <div><label class="block mb-0.5 font-bold text-slate-400">Model / Tipe</label><input type="text" id="form-alat-tipe" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none"></div>
+                <div><label class="block mb-0.5 font-bold text-slate-400">Nomor Seri (SN)</label><input type="text" id="form-alat-seri" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none"></div>
+                <div><label class="block mb-0.5 font-bold text-slate-400">Izin Edar</label><input type="text" id="form-alat-izin" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none"></div>
                 <div><label class="block mb-1 font-bold text-slate-400">Instalasi / Ruangan *</label><input type="text" id="form-alat-lokasi" required class="w-full border border-white/10 p-2 rounded-xl bg-slate-950/40 text-white outline-none"></div>
             </div>
             <div class="px-5 py-3 border-t border-white/5 bg-slate-950 flex justify-end space-x-2"><button type="button" onclick="toggleModal('modal-alat', false)" class="px-4 py-1.5 border border-white/10 rounded-xl">Batal</button><button type="submit" class="px-5 py-1.5 bg-blue-600 font-semibold rounded-xl text-white">Simpan Aset</button></div>
@@ -822,19 +834,20 @@
 
                     if (confirm(`Ditemukan ${jsonRows.length} data aset dalam file Excel. Lanjutkan proses import massal ke database cloud?`)) {
                         jsonRows.forEach((row) => {
-                            const namaAlat = row["Nama Alat Medis"] || row["Nama Alat"] || row["nama"] || "Alat Medis";
-                            const merkAlat = row["Merk"] || row["merk"] || "-";
-                            const tipeAlat = row["Model / Tipe"] || row["Tipe"] || row["tipe"] || "-";
-                            const seriAlat = row["Nomor Seri (SN)"] || row["Nomor Seri"] || row["seri"] || "-";
-                            const ruangAlat = row["Unit / Ruangan"] || row["Ruangan"] || row["Lokasi"] || row["lokasi"] || "Umum";
+                            const namaAlat = row["NAMA ALAT"] || row["Nama Alat Medis"] || row["Nama Alat"] || row["nama"] || "Alat Medis";
+                            const merkAlat = row["MERK"] || row["Merk"] || row["merk"] || "-";
+                            const tipeAlat = row["MODEL/TIPE"] || row["Model / Tipe"] || row["Tipe"] || row["tipe"] || "-";
+                            const seriAlat = row["SERIAL NUMBER"] || row["Nomor Seri (SN)"] || row["Nomor Seri"] || row["seri"] || "-";
+                            const izinEdar = row["IZIN EDAR"] || row["Izin Edar"] || row["izinEdar"] || "-";
+                            const ruangAlat = row["UNIT/RUANGAN"] || row["Unit / Ruangan"] || row["Ruangan"] || row["Lokasi"] || row["lokasi"] || "Umum";
 
                             const payloadAlat = {
                                 nama: String(namaAlat),
                                 merk: String(merkAlat),
                                 tipe: String(tipeAlat),
                                 seri: String(seriAlat),
-                                edar: String(ruangAlat),
-                                lokasi: "Baik",
+                                izinEdar: String(izinEdar),
+                                ruangan: String(ruangAlat),
                                 status: "Siap Digunakan"
                             };
 
@@ -1023,8 +1036,7 @@
 
                 const hitungRuangan = {};
                 dataAlat.forEach(a => {
-                    let namaRuang = a.edar || a.lokasi || 'Umum';
-                    if(namaRuang === 'Baik') namaRuang = a.edar || 'Umum'; 
+                    let namaRuang = a.ruangan || a.edar || a.lokasi || 'Umum';
                     hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
                 });
 
@@ -1065,8 +1077,8 @@
                     listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp)));
                     const calTerbaru = listCal[0]; const tglExp = new Date(calTerbaru.exp);
                     const selisihHari = Math.ceil((tglExp.getTime() - hariIni.getTime()) / (1000 * 3600 * 24));
-                    if(selisihHari <= 0) htmlWarning += `<li>Aset <b>${a.nama}</b> (SN: ${a.tipe || a.seri || '-'}) <span class="text-rose-500 font-bold">KEDALUWARSA</span> sejak ${calTerbaru.exp}.</li>`;
-                    else if(selisihHari <= 30) htmlWarning += `<li>Aset <b>${a.nama}</b> (SN: ${a.tipe || a.seri || '-'}) akan habis dalam <span class="text-amber-400 font-bold">${selisihHari} hari</span> (${calTerbaru.exp}).</li>`;
+                    if(selisihHari <= 0) htmlWarning += `<li>Aset <b>${a.nama}</b> (SN: ${a.seri || '-'}) <span class="text-rose-500 font-bold">KEDALUWARSA</span> sejak ${calTerbaru.exp}.</li>`;
+                    else if(selisihHari <= 30) htmlWarning += `<li>Aset <b>${a.nama}</b> (SN: ${a.seri || '-'}) akan habis dalam <span class="text-amber-400 font-bold">${selisihHari} hari</span> (${calTerbaru.exp}).</li>`;
                 }
             });
             if(htmlWarning !== "") { warningList.innerHTML = htmlWarning; warningBox.classList.remove('hidden'); } else { warningBox.classList.add('hidden'); }
@@ -1083,21 +1095,21 @@
         function populasikanDropdownAlatDiTicketForm(keyword = "") {
             const selectEl = document.getElementById('ticket-form-alat'); if(!selectEl) return;
             const kw = keyword.toLowerCase();
-            const filtered = dataAlat.filter(a => (a.nama + " " + (a.edar || a.lokasi || '')).toLowerCase().includes(kw));
-            selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">${a.nama} [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
+            const filtered = dataAlat.filter(a => (a.nama + " " + (a.ruangan || a.lokasi || '')).toLowerCase().includes(kw));
+            selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">${a.nama} [${a.ruangan || a.lokasi || 'Unit'}]</option>`).join('');
         }
 
         function populasikanDropdownAlatDiKalibrasi(keyword = "") {
             const selectEl = document.getElementById('form-cal-alat'); if(!selectEl) return;
             const kw = keyword.toLowerCase();
-            const filtered = dataAlat.filter(a => (a.nama + " " + (a.edar || a.lokasi || '')).toLowerCase().includes(kw));
-            selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">${a.nama} - [${a.edar || a.lokasi || 'Unit'}]</option>`).join('');
+            const filtered = dataAlat.filter(a => (a.nama + " " + (a.ruangan || a.lokasi || '')).toLowerCase().includes(kw));
+            selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">${a.nama} - [${a.ruangan || a.lokasi || 'Unit'}]</option>`).join('');
         }
 
         function populasikanDropdownAlatDiWorksheet() {
             const selectEl = document.getElementById('dropdown-pilih-alat-worksheet');
             if(!selectEl) return;
-            selectEl.innerHTML = `<option value="">-- PILIH ALAT MEDIS --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} (${a.edar || a.lokasi || 'Unit'})</option>`).join('');
+            selectEl.innerHTML = `<option value="">-- PILIH ALAT MEDIS --</option>` + dataAlat.map(a => `<option value="${a.id}">${a.nama} (${a.ruangan || a.lokasi || 'Unit'})</option>`).join('');
         }
 
         function pilihAlatKeWorksheetDariDropdown(alatId) {
@@ -1241,7 +1253,7 @@
             }
             
             body.innerHTML = dataTiket.map(t => {
-                const alat = dataAlat.find(a => a.id == t.alatId) || { nama: "Alat Medis", edar: "Unit" };
+                const alat = dataAlat.find(a => a.id == t.alatId) || { nama: "Alat Medis", ruangan: "Unit" };
                 let aksiAksi = "";
 
                 let formatTglLapor = t.tglLapor ? t.tglLapor.replace('T', ' ') : '-';
@@ -1282,7 +1294,7 @@
 
                 return `
                     <tr class="border-b border-white/5 bg-transparent hover:bg-white/[0.01]">
-                        <td class="p-3"><b>${alat.nama}</b><br><span class="text-[10px] text-slate-500">${alat.edar || alat.lokasi || '-'}</span></td>
+                        <td class="p-3"><b>${alat.nama}</b><br><span class="text-[10px] text-slate-500">${alat.ruangan || alat.lokasi || '-'}</span></td>
                         <td class="p-3 text-slate-400 font-mono">${t.keluhan}</td>
                         <td class="p-3 text-center">${fotoBeforeThm}</td>
                         <td class="p-3 text-[11px] font-mono text-slate-400">${formatTglLapor}</td>
@@ -1342,8 +1354,13 @@
                 const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
                 let infoCal = `<br><span class="text-[9px] text-slate-500 italic">Belum Kalibrasi</span>`;
                 if(listCal.length > 0) { listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp))); infoCal = `<br><span class="text-[9px] text-indigo-400 font-bold font-mono">Cal Exp: ${listCal[0].exp}</span>`; }
-                let dNama = a.nama || '-', dMerk = a.merk || a.kode || '-', dTipe = a.tipe || a.merk || '-', dSeri = a.seri || a.tipe || '-', dLokasi = a.lokasi || a.edar || '-';
-                if(a.lokasi === 'Baik') { dMerk = a.kode; dTipe = a.merk; dSeri = a.tipe; dLokasi = a.edar; }
+                
+                let dNama = a.nama || '-', 
+                    dMerk = a.merk || '-', 
+                    dTipe = a.tipe || '-', 
+                    dSeri = a.seri || '-', 
+                    dIzin = a.izinEdar || a.edar || '-', 
+                    dLokasi = a.ruangan || a.lokasi || '-';
 
                 let aksiManajemenHTML = "";
                 if (currentActiveRole === 'Admin') {
@@ -1370,7 +1387,11 @@
 
                 return `
                     <tr class="border-b border-white/5 text-slate-300">
-                        <td class="p-3 font-bold text-white">${dNama}</td><td class="p-3">${dMerk}</td><td class="p-3">${dTipe}</td><td class="p-3 font-mono font-bold">${dSeri}</td>
+                        <td class="p-3 font-bold text-white">${dNama}</td>
+                        <td class="p-3">${dMerk}</td>
+                        <td class="p-3">${dTipe}</td>
+                        <td class="p-3 font-mono font-bold">${dSeri}</td>
+                        <td class="p-3 font-mono text-cyan-300">${dIzin}</td>
                         <td class="p-3"><span class="bg-slate-950/40 px-2 py-1 rounded border border-white/10">${dLokasi}</span></td>
                         <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status==='Siap Digunakan'?'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20':'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">${a.status || 'Siap Pakai'}</span>${infoCal}</td>
                         <td class="p-3 text-center">${aksiManajemenHTML}</td>
@@ -1475,6 +1496,7 @@
             document.getElementById('dlk-merk').value = "";
             document.getElementById('dlk-tipe').value = "";
             document.getElementById('dlk-seri').value = "";
+            document.getElementById('dlk-izin').value = "";
             document.getElementById('dlk-lokasi').value = "";
             document.getElementById('dlk-tglcal').value = "";
             document.getElementById('dlk-nokal').value = "";
@@ -1691,9 +1713,13 @@
             const a = dataAlat.find(item => item.id == id);
             if(a) {
                 document.getElementById('dlk-selected-alat-id').value = a.id;
-                let dMerk = a.kode || '-', dTipe = a.merk || '-', dSeri = a.tipe || '-', dLokasi = a.edar || '-';
-                if(a.lokasi !== 'Baik') { dMerk = a.merk; dTipe = a.tipe; dSeri = a.seri; dLokasi = a.lokasi; }
-                document.getElementById('dlk-nama').value = a.nama; document.getElementById('dlk-merk').value = dMerk; document.getElementById('dlk-tipe').value = dTipe; document.getElementById('dlk-seri').value = dSeri; document.getElementById('dlk-lokasi').value = dLokasi;
+                let dMerk = a.merk || '-', dTipe = a.tipe || '-', dSeri = a.seri || '-', dIzin = a.izinEdar || a.edar || '-', dLokasi = a.ruangan || a.lokasi || '-';
+                document.getElementById('dlk-nama').value = a.nama; 
+                document.getElementById('dlk-merk').value = dMerk; 
+                document.getElementById('dlk-tipe').value = dTipe; 
+                document.getElementById('dlk-seri').value = dSeri; 
+                document.getElementById('dlk-izin').value = dIzin; 
+                document.getElementById('dlk-lokasi').value = dLokasi;
                 
                 const listCal = dataKalibrasi.filter(c => c.alatId === id);
                 if(listCal.length > 0) {
@@ -1751,16 +1777,16 @@
         
         function renderTabelPusatDokumen() {
             const tBody = document.getElementById('table-kalibrasi-body'); if(!tBody) return; let docs = [];
-            dataKalibrasi.forEach(c => { const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: c.id, namaAlat: a.nama, seri: a.tipe || a.seri || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); });
+            dataKalibrasi.forEach(c => { const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: c.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); });
             
             const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
-            combinedLk.forEach(lk => { const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lk.id, namaAlat: a.nama, seri: a.tipe || lk.seri || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal, koleksiDb: 'lembarKerja' }); });
+            combinedLk.forEach(lk => { const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; docs.push({ id: lk.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal, koleksiDb: 'lembarKerja' }); });
             
             dataKeluhanLog.forEach(lg => {
                 const sudahAdaLk = combinedLk.some(lk => lk.alatId === lg.alatId);
                 if (!sudahAdaLk) {
                     const a = dataAlat.find(i => i.id == lg.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
-                    docs.push({ id: lg.id, namaAlat: a.nama, seri: a.tipe || lg.seri || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal, koleksiDb: 'laporanKeluhanLog' });
+                    docs.push({ id: lg.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal, koleksiDb: 'laporanKeluhanLog' });
                 }
             });
 
@@ -1822,10 +1848,49 @@
             renderAll(); 
         }
 
-        function openModalAlatManual() { document.getElementById('form-alat-id').value = ""; document.getElementById('form-alat-nama').value = ""; document.getElementById('form-alat-merk').value = ""; toggleModal('modal-alat', true); }
+        function openModalAlatManual() { 
+            document.getElementById('form-alat-id').value = ""; 
+            document.getElementById('form-alat-nama').value = ""; 
+            document.getElementById('form-alat-merk').value = ""; 
+            document.getElementById('form-alat-tipe').value = ""; 
+            document.getElementById('form-alat-seri').value = ""; 
+            document.getElementById('form-alat-izin').value = ""; 
+            document.getElementById('form-alat-lokasi').value = ""; 
+            toggleModal('modal-alat', true); 
+        }
         
-        function pemicuEditAlatLangsung(id) { const a = dataAlat.find(i => i.id == id); if(!a) return; document.getElementById('form-alat-id').value = a.id; document.getElementById('form-alat-nama').value = a.nama || ''; document.getElementById('form-alat-merk').value = a.merk || ''; document.getElementById('form-alat-lokasi').value = a.lokasi === 'Baik' ? a.edar : a.lokasi; toggleModal('modal-alat', true); }
-        function submitFormAlatMaster(e) { e.preventDefault(); const id = document.getElementById('form-alat-id').value; const payload = { nama: document.getElementById('form-alat-nama').value, merk: document.getElementById('form-alat-merk').value, tipe: '', seri: '', edar: document.getElementById('form-alat-lokasi').value, lokasi: 'Baik' }; if(id) { db.collection("dataAlat").doc(id).update(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Diperbarui!"); }); } else { payload.status = 'Siap Digunakan'; db.collection("dataAlat").add(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Didaftarkan!"); }); } }
+        function pemicuEditAlatLangsung(id) { 
+            const a = dataAlat.find(i => i.id == id); 
+            if(!a) return; 
+            document.getElementById('form-alat-id').value = a.id; 
+            document.getElementById('form-alat-nama').value = a.nama || ''; 
+            document.getElementById('form-alat-merk').value = a.merk || ''; 
+            document.getElementById('form-alat-tipe').value = a.tipe || ''; 
+            document.getElementById('form-alat-seri').value = a.seri || ''; 
+            document.getElementById('form-alat-izin').value = a.izinEdar || a.edar || ''; 
+            document.getElementById('form-alat-lokasi').value = a.ruangan || a.lokasi || ''; 
+            toggleModal('modal-alat', true); 
+        }
+
+        function submitFormAlatMaster(e) { 
+            e.preventDefault(); 
+            const id = document.getElementById('form-alat-id').value; 
+            const payload = { 
+                nama: document.getElementById('form-alat-nama').value, 
+                merk: document.getElementById('form-alat-merk').value, 
+                tipe: document.getElementById('form-alat-tipe').value, 
+                seri: document.getElementById('form-alat-seri').value, 
+                izinEdar: document.getElementById('form-alat-izin').value, 
+                ruangan: document.getElementById('form-alat-lokasi').value 
+            }; 
+            if(id) { 
+                db.collection("dataAlat").doc(id).update(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Diperbarui!"); }); 
+            } else { 
+                payload.status = 'Siap Digunakan'; 
+                db.collection("dataAlat").add(payload).then(() => { toggleModal('modal-alat', false); alert("Aset Didaftarkan!"); }); 
+            } 
+        }
+
         function submitKalibrasi(e) { e.preventDefault(); const aId = document.getElementById('form-cal-alat').value; const hasil = document.getElementById('form-cal-hasil').value; let reader = new FileReader(); reader.readAsDataURL(document.getElementById('form-cal-pdf-file').files[0]); reader.onload = function() { const payload = { alatId: aId, tgl: document.getElementById('form-cal-tgl').value, exp: document.getElementById('form-cal-exp').value, vendor: document.getElementById('form-cal-vendor').value, certPdf: reader.result, hasil: hasil }; db.collection("dataKalibrasi").add(payload).then(() => { toggleModal('modal-kalibrasi', false); document.getElementById('input-search-alat-kalibrasi').value = ""; document.getElementById('form-cal-alat').style.display = "none"; alert("Sertifikat Kalibrasi Diunggah!"); }); } }
         function gantiSubTabDokumen(t) { subTabDokumenAktif = t; document.getElementById('doc-tab-all').className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='all'?'bg-blue-600 text-white':''); document.getElementById('doc-tab-kalibrasi').className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='kalibrasi'?'bg-blue-600 text-white':''); document.getElementById('doc-tab-mandiri').className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='mandiri'?'bg-blue-600 text-white':''); renderTabelPusatDokumen(); }
         
@@ -1884,7 +1949,19 @@
                 const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
                 let tCal = "-", eCal = "-", vdr = "-";
                 if(listCal.length > 0) { listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp))); tCal = listCal[0].tgl || "-"; eCal = listCal[0].exp || "-"; vdr = listCal[0].vendor || "-"; }
-                return { "No": index + 1, "Nama Alat Medis": a.nama || "-", "Merk": a.kode || "-", "Model / Tipe": a.merk || "-", "Nomor Seri (SN)": a.tipe || "-", "Unit / Ruangan": a.edar || "-", "Status Operasional": a.status || "-", "Tgl Kalibrasi Terakhir": tCal, "Habis Masa Berlaku": eCal, "Vendor Penguji": vdr };
+                return { 
+                    "No": index + 1, 
+                    "NAMA ALAT": a.nama || "-", 
+                    "MERK": a.merk || "-", 
+                    "MODEL/TIPE": a.tipe || "-", 
+                    "SERIAL NUMBER": a.seri || "-", 
+                    "IZIN EDAR": a.izinEdar || a.edar || "-", 
+                    "UNIT/RUANGAN": a.ruangan || a.lokasi || "-", 
+                    "Status Operasional": a.status || "-", 
+                    "Tgl Kalibrasi Terakhir": tCal, 
+                    "Habis Masa Berlaku": eCal, 
+                    "Vendor Penguji": vdr 
+                };
             });
             const ws = XLSX.utils.json_to_sheet(dClean); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Master Aset Medis"); XLSX.writeFile(wb, `MEDIX_DataAset_${new Date().toISOString().substring(0,10)}.xlsx`);
         }
@@ -1925,8 +2002,13 @@
         function bukaKartuPemeliharaan(alatId) {
             globalSelectedAlatIdUntukLog = alatId; 
             const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
-            let sLokasi = alat.lokasi === 'Baik' ? alat.edar : alat.lokasi; let sSeri = alat.lokasi === 'Baik' ? alat.tipe : alat.seri;
-            document.getElementById('kartu-nama').innerText = alat.nama; document.getElementById('kartu-merk').innerText = alat.kode || '-'; document.getElementById('kartu-seri').innerText = sSeri || '-'; document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
+            let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
+            let sSeri = alat.seri || alat.tipe || '-';
+            document.getElementById('kartu-nama').innerText = alat.nama; 
+            document.getElementById('kartu-merk').innerText = alat.merk || '-'; 
+            document.getElementById('kartu-seri').innerText = sSeri || '-'; 
+            document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
+            
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
 
