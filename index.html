@@ -1487,77 +1487,80 @@
             }
         }
 
-        function bukaLembarKerjaBaruKosong() { 
-            // Ambil elemen modal utama
-            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
-            if(!areaLK) {
-                alert("Elemen modal lembar kerja tidak ditemukan di HTML!");
+        function bukaLembarKerjaDinamisDariLog(id) {
+            // Jangan tutup modal kartu secara langsung agar transisi mulus, 
+            // cukup sembunyikan atau langsung buka lembar kerja di atasnya.
+            let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
+            
+            if(!record) {
+                alert("Dokumen lembar kerja tidak ditemukan di memori.");
                 return;
             }
+            
+            document.getElementById('dlk-firebase-id').value = record.id; 
 
-            // Reset form input dasar aman
-            document.getElementById('dlk-firebase-id').value = ""; 
-            stringFotoBase64 = "-"; 
-            stringFotoBeforeBase64 = "-";
-            resetFotoAfterDisplay();
+            document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => { 
+                if(radio.value === record.jenisKerja) radio.checked = true; 
+            });
             
-            terpakaiAlatKerja = []; 
-            terpakaiFisik = []; 
-            terpakaiFungsi = []; 
-            
-            // Atur waktu lokal saat ini
-            const now = new Date();
-            const offsetMs = now.getTimezoneOffset() * 60 * 1000;
-            const localIso = new Date(now.getTime() - offsetMs).toISOString().substring(0, 16);
-            const inputTgl = document.getElementById('dlk-tgl');
-            if(inputTgl) inputTgl.value = localIso; 
-            
-            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if(descTunggal) descTunggal.value = ""; 
-            
-            const boxBefore = document.getElementById('box-preview-foto-before');
-            if(boxBefore) boxBefore.innerHTML = `[ Tidak Ada Foto Before ]`;
-            
-            const selectedAlatId = document.getElementById('dlk-selected-alat-id');
-            if(selectedAlatId) selectedAlatId.value = "";
+            document.getElementById('dlk-no').value = record.noLk || ""; 
+            document.getElementById('dlk-tgl').value = record.textTgl || (record.tgl ? record.tgl.substring(0,16) : '');
             
             const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
-            if(dropdownAlat) dropdownAlat.value = "";
-            
-            // Kosongkan field teks alat
-            ['dlk-nama', 'dlk-merk', 'dlk-tipe', 'dlk-seri', 'dlk-izin', 'dlk-lokasi', 'dlk-tglcal', 'dlk-nokal'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.value = "";
-            });
+            if(dropdownAlat) dropdownAlat.value = record.alatId;
 
-            renderOpsiDropdownAwal(); 
+            sinkronisasiDataAlatKeWorksheet(record.alatId); 
+            document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc_kerja || "";
+            
+            try { 
+                terpakaiAlatKerja = JSON.parse(record.paramAlatKerja || '[]').map(i => typeof i === 'string' ? {nama: i} : i); 
+            } catch(e){ terpakaiAlatKerja = []; }
+            
+            try { 
+                terpakaiFisik = JSON.parse(record.paramFisik || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); 
+            } catch(e){ terpakaiFisik = []; }
+            
+            try { 
+                terpakaiFungsi = JSON.parse(record.paramFungsi || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); 
+            } catch(e){ terpakaiFungsi = []; }
+            
             aktualisasikanTampilanKotakTabel('alatkerja'); 
             aktualisasikanTampilanKotakTabel('fisik'); 
-            aktualisasikanTampilanKotakTabel('fungsi'); 
-            populasikanDropdownNamaTandaTangan();
+            aktualisasikanTampilanKotakTabel('fungsi');
             
-            // Generate nomor LK otomatis dari Firestore
-            db.collection("lembarKerja").get().then(s => {
-                let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
-                const elNo = document.getElementById('dlk-no');
-                if(elNo) elNo.value = generatedNo;
-            }).catch(err => {
-                const elNo = document.getElementById('dlk-no');
-                if(elNo) elNo.value = "RSUDPG/IPSRS/LK-001";
-            });
+            if(record.fotoAlat && record.fotoAlat !== '-') { 
+                stringFotoBase64 = record.fotoAlat;
+                document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="w-full h-full object-contain rounded">`; 
+                document.getElementById('dlk-input-foto-container').style.display = 'none';
+                document.getElementById('btn-retake-after').style.display = 'inline-block';
+            } else {
+                resetFotoAfterDisplay();
+            }
+
+            stringFotoBeforeBase64 = record.fotoBefore || "-";
+            if(stringFotoBeforeBase64 !== '-') {
+                document.getElementById('box-preview-foto-before').innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`;
+            } else {
+                document.getElementById('box-preview-foto-before').innerHTML = `[ Tidak Ada Foto Before ]`;
+            }
+
+            populasikanDropdownNamaTandaTangan();
+            document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
+            document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
             
             aturModeTampilanWorksheetUser();
-            
-            // Buka modal secara langsung
+
+            // Tampilkan modal lembar kerja resmi
+            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
             areaLK.classList.remove('hidden'); 
             areaLK.scrollTop = 0;
 
-            // Inisialisasi canvas tanda tangan dengan jeda agar DOM siap
             setTimeout(() => {
                 initSignatures();
-            }, 300); 
-            
-            toggleSidebarMenu(false); 
+                if(record.ttdTeknisi) muatTandaTanganKeCanvas('sig-teknisi', record.ttdTeknisi);
+                if(record.ttdUser) muatTandaTanganKeCanvas('sig-user', record.ttdUser);
+                if(record.ttdPJ) muatTandaTanganKeCanvas('sig-pj', record.ttdPJ);
+            }, 300);
         }
         
         function bukaLembarKerjaDinamisDariLog(id) {
@@ -2036,11 +2039,17 @@
         }
         function switchKartuTab(tId) { document.querySelectorAll('.kartu-tab').forEach(el => el.classList.remove('active')); if(document.getElementById('btn-'+tId.replace('tab-',''))) document.getElementById('btn-'+tId.replace('tab-','')).classList.add('active'); document.querySelectorAll('.kartu-content-box').forEach(el => el.classList.add('hidden')); document.getElementById(tId).classList.remove('hidden'); }
         
+        let globalSelectedAlatIdForLog = ""; 
         function bukaKartuPemeliharaan(alatId) {
+            globalSelectedAlatIdForLog = alatId; // Simpan ID aktif
             globalSelectedAlatIdUntukLog = alatId; 
-            const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
+            
+            const alat = dataAlat.find(a => a.id == alatId); 
+            if(!alat) return;
+            
             let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
             let sSeri = alat.seri || alat.tipe || '-';
+            
             document.getElementById('kartu-nama').innerText = alat.nama; 
             document.getElementById('kartu-merk').innerText = alat.merk || '-'; 
             document.getElementById('kartu-seri').innerText = sSeri || '-'; 
@@ -2049,13 +2058,15 @@
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
 
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">${currentActiveRole==='User'?'Lihat':'Buka'}</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            switchKartuTab('tab-k-corrective'); toggleModal('modal-kartu', true);
+            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
+            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
+            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Buka</button></td></tr>`).join('');
+            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button></td></tr>`).join('');
+            
+            switchKartuTab('tab-k-corrective'); 
+            toggleModal('modal-kartu', true);
         }
-
+        
         function initSignatures() {
             try {
                 ['sig-teknisi', 'sig-user', 'sig-pj'].forEach(id => {
