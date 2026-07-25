@@ -426,7 +426,7 @@
                 <label class="flex items-center space-x-1.5 cursor-pointer"><input type="radio" name="dlk-jenis" value="Corrective Maintenance"> <span>Corrective</span></label>
             </div>
 
-            <!-- LAYOUT ATAS: KONDISI LINGKUNGAN, FOTO BEFORE, & DATA ALAT (DENGAN DROPDOWN PILIH ALAT) -->
+            <!-- LAYOUT ATAS: KONDISI LINGKUNGAN, FOTO BEFORE, & DATA ALAT -->
             <div class="grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-2 text-[11px]">
                 <!-- Kotak 1: Kondisi Lingkungan (3 Col) -->
                 <div class="md:col-span-3 print:col-span-3 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px]">
@@ -450,8 +450,8 @@
                     </div>
                 </div>
 
-                <!-- Kotak 3: Data Alat (6 Col) dengan Pilihan Alat di Awal -->
-                <div class="md:col-span-6 print:col-span-6 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px] overflow-y-auto">
+                <!-- Kotak 3: Data Alat (6 Col) Tanpa Sideroll & Kembali ke Tgl Kalibrasi -->
+                <div class="md:col-span-6 print:col-span-6 border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px]">
                     <div>
                         <div class="flex justify-between items-center border-b pb-1 mb-1">
                             <h4 class="font-bold text-slate-800 text-[10px] flex items-center"><i class="fa-solid fa-microscope mr-1 text-blue-600"></i>Data Alat Kesehatan</h4>
@@ -469,11 +469,11 @@
                             </div>
                             <div class="flex space-x-2">
                                 <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">S/N:</span><input type="text" id="dlk-seri" class="w-full border-b p-0.5 bg-transparent font-mono font-bold text-gray-800 truncate" readonly></div>
-                                <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Edar:</span><input type="text" id="dlk-izin" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
-                            </div>
-                            <div class="flex space-x-2">
                                 <div class="flex flex-1"><span class="w-10 text-gray-500 font-medium">Ruang:</span><input type="text" id="dlk-lokasi" class="w-full border-b p-0.5 bg-transparent text-gray-800 truncate" readonly></div>
+                            </div>
+                            <div class="flex space-x-2 pt-0.5">
                                 <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Kalibrasi:</span><input type="date" id="dlk-tglcal" onchange="hitungOtomatisMasaBerlakuSatuTahun(this.value)" class="w-full border-b p-0 bg-transparent font-bold outline-none text-[9px]"></div>
+                                <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Berakhir Kalibrasi:</span><input type="date" id="dlk-nokal" class="w-full border-b p-0 bg-transparent font-bold outline-none text-[9px]"></div>
                             </div>
                         </div>
                     </div>
@@ -496,7 +496,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
-                <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[115px] print:h-[100px]">
+                <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[125px] print:h-[105px]">
                     <div>
                         <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center justify-between text-[10px]">
                             <span class="flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto After</span>
@@ -511,9 +511,10 @@
                     </div>
                 </div>
 
-                <div class="border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between h-[115px] print:h-[100px]">
+                <!-- Uraian Detail Pekerjaan dengan Auto-Expand (Otomatis Melar Mengikuti Teks) -->
+                <div class="border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between min-h-[125px] print:min-h-[105px]">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <textarea id="dlk-txt-deskripsi-tunggal" rows="2" class="w-full flex-1 border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px]" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                    <textarea id="dlk-txt-deskripsi-tunggal" rows="2" oninput="autoExpandTextarea(this)" class="w-full flex-1 border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
                 </div>
             </div>
 
@@ -526,7 +527,7 @@
                 </div>
             </div>
 
-            <!-- TANDA TANGAN DIGITAL (DENGAN OPSI TAMBAH TEKNISI / USER BARU OTOMATIS) -->
+            <!-- TANDA TANGAN DIGITAL -->
             <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-3 pt-0.5 text-[11px] items-end">
                 <div class="text-center space-y-0.5">
                     <p class="font-semibold text-gray-500 text-[10px]">Teknisi Pelaksana</p>
@@ -1510,7 +1511,10 @@
             if(inputTgl) inputTgl.value = localIso; 
             
             const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if(descTunggal) descTunggal.value = ""; 
+            if(descTunggal) {
+                descTunggal.value = ""; 
+                autoExpandTextarea(descTunggal);
+            }
             
             const boxBefore = document.getElementById('box-preview-foto-before');
             if(boxBefore) boxBefore.innerHTML = `[ Tidak Ada Foto Before ]`;
@@ -1521,7 +1525,7 @@
             const dropdownAlat = document.getElementById('dropdown-pilih-alat-worksheet');
             if(dropdownAlat) dropdownAlat.value = "";
             
-            ['dlk-nama', 'dlk-merk', 'dlk-tipe', 'dlk-seri', 'dlk-izin', 'dlk-lokasi', 'dlk-tglcal', 'dlk-nokal'].forEach(id => {
+            ['dlk-nama', 'dlk-merk', 'dlk-tipe', 'dlk-seri', 'dlk-lokasi', 'dlk-tglcal', 'dlk-nokal'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.value = "";
             });
@@ -1574,7 +1578,10 @@
             if(dropdownAlat) dropdownAlat.value = record.alatId;
 
             sinkronisasiDataAlatKeWorksheet(record.alatId); 
-            document.getElementById('dlk-txt-deskripsi-tunggal').value = record.desc_kerja || "";
+            
+            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
+            descTunggal.value = record.desc_kerja || "";
+            autoExpandTextarea(descTunggal);
             
             try { 
                 terpakaiAlatKerja = JSON.parse(record.paramAlatKerja || '[]').map(i => typeof i === 'string' ? {nama: i} : i); 
@@ -1624,6 +1631,11 @@
                 if(record.ttdUser) muatTandaTanganKeCanvas('sig-user', record.ttdUser);
                 if(record.ttdPJ) muatTandaTanganKeCanvas('sig-pj', record.ttdPJ);
             }, 300);
+        }
+
+        function autoExpandTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight + 4) + 'px';
         }
 
         function aturModeTampilanWorksheetUser() {
@@ -1753,12 +1765,11 @@
             const a = dataAlat.find(item => item.id == id);
             if(a) {
                 document.getElementById('dlk-selected-alat-id').value = a.id;
-                let dMerk = a.merk || '-', dTipe = a.tipe || '-', dSeri = a.seri || '-', dIzin = a.izinEdar || a.edar || '-', dLokasi = a.ruangan || a.lokasi || '-';
+                let dMerk = a.merk || '-', dTipe = a.tipe || '-', dSeri = a.seri || '-', dLokasi = a.ruangan || a.lokasi || '-';
                 document.getElementById('dlk-nama').value = a.nama; 
                 document.getElementById('dlk-merk').value = dMerk; 
                 document.getElementById('dlk-tipe').value = dTipe; 
                 document.getElementById('dlk-seri').value = dSeri; 
-                document.getElementById('dlk-izin').value = dIzin; 
                 document.getElementById('dlk-lokasi').value = dLokasi;
                 
                 const listCal = dataKalibrasi.filter(c => c.alatId === id);
