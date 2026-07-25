@@ -971,10 +971,28 @@
         });
 
         db.collection("dataAlat").onSnapshot((querySnapshot) => {
-            dataAlat = []; querySnapshot.forEach((doc) => { dataAlat.push({ id: doc.id, ...doc.data() }); });
-            aktualisasikanDotKoneksiHijau(); evaluasiJatuhTempoKalibrasiMassal(); renderAll(); populasikanDropdownAlatDiTicketForm(); populasikanDropdownAlatDiKalibrasi(); populasikanDropdownAlatDiWorksheet();
-        });
+            dataAlat = []; 
+            querySnapshot.forEach((doc) => { 
+                dataAlat.push({ id: doc.id, ...doc.data() }); 
+            });
 
+            // Urutkan data secara otomatis dari A-Z berdasarkan nama alat
+            dataAlat.sort((a, b) => {
+                let namaA = (a.nama || "").toUpperCase();
+                let namaB = (b.nama || "").toUpperCase();
+                if (namaA < namaB) return -1;
+                if (namaA > namaB) return 1;
+                return 0;
+            });
+
+            aktualisasikanDotKoneksiHijau(); 
+            evaluasiJatuhTempoKalibrasiMassal(); 
+            renderAll(); 
+            populasikanDropdownAlatDiTicketForm(); 
+            populasikanDropdownAlatDiKalibrasi(); 
+            populasikanDropdownAlatDiWorksheet();
+        });
+        
         db.collection("dataKalibrasi").onSnapshot((querySnapshot) => {
             dataKalibrasi = []; querySnapshot.forEach((doc) => { dataKalibrasi.push({ id: doc.id, ...doc.data() }); });
             evaluasiJatuhTempoKalibrasiMassal(); renderAll();
