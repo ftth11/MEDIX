@@ -52,7 +52,7 @@
 
         @media print {
             @page { size: A4 portrait; margin: 5mm; }
-            body, html { background: white !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
+            body, html { background: white !important; width: 100% !important; height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
             body * { visibility: hidden !important; }
             #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
             #area-lembar-kerja-resmi { 
@@ -68,8 +68,6 @@
                 margin: 0 !important; 
                 border: none !important; 
                 box-shadow: none !important; 
-                border-radius: 0 !important;
-                max-height: none !important;
                 overflow: visible !important;
                 z-index: 999999 !important;
             }
@@ -82,18 +80,20 @@
                 overflow: visible !important;
             }
             .no-print { display: none !important; }
-            input, select, textarea { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
             
-            /* ATURAN MUTLAK AGAR TEXTAREA MUNCUL PENUH TANPA TERPOTONG SAAT DICETAK */
+            /* PASTIKAN TEXTAREA BERUBAH MENJADI BLOK TEKS BIASA YANG MENYESUAIKAN ISI KONTEN SAAT DICETAK */
             textarea {
+                display: block !important;
                 height: auto !important;
-                min-height: auto !important;
+                min-height: max-content !important;
                 max-height: none !important;
                 overflow: visible !important;
                 white-space: pre-wrap !important;
                 word-wrap: break-word !important;
                 border: none !important;
+                background: transparent !important;
                 resize: none !important;
+                padding: 0 !important;
             }
         }
     </style>
@@ -1728,8 +1728,9 @@
         }
 
         function autoExpandTextarea(textarea) {
+            if (!textarea) return;
             textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight + 8) + 'px';
+            textarea.style.height = (textarea.scrollHeight + 12) + 'px';
         }
 
         function pemicuCetakDokumen() {
