@@ -82,7 +82,15 @@
             }
             .no-print { display: none !important; }
             input, select, textarea { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
-            textarea { height: auto !important; overflow: visible !important; }
+            
+            /* MEMBUAT TEXTAREA DI MODE CETAK TAMPIL SEMUA SEPERTI TEKS BIASA / AUTO EXPAND */
+            textarea {
+                height: auto !important;
+                min-height: 80px !important;
+                overflow: visible !important;
+                white-space: pre-wrap !important;
+                border: none !important;
+            }
         }
     </style>
 </head>
@@ -558,10 +566,10 @@
                     </div>
                 </div>
 
-                <!-- Uraian Detail Pekerjaan dengan Auto-Expand Penuh Tanpa Batas / Scroll -->
+                <!-- Uraian Detail Pekerjaan dengan Auto-Expand Penuh & Fleksibel -->
                 <div class="border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <textarea id="dlk-txt-deskripsi-tunggal" rows="1" oninput="autoExpandTextarea(this)" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                    <textarea id="dlk-txt-deskripsi-tunggal" oninput="autoExpandTextarea(this)" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" style="min-height: 80px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
                 </div>
             </div>
 
@@ -1710,12 +1718,15 @@
                 if(record.ttdTeknisi) muatTandaTanganKeCanvas('sig-teknisi', record.ttdTeknisi);
                 if(record.ttdUser) muatTandaTanganKeCanvas('sig-user', record.ttdUser);
                 if(record.ttdPJ) muatTandaTanganKeCanvas('sig-pj', record.ttdPJ);
+                
+                // Pastikan textarea langsung menyesuaikan tinggi setelah data diload
+                autoExpandTextarea(descTunggal);
             }, 300);
         }
 
         function autoExpandTextarea(textarea) {
             textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight + 4) + 'px';
+            textarea.style.height = (textarea.scrollHeight + 6) + 'px';
         }
 
         function aturModeTampilanWorksheetUser() {
@@ -2100,7 +2111,7 @@
             const dClean = dataAlat.map((a, index) => {
                 const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
                 let tCal = "-", eCal = "-", vdr = "-";
-                if(listCal.length > 0) { listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp))); tCal = listCal[0].tgl || "-"; eCal = listCal[0].exp || "-"; vdr = listCal[0].vendor || "-"; }
+                if(listCal.length > 0) { listCal.sort((x, y) => String(y.exp).localeCompare(String(y.exp))); tCal = listCal[0].tgl || "-"; eCal = listCal[0].exp || "-"; vdr = listCal[0].vendor || "-"; }
                 return { 
                     "No": index + 1, 
                     "NAMA ALAT": a.nama || "-", 
