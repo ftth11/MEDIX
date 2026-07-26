@@ -471,8 +471,8 @@
                             <!-- INPUT PENCARIAN BERBASIS SN / NAMA ALAT DI LEMBAR KERJA -->
                             <div class="no-print relative w-44">
                                 <input type="text" id="input-search-alat-worksheet" onfocus="showDropdownWorksheetAlat()" oninput="handleSearchWorksheetAlat(this.value)" placeholder="🔍 Ketik Nama / S/N..." class="w-full text-[10px] font-bold border rounded px-1.5 py-0.5 bg-blue-50 text-blue-700 outline-none">
-                                <select id="dropdown-pilih-alat-worksheet" size="5" onchange="pilihAlatKeWorksheetDariDropdown(this)" style="display: none;" class="absolute right-0 top-full mt-1 w-72 z-50 text-[10px] font-semibold border rounded bg-white text-slate-800 shadow-xl outline-none cursor-pointer no-scrollbar">
-                                </select>
+                                <div id="dropdown-pilih-alat-worksheet" style="display: none;" class="absolute right-0 top-full mt-1 w-72 z-50 max-h-48 overflow-y-auto text-[10px] font-semibold border rounded bg-white text-slate-800 shadow-xl no-scrollbar">
+                                </div>
                             </div>
                         </div>
                         <div class="space-y-0.5 text-[10px]">
@@ -508,7 +508,6 @@
                             <button type="button" onclick="batalItemKustomBaru('alatkerja')" class="bg-gray-400 text-white px-2 py-0.5 rounded text-[10px]">X</button>
                         </div>
                     </div>
-                    <!-- Dibuat fleksibel, tanpa max-h dan tanpa overflow-y-auto agar tidak perlu scroll -->
                     <div id="box-list-alatkerja" class="space-y-1"></div>
                 </div>
                 
@@ -524,7 +523,6 @@
                             <button type="button" onclick="batalItemKustomBaru('fisik')" class="bg-gray-400 text-white px-2 py-0.5 rounded text-[10px]">X</button>
                         </div>
                     </div>
-                    <!-- Dibuat fleksibel, tanpa max-h dan tanpa overflow-y-auto agar tidak perlu scroll -->
                     <div id="box-list-fisik" class="space-y-1"></div>
                 </div>
 
@@ -540,7 +538,6 @@
                             <button type="button" onclick="batalItemKustomBaru('fungsi')" class="bg-gray-400 text-white px-2 py-0.5 rounded text-[10px]">X</button>
                         </div>
                     </div>
-                    <!-- Dibuat fleksibel, tanpa max-h dan tanpa overflow-y-auto agar tidak perlu scroll -->
                     <div id="box-list-fungsi" class="space-y-1"></div>
                 </div>
             </div>
@@ -561,7 +558,7 @@
                     </div>
                 </div>
 
-                <!-- Uraian Detail Pekerjaan dengan Auto-Expand (Otomatis Melar Mengikuti Teks) -->
+                <!-- Uraian Detail Pekerjaan dengan Auto-Expand -->
                 <div class="border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between min-h-[125px] print:min-h-[105px]">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
                     <textarea id="dlk-txt-deskripsi-tunggal" rows="2" oninput="autoExpandTextarea(this)" class="w-full flex-1 border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
@@ -1178,33 +1175,46 @@
         }
 
         function populasikanDropdownAlatDiWorksheet(keyword = "") {
-            const selectEl = document.getElementById('dropdown-pilih-alat-worksheet');
-            if(!selectEl) return;
+            const containerEl = document.getElementById('dropdown-pilih-alat-worksheet');
+            if(!containerEl) return;
             const kw = keyword.toLowerCase();
             const filtered = dataAlat.filter(a => {
                 let txt = `${a.nama || ''} ${a.seri || ''} ${a.ruangan || a.lokasi || ''}`.toLowerCase();
                 return txt.includes(kw);
             });
-            selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">📌 ${a.nama} | SN: ${a.seri || '-'} (${a.ruangan || a.lokasi || 'Unit'})</option>`).join('');
+            
+            if(filtered.length === 0) {
+                containerEl.innerHTML = `<div class="p-2 text-slate-400 italic text-center">Alat tidak ditemukan</div>`;
+                return;
+            }
+
+            containerEl.innerHTML = filtered.map(a => `
+                <div onclick="pilihAlatKeWorksheetDariDiv('${a.id}')" class="p-2 hover:bg-blue-50 cursor-pointer border-b border-slate-100 truncate">
+                    📌 <b>${a.nama}</b> | SN: ${a.seri || '-'} <span class="text-slate-500">(${a.ruangan || a.lokasi || 'Unit'})</span>
+                </div>
+            `).join('');
         }
 
         function showDropdownWorksheetAlat() {
-            const selectEl = document.getElementById('dropdown-pilih-alat-worksheet');
-            if(selectEl) selectEl.style.display = "block";
+            const containerEl = document.getElementById('dropdown-pilih-alat-worksheet');
+            if(containerEl) {
+                populasikanDropdownAlatDiWorksheet(document.getElementById('input-search-alat-worksheet').value);
+                containerEl.style.display = "block";
+            }
         }
 
         function handleSearchWorksheetAlat(kw) {
             populasikanDropdownAlatDiWorksheet(kw);
-            const selectEl = document.getElementById('dropdown-pilih-alat-worksheet');
-            if(selectEl) selectEl.style.display = "block";
+            const containerEl = document.getElementById('dropdown-pilih-alat-worksheet');
+            if(containerEl) containerEl.style.display = "block";
         }
 
-        function pilihAlatKeWorksheetDariDropdown(selectEl) {
-            const selectedVal = selectEl.value;
-            if(!selectedVal) return;
-            sinkronisasiDataAlatKeWorksheet(selectedVal);
-            selectEl.style.display = "none";
-            const selectedObj = dataAlat.find(a => a.id == selectedVal);
+        function pilihAlatKeWorksheetDariDiv(alatId) {
+            sinkronisasiDataAlatKeWorksheet(alatId);
+            const containerEl = document.getElementById('dropdown-pilih-alat-worksheet');
+            if(containerEl) containerEl.style.display = "none";
+            
+            const selectedObj = dataAlat.find(a => a.id == alatId);
             if(selectedObj) {
                 document.getElementById('input-search-alat-worksheet').value = selectedObj.nama + " (" + (selectedObj.seri || "-") + ")";
             }
@@ -2203,7 +2213,7 @@
                     
                     canvas.onmousedown = startDrawing; 
                     canvas.onmousemove = draw; 
-                    window.onmouseup = () => isDashboardActive = false; // dummy hook
+                    window.onmouseup = () => isDashboardActive = false;
                     
                     canvas.ontouchstart = startDrawing; 
                     canvas.ontouchmove = draw; 
