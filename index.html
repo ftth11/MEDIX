@@ -76,16 +76,25 @@
                 border: none !important;
                 padding: 2mm !important;
                 max-height: none !important;
+                height: auto !important;
                 width: 100% !important;
                 overflow: visible !important;
             }
             .no-print { display: none !important; }
             
-            /* PASTIKAN TEXTAREA BERUBAH MENJADI BLOK TEKS BIASA YANG MENYESUAIKAN ISI KONTEN SAAT DICETAK */
+            /* MEMBUAT KOTAK PEMBUNGKUS URAIAN PEKERJAAN IKUT MELAR OTOMATIS */
+            #area-lembar-kerja-resmi .border {
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+            }
+
+            /* MEMBUAT TEXTAREA MENAMPILKAN SELURUH ISI TEKS TANPA TERPOTONG */
             textarea {
                 display: block !important;
                 height: auto !important;
-                min-height: max-content !important;
+                min-height: auto !important;
                 max-height: none !important;
                 overflow: visible !important;
                 white-space: pre-wrap !important;
@@ -96,6 +105,7 @@
                 padding: 0 !important;
             }
         }
+        
     </style>
 </head>
 <body id="main-app-body" class="font-sans text-slate-200 transition-all duration-500 no-scrollbar">
