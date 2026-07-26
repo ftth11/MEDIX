@@ -578,7 +578,8 @@
 
             <!-- BARIS FOTO AFTER & URAIAN PEKERJAAN DIPISAH SUPAYA BISA MELAR BEBAS -->
             <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
-                <!-- Kotak Foto After (1 Kolom) -->
+                <!-- 1. KOTAK FOTO AFTER (DI BARIS SENDIRI) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
                 <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[125px] print:h-[105px]">
                     <div>
                         <h4 class="font-bold border-b pb-1 mb-1 text-slate-800 flex items-center justify-between text-[10px]">
@@ -593,12 +594,13 @@
                         <div id="box-preview-foto" class="w-full h-full flex items-center justify-center overflow-hidden font-mono text-gray-400 italic text-[9px] text-center p-1">[ Ambil Foto Selesai ]</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Kotak Uraian Detail Pekerjaan (2 Kolom & Otomatis Melar ke Bawah) -->
-                <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between">
-                    <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <textarea id="dlk-txt-deskripsi-tunggal" oninput="autoExpandTextarea(this)" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" style="min-height: 80px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
-                </div>
+            <!-- 2. KOTAK URAIAN DETAIL PEKERJAAN (DI BARIS BAWAHNYA DENGAN LEBAR PENUH & MELAR BEBAS) -->
+            <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white w-full flex flex-col justify-between">
+                <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
+                <textarea id="dlk-txt-deskripsi-tunggal" oninput="autoExpandTextarea(this)" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" style="min-height: 80px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+            </div>
             </div>
 
             <div class="border p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
