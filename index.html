@@ -80,7 +80,6 @@
                 z-index: 999999 !important;
             }
 
-            /* MEMASTIKAN KONTAINER UTAMA DI DALAM MODAL IKUT MEMANJANG KE BAWAH */
             #area-lembar-kerja-resmi > div {
                 position: relative !important;
                 box-shadow: none !important;
@@ -95,7 +94,7 @@
             .no-print { display: none !important; }
             input, select { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
             
-            /* MEMBUAT KOTAK URAIAN BEBAS MEMANJANG KE BAWAH TANPA TERPOTONG */
+            /* Memastikan kotak uraian pekerjaan dan textarea melar bebas ke bawah */
             .uraian-pekerjaan-wrapper {
                 height: auto !important;
                 min-height: auto !important;
@@ -1761,9 +1760,15 @@
         function pemicuCetakDokumen() {
             const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
             if (descTunggal) {
-                autoExpandTextarea(descTunggal);
+                // Paksa textarea menyesuaikan tinggi dengan konten teksnya secara penuh
+                descTunggal.style.height = 'auto';
+                descTunggal.style.height = (descTunggal.scrollHeight + 20) + 'px';
             }
-            window.print();
+            
+            // Beri jeda sekejap agar DOM merender perubahan tinggi, lalu panggil cetak
+            setTimeout(() => {
+                window.print();
+            }, 100);
         }
 
         function aturModeTampilanWorksheetUser() {
