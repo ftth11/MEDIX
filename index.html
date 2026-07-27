@@ -51,74 +51,20 @@
         }
 
         @media print {
-            @page { size: A4 portrait; margin: 8mm; }
-            body, html { 
-                background: white !important; 
-                width: 100% !important; 
-                height: auto !important; 
-                margin: 0 !important; 
-                padding: 0 !important; 
-                overflow: visible !important; 
-            }
-            body * { visibility: hidden !important; }
-            #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
-            
-            /* POSISIKAN LEMBAR KERJA MENJADI FULL LAYAR A4 TANPA TERPOTONG */
-            #area-lembar-kerja-resmi { 
-                position: absolute !important; 
-                left: 0 !important; 
-                top: 0 !important; 
-                width: 100% !important; 
-                height: auto !important; 
-                background: white !important; 
+            #dlk-txt-deskripsi-tunggal { display: none !important; }
+            #print-temp-desc-div {
                 display: block !important;
-                padding: 0 !important; 
-                margin: 0 !important; 
-                border: none !important; 
-                box-shadow: none !important; 
-                overflow: visible !important;
-                z-index: 999999 !important;
-            }
-
-            /* HILANGKAN BATAS MAKSIMAL TINGGI MODAL AGAR BISA MEMANJANG KE BAWAH */
-            #area-lembar-kerja-resmi > div {
-                position: relative !important;
-                box-shadow: none !important;
-                border: none !important;
-                padding: 5mm !important;
-                max-height: none !important;
-                height: auto !important;
-                width: 100% !important;
-                overflow: visible !important;
-                background: white !important;
-            }
-
-            /* SEMBUNYIKAN TOMBOL AKSI, INPUT FILE, DAN ELEMEN TIDAK PERLU SAAT CETAK */
-            .no-print, button, input[type="file"], .absolute.top-4.right-4 { display: none !important; }
-            
-            input, select { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
-            
-            /* KOTAK URAIAN DAN TEXTAREA MELAR PENUH KE BAWAH */
-            .uraian-pekerjaan-wrapper {
-                height: auto !important;
-                min-height: auto !important;
-                max-height: none !important;
-                overflow: visible !important;
-                display: block !important;
-            }
-
-            #dlk-txt-deskripsi-tunggal {
-                display: block !important;
-                height: auto !important;
-                min-height: auto !important;
-                max-height: none !important;
-                overflow: visible !important;
+                font-size: 10px !important;
+                font-family: inherit !important;
+                color: black !important;
                 white-space: pre-wrap !important;
                 word-wrap: break-word !important;
-                border: none !important;
+                width: 100% !important;
+                height: auto !important;
                 background: transparent !important;
-                resize: none !important;
+                border: none !important;
                 padding: 0 !important;
+                margin: 0 !important;
             }
         }
         
@@ -580,8 +526,8 @@
                 </div>
             </div>
 
-            <!-- KOTAK FOTO AFTER & URAIAN DETAIL PEKERJAAN DALAM 1 GRID SEJAJAR -->
-            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px] items-stretch">
+            <!-- KOTAK FOTO AFTER & URAIAN DETAIL PEKERJAAN -->
+            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
                 <!-- Kotak Foto After (1 Kolom) -->
                 <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between">
                     <div>
@@ -598,13 +544,13 @@
                     </div>
                 </div>
 
-                <!-- Kotak Uraian Detail Pekerjaan (2 Kolom & Otomatis Melar ke Bawah) -->
-                <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between">
+                <!-- Kotak Uraian Detail Pekerjaan (2 Kolom) -->
+                <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <textarea id="dlk-txt-deskripsi-tunggal" oninput="autoExpandTextarea(this)" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" style="min-height: 80px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
+                    <textarea id="dlk-txt-deskripsi-tunggal" oninput="autoExpandTextarea(this)" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white resize-none text-[10px] overflow-hidden no-scrollbar" style="height: 60px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></textarea>
                 </div>
             </div>
-
+            
             <div class="border p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
                 <span class="font-bold block mb-1 text-slate-800 text-[10px]"><i class="fa-solid fa-square-poll-vertical mr-1.5 text-indigo-600"></i>3. Hasil Pemeriksaan Akhir:</span>
                 <div class="flex flex-wrap gap-4 pt-0.5 font-bold text-[10px]">
@@ -1762,17 +1708,33 @@
         }
 
         function pemicuCetakDokumen() {
-            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if (descTunggal) {
-                descTunggal.style.height = 'auto';
-                descTunggal.style.height = (descTunggal.scrollHeight + 30) + 'px';
+            const textarea = document.getElementById('dlk-txt-deskripsi-tunggal');
+            if (!textarea) return;
+
+            // Buat elemen div pengganti sementara khusus saat cetak agar teks melar penuh ke bawah
+            let printDiv = document.getElementById('print-temp-desc-div');
+            if (!printDiv) {
+                printDiv = document.createElement('div');
+                printDiv.id = 'print-temp-desc-div';
+                printDiv.style.display = 'none';
+                textarea.parentNode.appendChild(printDiv);
             }
             
+            // Masukkan isi teks textarea ke dalam div cetak
+            printDiv.innerText = textarea.value;
+            textarea.style.display = 'none'; // Sembunyikan textarea asli saat cetak
+            printDiv.style.display = 'block';
+
             setTimeout(() => {
                 window.print();
+                // Kembalikan ke semula setelah dialog print ditutup
+                setTimeout(() => {
+                    textarea.style.display = 'block';
+                    printDiv.style.display = 'none';
+                }, 500);
             }, 200);
         }
-
+        
         function aturModeTampilanWorksheetUser() {
             const isUser = (currentActiveRole === 'User');
             
