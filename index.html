@@ -318,10 +318,9 @@
                                     <input type="hidden" id="ticket-form-alat" value="">
                                     <div class="relative">
                                         <input type="text" id="input-search-alat-ticket" onfocus="showDropdownEtiketAlat()" oninput="handleSearchEtiketAlat(this.value)" placeholder="🔍 Ketik Nama / S/N..." class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none text-xs font-semibold">
-                                        <div id="dropdown-pilih-alat-etiket" style="display: none;" class="absolute left-0 top-full mt-1 w-full z-50 max-h-48 overflow-y-auto text-xs font-semibold border rounded-xl bg-slate-900 text-slate-200 shadow-2xl border-white/10 no-scrollbar">
+                                        <div id="dropdown-pilih-alat-etiket" style="display: none;" class="absolute left-0 top-full mt-1 w-full z-[100] max-h-40 overflow-y-auto text-xs font-semibold border rounded-xl bg-slate-900 text-slate-200 shadow-2xl border-white/10 no-scrollbar">
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="space-y-3">
                                     <div>
@@ -596,9 +595,9 @@
                 </div>
 
                 <!-- Kotak Uraian Detail Pekerjaan (2 Kolom) -->
-                <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between">
+                <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] overflow-y-auto no-scrollbar whitespace-pre-wrap break-words" style="height: auto; min-height: 90px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
+                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] whitespace-pre-wrap break-words" style="min-height: 60px; height: auto;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
                 </div>
             </div>
 
