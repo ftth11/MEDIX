@@ -391,24 +391,40 @@
                                 </div>
 
                                 <div class="bg-slate-950/60 p-3 rounded-xl border border-white/5 space-y-2">
-                                    <label class="block font-bold text-cyan-400 border-b border-white/5 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses :</label>
-                                    <div class="space-y-1.5 pt-1">
-                                        <label class="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                                            <input type="checkbox" id="akses-menu-dashboard" checked class="rounded border-white/10 text-cyan-500">
-                                            <span>Dashboard Utama</span>
-                                        </label>
-                                        <label class="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                                            <input type="checkbox" id="akses-menu-master" class="rounded border-white/10 text-cyan-500">
-                                            <span>Master Data Aset</span>
-                                        </label>
-                                        <label class="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                                            <input type="checkbox" id="akses-menu-ticket" class="rounded border-white/10 text-cyan-500">
-                                            <span>Pelaporan Kerusakan (Ticket)</span>
-                                        </label>
-                                        <label class="flex items-center space-x-2 text-slate-300 cursor-pointer">
-                                            <input type="checkbox" id="akses-menu-riwayat" class="rounded border-white/10 text-cyan-500">
-                                            <span>Riwayat Dokumen</span>
-                                        </label>
+                                    <label class="block font-bold text-cyan-400 border-b border-white/5 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses & Level :</label>
+                                    <div class="space-y-2.5 pt-1 text-[11px]">
+                                        <!-- Dashboard Utama -->
+                                        <div class="flex items-center justify-between border-b border-white/5 pb-1.5">
+                                            <span class="text-slate-300 font-medium">Dashboard Utama</span>
+                                            <div class="flex space-x-3">
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-dash-read" checked class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-dash-edit" checked class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
+                                            </div>
+                                        </div>
+                                        <!-- Master Data Aset -->
+                                        <div class="flex items-center justify-between border-b border-white/5 pb-1.5">
+                                            <span class="text-slate-300 font-medium">Master Data Aset</span>
+                                            <div class="flex space-x-3">
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-master-read" class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-master-edit" class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
+                                            </div>
+                                        </div>
+                                        <!-- Pelaporan Kerusakan -->
+                                        <div class="flex items-center justify-between border-b border-white/5 pb-1.5">
+                                            <span class="text-slate-300 font-medium">Pelaporan Kerusakan</span>
+                                            <div class="flex space-x-3">
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-ticket-read" class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-ticket-edit" class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
+                                            </div>
+                                        </div>
+                                        <!-- Riwayat Dokumen -->
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-slate-300 font-medium">Riwayat Dokumen</span>
+                                            <div class="flex space-x-3">
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-riwayat-read" class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-riwayat-edit" class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -965,13 +981,13 @@
             const password = document.getElementById('user-form-password').value;
             const role = document.getElementById('user-form-role').value;
 
-            let listIzinMenu = [];
-            if(document.getElementById('akses-menu-dashboard').checked) listIzinMenu.push('dashboard');
-            if(document.getElementById('akses-menu-master').checked) listIzinMenu.push('master');
-            if(document.getElementById('akses-menu-ticket').checked) listIzinMenu.push('ticket');
-            if(document.getElementById('akses-menu-riwayat').checked) listIzinMenu.push('riwayat');
-
-            const payload = { nama, username, password, role, menuAkses: listIzinMenu };
+            let izinAksesObj = {
+                dashboard: { read: document.getElementById('akses-dash-read').checked, edit: document.getElementById('akses-dash-edit').checked },
+                master: { read: document.getElementById('akses-master-read').checked, edit: document.getElementById('akses-master-edit').checked },
+                ticket: { read: document.getElementById('akses-ticket-read').checked, edit: document.getElementById('akses-ticket-edit').checked },
+                riwayat: { read: document.getElementById('akses-riwayat-read').checked, edit: document.getElementById('akses-riwayat-edit').checked }
+            };
+            const payload = { nama, username, password, role, menuAkses: izinAksesObj };
 
             if (editId) {
                 db.collection("users").doc(editId).update(payload).then(() => {
@@ -1002,10 +1018,14 @@
             document.getElementById('user-form-role').value = user.role || 'Teknisi';
 
             const menu = user.menuAkses || [];
-            document.getElementById('akses-menu-dashboard').checked = menu.includes('dashboard');
-            document.getElementById('akses-menu-master').checked = menu.includes('master');
-            document.getElementById('akses-menu-ticket').checked = menu.includes('ticket');
-            document.getElementById('akses-menu-riwayat').checked = menu.includes('riwayat');
+            document.getElementById('akses-dash-read').checked = menu.dashboard ? menu.dashboard.read : true;
+            document.getElementById('akses-dash-edit').checked = menu.dashboard ? menu.dashboard.edit : true;
+            document.getElementById('akses-master-read').checked = menu.master ? menu.master.read : true;
+            document.getElementById('akses-master-edit').checked = menu.master ? menu.master.edit : true;
+            document.getElementById('akses-ticket-read').checked = menu.ticket ? menu.ticket.read : true;
+            document.getElementById('akses-ticket-edit').checked = menu.ticket ? menu.ticket.edit : true;
+            document.getElementById('akses-riwayat-read').checked = menu.riwayat ? menu.riwayat.read : true;
+            document.getElementById('akses-riwayat-edit').checked = menu.riwayat ? menu.riwayat.edit : true;
 
             document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-pen mr-1.5"></i> Edit Akun User`;
             document.getElementById('btn-submit-user').innerText = "Perbarui Akun";
@@ -1013,16 +1033,27 @@
         }
 
         function resetFormUser() {
+            // Reset teks dan input utama
             document.getElementById('user-form-id').value = "";
             document.getElementById('user-form-nama').value = "";
             document.getElementById('user-form-username').value = "";
             document.getElementById('user-form-password').value = "";
             document.getElementById('user-form-role').value = "Teknisi";
-            document.getElementById('akses-menu-dashboard').checked = true;
-            document.getElementById('akses-menu-master').checked = false;
-            document.getElementById('akses-menu-ticket').checked = false;
-            document.getElementById('akses-menu-riwayat').checked = false;
-
+        
+            // Reset Checkbox Hak Akses (Read & Edit) sesuai ID baru
+            document.getElementById('akses-dash-read').checked = true;
+            document.getElementById('akses-dash-edit').checked = true;
+            
+            document.getElementById('akses-master-read').checked = false;
+            document.getElementById('akses-master-edit').checked = false;
+            
+            document.getElementById('akses-ticket-read').checked = false;
+            document.getElementById('akses-ticket-edit').checked = false;
+            
+            document.getElementById('akses-riwayat-read').checked = false;
+            document.getElementById('akses-riwayat-edit').checked = false;
+        
+            // Reset tombol dan judul form
             document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun Baru`;
             document.getElementById('btn-submit-user').innerText = "Daftarkan Akun";
             document.getElementById('btn-cancel-edit-user').classList.add('hidden');
