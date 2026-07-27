@@ -1760,15 +1760,15 @@
         function pemicuCetakDokumen() {
             const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
             if (descTunggal) {
-                // Paksa textarea menyesuaikan tinggi dengan seluruh baris teks ke bawah
+                // Paksa ukur ulang tinggi konten secara menyeluruh
                 descTunggal.style.height = 'auto';
-                descTunggal.style.height = (descTunggal.scrollHeight + 30) + 'px';
+                descTunggal.style.height = (descTunggal.scrollHeight + 25) + 'px';
             }
             
-            // Jeda sejenak agar render browser selesai, lalu jalankan cetak
+            // Jeda waktu agar browser selesai merender tinggi elemen sebelum dialog cetak muncul
             setTimeout(() => {
                 window.print();
-            }, 200);
+            }, 300);
         }
 
         function aturModeTampilanWorksheetUser() {
