@@ -808,7 +808,7 @@
             document.getElementById('gate-subtitle').innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
         }
 
-        function validasiKredensialUser(e) {
+function validasiKredensialUser(e) {
             e.preventDefault();
             const uName = document.getElementById('login-username').value.trim();
             const uPass = document.getElementById('login-password').value;
@@ -829,15 +829,20 @@
               .get()
               .then((querySnapshot) => {
                   if (!querySnapshot.empty) {
-                      let tglMenu = [];
+                      let tglMenu = {};
                       querySnapshot.forEach((doc) => {
                           const uData = doc.data();
                           currentUserNama = uData.nama || uName;
-                          tglMenu = uData.menuAkses || ["dashboard", "master", "ticket", "riwayat"];
+                          tglMenu = uData.menuAkses || {
+                              dashboard: { read: true, edit: true },
+                              master: { read: false, edit: false },
+                              ticket: { read: false, edit: false },
+                              riwayat: { read: false, edit: false }
+                          };
                       });
 
                       currentActiveRole = targetLoginRole;
-                      userAksesMenuArray = tglMenu;
+                      userAksesMenuArray = tglMenu; // Menyimpan objek akses menu
                       
                       document.getElementById('auth-gate-screen').classList.add('hidden');
                       document.getElementById('sidebar-role-badge').innerText = currentActiveRole;
@@ -889,15 +894,21 @@
                               document.getElementById('box-form-buat-ticket').classList.remove('hidden');
                           }
 
-                          document.getElementById('btn-dashboard').classList.toggle('hidden', !userAksesMenuArray.includes('dashboard'));
-                          document.getElementById('btn-data-alat').classList.toggle('hidden', !userAksesMenuArray.includes('master'));
-                          document.getElementById('btn-ticket-system').classList.toggle('hidden', !userAksesMenuArray.includes('ticket'));
-                          document.getElementById('btn-kalibrasi').classList.toggle('hidden', !userAksesMenuArray.includes('riwayat'));
+                          // Pengecekan izin akses baru berdasarkan properti read/edit objek
+                          const izinDash = userAksesMenuArray.dashboard ? (userAksesMenuArray.dashboard.read || userAksesMenuArray.dashboard.edit) : true;
+                          const izinMaster = userAksesMenuArray.master ? (userAksesMenuArray.master.read || userAksesMenuArray.master.edit) : false;
+                          const izinTicket = userAksesMenuArray.ticket ? (userAksesMenuArray.ticket.read || userAksesMenuArray.ticket.edit) : false;
+                          const izinRiwayat = userAksesMenuArray.riwayat ? (userAksesMenuArray.riwayat.read || userAksesMenuArray.riwayat.edit) : false;
 
-                          if(userAksesMenuArray.includes('dashboard')) switchTab('dashboard');
-                          else if(userAksesMenuArray.includes('master')) switchTab('data-alat');
-                          else if(userAksesMenuArray.includes('ticket')) switchTab('ticket-system');
-                          else if(userAksesMenuArray.includes('riwayat')) switchTab('kalibrasi');
+                          document.getElementById('btn-dashboard').classList.toggle('hidden', !izinDash);
+                          document.getElementById('btn-data-alat').classList.toggle('hidden', !izinMaster);
+                          document.getElementById('btn-ticket-system').classList.toggle('hidden', !izinTicket);
+                          document.getElementById('btn-kalibrasi').classList.toggle('hidden', !izinRiwayat);
+
+                          if(izinDash) switchTab('dashboard');
+                          else if(izinMaster) switchTab('data-alat');
+                          else if(izinTicket) switchTab('ticket-system');
+                          else if(izinRiwayat) switchTab('kalibrasi');
                       }
                       
                       renderAll();
