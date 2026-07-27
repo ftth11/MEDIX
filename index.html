@@ -2356,5 +2356,12 @@
         
         window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
     </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log("Service Worker Berhasil Terdaftar"))
+          .catch((err) => console.log("Service Worker Gagal:", err));
+      }
+    </script>
 </body>
 </html>
