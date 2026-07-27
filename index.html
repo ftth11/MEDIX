@@ -104,11 +104,11 @@
             }
 
             #dlk-txt-deskripsi-tunggal {
-                min-height: 50px !important;
-                max-height: 200px !important;
                 height: auto !important;
-                padding: 4px 8px !important;
-                line-height: 1.4 !important;
+                min-height: 40px !important;
+                max-height: 250px !important;
+                resize: none !important;
+                overflow-y: auto !important;
             }
         }
     </style>
@@ -569,8 +569,8 @@
                 </div>
             </div>
 
-            <!-- KOTAK FOTO AFTER & URAIAN DETAIL PEKERJAAN (MENGGUNAKAN DIV EDITABLE AGAR SEMPURNA DI CETAK & MOBILE) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px] items-stretch">
+            <!-- KOTAK FOTO AFTER & URAIAN DETAIL PEKERJAAN -->
+            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px]">
                 <!-- Kotak Foto After (1 Kolom) -->
                 <div class="border p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between">
                     <div>
@@ -582,15 +582,15 @@
                             <input type="file" id="dlk-input-foto" accept="image/*" capture="environment" onchange="previewFotoDipilih(this)" class="w-full border p-0.5 rounded bg-slate-50 text-[9px]">
                         </div>
                     </div>
-                    <div class="flex-1 flex justify-center items-center overflow-hidden w-full relative bg-slate-50 rounded min-h-[90px]">
+                    <div class="flex-1 flex justify-center items-center overflow-hidden w-full relative bg-slate-50 rounded min-h-[90px] max-h-[180px]">
                         <div id="box-preview-foto" class="w-full h-full flex items-center justify-center overflow-hidden font-mono text-gray-400 italic text-[9px] text-center p-1">[ Ambil Foto Selesai ]</div>
                     </div>
                 </div>
 
-                <!-- Kotak Uraian Detail Pekerjaan (2 Kolom) -->
+                <!-- Kotak Uraian Detail Pekerjaan (2 Kolom) - Tinggi Menyesuaikan Isi Teks -->
                 <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] overflow-y-auto no-scrollbar whitespace-pre-wrap break-words" style="min-height: 55px; height: auto; padding: 4px 6px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
+                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] overflow-y-auto no-scrollbar whitespace-pre-wrap break-words" style="height: auto; min-height: 120px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
                 </div>
             </div>
 
@@ -742,6 +742,13 @@
         let globalSelectedAlatIdUntukLog = ""; 
         let globalSelectedAlatIdForLog = "";
 
+        document.addEventListener('input', function (e) {
+            if (e.target && e.target.id === 'dlk-txt-deskripsi-tunggal') {
+                e.target.style.height = 'auto';
+                e.target.style.height = (e.target.scrollHeight) + 'px';
+            }
+        });
+        
         document.addEventListener('click', function(e) {
             if (!e.target.closest('#input-search-alat-ticket') && !e.target.closest('#ticket-form-alat')) {
                 const el = document.getElementById('ticket-form-alat');
