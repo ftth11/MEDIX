@@ -104,16 +104,11 @@
             }
 
             #dlk-txt-deskripsi-tunggal {
-                display: block !important;
+                min-height: 50px !important;
+                max-height: 200px !important;
                 height: auto !important;
-                min-height: auto !important;
-                max-height: none !important;
-                overflow: visible !important;
-                white-space: pre-wrap !important;
-                word-wrap: break-word !important;
-                border: none !important;
-                background: transparent !important;
-                padding: 0 !important;
+                padding: 4px 8px !important;
+                line-height: 1.4 !important;
             }
         }
     </style>
@@ -593,9 +588,9 @@
                 </div>
 
                 <!-- Kotak Uraian Detail Pekerjaan (2 Kolom) -->
-                <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col justify-between">
+                <div class="uraian-pekerjaan-wrapper border p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col">
                     <h4 class="font-bold border-b pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border p-1.5 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] min-h-[90px] max-h-[300px] overflow-y-auto no-scrollbar whitespace-pre-wrap break-words" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
+                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] overflow-y-auto no-scrollbar whitespace-pre-wrap break-words" style="min-height: 55px; height: auto; padding: 4px 6px;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
                 </div>
             </div>
 
@@ -1028,6 +1023,19 @@
                 db.collection("users").doc(id).delete().then(() => alert("🎉 Akun dibersihkan!"));
             }
         }
+
+        function autoKoreksiTinggiUraian(el) {
+            if(!el) return;
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight) + 'px';
+        }
+
+        // Pasang event listener pada div contenteditable uraian kerja
+        document.addEventListener('input', function (e) {
+            if (e.target && e.target.id === 'dlk-txt-deskripsi-tunggal') {
+                autoKoreksiTinggiUraian(e.target);
+            }
+        });
 
         db.collection("users").onSnapshot((querySnapshot) => {
             dataUserSistem = [];
