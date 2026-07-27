@@ -115,6 +115,30 @@
                 background: transparent !important;
                 padding: 0 !important;
             }
+
+            const payload = {
+                alatId: alatIdRaw, 
+                noLk: document.getElementById('dlk-no').value, 
+                textTgl: document.getElementById('dlk-tgl').value,
+                desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal').innerText, 
+                jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
+                hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, 
+                ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
+                ttdUser: document.getElementById('sig-user').toDataURL(),
+                ttdPJ: document.getElementById('sig-pj').toDataURL(), 
+                teknisiTtd: tekNama, 
+                saksiTtd: document.getElementById('dlk-select-nama-saksi').value,
+                pjTtd: "PJ Alkes", 
+                fotoAlat: stringFotoBase64,          
+                fotoBefore: stringFotoBeforeBase64,  
+                paramAlatKerja: JSON.stringify(terpakaiAlatKerja), 
+                paramFisik: JSON.stringify(terpakaiFisik), 
+                paramFungsi: JSON.stringify(terpakaiFungsi),
+                tglKalibrasi: tglKalibrasiInput,
+                tglExpKalibrasi: tglExpKalibrasiInput,
+                isLocked: true, // <-- Menandakan bahwa LK sudah dikunci permanen
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
         }
     </style>
 </head>
@@ -1662,71 +1686,121 @@
             }
         }
 
-        function bukaLembarKerjaBaruKosong() { 
-            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
-            if(!areaLK) return;
-
-            document.getElementById('dlk-firebase-id').value = ""; 
-            stringFotoBase64 = "-"; 
-            stringFotoBeforeBase64 = "-";
-            resetFotoAfterDisplay();
+        function bukaLembarKerjaDinamisDariLog(id) {
+            let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             
-            terpakaiAlatKerja = []; 
-            terpakaiFisik = []; 
-            terpakaiFungsi = []; 
-            
-            const now = new Date();
-            const offsetMs = now.getTimezoneOffset() * 60 * 1000;
-            const localIso = new Date(now.getTime() - offsetMs).toISOString().substring(0, 16);
-            const inputTgl = document.getElementById('dlk-tgl');
-            if(inputTgl) inputTgl.value = localIso; 
-            
-            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if(descTunggal) {
-                descTunggal.innerText = ""; 
+            if(!record) {
+                alert("Dokumen lembar kerja tidak ditemukan di memori.");
+                return;
             }
             
-            const boxBefore = document.getElementById('box-preview-foto-before');
-            if(boxBefore) boxBefore.innerHTML = `[ Tidak Ada Foto Before ]`;
-            
-            const selectedAlatId = document.getElementById('dlk-selected-alat-id');
-            if(selectedAlatId) selectedAlatId.value = "";
-            
-            const inputSearchAlat = document.getElementById('input-search-alat-worksheet');
-            if(inputSearchAlat) inputSearchAlat.value = "";
-            
-            ['dlk-nama', 'dlk-merk', 'dlk-tipe', 'dlk-seri', 'dlk-lokasi', 'dlk-tglcal', 'dlk-nokal'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.value = "";
-            });
+            document.getElementById('dlk-firebase-id').value = record.id; 
 
-            renderOpsiDropdownAwal(); 
+            document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => { 
+                if(radio.value === record.jenisKerja) radio.checked = true; 
+            });
+            
+            document.getElementById('dlk-no').value = record.noLk || ""; 
+            document.getElementById('dlk-tgl').value = record.textTgl || (record.tgl ? record.tgl.substring(0,16) : '');
+            
+            sinkronisasiDataAlatKeWorksheet(record.alatId); 
+            
+            if(record.tglKalibrasi) document.getElementById('dlk-tglcal').value = record.tglKalibrasi;
+            if(record.tglExpKalibrasi) document.getElementById('dlk-nokal').value = record.tglExpKalibrasi;
+
+            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
+            if(descTunggal) descTunggal.innerText = record.desc_kerja || "";
+            
+            try { 
+                terpakaiAlatKerja = JSON.parse(record.paramAlatKerja || '[]').map(i => typeof i === 'string' ? {nama: i} : i); 
+            } catch(e){ terpakaiAlatKerja = []; }
+            
+            try { 
+                terpakaiFisik = JSON.parse(record.paramFisik || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); 
+            } catch(e){ terpakaiFisik = []; }
+            
+            try { 
+                terpakaiFungsi = JSON.parse(record.paramFungsi || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); 
+            } catch(e){ terpakaiFungsi = []; }
+            
             aktualisasikanTampilanKotakTabel('alatkerja'); 
             aktualisasikanTampilanKotakTabel('fisik'); 
-            aktualisasikanTampilanKotakTabel('fungsi'); 
+            aktualisasikanTampilanKotakTabel('fungsi');
+            
+            if(record.fotoAlat && record.fotoAlat !== '-') { 
+                stringFotoBase64 = record.fotoAlat;
+                document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="w-full h-full object-contain rounded">`; 
+                document.getElementById('dlk-input-foto-container').style.display = 'none';
+                document.getElementById('btn-retake-after').style.display = 'none'; // Sembunyikan tombol foto ulang agar terkunci
+            } else {
+                resetFotoAfterDisplay();
+            }
+
+            stringFotoBeforeBase64 = record.fotoBefore || "-";
+            if(stringFotoBeforeBase64 !== '-') {
+                document.getElementById('box-preview-foto-before').innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`;
+            } else {
+                document.getElementById('box-preview-foto-before').innerHTML = `[ Tidak Ada Foto Before ]`;
+            }
+
             populasikanDropdownNamaTandaTangan();
+            document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
+            document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
             
-            db.collection("lembarKerja").get().then(s => {
-                let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
-                const elNo = document.getElementById('dlk-no');
-                if(elNo) elNo.value = generatedNo;
-            }).catch(err => {
-                const elNo = document.getElementById('dlk-no');
-                if(elNo) elNo.value = "RSUDPG/IPSRS/LK-001";
-            });
-            
-            aturModeTampilanWorksheetUser();
-            
+            // TERAPKAN PENGUNCIAN TOTAL KARENA SUDAH BERSTATUS TERSIMPAN / LOCKED
+            terapkanModeLockedPermanenLk();
+
+            const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
             areaLK.classList.remove('hidden'); 
             areaLK.scrollTop = 0;
 
             setTimeout(() => {
                 initSignatures();
-            }, 300); 
-            
-            toggleSidebarMenu(false); 
+                if(record.ttdTeknisi) muatTandaTanganKeCanvas('sig-teknisi', record.ttdTeknisi);
+                if(record.ttdUser) muatTandaTanganKeCanvas('sig-user', record.ttdUser);
+                if(record.ttdPJ) muatTandaTanganKeCanvas('sig-pj', record.ttdPJ);
+            }, 300);
         }
 
+        function terapkanModeLockedPermanenLk() {
+            // Sembunyikan tombol Simpan LK agar tidak bisa di-submit ulang
+            const btnSimpanLk = document.getElementById('btn-simpan-lk-aksi');
+            if(btnSimpanLk) btnSimpanLk.style.display = 'none';
+
+            // Sembunyikan tombol hapus tanda tangan
+            const btnClearTek = document.getElementById('btn-clear-sig-teknisi');
+            const btnClearUsr = document.getElementById('btn-clear-sig-user');
+            const btnClearPj = document.getElementById('btn-clear-sig-pj');
+            if(btnClearTek) btnClearTek.style.display = 'none';
+            if(btnClearUsr) btnClearUsr.style.display = 'none';
+            if(btnClearPj) btnClearPj.style.display = 'none';
+
+            // Sembunyikan dropdown penambahan parameter baru
+            const dropAk = document.getElementById('container-drop-alatkerja');
+            const dropFs = document.getElementById('container-drop-fisik');
+            const dropFn = document.getElementById('container-drop-fungsi');
+            if(dropAk) dropAk.style.display = 'none';
+            if(dropFs) dropFs.style.display = 'none';
+            if(dropFn) dropFn.style.display = 'none';
+
+            // Matikan fungsi edit pada kotak uraian teks
+            const descBox = document.getElementById('dlk-txt-deskripsi-tunggal');
+            if(descBox) {
+                descBox.removeAttribute('contenteditable');
+            }
+
+            // Disable seluruh input dan select di dalam form lembar kerja
+            setTimeout(() => {
+                const area = document.getElementById('area-lembar-kerja-resmi');
+                if(area) {
+                    const elements = area.querySelectorAll('input, select');
+                    elements.forEach(el => {
+                        el.setAttribute('disabled', 'true');
+                    });
+                }
+            }, 50);
+        }
+        
         function bukaLembarKerjaDinamisDariLog(id) {
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             
