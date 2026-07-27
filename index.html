@@ -51,23 +51,74 @@
         }
 
         @media print {
-            /* Sembunyikan textarea asli saat dicetak, dan tampilkan div teks pengganti yang memanjang penuh */
-            #dlk-txt-deskripsi-tunggal {
-                display: none !important;
+            @page { size: A4 portrait; margin: 8mm; }
+            body, html { 
+                background: white !important; 
+                width: 100% !important; 
+                height: auto !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                overflow: visible !important; 
             }
-            #print-temp-desc-div {
+            body * { visibility: hidden !important; }
+            #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
+            
+            /* POSISIKAN LEMBAR KERJA MENJADI FULL LAYAR A4 TANPA TERPOTONG */
+            #area-lembar-kerja-resmi { 
+                position: absolute !important; 
+                left: 0 !important; 
+                top: 0 !important; 
+                width: 100% !important; 
+                height: auto !important; 
+                background: white !important; 
                 display: block !important;
-                font-size: 10px !important;
-                font-family: inherit !important;
-                color: black !important;
+                padding: 0 !important; 
+                margin: 0 !important; 
+                border: none !important; 
+                box-shadow: none !important; 
+                overflow: visible !important;
+                z-index: 999999 !important;
+            }
+
+            /* HILANGKAN BATAS MAKSIMAL TINGGI MODAL AGAR BISA MEMANJANG KE BAWAH */
+            #area-lembar-kerja-resmi > div {
+                position: relative !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 5mm !important;
+                max-height: none !important;
+                height: auto !important;
+                width: 100% !important;
+                overflow: visible !important;
+                background: white !important;
+            }
+
+            /* SEMBUNYIKAN TOMBOL AKSI, INPUT FILE, DAN ELEMEN TIDAK PERLU SAAT CETAK */
+            .no-print, button, input[type="file"], .absolute.top-4.right-4 { display: none !important; }
+            
+            input, select { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
+            
+            /* KOTAK URAIAN DAN TEXTAREA MELAR PENUH KE BAWAH */
+            .uraian-pekerjaan-wrapper {
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                display: block !important;
+            }
+
+            #dlk-txt-deskripsi-tunggal {
+                display: block !important;
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
                 white-space: pre-wrap !important;
                 word-wrap: break-word !important;
-                width: 100% !important;
-                height: auto !important;
-                background: transparent !important;
                 border: none !important;
+                background: transparent !important;
+                resize: none !important;
                 padding: 0 !important;
-                margin: 0 !important;
             }
         }
         
@@ -1711,21 +1762,12 @@
         }
 
         function pemicuCetakDokumen() {
-            const textarea = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if (!textarea) return;
-
-            // Buat elemen pengganti sementara berbentuk div untuk cetak agar teks tampil penuh tanpa terpotong
-            let printDiv = document.getElementById('print-temp-desc-div');
-            if (!printDiv) {
-                printDiv = document.createElement('div');
-                printDiv.id = 'print-temp-desc-div';
-                printDiv.style.display = 'none';
-                textarea.parentNode.appendChild(printDiv);
+            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
+            if (descTunggal) {
+                descTunggal.style.height = 'auto';
+                descTunggal.style.height = (descTunggal.scrollHeight + 30) + 'px';
             }
             
-            // Salin isi teks dan ubah baris barunya agar terbaca sempurna
-            printDiv.innerText = textarea.value;
-
             setTimeout(() => {
                 window.print();
             }, 200);
