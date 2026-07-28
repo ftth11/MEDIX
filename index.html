@@ -819,7 +819,6 @@
         const db = firebase.firestore();
 
         let dataBukuPetunjuk = [];
-
         let html5QrCodeScanner = null;
 
         let currentActiveRole = "Teknisi"; 
@@ -840,19 +839,22 @@
         let globalSelectedAlatIdUntukLog = ""; 
         let globalSelectedAlatIdForLog = "";
 
+        // Safe Click Outbound untuk Dropdown
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('#input-search-alat-etiket') && !e.target.closest('#dropdown-pilih-alat-etiket')) {
-                const el = document.getElementById('dropdown-pilih-alat-etiket');
-                if(el) el.style.display = 'none';
-            }
-            if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#form-cal-alat')) {
-                const el = document.getElementById('form-cal-alat');
-                if(el) el.style.display = 'none';
-            }
-            if (!e.target.closest('#input-search-alat-worksheet') && !e.target.closest('#dropdown-pilih-alat-worksheet')) {
-                const el = document.getElementById('dropdown-pilih-alat-worksheet');
-                if(el) el.style.display = 'none';
-            }
+            try {
+                if (!e.target.closest('#input-search-alat-etiket') && !e.target.closest('#dropdown-pilih-alat-etiket')) {
+                    const el = document.getElementById('dropdown-pilih-alat-etiket');
+                    if(el) el.style.display = 'none';
+                }
+                if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#form-cal-alat')) {
+                    const el = document.getElementById('form-cal-alat');
+                    if(el) el.style.display = 'none';
+                }
+                if (!e.target.closest('#input-search-alat-worksheet') && !e.target.closest('#dropdown-pilih-alat-worksheet')) {
+                    const el = document.getElementById('dropdown-pilih-alat-worksheet');
+                    if(el) el.style.display = 'none';
+                }
+            } catch(err) {}
         });
 
         function toggleLihatPassword(inputId, tombolEl) {
@@ -866,28 +868,45 @@
 
         function pilihRoleSebelumLogin(role) {
             targetLoginRole = role;
-            document.getElementById('box-pilih-role').classList.add('hidden');
-            document.getElementById('form-login-kredensial').classList.remove('hidden');
-            document.getElementById('gate-subtitle').innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
-            document.getElementById('login-username').value = "";
-            document.getElementById('login-password').value = "";
+            const boxRole = document.getElementById('box-pilih-role');
+            const formLogin = document.getElementById('form-login-kredensial');
+            const subtitle = document.getElementById('gate-subtitle');
+            
+            if(boxRole) boxRole.classList.add('hidden');
+            if(formLogin) formLogin.classList.remove('hidden');
+            if(subtitle) subtitle.innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
+            
+            const uInput = document.getElementById('login-username');
+            const pInput = document.getElementById('login-password');
+            if(uInput) uInput.value = "";
+            if(pInput) pInput.value = "";
         }
 
         function kembaliKePilihRole() {
             targetLoginRole = "";
-            document.getElementById('box-pilih-role').classList.remove('hidden');
-            document.getElementById('form-login-kredensial').classList.add('hidden');
-            document.getElementById('gate-subtitle').innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
+            const boxRole = document.getElementById('box-pilih-role');
+            const formLogin = document.getElementById('form-login-kredensial');
+            const subtitle = document.getElementById('gate-subtitle');
+            
+            if(boxRole) boxRole.classList.remove('hidden');
+            if(formLogin) formLogin.classList.add('hidden');
+            if(subtitle) subtitle.innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
         }
 
-function validasiKredensialUser(e) {
+        function validasiKredensialUser(e) {
             e.preventDefault();
-            const uName = document.getElementById('login-username').value.trim();
-            const uPass = document.getElementById('login-password').value;
+            const uNameEl = document.getElementById('login-username');
+            const uPassEl = document.getElementById('login-password');
+            if(!uNameEl || !uPassEl) return;
+
+            const uName = uNameEl.value.trim();
+            const uPass = uPassEl.value;
             const submitBtn = e.target.querySelector('button[type="submit"]');
             
-            submitBtn.innerText = "Memverifikasi...";
-            submitBtn.disabled = true;
+            if(submitBtn) {
+                submitBtn.innerText = "Memverifikasi...";
+                submitBtn.disabled = true;
+            }
 
             let rolePencarian = [targetLoginRole];
             if (targetLoginRole === 'Admin') {
@@ -914,10 +933,13 @@ function validasiKredensialUser(e) {
                       });
 
                       currentActiveRole = targetLoginRole;
-                      userAksesMenuArray = tglMenu; // Menyimpan objek akses menu
+                      userAksesMenuArray = tglMenu;
                       
-                      document.getElementById('auth-gate-screen').classList.add('hidden');
-                      document.getElementById('sidebar-role-badge').innerText = currentActiveRole;
+                      const gateScreen = document.getElementById('auth-gate-screen');
+                      if(gateScreen) gateScreen.classList.add('hidden');
+                      
+                      const roleBadge = document.getElementById('sidebar-role-badge');
+                      if(roleBadge) roleBadge.innerText = currentActiveRole;
                       
                       const profilCard = document.querySelector('#app-sidebar p.text-white.truncate');
                       if (profilCard) profilCard.innerText = currentUserNama;
@@ -966,7 +988,6 @@ function validasiKredensialUser(e) {
                               document.getElementById('box-form-buat-ticket').classList.remove('hidden');
                           }
 
-                          // Pengecekan izin akses baru berdasarkan properti read/edit objek
                           const izinDash = userAksesMenuArray.dashboard ? (userAksesMenuArray.dashboard.read || userAksesMenuArray.dashboard.edit) : true;
                           const izinMaster = userAksesMenuArray.master ? (userAksesMenuArray.master.read || userAksesMenuArray.master.edit) : false;
                           const izinTicket = userAksesMenuArray.ticket ? (userAksesMenuArray.ticket.read || userAksesMenuArray.ticket.edit) : false;
@@ -987,167 +1008,23 @@ function validasiKredensialUser(e) {
                       setTimeout(renderGrafikDashboardDinamis, 300);
                   } else {
                       alert("❌ Username / password salah!");
-                      submitBtn.innerText = "Masuk";
-                      submitBtn.disabled = false;
+                      if(submitBtn) {
+                          submitBtn.innerText = "Masuk";
+                          submitBtn.disabled = false;
+                      }
                   }
               })
               .catch((err) => {
                   console.error(err);
                   alert("Koneksi cloud bermasalah.");
-                  submitBtn.innerText = "Masuk";
-                  submitBtn.disabled = false;
+                  if(submitBtn) {
+                      submitBtn.innerText = "Masuk";
+                      submitBtn.disabled = false;
+                  }
               });
         }
 
-        function importDataDariExcel(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (currentActiveRole !== 'Admin') {
-                alert("❌ Hanya akun Admin yang diizinkan melakukan import database!");
-                e.target.value = "";
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const data = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const jsonRows = XLSX.utils.sheet_to_json(worksheet);
-
-                    if (jsonRows.length === 0) {
-                        alert("❌ File Excel kosong atau format tidak sesuai!");
-                        return;
-                    }
-
-                    if (confirm(`Ditemukan ${jsonRows.length} data aset dalam file Excel. Lanjutkan proses import massal ke database cloud?`)) {
-                        jsonRows.forEach((row) => {
-                            const namaAlat = row["NAMA ALAT"] || row["Nama Alat Medis"] || row["Nama Alat"] || row["nama"] || "Alat Medis";
-                            const merkAlat = row["MERK"] || row["Merk"] || row["merk"] || "-";
-                            const tipeAlat = row["MODEL/TIPE"] || row["Model / Tipe"] || row["Tipe"] || row["tipe"] || "-";
-                            const seriAlat = row["SERIAL NUMBER"] || row["Nomor Seri (SN)"] || row["Nomor Seri"] || row["seri"] || "-";
-                            const izinEdar = row["IZIN EDAR"] || row["Izin Edar"] || row["izinEdar"] || "-";
-                            const ruangAlat = row["UNIT/RUANGAN"] || row["Unit / Ruangan"] || row["Ruangan"] || row["Lokasi"] || row["lokasi"] || "Umum";
-
-                            const payloadAlat = {
-                                nama: String(namaAlat),
-                                merk: String(merkAlat),
-                                tipe: String(tipeAlat),
-                                seri: String(seriAlat),
-                                izinEdar: String(izinEdar),
-                                ruangan: String(ruangAlat),
-                                status: "Siap Digunakan"
-                            };
-
-                            db.collection("dataAlat").add(payloadAlat).catch(err => console.error("Gagal import baris:", err));
-                        });
-
-                        alert(`🎉 Proses import sedang berjalan! Data berhasil dimasukkan ke sistem.`);
-                        document.getElementById('file-excel-input').value = "";
-                    }
-                } catch (error) {
-                    console.error(error);
-                    alert("❌ Terjadi kesalahan saat membaca file Excel.");
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function submitFormUserAdmin(e) {
-            e.preventDefault();
-            const editId = document.getElementById('user-form-id').value;
-            const nama = document.getElementById('user-form-nama').value;
-            const username = document.getElementById('user-form-username').value.trim();
-            const password = document.getElementById('user-form-password').value;
-            const role = document.getElementById('user-form-role').value;
-
-            let izinAksesObj = {
-                dashboard: { read: document.getElementById('akses-dash-read').checked, edit: document.getElementById('akses-dash-edit').checked },
-                master: { read: document.getElementById('akses-master-read').checked, edit: document.getElementById('akses-master-edit').checked },
-                ticket: { read: document.getElementById('akses-ticket-read').checked, edit: document.getElementById('akses-ticket-edit').checked },
-                riwayat: { read: document.getElementById('akses-riwayat-read').checked, edit: document.getElementById('akses-riwayat-edit').checked }
-            };
-            const payload = { nama, username, password, role, menuAkses: izinAksesObj };
-
-            if (editId) {
-                db.collection("users").doc(editId).update(payload).then(() => {
-                    alert("🎉 Akun berhasil diperbarui!");
-                    resetFormUser();
-                });
-            } else {
-                db.collection("users").where("username", "==", username).get().then((snap) => {
-                    if (!snap.empty) {
-                        alert("❌ Username ini sudah terpakai! Gunakan nama unik lain.");
-                        return;
-                    }
-                    db.collection("users").add(payload).then(() => {
-                        alert("🎉 Akun baru berhasil disimpan!");
-                        resetFormUser();
-                    });
-                });
-            }
-        }
-
-        function editAkunUserOlehAdmin(id) {
-            const user = dataUserSistem.find(u => u.id === id);
-            if(!user) return;
-            document.getElementById('user-form-id').value = user.id;
-            document.getElementById('user-form-nama').value = user.nama || '';
-            document.getElementById('user-form-username').value = user.username || '';
-            document.getElementById('user-form-password').value = user.password || '';
-            document.getElementById('user-form-role').value = user.role || 'Teknisi';
-
-            const menu = user.menuAkses || [];
-            document.getElementById('akses-dash-read').checked = menu.dashboard ? menu.dashboard.read : true;
-            document.getElementById('akses-dash-edit').checked = menu.dashboard ? menu.dashboard.edit : true;
-            document.getElementById('akses-master-read').checked = menu.master ? menu.master.read : true;
-            document.getElementById('akses-master-edit').checked = menu.master ? menu.master.edit : true;
-            document.getElementById('akses-ticket-read').checked = menu.ticket ? menu.ticket.read : true;
-            document.getElementById('akses-ticket-edit').checked = menu.ticket ? menu.ticket.edit : true;
-            document.getElementById('akses-riwayat-read').checked = menu.riwayat ? menu.riwayat.read : true;
-            document.getElementById('akses-riwayat-edit').checked = menu.riwayat ? menu.riwayat.edit : true;
-
-            document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-pen mr-1.5"></i> Edit Akun User`;
-            document.getElementById('btn-submit-user').innerText = "Perbarui Akun";
-            document.getElementById('btn-cancel-edit-user').classList.remove('hidden');
-        }
-
-        function resetFormUser() {
-            // Reset teks dan input utama
-            document.getElementById('user-form-id').value = "";
-            document.getElementById('user-form-nama').value = "";
-            document.getElementById('user-form-username').value = "";
-            document.getElementById('user-form-password').value = "";
-            document.getElementById('user-form-role').value = "Teknisi";
-        
-            // Reset Checkbox Hak Akses (Read & Edit) sesuai ID baru
-            document.getElementById('akses-dash-read').checked = true;
-            document.getElementById('akses-dash-edit').checked = true;
-            
-            document.getElementById('akses-master-read').checked = false;
-            document.getElementById('akses-master-edit').checked = false;
-            
-            document.getElementById('akses-ticket-read').checked = false;
-            document.getElementById('akses-ticket-edit').checked = false;
-            
-            document.getElementById('akses-riwayat-read').checked = false;
-            document.getElementById('akses-riwayat-edit').checked = false;
-        
-            // Reset tombol dan judul form
-            document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun Baru`;
-            document.getElementById('btn-submit-user').innerText = "Daftarkan Akun";
-            document.getElementById('btn-cancel-edit-user').classList.add('hidden');
-        }
-
-        function hapusAkunUserOlehAdmin(id, nama) {
-            if(confirm(`Hapus akun milik "${nama}" dari database?`)) {
-                db.collection("users").doc(id).delete().then(() => alert("🎉 Akun dibersihkan!"));
-            }
-        }
-
+        // --- SNAPSHOT LISTENER DATABASE (AMAN & NON-BLOCKING) ---
         db.collection("users").onSnapshot((querySnapshot) => {
             dataUserSistem = [];
             querySnapshot.forEach((doc) => { dataUserSistem.push({ id: doc.id, ...doc.data() }); });
@@ -1731,7 +1608,7 @@ function validasiKredensialUser(e) {
                 paramFungsi: JSON.stringify(terpakaiFungsi),
                 tglKalibrasi: tglKalibrasiInput,
                 tglExpKalibrasi: tglExpKalibrasiInput,
-                isLocked: true, // Berstatus terkunci permanen agar tidak bisa diubah-ubah
+                isLocked: true,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
@@ -1844,7 +1721,6 @@ function validasiKredensialUser(e) {
                 if(elNo) elNo.value = "RSUDPG/IPSRS/LK-001";
             });
             
-            // Buka kunci total form agar bisa diisi untuk LK baru
             bukaKunciTotalFormWorksheetBaru();
             
             areaLK.classList.remove('hidden'); 
@@ -1984,7 +1860,6 @@ function validasiKredensialUser(e) {
             document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
             document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
             
-            // Kunci permanen karena dokumen sudah tersimpan / berupa arsip
             terapkanModeLockedPermanenLk();
 
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
@@ -2018,9 +1893,12 @@ function validasiKredensialUser(e) {
         }
 
         function renderOpsiDropdownAwal() { 
-            document.getElementById('drop-alatkerja').innerHTML = `<option value="">-- PILIH ALAT KERJA --</option>` + opsAlatKerja.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Alat Kerja</option>`; 
-            document.getElementById('drop-fisik').innerHTML = `<option value="">-- PILIH KONDISI FISIK --</option>` + opsFisik.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Kondisi Fisik</option>`; 
-            document.getElementById('drop-fungsi').innerHTML = `<option value="">-- PILIH KONDISI FUNGSI --</option>` + opsFungsi.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Kondisi Fungsi</option>`; 
+            const dAk = document.getElementById('drop-alatkerja');
+            const dFs = document.getElementById('drop-fisik');
+            const dFn = document.getElementById('drop-fungsi');
+            if(dAk) dAk.innerHTML = `<option value="">-- PILIH ALAT KERJA --</option>` + opsAlatKerja.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Alat Kerja</option>`; 
+            if(dFs) dFs.innerHTML = `<option value="">-- PILIH KONDISI FISIK --</option>` + opsFisik.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Kondisi Fisik</option>`; 
+            if(dFn) dFn.innerHTML = `<option value="">-- PILIH KONDISI FUNGSI --</option>` + opsFungsi.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Kondisi Fungsi</option>`; 
         }
 
         function pilihDropdownAtauInputKustom(kategori, selectEl) {
@@ -2080,6 +1958,7 @@ function validasiKredensialUser(e) {
 
         function aktualisasikanTampilanKotakTabel(kategori) { 
             const box = document.getElementById('box-list-' + kategori); 
+            if(!box) return;
             let arr = (kategori === 'alatkerja') ? terpakaiAlatKerja : (kategori === 'fisik') ? terpakaiFisik : terpakaiFungsi; 
             const isUser = (currentActiveRole === 'User');
             
@@ -2136,8 +2015,9 @@ function validasiKredensialUser(e) {
                 }
 
                 populasikanDropdownNamaTandaTangan();
-                if(document.getElementById('dlk-select-nama-teknisi').innerHTML.includes(currentUserNama)) {
-                    document.getElementById('dlk-select-nama-teknisi').value = currentUserNama;
+                const selTeknisi = document.getElementById('dlk-select-nama-teknisi');
+                if(selTeknisi && selTeknisi.innerHTML.includes(currentUserNama)) {
+                    selTeknisi.value = currentUserNama;
                 }
             }
         }
@@ -2235,10 +2115,13 @@ function validasiKredensialUser(e) {
 
         function switchTab(tId) { 
             document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); 
-            document.getElementById('tab-' + tId).classList.remove('hidden'); 
+            const targetTab = document.getElementById('tab-' + tId);
+            if(targetTab) targetTab.classList.remove('hidden'); 
             document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); 
-            if(document.getElementById('btn-' + tId)) document.getElementById('btn-' + tId).classList.add('active'); 
-            toggleSidebarMenu(false); if(tId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300); 
+            const btnEl = document.getElementById('btn-' + tId);
+            if(btnEl) btnEl.classList.add('active'); 
+            toggleSidebarMenu(false); 
+            if(tId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300); 
         }
         
         function toggleSidebarMenu(s) { 
@@ -2246,20 +2129,15 @@ function validasiKredensialUser(e) {
             const mainArea = document.getElementById('main-content-area');
             
             if(sb) { 
-                // Cek apakah sidebar sedang tertutup atau terbuka
                 const isClosed = sb.classList.contains('-translate-x-full');
                 
                 if(s === true || (s === undefined && isClosed)) {
-                    // Buka sidebar
                     sb.classList.remove('-translate-x-full');
-                    // Di layar besar, dorong konten utama ke kanan agar tidak tertutup
                     if (window.innerWidth >= 768 && mainArea) {
-                        mainArea.style.marginLeft = "16rem"; // 16rem setara dengan lebar sidebar (w-64)
+                        mainArea.style.marginLeft = "16rem";
                     }
                 } else {
-                    // Tutup sidebar
                     sb.classList.add('-translate-x-full');
-                    // Kembalikan konten utama menjadi full
                     if (mainArea) {
                         mainArea.style.marginLeft = "0rem";
                     }
@@ -2326,23 +2204,59 @@ function validasiKredensialUser(e) {
             } 
         }
 
-        function submitKalibrasi(e) { e.preventDefault(); const aId = document.getElementById('form-cal-alat').value; const hasil = document.getElementById('form-cal-hasil').value; let reader = new FileReader(); reader.readAsDataURL(document.getElementById('form-cal-pdf-file').files[0]); reader.onload = function() { const payload = { alatId: aId, tgl: document.getElementById('form-cal-tgl').value, exp: document.getElementById('form-cal-exp').value, vendor: document.getElementById('form-cal-vendor').value, certPdf: reader.result, hasil: hasil }; db.collection("dataKalibrasi").add(payload).then(() => { toggleModal('modal-kalibrasi', false); document.getElementById('input-search-alat-kalibrasi').value = ""; document.getElementById('form-cal-alat').style.display = "none"; alert("Sertifikat Kalibrasi Diunggah!"); }); } }
-        function gantiSubTabDokumen(t) { subTabDokumenAktif = t; document.getElementById('doc-tab-all').className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='all'?'bg-blue-600 text-white':''); document.getElementById('doc-tab-kalibrasi').className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='kalibrasi'?'bg-blue-600 text-white':''); document.getElementById('doc-tab-mandiri').className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='mandiri'?'bg-blue-600 text-white':''); renderTabelPusatDokumen(); }
+        function submitKalibrasi(e) { 
+            e.preventDefault(); 
+            const aId = document.getElementById('form-cal-alat').value; 
+            const hasil = document.getElementById('form-cal-hasil').value; 
+            let reader = new FileReader(); 
+            reader.readAsDataURL(document.getElementById('form-cal-pdf-file').files[0]); 
+            reader.onload = function() { 
+                const payload = { alatId: aId, tgl: document.getElementById('form-cal-tgl').value, exp: document.getElementById('form-cal-exp').value, vendor: document.getElementById('form-cal-vendor').value, certPdf: reader.result, hasil: hasil }; 
+                db.collection("dataKalibrasi").add(payload).then(() => { toggleModal('modal-kalibrasi', false); document.getElementById('input-search-alat-kalibrasi').value = ""; document.getElementById('form-cal-alat').style.display = "none"; alert("Sertifikat Kalibrasi Diunggah!"); }); 
+            } 
+        }
+
+        function gantiSubTabDokumen(t) { 
+            subTabDokumenAktif = t; 
+            const tabAll = document.getElementById('doc-tab-all');
+            const tabCal = document.getElementById('doc-tab-kalibrasi');
+            const tabMan = document.getElementById('doc-tab-mandiri');
+            if(tabAll) tabAll.className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='all'?'bg-blue-600 text-white':''); 
+            if(tabCal) tabCal.className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='kalibrasi'?'bg-blue-600 text-white':''); 
+            if(tabMan) tabMan.className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='mandiri'?'bg-blue-600 text-white':''); 
+            renderTabelPusatDokumen(); 
+        }
         
-        function toggleModal(id, s) { document.getElementById(id).classList.toggle('hidden', !s); }
-        function filterAlat() { const q = document.getElementById('search-alat').value.toLowerCase(); const trs = document.getElementById('table-alat-body').getElementsByTagName('tr'); for(let tr of trs) { tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none'; } }
+        function toggleModal(id, s) { 
+            const el = document.getElementById(id);
+            if(el) el.classList.toggle('hidden', !s); 
+        }
+
+        function filterAlat() { 
+            const searchEl = document.getElementById('search-alat');
+            const tbodyEl = document.getElementById('table-alat-body');
+            if(!searchEl || !tbodyEl) return;
+            const q = searchEl.value.toLowerCase(); 
+            const trs = tbodyEl.getElementsByTagName('tr'); 
+            for(let tr of trs) { tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none'; } 
+        }
         
         function updateStats() {
-            if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = dataAlat.length;
-            if(document.getElementById('stat-ready')) document.getElementById('stat-ready').innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
-            if(document.getElementById('stat-broken')) document.getElementById('stat-broken').innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
+            const statTotal = document.getElementById('stat-total');
+            const statReady = document.getElementById('stat-ready');
+            const statBroken = document.getElementById('stat-broken');
+            const statLogs = document.getElementById('stat-logs');
+
+            if(statTotal) statTotal.innerText = dataAlat.length;
+            if(statReady) statReady.innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
+            if(statBroken) statBroken.innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
             
             let totalDocsCount = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
             dataKeluhanLog.forEach(lg => {
                 const sudahAdaLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi].some(lk => lk.alatId === lg.alatId);
                 if (!sudahAdaLk) totalDocsCount++;
             });
-            if(document.getElementById('stat-logs')) document.getElementById('stat-logs').innerText = totalDocsCount;
+            if(statLogs) statLogs.innerText = totalDocsCount;
         }
 
         function previewFotoDipilih(input) {
@@ -2427,156 +2341,69 @@ function validasiKredensialUser(e) {
             if(confirm("Hapus dokumen arsip ini?")) { db.collection(kol).doc(id).delete().then(() => alert("🎉 Dokumen dibersihkan!")); } 
         }
 
-        function lihatFileLangsung(b, j, jdl) { const body = document.getElementById('preview-body'); document.getElementById('preview-title').innerText = "Live Preview: " + jdl; if(j === 'pdf') body.innerHTML = `<iframe src="${b}" class="w-full h-full border rounded-xl" type="application/pdf"></iframe>`; else body.innerHTML = `<div class="max-w-full p-2 flex justify-center"><img src="${b}" class="max-h-[70vh] rounded-xl object-contain"></div>`; toggleModal('modal-preview', true); }
+        function lihatFileLangsung(b, j, jdl) { 
+            const body = document.getElementById('preview-body'); 
+            const titleEl = document.getElementById('preview-title');
+            if(titleEl) titleEl.innerText = "Live Preview: " + jdl; 
+            if(body) {
+                if(j === 'pdf') body.innerHTML = `<iframe src="${b}" class="w-full h-full border rounded-xl" type="application/pdf"></iframe>`; 
+                else body.innerHTML = `<div class="max-w-full p-2 flex justify-center"><img src="${b}" class="max-h-[70vh] rounded-xl object-contain"></div>`; 
+            }
+            toggleModal('modal-preview', true); 
+        }
+
         function clearCanvasSignature(id) { 
             if(currentActiveRole === 'User') return;
             const c = document.getElementById(id); if(c) { const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height); ctx.beginPath(); } 
         }
-        function switchKartuTab(tId) { document.querySelectorAll('.kartu-tab').forEach(el => el.classList.remove('active')); if(document.getElementById('btn-'+tId.replace('tab-',''))) document.getElementById('btn-'+tId.replace('tab-','')).classList.add('active'); document.querySelectorAll('.kartu-content-box').forEach(el => el.classList.add('hidden')); document.getElementById(tId).classList.remove('hidden'); }
+
+        function switchKartuTab(tId) { 
+            document.querySelectorAll('.kartu-tab').forEach(el => el.classList.remove('active')); 
+            const btnTarget = document.getElementById('btn-'+tId.replace('tab-',''));
+            if(btnTarget) btnTarget.classList.add('active'); 
+            document.querySelectorAll('.kartu-content-box').forEach(el => el.classList.add('hidden')); 
+            const contentBox = document.getElementById(tId);
+            if(contentBox) contentBox.classList.remove('hidden'); 
+        }
         
         function bukaKartuPemeliharaan(alatId) {
-                globalSelectedAlatIdForLog = alatId;
-                globalSelectedAlatIdUntukLog = alatId; 
-                const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
-                let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
-                let sSeri = alat.seri || alat.tipe || '-';
-                document.getElementById('kartu-nama').innerText = alat.nama; 
-                document.getElementById('kartu-merk').innerText = alat.merk || '-'; 
-                document.getElementById('kartu-seri').innerText = sSeri || '-'; 
-                document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
+            globalSelectedAlatIdForLog = alatId;
+            globalSelectedAlatIdUntukLog = alatId; 
+            const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
+            let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
+            let sSeri = alat.seri || alat.tipe || '-';
+            
+            const kNama = document.getElementById('kartu-nama');
+            const kMerk = document.getElementById('kartu-merk');
+            const kSeri = document.getElementById('kartu-seri');
+            const kLokasi = document.getElementById('kartu-lokasi');
+
+            if(kNama) kNama.innerText = alat.nama; 
+            if(kMerk) kMerk.innerText = alat.merk || '-'; 
+            if(kSeri) kSeri.innerText = sSeri || '-'; 
+            if(kLokasi) kLokasi.innerText = sLokasi || '-';
+            
+            const qrContainer = document.getElementById('qrcode-container');
+            if (qrContainer) {
+                qrContainer.innerHTML = ""; 
+                const targetUrl = window.location.origin + window.location.pathname + "?alat=" + alatId;
                 
-                // 1. Generate QR Code dengan ukuran lebih besar & kontras tinggi agar sangat jelas terbaca scanner
-                const qrContainer = document.getElementById('qrcode-container');
-                if (qrContainer) {
-                    qrContainer.innerHTML = ""; 
-                    const targetUrl = window.location.origin + window.location.pathname + "?alat=" + alatId;
-                    
-                    new QRCode(qrContainer, {
-                        text: targetUrl,
-                        width: 90,
-                        height: 90,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
-                    });
-                }
-                
-                // ... (lanjutan kode render tab tabel lainnya tetap seperti semula)
-                switchKartuTab('tab-k-semua'); 
-                toggleModal('modal-kartu', true);
+                new QRCode(qrContainer, {
+                    text: targetUrl,
+                    width: 90,
+                    height: 90,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
             }
-    
-            // Fungsi untuk mendownload label barcode fisik siap cetak & tempel
-            function downloadLabelBarcodeFisik() {
-                if(!globalSelectedAlatIdForLog) return;
-                const alat = dataAlat.find(a => a.id == globalSelectedAlatIdForLog);
-                if(!alat) return;
-    
-                const qrContainer = document.getElementById('qrcode-container');
-                const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
-                if(!qrImg) return alert("QR Code sedang dimuat, silakan coba beberapa saat lagi.");
-    
-                const canvas = document.getElementById('canvas-label-print');
-                const ctx = canvas.getContext('2d');
-                
-                // Atur resolusi kanvas cetak agar tajam saat diprint
-                canvas.width = 600;
-                canvas.height = 400;
-    
-                // Background putih bersih untuk label fisik
-                ctx.fillStyle = "#ffffff";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-                // Bingkai luar label
-                ctx.strokeStyle = "#000000";
-                ctx.lineWidth = 4;
-                ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
-    
-                // Header Label Rumah Sakit
-                ctx.fillStyle = "#000000";
-                ctx.font = "bold 16px sans-serif";
-                ctx.textAlign = "center";
-                ctx.fillText("UPTD RSUD PONDOKGEDE - IPSRS", canvas.width / 2, 45);
-    
-                ctx.font = "bold 13px sans-serif";
-                ctx.fillStyle = "#334155";
-                ctx.fillText("LABEL REKAM JEJAK & AKREDITASI ASET", canvas.width / 2, 68);
-    
-                // Garis pembatas header
-                ctx.beginPath();
-                ctx.moveTo(30, 78);
-                ctx.lineTo(canvas.width - 30, 78);
-                ctx.lineWidth = 1.5;
-                ctx.strokeStyle = "#cbd5e1";
-                ctx.stroke();
-    
-                // Gambar QR Code ke Kanvas
-                let imgQr = new Image();
-                imgQr.src = qrImg.src || qrImg.toDataURL();
-                imgQr.onload = function() {
-                    // Posisi QR Code di sebelah kiri
-                    ctx.drawImage(imgQr, 40, 100, 180, 180);
-    
-                    // Kotak kecil di bawah QR
-                    ctx.font = "bold 11px sans-serif";
-                    ctx.fillStyle = "#000000";
-                    ctx.textAlign = "center";
-                    ctx.fillText("SCAN KARTU ASET", 130, 295);
-    
-                    // Teks Keterangan di sebelah kanan QR Code
-                    ctx.textAlign = "left";
-                    let startX = 245;
-                    let startY = 115;
-    
-                    ctx.font = "bold 11px sans-serif";
-                    ctx.fillStyle = "#64748b";
-                    ctx.fillText("NAMA ASET:", startX, startY);
-                    ctx.font = "bold 16px sans-serif";
-                    ctx.fillStyle = "#000000";
-                    ctx.fillText(alat.nama || "-", startX, startY + 20);
-    
-                    ctx.font = "bold 11px sans-serif";
-                    ctx.fillStyle = "#64748b";
-                    ctx.fillText("MERK / MODEL:", startX, startY + 50);
-                    ctx.font = "bold 14px sans-serif";
-                    ctx.fillStyle = "#1e293b";
-                    ctx.fillText(alat.merk || "-", startX, startY + 70);
-    
-                    ctx.font = "bold 11px sans-serif";
-                    ctx.fillStyle = "#64748b";
-                    ctx.fillText("NOMOR SERI (SN):", startX, startY + 100);
-                    ctx.font = "bold 14px monospace";
-                    ctx.fillStyle = "#1e293b";
-                    ctx.fillText(alat.seri || alat.tipe || "-", startX, startY + 120);
-    
-                    ctx.font = "bold 11px sans-serif";
-                    ctx.fillStyle = "#64748b";
-                    ctx.fillText("UNIT / RUANGAN:", startX, startY + 150);
-                    ctx.font = "bold 14px sans-serif";
-                    ctx.fillStyle = "#2563eb";
-                    ctx.fillText(alat.ruangan || alat.lokasi || "-", startX, startY + 170);
-    
-                    // Footer label
-                    ctx.font = "italic 10px sans-serif";
-                    ctx.fillStyle = "#64748b";
-                    ctx.textAlign = "center";
-                    ctx.fillText("Tempelkan label ini pada fisik alat medis untuk memudahkan pemindaian.", canvas.width / 2, 365);
-    
-                    // Proses Download File Gambar (.png)
-                    const imageURI = canvas.toDataURL("image/png");
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = imageURI;
-                    downloadLink.download = `Label_Barcode_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-                };
-            }
-                        
+            
+            switchKartuTab('tab-k-semua'); 
+            toggleModal('modal-kartu', true);
+
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
         
-            // 1. Render Tab Semua Log (Rekap Gabungan)
             let rekapSemua = [];
             dataPerbaikan.filter(r => r.alatId == alatId).forEach(r => rekapSemua.push({ tgl: r.textTgl || r.tgl || '', jenis: 'Corrective Maintenance', ket: `No LK: ${r.noLk||'-'} <br> ${r.desc_kerja||r.desc}`, hasil: r.hasilTunggal, id: r.id, tipeData: 'lk' }));
             dataPM.filter(p => p.alatId == alatId).forEach(p => rekapSemua.push({ tgl: p.textTgl || p.tgl || '', jenis: 'Preventive Maintenance', ket: `No LK: ${p.noLk||'-'} <br> ${p.desc_kerja||p.desc}`, hasil: p.hasilTunggal, id: p.id, tipeData: 'lk' }));
@@ -2586,44 +2413,144 @@ function validasiKredensialUser(e) {
             rekapSemua.sort((x, y) => String(y.tgl).localeCompare(String(x.tgl)));
         
             const tbodySemua = document.getElementById('kartu-list-semua');
-            if(rekapSemua.length === 0) {
-                tbodySemua.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500 italic">Belum ada rekapitulasi riwayat pekerjaan.</td></tr>`;
-            } else {
-                tbodySemua.innerHTML = rekapSemua.map(item => `
-                    <tr class="border-b border-white/5 hover:bg-white/[0.01]">
-                        <td class="p-3"><b>${item.jenis}</b><br><span class="text-[10px] text-slate-400 font-mono">${item.tgl.replace('T',' ')}</span></td>
-                        <td class="p-3 text-slate-300">${item.ket}</td>
-                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${item.hasil.includes('Baik')||item.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${item.hasil}</span></td>
-                        <td class="p-3 text-center">${item.tipeData === 'lk' ? `<button onclick="bukaLembarKerjaDinamisDariLog('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-[10px]">Lihat LK</button>` : `<span class="text-[10px] text-indigo-400 font-mono">Kalibrasi</span>`}</td>
-                    </tr>
-                `).join('');
+            if(tbodySemua) {
+                if(rekapSemua.length === 0) {
+                    tbodySemua.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500 italic">Belum ada rekapitulasi riwayat pekerjaan.</td></tr>`;
+                } else {
+                    tbodySemua.innerHTML = rekapSemua.map(item => `
+                        <tr class="border-b border-white/5 hover:bg-white/[0.01]">
+                            <td class="p-3"><b>${item.jenis}</b><br><span class="text-[10px] text-slate-400 font-mono">${item.tgl.replace('T',' ')}</span></td>
+                            <td class="p-3 text-slate-300">${item.ket}</td>
+                            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${item.hasil.includes('Baik')||item.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${item.hasil}</span></td>
+                            <td class="p-3 text-center">${item.tipeData === 'lk' ? `<button onclick="bukaLembarKerjaDinamisDariLog('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-[10px]">Lihat LK</button>` : `<span class="text-[10px] text-indigo-400 font-mono">Kalibrasi</span>`}</td>
+                        </tr>
+                    `).join('');
+                }
             }
         
-            // 2. Render Tab Standar Lainnya
-            document.getElementById('kartu-list-corrective').innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-preventive').innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-inspeksi').innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            document.getElementById('kartu-list-kalibrasi').innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            const lkCorrective = document.getElementById('kartu-list-corrective');
+            const lkPreventive = document.getElementById('kartu-list-preventive');
+            const lkInspeksi = document.getElementById('kartu-list-inspeksi');
+            const lkKalibrasi = document.getElementById('kartu-list-kalibrasi');
+
+            if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
             
-            // 3. Render Tab Buku Petunjuk & SOP
             const tbodyBuku = document.getElementById('kartu-list-buku-petunjuk');
-            const listBuku = dataBukuPetunjuk.filter(b => b.alatId == alatId);
-            if(listBuku.length === 0) {
-                tbodyBuku.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah.</td></tr>`;
-            } else {
-                tbodyBuku.innerHTML = listBuku.map(b => `
-                    <tr class="border-b border-white/5 hover:bg-white/[0.01]">
-                        <td class="p-4 font-bold text-white"><i class="fa-solid fa-book text-cyan-400 mr-2"></i> ${b.namaFile}</td>
-                        <td class="p-4 font-mono text-slate-400">${b.tglUpload}</td>
-                        <td class="p-4 text-center space-x-1">
-                            <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType}', '${b.namaFile}')" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview</button>
-                            ${currentActiveRole==='User'?'':`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}
-                        </td>
-                    </tr>
-                `).join('');
+            if(tbodyBuku) {
+                const listBuku = dataBukuPetunjuk.filter(b => b.alatId == alatId);
+                if(listBuku.length === 0) {
+                    tbodyBuku.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah.</td></tr>`;
+                } else {
+                    tbodyBuku.innerHTML = listBuku.map(b => `
+                        <tr class="border-b border-white/5 hover:bg-white/[0.01]">
+                            <td class="p-4 font-bold text-white"><i class="fa-solid fa-book text-cyan-400 mr-2"></i> ${b.namaFile}</td>
+                            <td class="p-4 font-mono text-slate-400">${b.tglUpload}</td>
+                            <td class="p-4 text-center space-x-1">
+                                <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType}', '${b.namaFile}')" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview</button>
+                                ${currentActiveRole==='User'?'':`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}
+                            </td>
+                        </tr>
+                    `).join('');
+                }
             }
-        
-            switchKartuTab('tab-k-semua'); toggleModal('modal-kartu', true);
+        }
+
+        function downloadLabelBarcodeFisik() {
+            if(!globalSelectedAlatIdForLog) return;
+            const alat = dataAlat.find(a => a.id == globalSelectedAlatIdForLog);
+            if(!alat) return;
+
+            const qrContainer = document.getElementById('qrcode-container');
+            const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
+            if(!qrImg) return alert("QR Code sedang dimuat, silakan coba beberapa saat lagi.");
+
+            const canvas = document.getElementById('canvas-label-print');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 600;
+            canvas.height = 400;
+
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+
+            ctx.fillStyle = "#000000";
+            ctx.font = "bold 16px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("UPTD RSUD PONDOKGEDE - IPSRS", canvas.width / 2, 45);
+
+            ctx.font = "bold 13px sans-serif";
+            ctx.fillStyle = "#334155";
+            ctx.fillText("LABEL REKAM JEJAK & AKREDITASI ASET", canvas.width / 2, 68);
+
+            ctx.beginPath();
+            ctx.moveTo(30, 78);
+            ctx.lineTo(canvas.width - 30, 78);
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = "#cbd5e1";
+            ctx.stroke();
+
+            let imgQr = new Image();
+            imgQr.src = qrImg.src || qrImg.toDataURL();
+            imgQr.onload = function() {
+                ctx.drawImage(imgQr, 40, 100, 180, 180);
+
+                ctx.font = "bold 11px sans-serif";
+                ctx.fillStyle = "#000000";
+                ctx.textAlign = "center";
+                ctx.fillText("SCAN KARTU ASET", 130, 295);
+
+                ctx.textAlign = "left";
+                let startX = 245;
+                let startY = 115;
+
+                ctx.font = "bold 11px sans-serif";
+                ctx.fillStyle = "#64748b";
+                ctx.fillText("NAMA ASET:", startX, startY);
+                ctx.font = "bold 16px sans-serif";
+                ctx.fillStyle = "#000000";
+                ctx.fillText(alat.nama || "-", startX, startY + 20);
+
+                ctx.font = "bold 11px sans-serif";
+                ctx.fillStyle = "#64748b";
+                ctx.fillText("MERK / MODEL:", startX, startY + 50);
+                ctx.font = "bold 14px sans-serif";
+                ctx.fillStyle = "#1e293b";
+                ctx.fillText(alat.merk || "-", startX, startY + 70);
+
+                ctx.font = "bold 11px sans-serif";
+                ctx.fillStyle = "#64748b";
+                ctx.fillText("NOMOR SERI (SN):", startX, startY + 100);
+                ctx.font = "bold 14px monospace";
+                ctx.fillStyle = "#1e293b";
+                ctx.fillText(alat.seri || alat.tipe || "-", startX, startY + 120);
+
+                ctx.font = "bold 11px sans-serif";
+                ctx.fillStyle = "#64748b";
+                ctx.fillText("UNIT / RUANGAN:", startX, startY + 150);
+                ctx.font = "bold 14px sans-serif";
+                ctx.fillStyle = "#2563eb";
+                ctx.fillText(alat.ruangan || alat.lokasi || "-", startX, startY + 170);
+
+                ctx.font = "italic 10px sans-serif";
+                ctx.fillStyle = "#64748b";
+                ctx.textAlign = "center";
+                ctx.fillText("Tempelkan label ini pada fisik alat medis untuk memudahkan pemindaian.", canvas.width / 2, 365);
+
+                const imageURI = canvas.toDataURL("image/png");
+                const downloadLink = document.createElement('a');
+                downloadLink.href = imageURI;
+                downloadLink.download = `Label_Barcode_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            };
         }
         
         function initSignatures() {
@@ -2667,7 +2594,6 @@ function validasiKredensialUser(e) {
                     
                     canvas.onmousedown = startDrawing; 
                     canvas.onmousemove = draw; 
-                    window.onmouseup = () => { isDrawing = false; };
                     
                     canvas.ontouchstart = startDrawing; 
                     canvas.ontouchmove = draw; 
@@ -2677,7 +2603,10 @@ function validasiKredensialUser(e) {
                 console.log("Canvas signature initialization notice:", e); 
             }
         }
-        
+
+        // Aman untuk mouse up global tanpa konflik
+        window.addEventListener('mouseup', () => {});
+
         function unggahBukuPetunjukBaru() {
             if(currentActiveRole === 'User') {
                 alert("❌ Akses ditolak! Hanya Admin dan Teknisi yang dapat mengunggah buku petunjuk.");
@@ -2743,14 +2672,11 @@ function validasiKredensialUser(e) {
                     { fps: 10, qrbox: { width: 200, height: 200 } },
                     (decodedText) => {
                         tutupModalScanQrPublik();
-                        
-                        // Ekstrak ID alat baik dari format URL maupun teks ID langsung
                         let targetAlatId = decodedText;
                         if (decodedText.includes("?alat=")) {
                             const parts = decodedText.split("?alat=");
                             targetAlatId = parts[1];
                         }
-                        
                         bukaKartuPemeliharaanPublik(targetAlatId);
                     },
                     (errorMessage) => {}
@@ -2773,24 +2699,25 @@ function validasiKredensialUser(e) {
             }
         }
         
-        // Fungsi khusus membuka rekam jejak tanpa harus login (Mode Publik / Asesor)
         function bukaKartuPemeliharaanPublik(alatId) {
             const alat = dataAlat.find(a => a.id == alatId);
             if (!alat) {
                 alert("❌ Barcode tidak valid atau ID alat tidak ditemukan di database!");
                 return;
             }
-            // Buka modal rekam jejak normal yang sudah ada
             bukaKartuPemeliharaan(alatId);
         }
         
-        window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
-        // Cek otomatis jika halaman dibuka lewat Scan QR Code dari luar (Link URL)
+        window.onload = function() { 
+            renderOpsiDropdownAwal(); 
+            gantiSubTabDokumen('all'); 
+            setTimeout(renderGrafikDashboardDinamis, 500); 
+        };
+
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const scanAlatId = urlParams.get('alat');
             if (scanAlatId) {
-                // Tunggu sebentar sampai data database selesai dimuat, lalu buka kartu pemeliharaan publik
                 const cekDataInterval = setInterval(() => {
                     if (dataAlat.length > 0) {
                         clearInterval(cekDataInterval);
@@ -2799,13 +2726,6 @@ function validasiKredensialUser(e) {
                 }, 500);
             }
         });
-    </script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-          .then(() => console.log("Service Worker Berhasil Terdaftar"))
-          .catch((err) => console.log("Service Worker Gagal:", err));
-      }
     </script>
     
     <!-- MODAL KAMERA SCANNER QR PUBLIK -->
