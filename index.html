@@ -235,7 +235,7 @@
         </div>
 
         <!-- AREA UTAMA APLIKASI -->
-        <div class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar">
+        <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
             
             <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center no-print border-b border-slate-800/80">
                 <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 mr-5 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
@@ -2167,13 +2167,26 @@ function validasiKredensialUser(e) {
         
         function toggleSidebarMenu(s) { 
             const sb = document.getElementById('app-sidebar'); 
+            const mainArea = document.getElementById('main-content-area');
+            
             if(sb) { 
-                if (s === true) {
+                // Cek apakah sidebar sedang tertutup atau terbuka
+                const isClosed = sb.classList.contains('-translate-x-full');
+                
+                if(s === true || (s === undefined && isClosed)) {
+                    // Buka sidebar
                     sb.classList.remove('-translate-x-full');
-                } else if(s === false) {
-                    sb.classList.add('-translate-x-full');
+                    // Di layar besar, dorong konten utama ke kanan agar tidak tertutup
+                    if (window.innerWidth >= 768 && mainArea) {
+                        mainArea.style.marginLeft = "16rem"; // 16rem setara dengan lebar sidebar (w-64)
+                    }
                 } else {
-                    sb.classList.toggle('-translate-x-full'); 
+                    // Tutup sidebar
+                    sb.classList.add('-translate-x-full');
+                    // Kembalikan konten utama menjadi full
+                    if (mainArea) {
+                        mainArea.style.marginLeft = "0rem";
+                    }
                 }
             } 
         }
