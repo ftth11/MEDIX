@@ -729,6 +729,11 @@
                 <div><p class="text-slate-500 font-bold uppercase text-[10px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-sm">-</p></div>
                 <div><p class="text-slate-500 font-bold uppercase text-[10px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-sm">-</p></div>
                 <div><p class="text-slate-500 font-bold uppercase text-[10px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-sm">-</p></div>
+                <!-- Barcode di Bagian Atas Samping Informasi Aset -->
+                <div class="flex flex-col items-center justify-center bg-white p-2 rounded-xl shadow-md">
+                    <div id="qrcode-container" class="w-[75px] h-[75px] flex items-center justify-center"></div>
+                    <span class="text-[9px] text-slate-900 font-bold mt-1">Scan Akreditasi</span>
+                </div>
             </div>
             
             <!-- TOMBOL TAB REKAM JEJAK (DITAMBAH TAB 'SEMUA' & 'BUKU PETUNJUK') -->
@@ -2430,14 +2435,18 @@ function validasiKredensialUser(e) {
             document.getElementById('kartu-seri').innerText = sSeri || '-'; 
             document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
             
-            // Generate QR Code otomatis berdasarkan ID Alat
+            // Generate QR Code otomatis berupa Link URL agar bisa langsung dibuka saat discan dari HP luar
             const qrContainer = document.getElementById('qrcode-container');
             if (qrContainer) {
-                qrContainer.innerHTML = ""; // Bersihkan QR sebelumnya
+                qrContainer.innerHTML = ""; 
+                
+                // Buat link URL lengkap menuju aplikasi Anda dengan parameter ID alat
+                const urlAplikasiAlat = window.location.origin + window.location.pathname + "?alat=" + alatId;
+        
                 new QRCode(qrContainer, {
-                    text: alatId, // Isi QR adalah ID unik database alat tersebut
-                    width: 64,
-                    height: 64,
+                    text: urlAplikasiAlat, // Isi QR sekarang berupa Link URL web
+                    width: 75,
+                    height: 75,
                     colorDark : "#000000",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
@@ -2653,6 +2662,20 @@ function validasiKredensialUser(e) {
         }
         
         window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
+        // Cek otomatis jika halaman dibuka lewat Scan QR Code dari luar (Link URL)
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const scanAlatId = urlParams.get('alat');
+            if (scanAlatId) {
+                // Tunggu sebentar sampai data database selesai dimuat, lalu buka kartu pemeliharaan publik
+                const cekDataInterval = setInterval(() => {
+                    if (dataAlat.length > 0) {
+                        clearInterval(cekDataInterval);
+                        bukaKartuPemeliharaan(scanAlatId);
+                    }
+                }, 500);
+            }
+        });
     </script>
     <script>
       if ('serviceWorker' in navigator) {
