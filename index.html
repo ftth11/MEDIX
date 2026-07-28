@@ -292,10 +292,15 @@
                             <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 text-center w-full border-b border-white/5 pb-1">Persentase Kelaikan Aset</h4>
                             <div class="w-full max-w-[120px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 120px; max-width: 120px;"></canvas></div>
                         </div>
-                        <!-- Grafik Batang Sebaran Ruangan (2 Kolom di Desktop) -->
-                        <div class="glass-panel p-3 rounded-xl shadow-xl flex flex-col justify-between lg:col-span-2 h-[210px]">
-                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 border-b border-white/5 pb-1">Sebaran Seluruh Ruangan</h4>
-                            <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; max-height: 150px;"></canvas></div>
+                        <!-- Grafik Batang Sebaran Ruangan Menjadi Lebih Luas & Elegan -->
+                        <div class="glass-panel p-4 rounded-xl shadow-xl flex flex-col justify-between lg:col-span-2 h-[320px]">
+                            <h4 class="text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-2 border-b border-white/5 pb-1.5 flex items-center justify-between">
+                                <span><i class="fa-solid fa-hospital mr-1.5 text-blue-400"></i> Sebaran Seluruh Ruangan / Unit</span>
+                                <span class="text-[9px] text-cyan-400 font-mono">Real-time Data</span>
+                            </h4>
+                            <div class="w-full flex-1 relative overflow-y-auto no-scrollbar">
+                                <canvas id="chartSebaranRuangan"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1157,19 +1162,55 @@
                 const ctxRuangan = document.getElementById('chartSebaranRuangan');
                 if (ctxRuangan && labelRuangan.length > 0) {
                     if (instanceChartRuangan) instanceChartRuangan.destroy();
+                    
+                    // Buat efek gradien warna biru modern
+                    const ctx = ctxRuangan.getContext('2d');
+                    const gradient = ctx.createLinearGradient(0, 0, 500, 0);
+                    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
+                    gradient.addColorStop(1, 'rgba(6, 182, 212, 0.8)');
+
                     instanceChartRuangan = new Chart(ctxRuangan, {
                         type: 'bar',
                         data: {
                             labels: labelRuangan,
-                            datasets: [{ label: 'Jumlah Aset', data: skorRuangan, backgroundColor: 'rgba(59, 130, 246, 0.4)', borderColor: '#3b82f6', borderWidth: 1.5, borderRadius: 6 }]
+                            datasets: [{
+                                label: 'Jumlah Aset',
+                                data: skorRuangan,
+                                backgroundColor: gradient,
+                                borderColor: '#38bdf8',
+                                borderWidth: 1,
+                                borderRadius: 4,
+                                barPercentage: 0.7
+                            }]
                         },
                         options: {
-                            responsive: true, maintainAspectRatio: false,
+                            indexAxis: 'y', // <--- MEMBUAT GRAFIK MENJADI HORIZONTAL (NAMA RUANGAN TAMPIL SEMUA KE BAWAH)
+                            responsive: true,
+                            maintainAspectRatio: false,
                             scales: {
-                                x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } },
-                                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                                x: {
+                                    grid: { color: 'rgba(255,255,255,0.05)' },
+                                    ticks: { color: '#94a3b8', font: { size: 10 } }
+                                },
+                                y: {
+                                    grid: { display: false },
+                                    ticks: { 
+                                        color: '#e2e8f0', 
+                                        font: { size: 10, weight: 'bold' } 
+                                    }
+                                }
                             },
-                            plugins: { legend: { display: false } }
+                            plugins: { 
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0f172a',
+                                    titleColor: '#38bdf8',
+                                    bodyColor: '#fff',
+                                    borderColor: 'rgba(255,255,255,1)',
+                                    borderWidth: 1,
+                                    padding: 10
+                                }
+                            }
                         }
                     });
                 }
