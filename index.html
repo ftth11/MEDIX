@@ -2765,12 +2765,6 @@
                 return;
             }
 
-            const printWindow = window.open('', '_blank');
-            if (!printWindow) {
-                alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini agar dapat mencetak PDF.");
-                return;
-            }
-
             let htmlContent = `
                 <!DOCTYPE html>
                 <html lang="id">
@@ -2856,7 +2850,6 @@
                 `;
             });
 
-            // Kirim data array alat ke dalam skrip pop-up agar QR code dirender sempurna secara lokal
             htmlContent += `
                     </div>
                     <script>
@@ -2878,7 +2871,6 @@
                                 }
                             });
 
-                            // Otomatis munculkan jendela print setelah QR selesai digambar
                             setTimeout(() => {
                                 window.print();
                             }, 1000);
@@ -2888,9 +2880,14 @@
                 </html>
             `;
 
-            printWindow.document.open();
-            printWindow.document.write(htmlContent);
-            printWindow.document.close();
+            // Buat Blob HTML agar browser tidak memblokir halaman kosong (about:blank)
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const blobUrl = URL.createObjectURL(blob);
+            
+            const printWindow = window.open(blobUrl, '_blank');
+            if (!printWindow) {
+                alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini.");
+            }
         }
         
         window.onload = function() { 
