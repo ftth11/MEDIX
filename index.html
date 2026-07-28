@@ -723,20 +723,26 @@
     <!-- MODAL KARTU LOG ASSET -->
     <div id="modal-kartu" class="fixed inset-0 bg-slate-950/80 z-[999] flex items-center justify-center hidden no-print backdrop-blur-md">
         <div class="bg-slate-900 w-full h-full flex flex-col text-slate-200">
-            <div class="p-4 bg-slate-950 text-white flex justify-between items-center shadow-md"><h3 class="font-bold text-sm flex items-center"><i class="fa-solid fa-address-card mr-2 text-blue-400"></i>REKAM JEJAK PEMELIHARAAN ASSET</h3><button type="button" onclick="toggleModal('modal-kartu', false)" class="text-gray-400 bg-slate-800/50 px-3 py-1.5 rounded-xl hover:text-white"><i class="fa-solid fa-xmark mr-1"></i> Tutup Log</button></div>
-            <div class="p-4 bg-slate-950/40 text-xs grid grid-cols-2 md:grid-cols-4 gap-4 shadow-inner">
-                <div><p class="text-slate-500 font-bold uppercase text-[10px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-sm">-</p></div>
-                <div><p class="text-slate-500 font-bold uppercase text-[10px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-sm">-</p></div>
-                <div><p class="text-slate-500 font-bold uppercase text-[10px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-sm">-</p></div>
-                <div><p class="text-slate-500 font-bold uppercase text-[10px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-sm">-</p></div>
-                <!-- Barcode di Bagian Atas Samping Informasi Aset -->
-                <div class="flex flex-col items-center justify-center bg-white p-2 rounded-xl shadow-md">
-                    <div id="qrcode-container" class="w-[75px] h-[75px] flex items-center justify-center"></div>
-                    <span class="text-[9px] text-slate-900 font-bold mt-1">Scan Akreditasi</span>
+            <div class="p-4 bg-slate-950 text-white flex justify-between items-center shadow-md">
+                <h3 class="font-bold text-sm flex items-center"><i class="fa-solid fa-address-card mr-2 text-blue-400"></i>REKAM JEJAK PEMELIHARAAN ASSET</h3>
+                <button type="button" onclick="toggleModal('modal-kartu', false)" class="text-gray-400 bg-slate-800/50 px-3 py-1.5 rounded-xl hover:text-white"><i class="fa-solid fa-xmark mr-1"></i> Tutup Log</button>
+            </div>
+            
+            <!-- INFORMASI ASET & BARCODE DALAM 1 BARIS (DI BAGIAN ATAS) -->
+            <div class="p-3 bg-slate-950/40 text-xs grid grid-cols-2 md:grid-cols-5 gap-3 shadow-inner items-center">
+                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-xs truncate">-</p></div>
+                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-xs truncate">-</p></div>
+                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-xs truncate">-</p></div>
+                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-xs truncate">-</p></div>
+                
+                <!-- Barcode di Samping Kanan dalam 1 Baris -->
+                <div class="flex items-center justify-center space-x-2 bg-white/5 p-1.5 rounded-xl border border-white/10">
+                    <div id="qrcode-container" class="w-12 h-12 flex items-center justify-center bg-white p-1 rounded"></div>
+                    <span class="text-[9px] text-slate-300 font-bold leading-tight">Scan<br>Akreditasi</span>
                 </div>
             </div>
             
-            <!-- TOMBOL TAB REKAM JEJAK (DITAMBAH TAB 'SEMUA' & 'BUKU PETUNJUK') -->
+            <!-- TOMBOL TAB REKAM JEJAK -->
             <div class="flex border-b border-white/5 text-xs bg-slate-950/20 overflow-x-auto no-scrollbar">
                 <button type="button" onclick="switchKartuTab('tab-k-semua')" id="btn-k-semua" class="kartu-tab border-b-2 border-transparent px-5 py-3.5 text-slate-400 font-bold active">Semua Log</button>
                 <button type="button" onclick="switchKartuTab('tab-k-corrective')" id="btn-k-corrective" class="kartu-tab border-b-2 border-transparent px-5 py-3.5 text-slate-400">Corrective Log</button>
@@ -745,7 +751,7 @@
                 <button type="button" onclick="switchKartuTab('tab-k-kalibrasi')" id="btn-k-kalibrasi" class="kartu-tab border-b-2 border-transparent px-5 py-3.5 text-slate-400">Kalibrasi Resmi</button>
                 <button type="button" onclick="switchKartuTab('tab-k-buku')" id="btn-k-buku" class="kartu-tab border-b-2 border-transparent px-5 py-3.5 text-cyan-400 font-bold">📖 Buku Petunjuk & SOP</button>
             </div>
-
+            
             <div class="flex-1 overflow-y-auto p-6 bg-slate-950/10 text-xs no-scrollbar">
                 <!-- Konten Tab Semua Log -->
                 <div id="tab-k-semua" class="kartu-content-box space-y-3"><div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 no-scrollbar"><table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Waktu / Jenis Pekerjaan</th><th class="p-4">Uraian / Keterangan</th><th class="p-4 text-center">Hasil / Status</th><th class="p-4 text-center">Aksi</th></tr></thead><tbody id="kartu-list-semua" class="divide-y divide-white/5"></tbody></table></div></div>
@@ -769,17 +775,6 @@
                     </div>
                     <div class="overflow-x-auto bg-slate-900 rounded-xl border border-white/5 no-scrollbar">
                         <table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Nama Dokumen / Keterangan File</th><th class="p-4">Waktu Upload</th><th class="p-4 text-center">Aksi Preview</th></tr></thead><tbody id="kartu-list-buku-petunjuk" class="divide-y divide-white/5"></tbody></table>
-                    </div>
-                </div>
-                <div class="p-4 bg-slate-950/40 text-xs grid grid-cols-2 md:grid-cols-5 gap-4 shadow-inner items-center">
-                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-sm">-</p></div>
-                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-sm">-</p></div>
-                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-sm">-</p></div>
-                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-sm">-</p></div>
-                    <!-- Kotak Barcode / QR Code Unik Alat -->
-                    <div class="flex flex-col items-center justify-center bg-white p-2 rounded-xl shadow-md">
-                        <div id="qrcode-container" class="w-16 h-16 flex items-center justify-center"></div>
-                        <span class="text-[9px] text-slate-900 font-bold mt-1">Scan Rekam Jejak</span>
                     </div>
                 </div>
             </div>
@@ -2435,24 +2430,21 @@ function validasiKredensialUser(e) {
             document.getElementById('kartu-seri').innerText = sSeri || '-'; 
             document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
             
-            // Generate QR Code otomatis berupa Link URL agar bisa langsung dibuka saat discan dari HP luar
+            // Generate QR Code berisi URL lengkap atau ID unik yang aman dibaca scanner
             const qrContainer = document.getElementById('qrcode-container');
             if (qrContainer) {
                 qrContainer.innerHTML = ""; 
-                
-                // Buat link URL lengkap menuju aplikasi Anda dengan parameter ID alat
-                const urlAplikasiAlat = window.location.origin + window.location.pathname + "?alat=" + alatId;
-        
+                const targetUrl = window.location.origin + window.location.pathname + "?alat=" + alatId;
                 new QRCode(qrContainer, {
-                    text: urlAplikasiAlat, // Isi QR sekarang berupa Link URL web
-                    width: 75,
-                    height: 75,
+                    text: targetUrl,
+                    width: 55,
+                    height: 55,
                     colorDark : "#000000",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
                 });
             }
-            
+                        
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
         
@@ -2614,7 +2606,6 @@ function validasiKredensialUser(e) {
         function bukaModalScanQrPublik() {
             document.getElementById('modal-scanner-publik').classList.remove('hidden');
             
-            // Inisialisasi kamera scanner
             setTimeout(() => {
                 if (!html5QrCodeScanner) {
                     html5QrCodeScanner = new Html5Qrcode("reader-scanner-div");
@@ -2623,14 +2614,18 @@ function validasiKredensialUser(e) {
                     { facingMode: "environment" }, 
                     { fps: 10, qrbox: { width: 200, height: 200 } },
                     (decodedText) => {
-                        // Jika QR berhasil dibaca dan memuat ID Alat
                         tutupModalScanQrPublik();
-                        // Langsung buka modal rekam jejak alat tersebut secara publik
-                        bukaKartuPemeliharaanPublik(decodedText);
+                        
+                        // Ekstrak ID alat baik dari format URL maupun teks ID langsung
+                        let targetAlatId = decodedText;
+                        if (decodedText.includes("?alat=")) {
+                            const parts = decodedText.split("?alat=");
+                            targetAlatId = parts[1];
+                        }
+                        
+                        bukaKartuPemeliharaanPublik(targetAlatId);
                     },
-                    (errorMessage) => {
-                        // Abaikan error frame kecil saat mencari QR
-                    }
+                    (errorMessage) => {}
                 ).catch(err => {
                     console.error("Gagal akses kamera:", err);
                     alert("Tidak dapat mengakses kamera perangkat.");
