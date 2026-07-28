@@ -2995,12 +2995,11 @@
             renderOpsiDropdownAwal(); 
             gantiSubTabDokumen('all'); 
             setTimeout(renderGrafikDashboardDinamis, 500); 
-        };
 
-        window.addEventListener('DOMContentLoaded', () => {
+            // Cek URL parameter dengan aman tanpa memicu freeze jika kosong
             const urlParams = new URLSearchParams(window.location.search);
             const scanAlatId = urlParams.get('alat');
-            if (scanAlatId) {
+            if (scanAlatId && scanAlatId.trim() !== "") {
                 const cekDataInterval = setInterval(() => {
                     if (dataAlat.length > 0) {
                         clearInterval(cekDataInterval);
@@ -3008,7 +3007,7 @@
                     }
                 }, 500);
             }
-        });
+        };
     </script>
     
     <!-- MODAL KAMERA SCANNER QR PUBLIK -->
