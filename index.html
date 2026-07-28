@@ -750,7 +750,7 @@
                     <div><p class="text-slate-500 font-bold uppercase text-[9px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-xs truncate">-</p></div>
                 </div>
                 
-                <!-- Kotak Barcode Jelas & Tombol Download (4 Kolom di Desktop, Sejajar di Mobile) -->
+                <!-- Kotak Barcode: Hanya menampilkan gambar QR Code saja -->
                 <div class="md:col-span-4 flex items-center justify-end space-x-3 bg-white/5 p-2 rounded-xl border border-white/10">
                     <div class="flex flex-col items-center">
                         <!-- Canvas tersembunyi untuk merender cetakan download label resolusi tinggi -->
@@ -758,9 +758,7 @@
                         <!-- QR Code Diperbesar agar Sangat Jelas & Mudah Discan -->
                         <div id="qrcode-container" class="w-[90px] h-[90px] flex items-center justify-center bg-white p-1 rounded shadow"></div>
                     </div>
-                    <div class="flex flex-col justify-center space-y-1.5 flex-1">
-                        <span class="text-[10px] text-cyan-400 font-bold leading-tight">Barcode Alat</span>
-                        <p class="text-[9px] text-slate-400 leading-3">Scan untuk melihat rekam jejak, SOP, & kalibrasi.</p>
+                    <div class="flex flex-col justify-center space-y-1.5">
                         <button type="button" onclick="downloadLabelBarcodeFisik()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] transition flex items-center justify-center space-x-1 shadow">
                             <i class="fa-solid fa-download"></i> <span>Download Label</span>
                         </button>
