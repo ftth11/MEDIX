@@ -304,6 +304,25 @@
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Master Data Aset Medis</h2>
                         <div class="flex space-x-2" id="master-action-buttons-container"></div>
+                        const containerMasterAction = document.getElementById('master-action-buttons-container');
+                          if (containerMasterAction) {
+                              if (currentActiveRole === 'Admin') {
+                                  containerMasterAction.innerHTML = `
+                                      <button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>
+                                      <button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>
+                                      <label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer">
+                                          <i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel
+                                          <input type="file" id="file-excel-input" accept=".xlsx, .xls, .csv" onchange="importDataDariExcel(event)" class="hidden">
+                                      </label>
+                                      <button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>
+                                  `;
+                              } else {
+                                  containerMasterAction.innerHTML = `
+                                      <button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>
+                                      <span class="text-[11px] text-slate-400 italic ml-2">Manajemen Data Oleh Admin</span>
+                                  `;
+                              }
+                          }
                     </div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
                         <div class="p-4 border-b border-white/5 bg-white/[0.02]"><input type="text" id="search-alat" onkeyup="filterAlat()" class="w-full max-w-md px-4 py-2 border border-white/10 rounded-xl text-xs bg-slate-950/40 text-white placeholder-slate-500 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, izin edar, ruangan..."></div>
@@ -2467,23 +2486,19 @@
             const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
             if(!qrImg) return alert("QR Code sedang dimuat, silakan coba beberapa saat lagi.");
 
-            // Buat elemen canvas baru secara dinamis (aman untuk HP & Laptop)
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
             canvas.width = 600;
             canvas.height = 400;
 
-            // Background putih bersih untuk label fisik
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Bingkai luar label
             ctx.strokeStyle = "#000000";
             ctx.lineWidth = 4;
             ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
 
-            // Header Label Rumah Sakit
             ctx.fillStyle = "#000000";
             ctx.font = "bold 16px sans-serif";
             ctx.textAlign = "center";
@@ -2493,7 +2508,6 @@
             ctx.fillStyle = "#334155";
             ctx.fillText("LABEL REKAM JEJAK & AKREDITASI ASET", canvas.width / 2, 68);
 
-            // Garis pembatas header
             ctx.beginPath();
             ctx.moveTo(30, 78);
             ctx.lineTo(canvas.width - 30, 78);
@@ -2501,22 +2515,18 @@
             ctx.strokeStyle = "#cbd5e1";
             ctx.stroke();
 
-            // Gambar QR Code ke Kanvas
             let imgQr = new Image();
-            // Menangani sumber gambar QR baik berupa tag <img> maupun <canvas>
+            imgQr.crossOrigin = "anonymous";
             imgQr.src = qrImg.src || qrImg.toDataURL();
             
             imgQr.onload = function() {
-                // Posisi QR Code di sebelah kiri
                 ctx.drawImage(imgQr, 40, 100, 180, 180);
 
-                // Kotak kecil di bawah QR
                 ctx.font = "bold 11px sans-serif";
                 ctx.fillStyle = "#000000";
                 ctx.textAlign = "center";
                 ctx.fillText("SCAN KARTU ASET", 130, 295);
 
-                // Teks Keterangan di sebelah kanan QR Code
                 ctx.textAlign = "left";
                 let startX = 245;
                 let startY = 115;
@@ -2549,34 +2559,27 @@
                 ctx.fillStyle = "#2563eb";
                 ctx.fillText(alat.ruangan || alat.lokasi || "-", startX, startY + 170);
 
-                // Footer label
                 ctx.font = "italic 10px sans-serif";
                 ctx.fillStyle = "#64748b";
                 ctx.textAlign = "center";
                 ctx.fillText("Tempelkan label ini pada fisik alat medis untuk memudahkan pemindaian.", canvas.width / 2, 365);
 
-                // Kompatibilitas Unduhan untuk Perangkat Mobile (HP) & Laptop
                 const imageURI = canvas.toDataURL("image/png");
-                
-                // Cek apakah browser mendukung fitur share file (biasanya di HP Android/iOS)
-                if (navigator.canShare && navigator.share) {
-                    canvas.toBlob(function(blob) {
-                        const file = new File([blob], `Label_${(alat.nama || 'Alat').replace(/\s+/g, '_')}.png`, { type: "png" });
-                        navigator.share({
-                            files: [file],
-                            title: 'Label Barcode Aset',
-                            text: `Label Akreditasi: ${alat.nama}`
-                        }).catch(() => {
-                            // Jika dibatalkan user, fallback ke metode download biasa
-                            triggerDownloadFallback(imageURI, alat);
-                        });
-                    });
+
+                // Deteksi HP / Mobile Browser -> Buka modal preview atau tab baru agar mudah di-save
+                if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    lihatFileLangsung(imageURI, 'img', 'Label Barcode: ' + alat.nama);
                 } else {
-                    triggerDownloadFallback(imageURI, alat);
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imageURI;
+                    downloadLink.download = `Label_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
                 }
             };
         }
-
+        
         // Fungsi pendukung unduh standar
         function triggerDownloadFallback(imageURI, alat) {
             const downloadLink = document.createElement('a');
@@ -2764,6 +2767,148 @@
 
             // Panggil fungsi utama rekam jejak aset
             bukaKartuPemeliharaan(alat.id);
+        }
+
+        // Fungsi untuk mencetak / mendownload label barcode massal seluruh alkes dalam bentuk PDF
+        function cetakLabelBarcodeMassalPdf() {
+            if (!dataAlat || dataAlat.length === 0) {
+                alert("❌ Tidak ada data aset medis untuk dicetak!");
+                return;
+            }
+
+            if (!confirm(`Akan menyiapkan ${dataAlat.length} label barcode aset untuk dicetak/disimpan ke PDF. Lanjutkan?`)) {
+                return;
+            }
+
+            // Buat jendela cetak baru (iframe tersembunyi / popup bersih)
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini agar dapat mencetak PDF.");
+                return;
+            }
+
+            // Susun template HTML khusus cetak label berbentuk grid kartu rapi
+            let htmlContent = `
+                <!DOCTYPE html>
+                <html lang="id">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Cetak Label Barcode Massal - UPTD RSUD Pondokgede</title>
+                    <style>
+                        body { font-family: sans-serif; margin: 0; padding: 10px; background: #fff; color: #000; }
+                        .grid-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; }
+                        .label-card {
+                            width: 340px;
+                            height: 190px;
+                            border: 2px solid #000;
+                            border-radius: 8px;
+                            padding: 8px;
+                            box-sizing: border-box;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            page-break-inside: avoid;
+                            background: #fff;
+                        }
+                        .header-label { text-align: center; border-bottom: 1.5px solid #333; padding-bottom: 4px; }
+                        .header-label h3 { margin: 0; font-size: 11px; font-weight: bold; color: #000; }
+                        .header-label p { margin: 2px 0 0 0; font-size: 9px; color: #333; font-weight: bold; }
+                        .content-body { display: flex; align-items: center; margin-top: 5px; gap: 10px; }
+                        .qr-box { width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+                        .qr-box canvas, .qr-box img { width: 85px !important; height: 85px !important; }
+                        .info-box { flex: 1; font-size: 9px; overflow: hidden; }
+                        .info-row { margin-bottom: 3px; }
+                        .info-row span.label-title { font-size: 8px; color: #555; font-weight: bold; display: block; text-transform: uppercase; }
+                        .info-row span.label-val { font-size: 11px; font-weight: bold; color: #000; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                        .info-row span.label-val.sn { font-family: monospace; font-size: 10px; }
+                        .info-row span.label-val.ruang { color: #1d4ed8; }
+                        .footer-label { text-align: center; font-size: 7.5px; color: #666; border-top: 1px dotted #ccc; padding-top: 2px; font-style: italic; }
+                        @media print {
+                            body { padding: 0; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                    <!-- Pustaka QRCodeJS untuk merender barcode di halaman cetak -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+                </head>
+                <body>
+                    <div class="no-print" style="text-align: center; margin-bottom: 15px; background: #f1f5f9; padding: 10px; border-radius: 6px;">
+                        <button onclick="window.print()" style="background: #2563eb; color: #fff; border: none; padding: 8px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 12px;">🖨️ Cetak / Simpan sebagai PDF</button>
+                        <p style="margin: 5px 0 0 0; font-size: 11px; color: #475569;">(Pada HP Android / Laptop, pilih "Save as PDF" / "Simpan sebagai PDF" pada pilihan printer)</p>
+                    </div>
+                    <div class="grid-container" id="print-grid">
+            `;
+
+            dataAlat.forEach((alat, index) => {
+                let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
+                let sSeri = alat.seri || alat.tipe || '-';
+                let targetUrl = window.location.origin + window.location.pathname + "?alat=" + alat.id;
+
+                htmlContent += `
+                    <div class="label-card">
+                        <div class="header-label">
+                            <h3>UPTD RSUD PONDOKGEDE - IPSRS</h3>
+                            <p>LABEL REKAM JEJAK & AKREDITASI ASET</p>
+                        </div>
+                        <div class="content-body">
+                            <div class="qr-box" id="qrcode-${index}"></div>
+                            <div class="info-box">
+                                <div class="info-row">
+                                    <span class="label-title">Nama Aset:</span>
+                                    <span class="label-val">${alat.nama || '-'}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label-title">Merk / Model:</span>
+                                    <span class="label-val">${alat.merk || '-'}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label-title">Nomor Seri (SN):</span>
+                                    <span class="label-val sn">${sSeri}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label-title">Unit / Ruangan:</span>
+                                    <span class="label-val ruang">${sLokasi}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer-label">Scan untuk melihat rekam jejak, SOP, & kalibrasi alat.</div>
+                    </div>
+                `;
+            });
+
+            htmlContent += `
+                    </div>
+                    <script>
+                        window.onload = function() {
+                            // Generate QR Code untuk setiap kartu secara otomatis
+                            const dataAlatLength = ${dataAlat.length};
+                            const baseUrl = "${window.location.origin + window.location.pathname}";
+                            const allAlat = ${JSON.stringify(dataAlat)};
+
+                            for(let i = 0; i < allAlat.length; i++) {
+                                let a = allAlat[i];
+                                new QRCode(document.getElementById("qrcode-" + i), {
+                                    text: baseUrl + "?alat=" + a.id,
+                                    width: 85,
+                                    height: 85,
+                                    colorDark : "#000000",
+                                    colorLight : "#ffffff",
+                                    correctLevel : QRCode.CorrectLevel.H
+                                });
+                            }
+                            
+                            // Beri jeda sebentar agar QR code selesai dirender sebelum dialog cetak muncul
+                            setTimeout(() => {
+                                window.print();
+                            }, 800);
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
         }
         
         window.onload = function() { 
