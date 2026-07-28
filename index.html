@@ -2467,19 +2467,23 @@
             const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
             if(!qrImg) return alert("QR Code sedang dimuat, silakan coba beberapa saat lagi.");
 
-            const canvas = document.getElementById('canvas-label-print');
+            // Buat elemen canvas baru secara dinamis (aman untuk HP & Laptop)
+            const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
             canvas.width = 600;
             canvas.height = 400;
 
+            // Background putih bersih untuk label fisik
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Bingkai luar label
             ctx.strokeStyle = "#000000";
             ctx.lineWidth = 4;
             ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
 
+            // Header Label Rumah Sakit
             ctx.fillStyle = "#000000";
             ctx.font = "bold 16px sans-serif";
             ctx.textAlign = "center";
@@ -2489,6 +2493,7 @@
             ctx.fillStyle = "#334155";
             ctx.fillText("LABEL REKAM JEJAK & AKREDITASI ASET", canvas.width / 2, 68);
 
+            // Garis pembatas header
             ctx.beginPath();
             ctx.moveTo(30, 78);
             ctx.lineTo(canvas.width - 30, 78);
@@ -2496,16 +2501,22 @@
             ctx.strokeStyle = "#cbd5e1";
             ctx.stroke();
 
+            // Gambar QR Code ke Kanvas
             let imgQr = new Image();
+            // Menangani sumber gambar QR baik berupa tag <img> maupun <canvas>
             imgQr.src = qrImg.src || qrImg.toDataURL();
+            
             imgQr.onload = function() {
+                // Posisi QR Code di sebelah kiri
                 ctx.drawImage(imgQr, 40, 100, 180, 180);
 
+                // Kotak kecil di bawah QR
                 ctx.font = "bold 11px sans-serif";
                 ctx.fillStyle = "#000000";
                 ctx.textAlign = "center";
                 ctx.fillText("SCAN KARTU ASET", 130, 295);
 
+                // Teks Keterangan di sebelah kanan QR Code
                 ctx.textAlign = "left";
                 let startX = 245;
                 let startY = 115;
@@ -2538,19 +2549,42 @@
                 ctx.fillStyle = "#2563eb";
                 ctx.fillText(alat.ruangan || alat.lokasi || "-", startX, startY + 170);
 
+                // Footer label
                 ctx.font = "italic 10px sans-serif";
                 ctx.fillStyle = "#64748b";
                 ctx.textAlign = "center";
                 ctx.fillText("Tempelkan label ini pada fisik alat medis untuk memudahkan pemindaian.", canvas.width / 2, 365);
 
+                // Kompatibilitas Unduhan untuk Perangkat Mobile (HP) & Laptop
                 const imageURI = canvas.toDataURL("image/png");
-                const downloadLink = document.createElement('a');
-                downloadLink.href = imageURI;
-                downloadLink.download = `Label_Barcode_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
+                
+                // Cek apakah browser mendukung fitur share file (biasanya di HP Android/iOS)
+                if (navigator.canShare && navigator.share) {
+                    canvas.toBlob(function(blob) {
+                        const file = new File([blob], `Label_${(alat.nama || 'Alat').replace(/\s+/g, '_')}.png`, { type: "png" });
+                        navigator.share({
+                            files: [file],
+                            title: 'Label Barcode Aset',
+                            text: `Label Akreditasi: ${alat.nama}`
+                        }).catch(() => {
+                            // Jika dibatalkan user, fallback ke metode download biasa
+                            triggerDownloadFallback(imageURI, alat);
+                        });
+                    });
+                } else {
+                    triggerDownloadFallback(imageURI, alat);
+                }
             };
+        }
+
+        // Fungsi pendukung unduh standar
+        function triggerDownloadFallback(imageURI, alat) {
+            const downloadLink = document.createElement('a');
+            downloadLink.href = imageURI;
+            downloadLink.download = `Label_Barcode_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         }
         
         function initSignatures() {
