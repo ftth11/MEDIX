@@ -254,40 +254,40 @@
                     <ul id="list-warning-kalibrasi" class="list-disc pl-5 space-y-1 max-h-24 overflow-y-auto text-slate-300 no-scrollbar"></ul>
                 </div>
 
-                <div id="tab-dashboard" class="tab-content space-y-6 hidden">
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 no-print">
-                        <div onclick="clickDashboardStat('all')" class="glass-panel p-5 rounded-2xl shadow-2xl flex items-center justify-between cursor-pointer hover:scale-[1.03] hover:border-blue-500/30 transition">
-                            <div><p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Total Aset Medis</p><h3 id="stat-total" class="text-3xl font-black text-white mt-1">0</h3></div>
-                            <div class="p-3 bg-blue-500/10 text-blue-400 rounded-xl border border-blue-500/20"><i class="fa-solid fa-box-archive text-lg"></i></div>
+                <div id="tab-dashboard" class="tab-content space-y-3">
+                    <!-- 4 Kartu Statistik Atas -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 no-print">
+                        <div onclick="clickDashboardStat('all')" class="glass-panel p-3 rounded-xl shadow-xl flex items-center justify-between cursor-pointer hover:scale-[1.02] transition">
+                            <div><p class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Total Aset Medis</p><h3 id="stat-total" class="text-2xl font-black text-white mt-0.5">0</h3></div>
+                            <div class="p-2 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20"><i class="fa-solid fa-box-archive text-sm"></i></div>
                         </div>
-                        <div onclick="clickDashboardStat('ready')" class="glass-panel p-5 rounded-2xl shadow-2xl flex items-center justify-between cursor-pointer hover:scale-[1.03] hover:border-emerald-500/30 transition">
-                            <div><p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Siap Pakai</p><h3 id="stat-ready" class="text-3xl font-black text-emerald-400 mt-1">0</h3></div>
-                            <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20"><i class="fa-solid fa-circle-check text-lg"></i></div>
+                        <div onclick="clickDashboardStat('ready')" class="glass-panel p-3 rounded-xl shadow-xl flex items-center justify-between cursor-pointer hover:scale-[1.02] transition">
+                            <div><p class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Siap Pakai</p><h3 id="stat-ready" class="text-2xl font-black text-emerald-400 mt-0.5">0</h3></div>
+                            <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20"><i class="fa-solid fa-circle-check text-sm"></i></div>
                         </div>
-                        <div onclick="clickDashboardStat('broken')" class="glass-panel p-5 rounded-2xl shadow-2xl flex items-center justify-between cursor-pointer hover:scale-[1.03] hover:border-rose-500/30 transition">
-                            <div><p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Trouble / Rusak</p><h3 id="stat-broken" class="text-3xl font-black text-rose-400 mt-1">0</h3></div>
-                            <div class="p-3 bg-rose-500/10 text-rose-400 rounded-xl border border-rose-500/20"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div>
+                        <div onclick="clickDashboardStat('broken')" class="glass-panel p-3 rounded-xl shadow-xl flex items-center justify-between cursor-pointer hover:scale-[1.02] transition">
+                            <div><p class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Trouble / Rusak</p><h3 id="stat-broken" class="text-2xl font-black text-rose-400 mt-0.5">0</h3></div>
+                            <div class="p-2 bg-rose-500/10 text-rose-400 rounded-lg border border-rose-500/20"><i class="fa-solid fa-triangle-exclamation text-sm"></i></div>
                         </div>
-                        <div onclick="clickDashboardStat('docs')" class="glass-panel p-5 rounded-2xl shadow-2xl flex items-center justify-between cursor-pointer hover:scale-[1.03] hover:border-indigo-500/30 transition">
-                            <div><p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Total Dokumen</p><h3 id="stat-logs" class="text-3xl font-black text-indigo-400 mt-1">0</h3></div>
-                            <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20"><i class="fa-solid fa-file-waveform text-lg"></i></div>
+                        <div onclick="clickDashboardStat('docs')" class="glass-panel p-3 rounded-xl shadow-xl flex items-center justify-between cursor-pointer hover:scale-[1.02] transition">
+                            <div><p class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Total Dokumen</p><h3 id="stat-logs" class="text-2xl font-black text-indigo-400 mt-0.5">0</h3></div>
+                            <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20"><i class="fa-solid fa-file-waveform text-sm"></i></div>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 no-print">
-                        <!-- Grafik Donat (Persentase) -->
-                        <div class="glass-panel p-4 rounded-2xl shadow-2xl flex flex-col justify-between items-center lg:col-span-1 h-[250px]">
-                            <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 text-center w-full border-b border-white/5 pb-1.5">Persentase Kelaikan Aset</h4>
-                            <div class="w-full max-w-[140px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 140px; max-width: 140px;"></canvas></div>
+                
+                    <!-- 2 Kotak Grafik Bawah (Dibuat pas tinggi 1 layar) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 no-print">
+                        <div class="glass-panel p-3 rounded-xl shadow-xl flex flex-col justify-between items-center lg:col-span-1 h-[210px]">
+                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 text-center w-full border-b border-white/5 pb-1">Persentase Kelaikan Aset</h4>
+                            <div class="w-full max-w-[120px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 120px; max-width: 120px;"></canvas></div>
                         </div>
-                        <!-- Grafik Batang (Sebaran Ruangan) -->
-                        <div class="glass-panel p-4 rounded-2xl shadow-2xl flex flex-col justify-between lg:col-span-2 h-[250px]">
-                            <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 border-b border-white/5 pb-1.5">Sebaran Seluruh Ruangan</h4>
-                            <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; max-height: 170px;"></canvas></div>
+                        <div class="glass-panel p-3 rounded-xl shadow-xl flex flex-col justify-between lg:col-span-2 h-[210px]">
+                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 border-b border-white/5 pb-1">Sebaran Seluruh Ruangan</h4>
+                            <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; max-height: 140px;"></canvas></div>
                         </div>
                     </div>
                 </div>
-
+                
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Master Data Aset Medis</h2>
