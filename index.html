@@ -2703,6 +2703,7 @@
         }
         
         // Integrasi langsung membuka rekam jejak pemeliharaan aset
+        // Integrasi langsung membuka rekam jejak pemeliharaan aset dari hasil scan dalam/luar aplikasi
         function bukaKartuPemeliharaanPublik(alatId) {
             // Pastikan data alat sudah termuat dari database
             if (!dataAlat || dataAlat.length === 0) {
@@ -2718,7 +2719,16 @@
                 return;
             }
 
-            // Panggil fungsi utama rekam jejak aset yang sudah ada
+            // Sembunyikan layar login / gate screen agar modal rekam jejak bisa terlihat penuh
+            const authGate = document.getElementById('auth-gate-screen');
+            if (authGate) {
+                authGate.classList.add('hidden');
+            }
+
+            // Set role sementara untuk mode publik/asesor agar tombol aksi/tutup berfungsi normal
+            currentActiveRole = "User"; 
+
+            // Panggil fungsi utama rekam jejak aset
             bukaKartuPemeliharaan(alat.id);
         }
         
