@@ -2420,64 +2420,106 @@
         }
         
         function bukaKartuPemeliharaan(alatId) {
-            globalSelectedAlatIdForLog = alatId;
-            globalSelectedAlatIdUntukLog = alatId; 
-            const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
-            let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
-            let sSeri = alat.seri || alat.tipe || '-';
-            
-            const kNama = document.getElementById('kartu-nama');
-            const kMerk = document.getElementById('kartu-merk');
-            const kSeri = document.getElementById('kartu-seri');
-            const kLokasi = document.getElementById('kartu-lokasi');
-
-            if(kNama) kNama.innerText = alat.nama; 
-            if(kMerk) kMerk.innerText = alat.merk || '-'; 
-            if(kSeri) kSeri.innerText = sSeri || '-'; 
-            if(kLokasi) kLokasi.innerText = sLokasi || '-';
-            
-            const qrContainer = document.getElementById('qrcode-container');
-            if (qrContainer) {
-                qrContainer.innerHTML = ""; 
-                const targetUrl = window.location.origin + window.location.pathname + "?alat=" + alatId;
+                globalSelectedAlatIdForLog = alatId;
+                globalSelectedAlatIdUntukLog = alatId; 
+                const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
+                let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
+                let sSeri = alat.seri || alat.tipe || '-';
                 
-                new QRCode(qrContainer, {
-                    text: targetUrl,
-                    width: 90,
-                    height: 90,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
-            }
+                const kNama = document.getElementById('kartu-nama');
+                const kMerk = document.getElementById('kartu-merk');
+                const kSeri = document.getElementById('kartu-seri');
+                const kLokasi = document.getElementById('kartu-lokasi');
+    
+                if(kNama) kNama.innerText = alat.nama; 
+                if(kMerk) kMerk.innerText = alat.merk || '-'; 
+                if(kSeri) kSeri.innerText = sSeri || '-'; 
+                if(kLokasi) kLokasi.innerText = sLokasi || '-';
+                
+                const qrContainer = document.getElementById('qrcode-container');
+                if (qrContainer) {
+                    qrContainer.innerHTML = ""; 
+                    const targetUrl = window.location.origin + window.location.pathname + "?alat=" + alatId;
+                    
+                    new QRCode(qrContainer, {
+                        text: targetUrl,
+                        width: 90,
+                        height: 90,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }
+                
+                // Sembunyikan tombol "Download Label" di sebelah QR Code jika diakses via scan publik/user
+                const boxDownloadLabel = qrContainer ? qrContainer.closest('.md\\:col-span-4') : null;
+                if (boxDownloadLabel) {
+                    const tombolDownload = boxDownloadLabel.querySelector('button');
+                    if (tombolDownload) tombolDownload.style.display = 'none';
+                    const teksInfo = boxDownloadLabel.querySelector('p');
+                    if (teksInfo) teksInfo.innerText = "Scan untuk melihat rekam jejak, SOP, & kalibrasi alat.";
+                }
+    
+                switchKartuTab('tab-k-semua'); 
+                toggleModal('modal-kartu', true);
+    
+                const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
+                const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
             
-            switchKartuTab('tab-k-semua'); 
-            toggleModal('modal-kartu', true);
-
-            const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
-            const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
-        
-            let rekapSemua = [];
-            dataPerbaikan.filter(r => r.alatId == alatId).forEach(r => rekapSemua.push({ tgl: r.textTgl || r.tgl || '', jenis: 'Corrective Maintenance', ket: `No LK: ${r.noLk||'-'} <br> ${r.desc_kerja||r.desc}`, hasil: r.hasilTunggal, id: r.id, tipeData: 'lk' }));
-            dataPM.filter(p => p.alatId == alatId).forEach(p => rekapSemua.push({ tgl: p.textTgl || p.tgl || '', jenis: 'Preventive Maintenance', ket: `No LK: ${p.noLk||'-'} <br> ${p.desc_kerja||p.desc}`, hasil: p.hasilTunggal, id: p.id, tipeData: 'lk' }));
-            dataInspeksi.filter(i => i.alatId == alatId).forEach(i => rekapSemua.push({ tgl: i.textTgl || i.tgl || '', jenis: 'Inspection', ket: `No LK: ${i.noLk||'-'} <br> ${i.desc_kerja||i.desc}`, hasil: i.hasilTunggal, id: i.id, tipeData: 'lk' }));
-            dataKalibrasi.filter(c => c.alatId == alatId).forEach(c => rekapSemua.push({ tgl: c.tgl || '', jenis: 'Sertifikat Kalibrasi', ket: `Vendor: ${c.vendor} | Exp: ${c.exp}`, hasil: c.hasil, id: c.id, tipeData: 'kalibrasi' }));
+                let rekapSemua = [];
+                dataPerbaikan.filter(r => r.alatId == alatId).forEach(r => rekapSemua.push({ tgl: r.textTgl || r.tgl || '', jenis: 'Corrective Maintenance', ket: `No LK: ${r.noLk||'-'} <br> ${r.desc_kerja||r.desc}`, hasil: r.hasilTunggal, id: r.id, tipeData: 'lk' }));
+                dataPM.filter(p => p.alatId == alatId).forEach(p => rekapSemua.push({ tgl: p.textTgl || p.tgl || '', jenis: 'Preventive Maintenance', ket: `No LK: ${p.noLk||'-'} <br> ${p.desc_kerja||p.desc}`, hasil: p.hasilTunggal, id: p.id, tipeData: 'lk' }));
+                dataInspeksi.filter(i => i.alatId == alatId).forEach(i => rekapSemua.push({ tgl: i.textTgl || i.tgl || '', jenis: 'Inspection', ket: `No LK: ${i.noLk||'-'} <br> ${i.desc_kerja||i.desc}`, hasil: i.hasilTunggal, id: i.id, tipeData: 'lk' }));
+                dataKalibrasi.filter(c => c.alatId == alatId).forEach(c => rekapSemua.push({ tgl: c.tgl || '', jenis: 'Sertifikat Kalibrasi', ket: `Vendor: ${c.vendor} | Exp: ${c.exp}`, hasil: c.hasil, id: c.id, tipeData: 'kalibrasi' }));
+                
+                rekapSemua.sort((x, y) => String(y.tgl).localeCompare(String(x.tgl)));
             
-            rekapSemua.sort((x, y) => String(y.tgl).localeCompare(String(x.tgl)));
-        
-            const tbodySemua = document.getElementById('kartu-list-semua');
-            if(tbodySemua) {
-                if(rekapSemua.length === 0) {
-                    tbodySemua.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500 italic">Belum ada rekapitulasi riwayat pekerjaan.</td></tr>`;
-                } else {
-                    tbodySemua.innerHTML = rekapSemua.map(item => `
-                        <tr class="border-b border-white/5 hover:bg-white/[0.01]">
-                            <td class="p-3"><b>${item.jenis}</b><br><span class="text-[10px] text-slate-400 font-mono">${item.tgl.replace('T',' ')}</span></td>
-                            <td class="p-3 text-slate-300">${item.ket}</td>
-                            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${item.hasil.includes('Baik')||item.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${item.hasil}</span></td>
-                            <td class="p-3 text-center">${item.tipeData === 'lk' ? `<button onclick="bukaLembarKerjaDinamisDariLog('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-[10px]">Lihat LK</button>` : `<span class="text-[10px] text-indigo-400 font-mono">Kalibrasi</span>`}</td>
-                        </tr>
-                    `).join('');
+                const tbodySemua = document.getElementById('kartu-list-semua');
+                if(tbodySemua) {
+                    if(rekapSemua.length === 0) {
+                        tbodySemua.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500 italic">Belum ada rekapitulasi riwayat pekerjaan.</td></tr>`;
+                    } else {
+                        tbodySemua.innerHTML = rekapSemua.map(item => `
+                            <tr class="border-b border-white/5 hover:bg-white/[0.01]">
+                                <td class="p-3"><b>${item.jenis}</b><br><span class="text-[10px] text-slate-400 font-mono">${item.tgl.replace('T',' ')}</span></td>
+                                <td class="p-3 text-slate-300">${item.ket}</td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${item.hasil.includes('Baik')||item.hasil==='Layak'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${item.hasil}</span></td>
+                                <td class="p-3 text-center">${item.tipeData === 'lk' ? `<button onclick="bukaLembarKerjaDinamisDariLog('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-[10px]">Lihat LK</button>` : `<span class="text-[10px] text-indigo-400 font-mono">Kalibrasi</span>`}</td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            
+                const lkCorrective = document.getElementById('kartu-list-corrective');
+                const lkPreventive = document.getElementById('kartu-list-preventive');
+                const lkInspeksi = document.getElementById('kartu-list-inspeksi');
+                const lkKalibrasi = document.getElementById('kartu-list-kalibrasi');
+    
+                if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button></td></tr>`).join('');
+                if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button></td></tr>`).join('');
+                if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button></td></tr>`).join('');
+                if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button></td></tr>`).join('');
+                
+                const tbodyBuku = document.getElementById('kartu-list-buku-petunjuk');
+                if(tbodyBuku) {
+                    const listBuku = dataBukuPetunjuk.filter(b => b.alatId == alatId);
+                    
+                    // Sembunyikan kotak/form upload dokumen buku petunjuk di tab SOP
+                    const containerUploadBuku = document.querySelector('#tab-k-buku > div:first-child');
+                    if (containerUploadBuku) containerUploadBuku.style.display = 'none';
+    
+                    if(listBuku.length === 0) {
+                        tbodyBuku.innerHTML = `<tr><td colspan="2" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah.</td></tr>`;
+                    } else {
+                        tbodyBuku.innerHTML = listBuku.map(b => `
+                            <tr class="border-b border-white/5 hover:bg-white/[0.01]">
+                                <td class="p-4 font-bold text-white"><i class="fa-solid fa-book text-cyan-400 mr-2"></i> ${b.namaFile} <br><span class="text-[10px] text-slate-400 font-mono">${b.tglUpload}</span></td>
+                                <td class="p-4 text-center">
+                                    <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType}', '${b.namaFile}')" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview / Baca</button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
                 }
             }
         
