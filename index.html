@@ -2672,11 +2672,14 @@
                     { fps: 10, qrbox: { width: 200, height: 200 } },
                     (decodedText) => {
                         tutupModalScanQrPublik();
-                        let targetAlatId = decodedText;
+                        
+                        // Ekstrak ID alat dengan aman baik dari URL lengkap maupun teks ID murni
+                        let targetAlatId = decodedText.trim();
                         if (decodedText.includes("?alat=")) {
                             const parts = decodedText.split("?alat=");
-                            targetAlatId = parts[1];
+                            targetAlatId = parts[1].trim();
                         }
+                        
                         bukaKartuPemeliharaanPublik(targetAlatId);
                     },
                     (errorMessage) => {}
@@ -2699,13 +2702,24 @@
             }
         }
         
+        // Integrasi langsung membuka rekam jejak pemeliharaan aset
         function bukaKartuPemeliharaanPublik(alatId) {
-            const alat = dataAlat.find(a => a.id == alatId);
-            if (!alat) {
-                alert("❌ Barcode tidak valid atau ID alat tidak ditemukan di database!");
+            // Pastikan data alat sudah termuat dari database
+            if (!dataAlat || dataAlat.length === 0) {
+                alert("⏳ Data aset sedang dimuat dari server, silakan coba scan ulang dalam beberapa detik.");
                 return;
             }
-            bukaKartuPemeliharaan(alatId);
+
+            // Cari data alat berdasarkan ID Firestore atau kecocokan Serial Number (SN)
+            const alat = dataAlat.find(a => a.id == alatId || a.seri == alatId);
+            
+            if (!alat) {
+                alert("❌ Barcode discan, tetapi ID / Seri alat tidak ditemukan di dalam database master aset!");
+                return;
+            }
+
+            // Panggil fungsi utama rekam jejak aset yang sudah ada
+            bukaKartuPemeliharaan(alat.id);
         }
         
         window.onload = function() { 
@@ -2721,7 +2735,7 @@
                 const cekDataInterval = setInterval(() => {
                     if (dataAlat.length > 0) {
                         clearInterval(cekDataInterval);
-                        bukaKartuPemeliharaan(scanAlatId);
+                        bukaKartuPemeliharaanPublik(scanAlatId);
                     }
                 }, 500);
             }
