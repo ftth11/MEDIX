@@ -728,17 +728,31 @@
                 <button type="button" onclick="toggleModal('modal-kartu', false)" class="text-gray-400 bg-slate-800/50 px-3 py-1.5 rounded-xl hover:text-white"><i class="fa-solid fa-xmark mr-1"></i> Tutup Log</button>
             </div>
             
-            <!-- INFORMASI ASET & BARCODE DALAM 1 BARIS (DI BAGIAN ATAS) -->
-            <div class="p-3 bg-slate-950/40 text-xs grid grid-cols-2 md:grid-cols-5 gap-3 shadow-inner items-center">
-                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-xs truncate">-</p></div>
-                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-xs truncate">-</p></div>
-                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-xs truncate">-</p></div>
-                <div><p class="text-slate-500 font-bold uppercase text-[9px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-xs truncate">-</p></div>
+            <!-- INFORMASI ASET & QR CODE UTAMA DI BAGIAN ATAS -->
+            <div class="p-3 bg-slate-950/40 text-xs grid grid-cols-1 md:grid-cols-12 gap-3 shadow-inner items-center">
+                <!-- Detail Teks Aset (8 Kolom di Desktop) -->
+                <div class="md:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <div><p class="text-slate-500 font-bold uppercase text-[9px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-xs truncate">-</p></div>
+                    <div><p class="text-slate-500 font-bold uppercase text-[9px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-xs truncate">-</p></div>
+                    <div><p class="text-slate-500 font-bold uppercase text-[9px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-xs truncate">-</p></div>
+                    <div><p class="text-slate-500 font-bold uppercase text-[9px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-xs truncate">-</p></div>
+                </div>
                 
-                <!-- Barcode di Samping Kanan dalam 1 Baris -->
-                <div class="flex items-center justify-center space-x-2 bg-white/5 p-1.5 rounded-xl border border-white/10">
-                    <div id="qrcode-container" class="w-12 h-12 flex items-center justify-center bg-white p-1 rounded"></div>
-                    <span class="text-[9px] text-slate-300 font-bold leading-tight">Scan<br>Akreditasi</span>
+                <!-- Kotak Barcode Jelas & Tombol Download (4 Kolom di Desktop, Sejajar di Mobile) -->
+                <div class="md:col-span-4 flex items-center justify-end space-x-3 bg-white/5 p-2 rounded-xl border border-white/10">
+                    <div class="flex flex-col items-center">
+                        <!-- Canvas tersembunyi untuk merender cetakan download label resolusi tinggi -->
+                        <canvas id="canvas-label-print" class="hidden"></canvas>
+                        <!-- QR Code Diperbesar agar Sangat Jelas & Mudah Discan -->
+                        <div id="qrcode-container" class="w-[90px] h-[90px] flex items-center justify-center bg-white p-1 rounded shadow"></div>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-1.5 flex-1">
+                        <span class="text-[10px] text-cyan-400 font-bold leading-tight">Barcode Akreditasi Alat</span>
+                        <p class="text-[9px] text-slate-400 leading-3">Scan untuk melihat rekam jejak, SOP, & kalibrasi.</p>
+                        <button type="button" onclick="downloadLabelBarcodeFisik()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] transition flex items-center justify-center space-x-1 shadow">
+                            <i class="fa-solid fa-download"></i> <span>Download Label</span>
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -2420,29 +2434,142 @@ function validasiKredensialUser(e) {
         function switchKartuTab(tId) { document.querySelectorAll('.kartu-tab').forEach(el => el.classList.remove('active')); if(document.getElementById('btn-'+tId.replace('tab-',''))) document.getElementById('btn-'+tId.replace('tab-','')).classList.add('active'); document.querySelectorAll('.kartu-content-box').forEach(el => el.classList.add('hidden')); document.getElementById(tId).classList.remove('hidden'); }
         
         function bukaKartuPemeliharaan(alatId) {
-            globalSelectedAlatIdForLog = alatId;
-            globalSelectedAlatIdUntukLog = alatId; 
-            const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
-            let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
-            let sSeri = alat.seri || alat.tipe || '-';
-            document.getElementById('kartu-nama').innerText = alat.nama; 
-            document.getElementById('kartu-merk').innerText = alat.merk || '-'; 
-            document.getElementById('kartu-seri').innerText = sSeri || '-'; 
-            document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
-            
-            // Generate QR Code berisi URL lengkap atau ID unik yang aman dibaca scanner
-            const qrContainer = document.getElementById('qrcode-container');
-            if (qrContainer) {
-                qrContainer.innerHTML = ""; 
-                const targetUrl = window.location.origin + window.location.pathname + "?alat=" + alatId;
-                new QRCode(qrContainer, {
-                    text: targetUrl,
-                    width: 55,
-                    height: 55,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
+                globalSelectedAlatIdForLog = alatId;
+                globalSelectedAlatIdUntukLog = alatId; 
+                const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
+                let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
+                let sSeri = alat.seri || alat.tipe || '-';
+                document.getElementById('kartu-nama').innerText = alat.nama; 
+                document.getElementById('kartu-merk').innerText = alat.merk || '-'; 
+                document.getElementById('kartu-seri').innerText = sSeri || '-'; 
+                document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
+                
+                // 1. Generate QR Code dengan ukuran lebih besar & kontras tinggi agar sangat jelas terbaca scanner
+                const qrContainer = document.getElementById('qrcode-container');
+                if (qrContainer) {
+                    qrContainer.innerHTML = ""; 
+                    const targetUrl = window.location.origin + window.location.pathname + "?alat=" + alatId;
+                    
+                    new QRCode(qrContainer, {
+                        text: targetUrl,
+                        width: 90,
+                        height: 90,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }
+                
+                // ... (lanjutan kode render tab tabel lainnya tetap seperti semula)
+                switchKartuTab('tab-k-semua'); 
+                toggleModal('modal-kartu', true);
+            }
+    
+            // Fungsi untuk mendownload label barcode fisik siap cetak & tempel
+            function downloadLabelBarcodeFisik() {
+                if(!globalSelectedAlatIdForLog) return;
+                const alat = dataAlat.find(a => a.id == globalSelectedAlatIdForLog);
+                if(!alat) return;
+    
+                const qrContainer = document.getElementById('qrcode-container');
+                const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
+                if(!qrImg) return alert("QR Code sedang dimuat, silakan coba beberapa saat lagi.");
+    
+                const canvas = document.getElementById('canvas-label-print');
+                const ctx = canvas.getContext('2d');
+                
+                // Atur resolusi kanvas cetak agar tajam saat diprint
+                canvas.width = 600;
+                canvas.height = 400;
+    
+                // Background putih bersih untuk label fisik
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+                // Bingkai luar label
+                ctx.strokeStyle = "#000000";
+                ctx.lineWidth = 4;
+                ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+    
+                // Header Label Rumah Sakit
+                ctx.fillStyle = "#000000";
+                ctx.font = "bold 16px sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText("UPTD RSUD PONDOKGEDE - IPSRS", canvas.width / 2, 45);
+    
+                ctx.font = "bold 13px sans-serif";
+                ctx.fillStyle = "#334155";
+                ctx.fillText("LABEL REKAM JEJAK & AKREDITASI ASET", canvas.width / 2, 68);
+    
+                // Garis pembatas header
+                ctx.beginPath();
+                ctx.moveTo(30, 78);
+                ctx.lineTo(canvas.width - 30, 78);
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = "#cbd5e1";
+                ctx.stroke();
+    
+                // Gambar QR Code ke Kanvas
+                let imgQr = new Image();
+                imgQr.src = qrImg.src || qrImg.toDataURL();
+                imgQr.onload = function() {
+                    // Posisi QR Code di sebelah kiri
+                    ctx.drawImage(imgQr, 40, 100, 180, 180);
+    
+                    // Kotak kecil di bawah QR
+                    ctx.font = "bold 11px sans-serif";
+                    ctx.fillStyle = "#000000";
+                    ctx.textAlign = "center";
+                    ctx.fillText("SCAN KARTU ASET", 130, 295);
+    
+                    // Teks Keterangan di sebelah kanan QR Code
+                    ctx.textAlign = "left";
+                    let startX = 245;
+                    let startY = 115;
+    
+                    ctx.font = "bold 11px sans-serif";
+                    ctx.fillStyle = "#64748b";
+                    ctx.fillText("NAMA ASET:", startX, startY);
+                    ctx.font = "bold 16px sans-serif";
+                    ctx.fillStyle = "#000000";
+                    ctx.fillText(alat.nama || "-", startX, startY + 20);
+    
+                    ctx.font = "bold 11px sans-serif";
+                    ctx.fillStyle = "#64748b";
+                    ctx.fillText("MERK / MODEL:", startX, startY + 50);
+                    ctx.font = "bold 14px sans-serif";
+                    ctx.fillStyle = "#1e293b";
+                    ctx.fillText(alat.merk || "-", startX, startY + 70);
+    
+                    ctx.font = "bold 11px sans-serif";
+                    ctx.fillStyle = "#64748b";
+                    ctx.fillText("NOMOR SERI (SN):", startX, startY + 100);
+                    ctx.font = "bold 14px monospace";
+                    ctx.fillStyle = "#1e293b";
+                    ctx.fillText(alat.seri || alat.tipe || "-", startX, startY + 120);
+    
+                    ctx.font = "bold 11px sans-serif";
+                    ctx.fillStyle = "#64748b";
+                    ctx.fillText("UNIT / RUANGAN:", startX, startY + 150);
+                    ctx.font = "bold 14px sans-serif";
+                    ctx.fillStyle = "#2563eb";
+                    ctx.fillText(alat.ruangan || alat.lokasi || "-", startX, startY + 170);
+    
+                    // Footer label
+                    ctx.font = "italic 10px sans-serif";
+                    ctx.fillStyle = "#64748b";
+                    ctx.textAlign = "center";
+                    ctx.fillText("Tempelkan label ini pada fisik alat medis untuk memudahkan pemindaian.", canvas.width / 2, 365);
+    
+                    // Proses Download File Gambar (.png)
+                    const imageURI = canvas.toDataURL("image/png");
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imageURI;
+                    downloadLink.download = `Label_Barcode_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                };
             }
                         
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
