@@ -2600,7 +2600,7 @@
 
                 const imageURI = canvas.toDataURL("image/png");
 
-                // Deteksi HP / Mobile Browser -> Buka modal preview atau tab baru agar mudah di-save
+                // Solusi Mobile: Langsung buka preview gambar agar aman di semua jenis HP
                 if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                     lihatFileLangsung(imageURI, 'img', 'Label Barcode: ' + alat.nama);
                 } else {
