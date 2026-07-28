@@ -2757,7 +2757,7 @@
         // Fungsi untuk mencetak / mendownload label barcode massal seluruh alkes dalam bentuk PDF
         function cetakLabelBarcodeMassalPdf() {
             if (!dataAlat || dataAlat.length === 0) {
-                alert("❌ Tidak ada data aset medis untuk dicetak!");
+                alert("❌ Data aset medis sedang dimuat atau kosong. Tunggu sebentar lalu coba lagi!");
                 return;
             }
 
@@ -2765,14 +2765,12 @@
                 return;
             }
 
-            // Buat jendela cetak baru (iframe tersembunyi / popup bersih)
             const printWindow = window.open('', '_blank');
             if (!printWindow) {
                 alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini agar dapat mencetak PDF.");
                 return;
             }
 
-            // Susun template HTML khusus cetak label berbentuk grid kartu rapi
             let htmlContent = `
                 <!DOCTYPE html>
                 <html lang="id">
@@ -2780,13 +2778,13 @@
                     <meta charset="UTF-8">
                     <title>Cetak Label Barcode Massal - UPTD RSUD Pondokgede</title>
                     <style>
-                        body { font-family: sans-serif; margin: 0; padding: 10px; background: #fff; color: #000; }
-                        .grid-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; }
+                        body { font-family: sans-serif; margin: 0; padding: 15px; background: #fff; color: #000; }
+                        .grid-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: flex-start; }
                         .label-card {
                             width: 340px;
                             height: 190px;
                             border: 2px solid #000;
-                            border-radius: 8px;
+                            border-radius: 6px;
                             padding: 8px;
                             box-sizing: border-box;
                             display: flex;
@@ -2799,8 +2797,7 @@
                         .header-label h3 { margin: 0; font-size: 11px; font-weight: bold; color: #000; }
                         .header-label p { margin: 2px 0 0 0; font-size: 9px; color: #333; font-weight: bold; }
                         .content-body { display: flex; align-items: center; margin-top: 5px; gap: 10px; }
-                        .qr-box { width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-                        .qr-box canvas, .qr-box img { width: 85px !important; height: 85px !important; }
+                        .qr-box { width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
                         .info-box { flex: 1; font-size: 9px; overflow: hidden; }
                         .info-row { margin-bottom: 3px; }
                         .info-row span.label-title { font-size: 8px; color: #555; font-weight: bold; display: block; text-transform: uppercase; }
@@ -2813,21 +2810,19 @@
                             .no-print { display: none; }
                         }
                     </style>
-                    <!-- Pustaka QRCodeJS untuk merender barcode di halaman cetak -->
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
                 </head>
                 <body>
-                    <div class="no-print" style="text-align: center; margin-bottom: 15px; background: #f1f5f9; padding: 10px; border-radius: 6px;">
-                        <button onclick="window.print()" style="background: #2563eb; color: #fff; border: none; padding: 8px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 12px;">🖨️ Cetak / Simpan sebagai PDF</button>
-                        <p style="margin: 5px 0 0 0; font-size: 11px; color: #475569;">(Pada HP Android / Laptop, pilih "Save as PDF" / "Simpan sebagai PDF" pada pilihan printer)</p>
+                    <div class="no-print" style="text-align: center; margin-bottom: 15px; background: #f1f5f9; padding: 12px; border-radius: 6px;">
+                        <button onclick="window.print()" style="background: #2563eb; color: #fff; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px;">🖨️ Cetak / Simpan sebagai PDF</button>
+                        <p style="margin: 6px 0 0 0; font-size: 11px; color: #475569;">(Pilih "Save as PDF" / "Simpan sebagai PDF" pada pilihan printer jika ingin mengunduhnya ke file PDF)</p>
                     </div>
-                    <div class="grid-container" id="print-grid">
+                    <div class="grid-container">
             `;
 
             dataAlat.forEach((alat, index) => {
                 let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
                 let sSeri = alat.seri || alat.tipe || '-';
-                let targetUrl = window.location.origin + window.location.pathname + "?alat=" + alat.id;
 
                 htmlContent += `
                     <div class="label-card">
@@ -2861,37 +2856,39 @@
                 `;
             });
 
+            // Kirim data array alat ke dalam skrip pop-up agar QR code dirender sempurna secara lokal
             htmlContent += `
                     </div>
                     <script>
-                        window.onload = function() {
-                            // Generate QR Code untuk setiap kartu secara otomatis
-                            const dataAlatLength = ${dataAlat.length};
-                            const baseUrl = "${window.location.origin + window.location.pathname}";
-                            const allAlat = ${JSON.stringify(dataAlat)};
+                        const listAlat = ${JSON.stringify(dataAlat)};
+                        const originUrl = "${window.location.origin + window.location.pathname}";
 
-                            for(let i = 0; i < allAlat.length; i++) {
-                                let a = allAlat[i];
-                                new QRCode(document.getElementById("qrcode-" + i), {
-                                    text: baseUrl + "?alat=" + a.id,
-                                    width: 85,
-                                    height: 85,
-                                    colorDark : "#000000",
-                                    colorLight : "#ffffff",
-                                    correctLevel : QRCode.CorrectLevel.H
-                                });
-                            }
-                            
-                            // Beri jeda sebentar agar QR code selesai dirender sebelum dialog cetak muncul
+                        window.onload = function() {
+                            listAlat.forEach((alat, idx) => {
+                                const container = document.getElementById("qrcode-" + idx);
+                                if(container) {
+                                    new QRCode(container, {
+                                        text: originUrl + "?alat=" + alat.id,
+                                        width: 80,
+                                        height: 80,
+                                        colorDark : "#000000",
+                                        colorLight : "#ffffff",
+                                        correctLevel : QRCode.CorrectLevel.H
+                                    });
+                                }
+                            });
+
+                            // Otomatis munculkan jendela print setelah QR selesai digambar
                             setTimeout(() => {
                                 window.print();
-                            }, 800);
+                            }, 1000);
                         };
                     <\/script>
                 </body>
                 </html>
             `;
 
+            printWindow.document.open();
             printWindow.document.write(htmlContent);
             printWindow.document.close();
         }
