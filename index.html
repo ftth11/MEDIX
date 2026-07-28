@@ -274,14 +274,16 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">
-                        <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between items-center lg:col-span-1 min-h-[320px]">
-                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center w-full border-b border-white/5 pb-2">Persentase Kelaikan Aset</h4>
-                            <div class="w-full max-w-[180px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 200px; max-width: 200px;"></canvas></div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 no-print">
+                        <!-- Grafik Donat (Persentase) -->
+                        <div class="glass-panel p-4 rounded-2xl shadow-2xl flex flex-col justify-between items-center lg:col-span-1 h-[250px]">
+                            <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 text-center w-full border-b border-white/5 pb-1.5">Persentase Kelaikan Aset</h4>
+                            <div class="w-full max-w-[140px] flex-1 flex items-center justify-center relative"><canvas id="chartKondisiAlat" style="max-height: 140px; max-width: 140px;"></canvas></div>
                         </div>
-                        <div class="glass-panel p-5 rounded-2xl shadow-2xl flex flex-col justify-between lg:col-span-2 min-h-[320px]">
-                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-white/5 pb-2">Sebaran Seluruh Ruangan</h4>
-                            <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; min-height: 200px;"></canvas></div>
+                        <!-- Grafik Batang (Sebaran Ruangan) -->
+                        <div class="glass-panel p-4 rounded-2xl shadow-2xl flex flex-col justify-between lg:col-span-2 h-[250px]">
+                            <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 border-b border-white/5 pb-1.5">Sebaran Seluruh Ruangan</h4>
+                            <div class="w-full flex-1 relative"><canvas id="chartSebaranRuangan" style="height: 100%; width: 100%; max-height: 170px;"></canvas></div>
                         </div>
                     </div>
                 </div>
