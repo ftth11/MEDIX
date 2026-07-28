@@ -304,25 +304,6 @@
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-white bg-slate-900/60 border border-slate-800 px-4 py-1.5 rounded-xl">Master Data Aset Medis</h2>
                         <div class="flex space-x-2" id="master-action-buttons-container"></div>
-                        const containerMasterAction = document.getElementById('master-action-buttons-container');
-                          if (containerMasterAction) {
-                              if (currentActiveRole === 'Admin') {
-                                  containerMasterAction.innerHTML = `
-                                      <button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>
-                                      <button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>
-                                      <label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer">
-                                          <i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel
-                                          <input type="file" id="file-excel-input" accept=".xlsx, .xls, .csv" onchange="importDataDariExcel(event)" class="hidden">
-                                      </label>
-                                      <button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>
-                                  `;
-                              } else {
-                                  containerMasterAction.innerHTML = `
-                                      <button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>
-                                      <span class="text-[11px] text-slate-400 italic ml-2">Manajemen Data Oleh Admin</span>
-                                  `;
-                              }
-                          }
                     </div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
                         <div class="p-4 border-b border-white/5 bg-white/[0.02]"><input type="text" id="search-alat" onkeyup="filterAlat()" class="w-full max-w-md px-4 py-2 border border-white/10 rounded-xl text-xs bg-slate-950/40 text-white placeholder-slate-500 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, izin edar, ruangan..."></div>
