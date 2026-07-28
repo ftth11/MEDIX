@@ -30,6 +30,7 @@
             background-attachment: fixed !important;
             overscroll-behavior-y: none !important;
             -webkit-overflow-scrolling: touch;
+            min-height: 100vh;
             height: 100%;
             overflow: hidden;
         }
@@ -2666,7 +2667,7 @@ function validasiKredensialUser(e) {
                     
                     canvas.onmousedown = startDrawing; 
                     canvas.onmousemove = draw; 
-                    window.onmouseup = () => isDashboardActive = false;
+                    window.onmouseup = () => { isDrawing = false; };
                     
                     canvas.ontouchstart = startDrawing; 
                     canvas.ontouchmove = draw; 
@@ -2676,7 +2677,7 @@ function validasiKredensialUser(e) {
                 console.log("Canvas signature initialization notice:", e); 
             }
         }
-
+        
         function unggahBukuPetunjukBaru() {
             if(currentActiveRole === 'User') {
                 alert("❌ Akses ditolak! Hanya Admin dan Teknisi yang dapat mengunggah buku petunjuk.");
