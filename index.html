@@ -948,6 +948,7 @@
                       if (containerMasterAction) {
                           if (currentActiveRole === 'Admin') {
                               containerMasterAction.innerHTML = `
+                                  <button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>
                                   <button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>
                                   <label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer">
                                       <i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel
@@ -956,7 +957,10 @@
                                   <button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>
                               `;
                           } else {
-                              containerMasterAction.innerHTML = `<span class="text-[11px] text-slate-400 italic">Akses View Only (Manajemen Data Oleh Admin)</span>`;
+                              containerMasterAction.innerHTML = `
+                                  <button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>
+                                  <span class="text-[11px] text-slate-400 italic ml-2">Manajemen Data Oleh Admin</span>
+                              `;
                           }
                       }
 
