@@ -17,6 +17,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
+    <!-- QR Code & Scanner Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <style>
         html, body {
             background-color: #0b0f19 !important;
@@ -150,6 +154,11 @@
                 </button>
                 <button onclick="pilihRoleSebelumLogin('User')" class="w-full bg-slate-800/40 border border-white/5 p-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-user-nurse"></i> <span>User</span>
+                </button>
+                
+                <!-- TOMBOL SCAN BARCODE UNTUK PENGUNJUNG / SUPERVISOR / AKREDITASI -->
+                <button onclick="bukaModalScanQrPublik()" class="w-full bg-emerald-600 hover:bg-emerald-700 p-2.5 rounded-xl text-xs font-bold text-white transition flex items-center justify-center space-x-2 shadow-lg">
+                    <i class="fa-solid fa-qrcode text-sm"></i> <span>Scan Barcode Alat (Akreditasi)</span>
                 </button>
             </div>
             
@@ -757,6 +766,17 @@
                         <table class="w-full text-left"><thead class="bg-slate-950 text-slate-400"><tr><th class="p-4">Nama Dokumen / Keterangan File</th><th class="p-4">Waktu Upload</th><th class="p-4 text-center">Aksi Preview</th></tr></thead><tbody id="kartu-list-buku-petunjuk" class="divide-y divide-white/5"></tbody></table>
                     </div>
                 </div>
+                <div class="p-4 bg-slate-950/40 text-xs grid grid-cols-2 md:grid-cols-5 gap-4 shadow-inner items-center">
+                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Nama Aset:</p><p id="kartu-nama" class="font-bold text-white text-sm">-</p></div>
+                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Merk / Model:</p><p id="kartu-merk" class="font-semibold text-slate-300 text-sm">-</p></div>
+                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Nomor Seri (SN):</p><p id="kartu-seri" class="font-mono font-bold text-slate-300 text-sm">-</p></div>
+                    <div><p class="text-slate-500 font-bold uppercase text-[10px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-sm">-</p></div>
+                    <!-- Kotak Barcode / QR Code Unik Alat -->
+                    <div class="flex flex-col items-center justify-center bg-white p-2 rounded-xl shadow-md">
+                        <div id="qrcode-container" class="w-16 h-16 flex items-center justify-center"></div>
+                        <span class="text-[9px] text-slate-900 font-bold mt-1">Scan Rekam Jejak</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -784,6 +804,8 @@
         const db = firebase.firestore();
 
         let dataBukuPetunjuk = [];
+
+        let html5QrCodeScanner = null;
 
         let currentActiveRole = "Teknisi"; 
         let targetLoginRole = "";
@@ -2408,6 +2430,20 @@ function validasiKredensialUser(e) {
             document.getElementById('kartu-seri').innerText = sSeri || '-'; 
             document.getElementById('kartu-lokasi').innerText = sLokasi || '-';
             
+            // Generate QR Code otomatis berdasarkan ID Alat
+            const qrContainer = document.getElementById('qrcode-container');
+            if (qrContainer) {
+                qrContainer.innerHTML = ""; // Bersihkan QR sebelumnya
+                new QRCode(qrContainer, {
+                    text: alatId, // Isi QR adalah ID unik database alat tersebut
+                    width: 64,
+                    height: 64,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+            
             const mapTim = t => (t && t.teknisiTtd) ? `<br><span class="text-[10px] text-indigo-400 font-bold">Teknisi: ${t.teknisiTtd}</span>` : '';
             const mapFoto = f => (f && f.fotoAlat && f.fotoAlat !== '-') ? `<td class="p-3 text-center"><button onclick="lihatFileLangsung('${f.fotoAlat}','img','Foto')" class="text-xs bg-slate-800 px-2 py-0.5 rounded border border-white/5 text-slate-300">Foto</button></td>` : `<td class="p-3 text-center text-slate-600 italic">No Photo</td>`;
         
@@ -2565,6 +2601,56 @@ function validasiKredensialUser(e) {
             }
             toggleModal('modal-preview', true);
         }
+
+        function bukaModalScanQrPublik() {
+            document.getElementById('modal-scanner-publik').classList.remove('hidden');
+            
+            // Inisialisasi kamera scanner
+            setTimeout(() => {
+                if (!html5QrCodeScanner) {
+                    html5QrCodeScanner = new Html5Qrcode("reader-scanner-div");
+                }
+                html5QrCodeScanner.start(
+                    { facingMode: "environment" }, 
+                    { fps: 10, qrbox: { width: 200, height: 200 } },
+                    (decodedText) => {
+                        // Jika QR berhasil dibaca dan memuat ID Alat
+                        tutupModalScanQrPublik();
+                        // Langsung buka modal rekam jejak alat tersebut secara publik
+                        bukaKartuPemeliharaanPublik(decodedText);
+                    },
+                    (errorMessage) => {
+                        // Abaikan error frame kecil saat mencari QR
+                    }
+                ).catch(err => {
+                    console.error("Gagal akses kamera:", err);
+                    alert("Tidak dapat mengakses kamera perangkat.");
+                });
+            }, 300);
+        }
+        
+        function tutupModalScanQrPublik() {
+            if (html5QrCodeScanner) {
+                html5QrCodeScanner.stop().then(() => {
+                    document.getElementById('modal-scanner-publik').classList.add('hidden');
+                }).catch(err => {
+                    document.getElementById('modal-scanner-publik').classList.add('hidden');
+                });
+            } else {
+                document.getElementById('modal-scanner-publik').classList.add('hidden');
+            }
+        }
+        
+        // Fungsi khusus membuka rekam jejak tanpa harus login (Mode Publik / Asesor)
+        function bukaKartuPemeliharaanPublik(alatId) {
+            const alat = dataAlat.find(a => a.id == alatId);
+            if (!alat) {
+                alert("❌ Barcode tidak valid atau ID alat tidak ditemukan di database!");
+                return;
+            }
+            // Buka modal rekam jejak normal yang sudah ada
+            bukaKartuPemeliharaan(alatId);
+        }
         
         window.onload = function() { renderOpsiDropdownAwal(); gantiSubTabDokumen('all'); setTimeout(renderGrafikDashboardDinamis, 500); };
     </script>
@@ -2575,5 +2661,22 @@ function validasiKredensialUser(e) {
           .catch((err) => console.log("Service Worker Gagal:", err));
       }
     </script>
+    
+    <!-- MODAL KAMERA SCANNER QR PUBLIK -->
+    <div id="modal-scanner-publik" class="fixed inset-0 bg-slate-950/90 z-[99999] flex items-center justify-center p-4 hidden backdrop-blur-md">
+        <div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-2xl shadow-2xl p-5 text-slate-200 space-y-4 text-center">
+            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                <h3 class="font-bold text-sm text-cyan-400"><i class="fa-solid fa-qrcode mr-2"></i>Pindai Barcode / QR Alat Medis</h3>
+                <button onclick="tutupModalScanQrPublik()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-xs text-slate-400">Arahkan kamera HP ke QR Code fisik pada alat medis untuk melihat rekam jejak.</p>
+            
+            <!-- Area Kamera Reader -->
+            <div id="reader-scanner-div" class="w-full overflow-hidden rounded-xl bg-slate-950 border border-white/10"></div>
+            
+            <button onclick="tutupModalScanQrPublik()" class="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs py-2 rounded-xl font-bold">Batal / Tutup</button>
+        </div>
+    </div>
+    
 </body>
 </html>
