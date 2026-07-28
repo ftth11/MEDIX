@@ -2774,16 +2774,12 @@
             }
         }
         
-        // Integrasi langsung membuka rekam jejak pemeliharaan aset
-        // Integrasi langsung membuka rekam jejak pemeliharaan aset dari hasil scan dalam/luar aplikasi
         function bukaKartuPemeliharaanPublik(alatId) {
-            // Pastikan data alat sudah termuat dari database
             if (!dataAlat || dataAlat.length === 0) {
                 alert("⏳ Data aset sedang dimuat dari server, silakan coba scan ulang dalam beberapa detik.");
                 return;
             }
 
-            // Cari data alat berdasarkan ID Firestore atau kecocokan Serial Number (SN)
             const alat = dataAlat.find(a => a.id == alatId || a.seri == alatId);
             
             if (!alat) {
@@ -2791,17 +2787,30 @@
                 return;
             }
 
-            // Sembunyikan layar login / gate screen agar modal rekam jejak bisa terlihat penuh
+            // Sembunyikan layar login / gate screen
             const authGate = document.getElementById('auth-gate-screen');
-            if (authGate) {
-                authGate.classList.add('hidden');
-            }
+            if (authGate) authGate.classList.add('hidden');
 
-            // Set role sementara untuk mode publik/asesor agar tombol aksi/tutup berfungsi normal
+            // Sembunyikan Sidebar aplikasi agar tidak bisa pindah-pindah menu
+            const sidebar = document.getElementById('app-sidebar');
+            if (sidebar) sidebar.style.display = 'none';
+
+            // Set role publik
             currentActiveRole = "User"; 
 
             // Panggil fungsi utama rekam jejak aset
             bukaKartuPemeliharaan(alat.id);
+
+            // Sembunyikan tombol "Tutup Log" di pojok kanan atas khusus dari scan barcode publik
+            setTimeout(() => {
+                const modalKartuHeader = document.querySelector('#modal-kartu .bg-slate-950.text-white');
+                if (modalKartuHeader) {
+                    const tombolTutup = modalKartuHeader.querySelector('button');
+                    if (tombolTutup) {
+                        tombolTutup.style.display = 'none'; // Tombol X Tutup Log disembunyikan
+                    }
+                }
+            }, 100);
         }
 
         // Fungsi untuk mencetak / mendownload label barcode massal seluruh alkes dalam bentuk PDF
