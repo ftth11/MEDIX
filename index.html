@@ -3135,29 +3135,7 @@
                         alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini.");
                     }
                 }
-        
-                // --- 1. FUNGSI UTAMA PENGELOLA RIWAYAT & NAVIGASI TAB ---
-            let riwayatNavigasiTab = ['dashboard'];
-        
-            // Timpa fungsi switchTab agar otomatis mencatat riwayat langkah
-            const originalSwitchTab = function(tId) {
-                document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); 
-                const targetTab = document.getElementById('tab-' + tId);
-                if(targetTab) targetTab.classList.remove('hidden'); 
-                document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); 
-                const btnEl = document.getElementById('btn-' + tId);
-                if(btnEl) btnEl.classList.add('active'); 
-                toggleSidebarMenu(false); 
-                if(tId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300); 
-            };
-        
-            window.switchTab = function(tId) { 
-                if (riwayatNavigasiTab[riwayatNavigasiTab.length - 1] !== tId) {
-                    riwayatNavigasiTab.push(tId);
-                }
-                originalSwitchTab(tId);
-            };
-        
+                
             // Fungsi universal untuk mundur secara bertahap (tutup modal dulu, baru mundur menu)
             function mundurKeMenuSebelumnya() {
                 const modalKartu = document.getElementById('modal-kartu');
