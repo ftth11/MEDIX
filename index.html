@@ -394,7 +394,7 @@
                         <button onclick="gantiSubTabDokumen('all')" id="doc-tab-all" class="px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition">Semua</button>
                         <button onclick="gantiSubTabDokumen('kalibrasi')" id="doc-tab-kalibrasi" class="px-3 py-2 rounded-lg flex-1 text-center transition">Kalibrasi</button>
                         <button onclick="gantiSubTabDokumen('mandiri')" id="doc-tab-mandiri" class="px-3 py-2 rounded-lg flex-1 text-center transition">Lembar Kerja</button>
-                        <button onclick="gantiSubTabDokumen('sop')" id="doc-tab-sop" class="px-3 py-2 rounded-lg flex-1 text-center transition">SOP / Buku</button>
+                        <button onclick="gantiSubTabDokumen('sop')" id="doc-tab-sop" class="px-3 py-2 rounded-lg flex-1 text-center transition">Buku Petunjuk</button>
                     </div>
                     <div class="glass-panel rounded-2xl shadow-2xl border overflow-hidden">
                         <div class="overflow-x-auto w-full no-scrollbar"><table class="w-full text-left text-xs min-w-[800px]"><thead class="bg-slate-900/90 font-bold text-slate-400"><tr><th class="p-4">Alat Kesehatan / SN</th><th class="p-4">Jenis Dokumen</th><th class="p-4">Waktu Dibuat</th><th class="p-4">Deskripsi</th><th class="p-4 text-center">Aksi Berkas</th><th class="p-4">Status</th></tr></thead><tbody id="table-kalibrasi-body" class="divide-y divide-white/5 text-slate-300"></tbody></table></div>
@@ -2471,10 +2471,100 @@
             const tabAll = document.getElementById('doc-tab-all');
             const tabCal = document.getElementById('doc-tab-kalibrasi');
             const tabMan = document.getElementById('doc-tab-mandiri');
-            if(tabAll) tabAll.className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='all'?'bg-blue-600 text-white':''); 
-            if(tabCal) tabCal.className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='kalibrasi'?'bg-blue-600 text-white':''); 
-            if(tabMan) tabMan.className = "px-4 py-2 rounded-lg flex-1 text-center transition " + (t==='mandiri'?'bg-blue-600 text-white':''); 
+            const tabSop = document.getElementById('doc-tab-sop');
+        
+            // Reset warna semua tombol tab menjadi transparan
+            [tabAll, tabCal, tabMan, tabSop].forEach(btn => {
+                if(btn) btn.className = "px-3 py-2 rounded-lg flex-1 text-center transition text-slate-400";
+            });
+        
+            // Berikan warna aktif (biru) pada tab yang sedang dipilih
+            if(t === 'all' && tabAll) tabAll.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
+            if(t === 'kalibrasi' && tabCal) tabCal.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
+            if(t === 'mandiri' && tabMan) tabMan.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
+            if(t === 'sop' && tabSop) tabSop.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
+        
             renderTabelPusatDokumen(); 
+        }
+        
+        function renderTabelPusatDokumen() {
+            const tBody = document.getElementById('table-kalibrasi-body'); 
+            if(!tBody) return; 
+            
+            let docs = [];
+            
+            // 1. Data Sertifikat Kalibrasi
+            dataKalibrasi.forEach(c => { 
+                const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
+                docs.push({ id: c.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); 
+            });
+            
+            // 2. Data Lembar Kerja (LK)
+            const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
+            combinedLk.forEach(lk => { 
+                const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
+                docs.push({ id: lk.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Baik', koleksiDb: 'lembarKerja' }); 
+            });
+            
+            // 3. Data Laporan Kerusakan Log
+            dataKeluhanLog.forEach(lg => {
+                const sudahAdaLk = combinedLk.some(lk => lk.alatId === lg.alatId);
+                if (!sudahAdaLk) {
+                    const a = dataAlat.find(i => i.id == lg.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
+                    docs.push({ id: lg.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal || 'Menunggu', koleksiDb: 'laporanKeluhanLog' });
+                }
+            });
+        
+            // 4. Data SOP / Buku Petunjuk
+            dataBukuPetunjuk.forEach(b => {
+                const a = dataAlat.find(i => i.id == b.alatId) || { nama: 'Alat Medis', tipe: '-' };
+                docs.push({ id: b.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'SOP / Buku Petunjuk', tgl: b.tglUpload || '-', desc: b.namaFile, file: b.fileData, type: 'sop-preview', fileType: b.fileType, hasil: 'Tersedia', koleksiDb: 'bukuPetunjukAlat' });
+            });
+        
+            // Filter berdasarkan sub-tab aktif
+            if(subTabDokumenAktif === 'kalibrasi') docs = docs.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
+            if(subTabDokumenAktif === 'mandiri') docs = docs.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi' && d.jenis !== 'Sertifikat Kalibrasi' && d.jenis !== 'SOP / Buku Petunjuk');
+            if(subTabDokumenAktif === 'sop') docs = docs.filter(d => d.jenis === 'SOP / Buku Petunjuk');
+        
+            docs.sort((x,y) => String(y.tgl).localeCompare(String(x.tgl)));
+            
+            if(docs.length === 0) { 
+                tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Tidak ada berkas dokumen pada kategori ini.</td></tr>`; 
+                return; 
+            }
+            
+            tBody.innerHTML = docs.map(d => {
+                let tombolAksiHapus = "";
+                if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
+                    tombolAksiHapus = `<button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition" title="Hapus Berkas"><i class="fa-solid fa-trash"></i></button>`;
+                } else {
+                    tombolAksiHapus = `<span class="p-1.5 text-slate-600"><i class="fa-solid fa-lock text-[10px]"></i></span>`;
+                }
+        
+                let tombolLihat = "";
+                if(d.type === 'pdf') {
+                    tombolLihat = `<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Lihat Dokumen"><i class="fa-solid fa-eye"></i></button>`;
+                } else if(d.type === 'lk-print') {
+                    tombolLihat = `<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Lihat LK"><i class="fa-solid fa-eye"></i></button>`;
+                } else if(d.type === 'sop-preview') {
+                    tombolLihat = `<button onclick="previewDokumenBukuPetunjuk('${d.file}', '${d.fileType || 'application/pdf'}', '${d.desc}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Preview SOP"><i class="fa-solid fa-book-open"></i></button>`;
+                } else {
+                    tombolLihat = `<span class="text-[10px] text-slate-500 italic px-2">Log</span>`;
+                }
+        
+                let formatTglDokumen = d.tgl ? String(d.tgl).replace('T', ' ') : '-';
+        
+                return `
+                    <tr class="border-b border-white/5 hover:bg-white/[0.01]">
+                        <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-slate-500 font-mono">SN: ${d.seri}</span></td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':d.jenis.includes('SOP')?'bg-cyan-500/10 text-cyan-400':d.jenis.includes('Laporan')?'bg-rose-500/10 text-rose-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
+                        <td class="p-4 font-mono text-[11px]">${formatTglDokumen}</td>
+                        <td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
+                        <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${tombolLihat}${tombolAksiHapus}</div></td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'||d.hasil==='Tersedia'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${d.hasil}</span></td>
+                    </tr>
+                `;
+            }).join('');
         }
         
         function toggleModal(id, s) { 
