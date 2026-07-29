@@ -253,6 +253,10 @@
                     <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent select-none group-hover:from-cyan-400 group-hover:to-blue-400 transition duration-300">MEDIX</h1>
                     <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
                 </div>
+                <button onclick="switchTab('dashboard')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition shadow cursor-pointer">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Kembali</span>
+                </button>
             </header>
 
             <main class="w-full px-6 py-6 space-y-6 bg-transparent no-scrollbar">
@@ -3165,6 +3169,22 @@
                  }, 300);
              }
          };
+
+        document.addEventListener('keydown', function(event) {
+            const isTyping = document.activeElement.tagName === 'INPUT' || 
+                             document.activeElement.tagName === 'TEXTAREA' || 
+                             document.activeElement.isContentEditable;
+
+            if (!isTyping) {
+                if (event.key === 'Backspace' || (event.altKey && event.key === 'ArrowLeft')) {
+                    event.preventDefault();
+                    const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
+                    if (activeTabContent && activeTabContent.id !== 'tab-dashboard') {
+                        switchTab('dashboard');
+                    }
+                }
+            }
+        });
     </script>
     
     <!-- MODAL KAMERA SCANNER QR PUBLIK -->
