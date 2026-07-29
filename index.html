@@ -420,12 +420,12 @@
                                 </div>
 
                                 <div class="bg-slate-950/60 p-3 rounded-xl border border-white/5 space-y-2">
-                                    <label class="block font-bold text-cyan-400 border-b border-white/5 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses & Level :</label>
+                                    <label class="block font-bold text-cyan-400 border-b border-white/5 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses & Level Detail :</label>
                                     <div class="space-y-2.5 pt-1 text-[11px]">
                                         <!-- Dashboard Utama -->
                                         <div class="flex items-center justify-between border-b border-white/5 pb-1.5">
                                             <span class="text-slate-300 font-medium">Dashboard Utama</span>
-                                            <div class="flex space-x-3">
+                                            <div class="flex space-x-2">
                                                 <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-dash-read" checked class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
                                                 <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-dash-edit" checked class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
                                             </div>
@@ -433,25 +433,29 @@
                                         <!-- Master Data Aset -->
                                         <div class="flex items-center justify-between border-b border-white/5 pb-1.5">
                                             <span class="text-slate-300 font-medium">Master Data Aset</span>
-                                            <div class="flex space-x-3">
+                                            <div class="flex flex-wrap gap-2">
                                                 <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-master-read" class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
                                                 <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-master-edit" class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-master-hapus" class="rounded border-white/10 text-cyan-500"> <span>Hapus</span></label>
                                             </div>
                                         </div>
-                                        <!-- Pelaporan Kerusakan -->
+                                        <!-- Pelaporan & Penanganan Kerusakan -->
                                         <div class="flex items-center justify-between border-b border-white/5 pb-1.5">
-                                            <span class="text-slate-300 font-medium">Pelaporan Kerusakan</span>
-                                            <div class="flex space-x-3">
+                                            <span class="text-slate-300 font-medium">Pelaporan & Tiket</span>
+                                            <div class="flex flex-wrap gap-2">
                                                 <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-ticket-read" class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-ticket-edit" class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-ticket-edit" class="rounded border-white/10 text-cyan-500"> <span>Kerjakan</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-ticket-hapus" class="rounded border-white/10 text-cyan-500"> <span>Hapus</span></label>
                                             </div>
                                         </div>
-                                        <!-- Riwayat Dokumen -->
+                                        <!-- Riwayat Dokumen & SOP -->
                                         <div class="flex items-center justify-between">
-                                            <span class="text-slate-300 font-medium">Riwayat Dokumen</span>
-                                            <div class="flex space-x-3">
+                                            <span class="text-slate-300 font-medium">Riwayat & SOP</span>
+                                            <div class="flex flex-wrap gap-2">
                                                 <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-riwayat-read" class="rounded border-white/10 text-cyan-500"> <span>Read</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-riwayat-edit" class="rounded border-white/10 text-cyan-500"> <span>Edit</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-riwayat-upload" class="rounded border-white/10 text-cyan-500"> <span>Upload</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-riwayat-download" class="rounded border-white/10 text-cyan-500"> <span>Download</span></label>
+                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-400"><input type="checkbox" id="akses-riwayat-hapus" class="rounded border-white/10 text-cyan-500"> <span>Hapus</span></label>
                                             </div>
                                         </div>
                                     </div>
@@ -2305,6 +2309,89 @@
                 const payload = { alatId: aId, tgl: document.getElementById('form-cal-tgl').value, exp: document.getElementById('form-cal-exp').value, vendor: document.getElementById('form-cal-vendor').value, certPdf: reader.result, hasil: hasil }; 
                 db.collection("dataKalibrasi").add(payload).then(() => { toggleModal('modal-kalibrasi', false); document.getElementById('input-search-alat-kalibrasi').value = ""; document.getElementById('form-cal-alat').style.display = "none"; alert("Sertifikat Kalibrasi Diunggah!"); }); 
             } 
+        }
+
+        function submitFormUserAdmin(e) {
+            e.preventDefault();
+            const id = document.getElementById('user-form-id').value;
+            
+            // Susun struktur izin akses mendetail berdasarkan pilihan Admin
+            const menuAksesPayload = {
+                dashboard: { 
+                    read: document.getElementById('akses-dash-read').checked, 
+                    edit: document.getElementById('akses-dash-edit').checked 
+                },
+                master: { 
+                    read: document.getElementById('akses-master-read').checked, 
+                    edit: document.getElementById('akses-master-edit').checked,
+                    hapus: document.getElementById('akses-master-hapus').checked 
+                },
+                ticket: { 
+                    read: document.getElementById('akses-ticket-read').checked, 
+                    edit: document.getElementById('akses-ticket-edit').checked, // Berfungsi sebagai izin kerjakan/proses tiket
+                    hapus: document.getElementById('akses-ticket-hapus').checked 
+                },
+                riwayat: { 
+                    read: document.getElementById('akses-riwayat-read').checked, 
+                    upload: document.getElementById('akses-riwayat-upload').checked,
+                    download: document.getElementById('akses-riwayat-download').checked,
+                    hapus: document.getElementById('akses-riwayat-hapus').checked 
+                }
+            };
+        
+            const payload = {
+                nama: document.getElementById('user-form-nama').value.trim(),
+                username: document.getElementById('user-form-username').value.trim(),
+                password: document.getElementById('user-form-password').value,
+                role: document.getElementById('user-form-role').value,
+                menuAkses: menuAksesPayload
+            };
+        
+            if (id) {
+                db.collection("users").doc(id).update(payload).then(() => {
+                    alert("🎉 Akun berhasil diperbarui!");
+                    resetFormUser();
+                });
+            } else {
+                db.collection("users").add(payload).then(() => {
+                    alert("🎉 Akun baru berhasil didaftarkan!");
+                    resetFormUser();
+                });
+            }
+        }
+
+        function editAkunUserOlehAdmin(userId) {
+            const userObj = dataUserSistem.find(u => u.id === userId);
+            if(!userObj) return;
+        
+            document.getElementById('user-form-id').value = userObj.id;
+            document.getElementById('user-form-nama').value = userObj.nama || '';
+            document.getElementById('user-form-username').value = userObj.username || '';
+            document.getElementById('user-form-password').value = userObj.password || '';
+            document.getElementById('user-form-role').value = userObj.role || 'User';
+        
+            // Ambil data menuAkses dan set status checkbox
+            const m = userObj.menuAkses || {};
+            
+            if(document.getElementById('akses-dash-read')) document.getElementById('akses-dash-read').checked = m.dashboard ? m.dashboard.read : true;
+            if(document.getElementById('akses-dash-edit')) document.getElementById('akses-dash-edit').checked = m.dashboard ? m.dashboard.edit : true;
+        
+            if(document.getElementById('akses-master-read')) document.getElementById('akses-master-read').checked = m.master ? m.master.read : false;
+            if(document.getElementById('akses-master-edit')) document.getElementById('akses-master-edit').checked = m.master ? m.master.edit : false;
+            if(document.getElementById('akses-master-hapus')) document.getElementById('akses-master-hapus').checked = m.master ? m.master.hapus : false;
+        
+            if(document.getElementById('akses-ticket-read')) document.getElementById('akses-ticket-read').checked = m.ticket ? m.ticket.read : false;
+            if(document.getElementById('akses-ticket-edit')) document.getElementById('akses-ticket-edit').checked = m.ticket ? m.ticket.edit : false;
+            if(document.getElementById('akses-ticket-hapus')) document.getElementById('akses-ticket-hapus').checked = m.ticket ? m.ticket.hapus : false;
+        
+            if(document.getElementById('akses-riwayat-read')) document.getElementById('akses-riwayat-read').checked = m.riwayat ? m.riwayat.read : false;
+            if(document.getElementById('akses-riwayat-upload')) document.getElementById('akses-riwayat-upload').checked = m.riwayat ? m.riwayat.upload : false;
+            if(document.getElementById('akses-riwayat-download')) document.getElementById('akses-riwayat-download').checked = m.riwayat ? m.riwayat.download : false;
+            if(document.getElementById('akses-riwayat-hapus')) document.getElementById('akses-riwayat-hapus').checked = m.riwayat ? m.riwayat.hapus : false;
+        
+            document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-pen mr-1.5"></i> Edit Akun: ${userObj.nama}`;
+            document.getElementById('btn-submit-user').innerText = "Simpan Perubahan";
+            document.getElementById('btn-cancel-edit-user').classList.remove('hidden');
         }
 
         function gantiSubTabDokumen(t) { 
