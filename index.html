@@ -735,40 +735,40 @@
                 <!-- 1. PILIH KATEGORI BERKAS -->
                 <div>
                     <label class="block mb-1 font-bold text-cyan-400">Pilih Jenis Dokumen yang Akan Diunggah: *</label>
-                    <select id="form-upload-jenis-kategori" onchange="ubahTampilanFormUpload(this.value)" class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none font-bold">
+                    <select id="form-upload-jenis-kategori" onchange="ubahTampilanFormUpload(this.value)" class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none font-bold cursor-pointer">
                         <option value="kalibrasi">📄 Sertifikat Kalibrasi Resmi</option>
                         <option value="mandiri">📝 Lembar Kerja (LK)</option>
                         <option value="sop">📖 SOP / Buku Petunjuk (Manual Book)</option>
                     </select>
                 </div>
     
-                <!-- 2. PILIH ALAT DARI DATABASE -->
+                <!-- 2. PILIH ALAT DARI DATABASE (DENGAN PENCARIAN INTERAKTIF) -->
                 <div>
                     <label class="block mb-1 font-bold text-cyan-400">Pilih Instrumen Medis Dari Database: *</label>
                     <input type="hidden" id="form-cal-alat-id" value="">
                     <div class="relative">
-                        <input type="text" id="input-search-alat-kalibrasi" onfocus="showDropdownKalibrasiAlat()" oninput="handleSearchKalibrasiAlat(this.value)" placeholder="🔍 Ketik Nama / S/N Alat..." class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none text-xs font-semibold">
+                        <input type="text" id="input-search-alat-kalibrasi" onfocus="showDropdownKalibrasiAlat()" oninput="handleSearchKalibrasiAlat(this.value)" placeholder="🔍 Ketik Nama / S/N Alat..." autocomplete="off" class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none text-xs font-semibold">
                         <div id="dropdown-pilih-alat-kalibrasi" style="display: none;" class="absolute left-0 top-full mt-1 w-full z-[100] max-h-40 overflow-y-auto text-xs font-semibold border rounded-xl bg-slate-900 text-slate-200 shadow-2xl border-white/10 no-scrollbar"></div>
                     </div>
                 </div>
     
-                <!-- SECTION KHUSUS KALIBRASI (DENGAN OTOMATIS +1 TAHUN) -->
+                <!-- SECTION KHUSUS KALIBRASI (DENGAN TANGGAL UJI & AUTO +1 TAHUN) -->
                 <div id="form-section-kalibrasi-Only" class="space-y-3">
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block mb-1 font-bold text-slate-400">Tanggal Uji *</label>
-                            <input type="date" id="form-cal-tgl" onchange="hitungOtomatisMasa BerlakuKalibrasi(this.value)" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white outline-none">
+                            <input type="date" id="form-cal-tgl" onchange="hitungOtomatisMasaBerlakuKalibrasi(this.value)" class="w-full border border-white/10 p-2.5 rounded-xl bg-slate-950 text-white outline-none">
                         </div>
                         <div>
                             <label class="block mb-1 font-bold text-slate-400">Masa Berlaku *</label>
-                            <input type="date" id="form-cal-exp" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white outline-none">
+                            <input type="date" id="form-cal-exp" class="w-full border border-white/10 p-2.5 rounded-xl bg-slate-950 text-white outline-none">
                         </div>
                     </div>
-                    <div><label class="block mb-1 font-bold text-slate-400">Nomor Sertifikat / Vendor Penguji</label><input type="text" id="form-cal-vendor" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white" placeholder="E.g., BPFK Jakarta"></div>
-                    <div><label class="block mb-1 font-bold text-slate-400">Hasil Kelayakan Uji *</label><select id="form-cal-hasil" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white"><option value="Layak">🟢 Layak Digunakan</option><option value="Tidak Layak">🔴 Tidak Layak</option></select></div>
+                    <div><label class="block mb-1 font-bold text-slate-400">Nomor Sertifikat / Vendor Penguji</label><input type="text" id="form-cal-vendor" class="w-full border border-white/10 p-2.5 rounded-xl bg-slate-950 text-white outline-none" placeholder="E.g., BPFK Jakarta"></div>
+                    <div><label class="block mb-1 font-bold text-slate-400">Hasil Kelayakan Uji *</label><select id="form-cal-hasil" class="w-full border border-white/10 p-2.5 rounded-xl bg-slate-950 text-white outline-none"><option value="Layak">🟢 Layak Digunakan</option><option value="Tidak Layak">🔴 Tidak Layak</option></select></div>
                 </div>
     
-                <!-- SECTION KHUSUS LK & SOP (SIMPEL SEPERTI BUKU PETUNJUK) -->
+                <!-- SECTION KHUSUS LK & SOP (KETERANGAN NAMA BERKAS) -->
                 <div id="form-section-keterangan-Only" class="space-y-3 hidden">
                     <div>
                         <label class="block mb-1 font-bold text-slate-400" id="label-keterangan-teks">Nama / Keterangan Dokumen *</label>
@@ -785,7 +785,7 @@
             </div>
             <div class="p-4 bg-slate-950 border-t border-white/5 flex justify-end space-x-2">
                 <button type="button" onclick="toggleModal('modal-kalibrasi', false)" class="border border-white/10 px-4 py-1.5 rounded-xl">Batal</button>
-                <button type="submit" class="bg-blue-600 text-white px-5 py-1.5 rounded-xl font-bold">Simpan & Integrasikan</button>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-xl font-bold transition">Simpan & Integrasikan</button>
             </div>
         </form>
     </div>
@@ -3421,7 +3421,59 @@
                 const inputExp = document.getElementById('form-cal-exp');
                 if(inputExp) inputExp.value = tglExpFormatted;
             }
+
+            function showDropdownKalibrasiAlat() {
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(container) {
+                    populasikanListAlatKalibrasiModal(document.getElementById('input-search-alat-kalibrasi').value);
+                    container.style.display = "block";
+                }
+            }
+
+            function handleSearchKalibrasiAlat(kw) {
+                populasikanListAlatKalibrasiModal(kw);
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(container) container.style.display = "block";
+            }
             
+            function populasikanListAlatKalibrasiModal(keyword = "") {
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(!container) return;
+                const kw = keyword.toLowerCase();
+                const filtered = dataAlat.filter(a => `${a.nama || ''} ${a.seri || ''} ${a.ruangan || a.lokasi || ''}`.toLowerCase().includes(kw));
+                
+                if(filtered.length === 0) {
+                    container.innerHTML = `<div class="p-2.5 text-slate-400 italic text-center">Alat tidak ditemukan</div>`;
+                    return;
+                }
+            
+                container.innerHTML = filtered.map(a => `
+                    <div onclick="pilihAlatKalibrasiModalFinal('${a.id}')" class="p-2.5 hover:bg-blue-600/20 cursor-pointer border-b border-white/5 truncate">
+                        📌 <b>${a.nama}</b> | SN: <span class="font-mono text-cyan-400">${a.seri || '-'}</span> (${a.ruangan || a.lokasi || 'Unit'})
+                    </div>
+                `).join('');
+            }
+            
+            function pilihAlatKalibrasiModalFinal(alatId) {
+                const alat = dataAlat.find(a => a.id == alatId);
+                if(alat) {
+                    document.getElementById('form-cal-alat-id').value = alat.id;
+                    document.getElementById('input-search-alat-kalibrasi').value = `${alat.nama} (SN: ${alat.seri || '-'}) - [${alat.ruangan || alat.lokasi || 'Unit'}]`;
+                }
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(container) container.style.display = "none";
+            }
+            
+            // Event listener klik di luar untuk menutup dropdown kalibrasi secara aman
+            document.addEventListener('click', function(e) {
+                try {
+                    if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#dropdown-pilih-alat-kalibrasi')) {
+                        const el = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                        if(el) el.style.display = 'none';
+                    }
+                } catch(err) {}
+            });
+        
             function submitUploadBerkasUniversal(e) {
                 e.preventDefault();
                 const alatId = document.getElementById('form-cal-alat-id').value;
