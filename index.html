@@ -245,23 +245,13 @@
         <!-- AREA UTAMA APLIKASI -->
         <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
             
-            <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center justify-between no-print border-b border-slate-800/80">
-                <div class="flex items-center space-x-4">
-                    <!-- Tombol Menu Sidebar -->
-                    <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-            
-                    <!-- TOMBOL KEMBALI HANYA SIMBOL (DI SEBELAH TOMBOL MENU) -->
-                    <button onclick="switchTab('dashboard')" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-800 p-2 rounded-xl transition shadow border border-white/5 cursor-pointer" title="Kembali ke Dashboard">
-                        <i class="fa-solid fa-arrow-left text-sm"></i>
-                    </button>
-            
-                    <!-- Judul Aplikasi -->
-                    <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
-                        <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent select-none group-hover:from-cyan-400 group-hover:to-blue-400 transition duration-300">MEDIX</h1>
-                        <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
-                    </div>
+            <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center no-print border-b border-slate-800/80">
+                <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 mr-5 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
+                    <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent select-none group-hover:from-cyan-400 group-hover:to-blue-400 transition duration-300">MEDIX</h1>
+                    <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
                 </div>
             </header>
 
@@ -3138,24 +3128,79 @@
             }
         }
 
-        function checkSwipeGesture() {
-            // Jika geseran ke kanan cukup panjang (lebih dari 100 pixel)
-            if (touchendX - touchstartX > 100) {
-                // Contoh: Jika sedang di dalam tab lain, geser ke kanan untuk kembali ke Dashboard
+        function handleGeserLayar() {
+            // Jika digeser ke kanan dengan mulus di HP
+            if (touchendX - touchstartX > 120) {
+                // 1. Cek apakah modal rekam jejak atau lembar kerja sedang terbuka, jika ya maka tutup
+                const modalKartu = document.getElementById('modal-kartu');
+                const areaLk = document.getElementById('area-lembar-kerja-resmi');
+                const modalPreview = document.getElementById('modal-preview');
+    
+                if (modalPreview && !modalPreview.classList.contains('hidden')) {
+                    toggleModal('modal-preview', false);
+                    return;
+                }
+                if (modalKartu && !modalKartu.classList.contains('hidden')) {
+                    toggleModal('modal-kartu', false);
+                    return;
+                }
+                if (areaLk && !areaLk.classList.contains('hidden')) {
+                    areaLk.classList.add('hidden');
+                    return;
+                }
+    
+                // 2. Jika sedang di tab selain dashboard, kembalikan ke dashboard
                 const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
                 if (activeTabContent && activeTabContent.id !== 'tab-dashboard') {
                     switchTab('dashboard');
                 }
             }
         }
-        
+    
         document.addEventListener('touchstart', e => {
             touchstartX = e.changedTouches[0].screenX;
-        });
-        
+        }, {passive: true});
+    
         document.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
-            checkSwipeGesture();
+            handleGeserLayar();
+        }, {passive: true});
+    
+        // Fitur Tombol Backspace / Esc di Keyboard PC
+        document.addEventListener('keydown', function(event) {
+            const isTyping = document.activeElement.tagName === 'INPUT' || 
+                             document.activeElement.tagName === 'TEXTAREA' || 
+                             document.activeElement.isContentEditable;
+    
+            if (!isTyping) {
+                if (event.key === 'Escape' || event.key === 'Backspace') {
+                    const modalKartu = document.getElementById('modal-kartu');
+                    const areaLk = document.getElementById('area-lembar-kerja-resmi');
+                    const modalPreview = document.getElementById('modal-preview');
+    
+                    if (modalPreview && !modalPreview.classList.contains('hidden')) {
+                        toggleModal('modal-preview', false);
+                        event.preventDefault();
+                        return;
+                    }
+                    if (modalKartu && !modalKartu.classList.contains('hidden')) {
+                        toggleModal('modal-kartu', false);
+                        event.preventDefault();
+                        return;
+                    }
+                    if (areaLk && !areaLk.classList.contains('hidden')) {
+                        areaLk.classList.add('hidden');
+                        event.preventDefault();
+                        return;
+                    }
+    
+                    const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
+                    if (activeTabContent && activeTabContent.id !== 'tab-dashboard') {
+                        switchTab('dashboard');
+                        event.preventDefault();
+                    }
+                }
+            }
         });
         
         window.onload = function() { 
