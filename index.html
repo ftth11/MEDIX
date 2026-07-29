@@ -3259,6 +3259,122 @@
                      }, 300);
                  }
             };
+
+            function ubahTampilanFormUpload(kategori) {
+                const secKalibrasi = document.getElementById('form-section-kalibrasi-Only');
+                const secSop = document.getElementById('form-section-sop-Only');
+                
+                if (kategori === 'sop') {
+                    if(secKalibrasi) secKalibrasi.classList.add('hidden');
+                    if(secSop) secSop.classList.remove('hidden');
+                } else {
+                    if(secKalibrasi) secKalibrasi.classList.remove('hidden');
+                    if(secSop) secSop.classList.add('hidden');
+                }
+            }
+            
+            function showDropdownKalibrasiAlat() {
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(container) {
+                    populasikanListAlatKalibrasiModal(document.getElementById('input-search-alat-kalibrasi').value);
+                    container.style.display = "block";
+                }
+            }
+            
+            function handleSearchKalibrasiAlat(kw) {
+                populasikanListAlatKalibrasiModal(kw);
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(container) container.style.display = "block";
+            }
+            
+            function populasikanListAlatKalibrasiModal(keyword = "") {
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(!container) return;
+                const kw = keyword.toLowerCase();
+                const filtered = dataAlat.filter(a => `${a.nama || ''} ${a.seri || ''} ${a.ruangan || a.lokasi || ''}`.toLowerCase().includes(kw));
+                
+                if(filtered.length === 0) {
+                    container.innerHTML = `<div class="p-2.5 text-slate-400 italic text-center">Alat tidak ditemukan</div>`;
+                    return;
+                }
+            
+                container.innerHTML = filtered.map(a => `
+                    <div onclick="pilihAlatKalibrasiModalFinal('${a.id}')" class="p-2.5 hover:bg-blue-600/20 cursor-pointer border-b border-white/5 truncate">
+                        📌 <b>${a.nama}</b> | SN: <span class="font-mono text-cyan-400">${a.seri || '-'}</span> (${a.ruangan || a.lokasi || 'Unit'})
+                    </div>
+                `).join('');
+            }
+            
+            function pilihAlatKalibrasiModalFinal(alatId) {
+                const alat = dataAlat.find(a => a.id == alatId);
+                if(alat) {
+                    document.getElementById('form-cal-alat-id').value = alat.id;
+                    document.getElementById('input-search-alat-kalibrasi').value = `${alat.nama} (SN: ${alat.seri || '-'}) - [${alat.ruangan || alat.lokasi || 'Unit'}]`;
+                }
+                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                if(container) container.style.display = "none";
+            }
+            
+            function submitUploadBerkasUniversal(e) {
+                e.preventDefault();
+                const alatId = document.getElementById('form-cal-alat-id').value;
+                if(!alatId) return alert("Pilih instrumen alat medis terlebih dahulu dari daftar pencarian!");
+                
+                const jenisKategori = document.getElementById('form-upload-jenis-kategori').value;
+                const fileInput = document.getElementById('form-cal-pdf-file').files[0];
+                if(!fileInput) return alert("Pilih file berkas yang akan diunggah!");
+            
+                const reader = new FileReader();
+                reader.readAsDataURL(fileInput);
+                reader.onload = function(event) {
+                    const fileDataResult = event.target.result;
+                    let targetCollection = "dataKalibrasi";
+                    let payload = {};
+            
+                    if (jenisKategori === 'kalibrasi') {
+                        targetCollection = "dataKalibrasi";
+                        payload = {
+                            alatId: alatId,
+                            tgl: document.getElementById('form-cal-tgl').value,
+                            exp: document.getElementById('form-cal-exp').value,
+                            vendor: document.getElementById('form-cal-vendor').value || "Eksternal / Vendor",
+                            certPdf: fileDataResult,
+                            hasil: document.getElementById('form-cal-hasil').value
+                        };
+                    } else if (jenisKategori === 'sop') {
+                        targetCollection = "bukuPetunjukAlat";
+                        payload = {
+                            alatId: alatId,
+                            namaFile: document.getElementById('form-sop-namafile').value || fileInput.name,
+                            fileType: fileInput.type,
+                            fileData: fileDataResult,
+                            tglUpload: new Date().toISOString().substring(0, 10)
+                        };
+                    } else {
+                        // Lembar Kerja Mandiri Upload Manual
+                        targetCollection = "lembarKerja";
+                        payload = {
+                            alatId: alatId,
+                            noLk: "UPLOAD-MANUAL-" + Math.floor(Math.random() * 1000),
+                            textTgl: new Date().toISOString().substring(0, 10),
+                            jenisKerja: "Corrective Maintenance",
+                            desc_kerja: "Upload Dokumen Lembar Kerja Mandiri oleh Admin/Teknisi.",
+                            hasilTunggal: "Alat Berfungsi Dengan Baik",
+                            fotoAlat: fileDataResult,
+                            isLocked: true,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                    }
+            
+                    db.collection(targetCollection).add(payload).then(() => {
+                        toggleModal('modal-kalibrasi', false);
+                        alert("🎉 Berkas berhasil diunggah dan terintegrasi otomatis ke Rekam Jejak Aset!");
+                    }).catch(err => {
+                        console.error(err);
+                        alert("Terjadi kesalahan saat mengunggah ke database.");
+                    });
+                };
+            }
         
     </script>
     
