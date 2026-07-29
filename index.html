@@ -875,7 +875,7 @@
         // Variabel untuk mendeteksi posisi awal sentuhan
         let touchstartX = 0;
         let touchendX = 0;
-        let riwayatNavigasiTab = [dashboard];
+        let riwayatNavigasiTab = ['dashboard'];
 
         let currentActiveRole = "Teknisi"; 
         let targetLoginRole = "";
@@ -3127,23 +3127,50 @@
             `;
 
             // Buat Blob HTML agar browser tidak memblokir halaman kosong (about:blank)
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const blobUrl = URL.createObjectURL(blob);
-            
-            const printWindow = window.open(blobUrl, '_blank');
-            if (!printWindow) {
-                alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini.");
-            }
-        }
-
-        function handleGeserLayar() {
-            // Jika digeser ke kanan dengan mulus di HP
-            if (touchendX - touchstartX > 120) {
-                // 1. Cek apakah modal rekam jejak atau lembar kerja sedang terbuka, jika ya maka tutup
+                    const blob = new Blob([htmlContent], { type: 'text/html' });
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    const printWindow = window.open(blobUrl, '_blank');
+                    if (!printWindow) {
+                        alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini.");
+                    }
+                }
+        
+                // --- 1. FUNGSI UTAMA PENGELOLA RIWAYAT & NAVIGASI TAB ---
+            let riwayatNavigasiTab = ['dashboard'];
+        
+            // Timpa fungsi switchTab agar otomatis mencatat riwayat langkah
+            const originalSwitchTab = function(tId) {
+                document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); 
+                const targetTab = document.getElementById('tab-' + tId);
+                if(targetTab) targetTab.classList.remove('hidden'); 
+                document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); 
+                const btnEl = document.getElementById('btn-' + tId);
+                if(btnEl) btnEl.classList.add('active'); 
+                toggleSidebarMenu(false); 
+                if(tId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300); 
+            };
+        
+            window.switchTab = function(tId) { 
+                if (riwayatNavigasiTab[riwayatNavigasiTab.length - 1] !== tId) {
+                    riwayatNavigasiTab.push(tId);
+                }
+                originalSwitchTab(tId);
+            };
+        
+            // Fungsi universal untuk mundur secara bertahap (tutup modal dulu, baru mundur menu)
+            function mundurKeMenuSebelumnya() {
                 const modalKartu = document.getElementById('modal-kartu');
                 const areaLk = document.getElementById('area-lembar-kerja-resmi');
                 const modalPreview = document.getElementById('modal-preview');
-    
+                const modalAlat = document.getElementById('modal-alat');
+                const modalKalibrasi = document.getElementById('modal-kalibrasi');
+                const modalScanner = document.getElementById('modal-scanner-publik');
+        
+                if (modalScanner && !modalScanner.classList.contains('hidden')) {
+                    tutupModalScanQrPublik();
+                    return;
+                }
                 if (modalPreview && !modalPreview.classList.contains('hidden')) {
                     toggleModal('modal-preview', false);
                     return;
@@ -3156,191 +3183,63 @@
                     areaLk.classList.add('hidden');
                     return;
                 }
-    
-                // 2. Jika sedang di tab selain dashboard, kembalikan ke dashboard
-                const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
-                if (activeTabContent && activeTabContent.id !== 'tab-dashboard') {
-                    switchTab('dashboard');
+                if (modalAlat && !modalAlat.classList.contains('hidden')) {
+                    toggleModal('modal-alat', false);
+                    return;
                 }
-            }
-        }
-    
-        document.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-        }, {passive: true});
-    
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleGeserLayar();
-        }, {passive: true});
-    
-        // Fitur Tombol Backspace / Esc di Keyboard PC
-        document.addEventListener('keydown', function(event) {
-            const isTyping = document.activeElement.tagName === 'INPUT' || 
-                             document.activeElement.tagName === 'TEXTAREA' || 
-                             document.activeElement.isContentEditable;
-    
-            if (!isTyping) {
-                if (event.key === 'Escape' || event.key === 'Backspace') {
-                    const modalKartu = document.getElementById('modal-kartu');
-                    const areaLk = document.getElementById('area-lembar-kerja-resmi');
-                    const modalPreview = document.getElementById('modal-preview');
-    
-                    if (modalPreview && !modalPreview.classList.contains('hidden')) {
-                        toggleModal('modal-preview', false);
-                        event.preventDefault();
-                        return;
-                    }
-                    if (modalKartu && !modalKartu.classList.contains('hidden')) {
-                        toggleModal('modal-kartu', false);
-                        event.preventDefault();
-                        return;
-                    }
-                    if (areaLk && !areaLk.classList.contains('hidden')) {
-                        areaLk.classList.add('hidden');
-                        event.preventDefault();
-                        return;
-                    }
-    
-                    const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
-                    if (activeTabContent && activeTabContent.id !== 'tab-dashboard') {
-                        switchTab('dashboard');
-                        event.preventDefault();
-                    }
+                if (modalKalibrasi && !modalKalibrasi.classList.contains('hidden')) {
+                    toggleModal('modal-kalibrasi', false);
+                    return;
                 }
-            }
-        });
-
-        function mundurKeMenuSebelumnya() {
-            // 1. Cek dulu jika ada modal/LK yang sedang terbuka, tutup modalnya dulu
-            const modalKartu = document.getElementById('modal-kartu');
-            const areaLk = document.getElementById('area-lembar-kerja-resmi');
-            const modalPreview = document.getElementById('modal-preview');
-    
-            if (modalPreview && !modalPreview.classList.contains('hidden')) {
-                toggleModal('modal-preview', false);
-                return;
-            }
-            if (modalKartu && !modalKartu.classList.contains('hidden')) {
-                toggleModal('modal-kartu', false);
-                return;
-            }
-            if (areaLk && !areaLk.classList.contains('hidden')) {
-                areaLk.classList.add('hidden');
-                return;
-            }
-    
-            // 2. Jika tidak ada modal terbuka, mundur ke tab sebelumnya secara bertahap
-            if (riwayatNavigasiTab.length > 1) {
-                riwayatNavigasiTab.pop(); // Hapus tab saat ini
-                let tabSebelumnya = riwayatNavigasiTab[riwayatNavigasiTab.length - 1];
-                
-                // Panggil fungsi asli agar tidak looping riwayat ganda
-                originalSwitchTab(tabSesudahnya = tabSebelumnya);
-            }
-        }
-    
-        // --- PINTASAN KEYBOARD PC (ESC / BACKSPACE) UNTUK KEMBALI BERTARAP ---
-        document.addEventListener('keydown', function(event) {
-            const isTyping = document.activeElement.tagName === 'INPUT' || 
-                             document.activeElement.tagName === 'TEXTAREA' || 
-                             document.activeElement.isContentEditable;
-    
-            if (!isTyping) {
-                if (event.key === 'Escape' || event.key === 'Backspace') {
-                    event.preventDefault();
-                    mundurKeMenuSebelumnya();
-                }
-            }
-        });
-    
-        window.onload = function() { 
-             renderOpsiDropdownAwal(); 
-             gantiSubTabDokumen('all'); 
-             setTimeout(renderGrafikDashboardDinamis, 500); 
-    
-             // Tangkap parameter URL khusus untuk scan barcode secara aman
-             const urlParams = new URLSearchParams(window.location.search);
-             const scanAlatId = urlParams.get('alat');
-             if (scanAlatId && scanAlatId.trim() !== "") {
-                 const cekDataInterval = setInterval(() => {
-                     if (dataAlat && dataAlat.length > 0) {
-                         clearInterval(cekDataInterval);
-                         bukaKartuPemeliharaanPublik(scanAlatId);
-                     }
-                 }, 300);
-             }
-         };
-
-        document.addEventListener('keydown', function(event) {
-            const isTyping = document.activeElement.tagName === 'INPUT' || 
-                             document.activeElement.tagName === 'TEXTAREA' || 
-                             document.activeElement.isContentEditable;
-
-            if (!isTyping) {
-                if (event.key === 'Backspace' || (event.altKey && event.key === 'ArrowLeft')) {
-                    event.preventDefault();
-                    const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
-                    if (activeTabContent && activeTabContent.id !== 'tab-dashboard') {
-                        switchTab('dashboard');
-                    }
-                }
-            }
-        });
-
-        // --- MENANGKAP TOMBOL BACK FISIK / GESTUR BACK DI ANDROID (PWA / TERTANAM) ---
         
-        // Tambahkan state kosong saat aplikasi pertama kali dibuka
-        window.history.pushState({ page: 'main' }, '', '');
-    
-        window.addEventListener('popstate', function(event) {
-            // Cegah browser langsung keluar dari aplikasi
-            window.history.pushState({ page: 'main' }, '', '');
-    
-            // 1. Cek apakah ada modal rekam jejak, LK, atau preview yang sedang terbuka, tutup dulu
-            const modalKartu = document.getElementById('modal-kartu');
-            const areaLk = document.getElementById('area-lembar-kerja-resmi');
-            const modalPreview = document.getElementById('modal-preview');
-            const modalAlat = document.getElementById('modal-alat');
-            const modalKalibrasi = document.getElementById('modal-kalibrasi');
-            const modalScanner = document.getElementById('modal-scanner-publik');
-    
-            if (modalScanner && !modalScanner.classList.contains('hidden')) {
-                tutupModalScanQrPublik();
-                return;
-            }
-            if (modalPreview && !modalPreview.classList.contains('hidden')) {
-                toggleModal('modal-preview', false);
-                return;
-            }
-            if (modalKartu && !modalKartu.classList.contains('hidden')) {
-                toggleModal('modal-kartu', false);
-                return;
-            }
-            if (areaLk && !areaLk.classList.contains('hidden')) {
-                areaLk.classList.add('hidden');
-                return;
-            }
-            if (modalAlat && !modalAlat.classList.contains('hidden')) {
-                toggleModal('modal-alat', false);
-                return;
-            }
-            if (modalKalibrasi && !modalKalibrasi.classList.contains('hidden')) {
-                toggleModal('modal-kalibrasi', false);
-                return;
-            }
-    
-            // 2. Jika tidak ada modal terbuka, mundur ke tab/menu sebelumnya secara bertahap
-            if (typeof riwayatNavigasiTab !== 'undefined' && riwayatNavigasiTab.length > 1) {
-                riwayatNavigasiTab.pop();
-                let tabSebelumnya = riwayatNavigasiTab[riwayatNavigasiTab.length - 1];
-                if (typeof originalSwitchTab === 'function') {
+                // Jika tidak ada modal terbuka, mundur ke tab/menu sebelumnya secara bertahap
+                if (riwayatNavigasiTab.length > 1) {
+                    riwayatNavigasiTab.pop(); 
+                    let tabSebelumnya = riwayatNavigasiTab[riwayatNavigasiTab.length - 1];
                     originalSwitchTab(tabSebelumnya);
-                } else {
-                    switchTab(tabSebelumnya);
                 }
             }
-        });
+        
+            // --- 2. PINTASAN KEYBOARD PC (ESC / BACKSPACE) YANG BERSIH ---
+            document.addEventListener('keydown', function(event) {
+                const isTyping = document.activeElement.tagName === 'INPUT' || 
+                                 document.activeElement.tagName === 'TEXTAREA' || 
+                                 document.activeElement.isContentEditable;
+        
+                if (!isTyping) {
+                    if (event.key === 'Escape' || event.key === 'Backspace' || (event.altKey && event.key === 'ArrowLeft')) {
+                        event.preventDefault();
+                        mundurKeMenuSebelumnya();
+                    }
+                }
+            });
+        
+            // --- 3. MENANGKAP TOMBOL BACK FISIK / GESTUR BACK DI ANDROID (PWA) ---
+            window.history.pushState({ page: 'main' }, '', '');
+        
+            window.addEventListener('popstate', function(event) {
+                window.history.pushState({ page: 'main' }, '', '');
+                mundurKeMenuSebelumnya();
+            });
+        
+            // --- 4. INISIALISASI SAAT HALAMAN DIMUAT ---
+            window.onload = function() { 
+                 renderOpsiDropdownAwal(); 
+                 gantiSubTabDokumen('all'); 
+                 setTimeout(renderGrafikDashboardDinamis, 500); 
+        
+                 // Tangkap parameter URL khusus untuk scan barcode secara aman
+                 const urlParams = new URLSearchParams(window.location.search);
+                 const scanAlatId = urlParams.get('alat');
+                 if (scanAlatId && scanAlatId.trim() !== "") {
+                     const cekDataInterval = setInterval(() => {
+                         if (dataAlat && dataAlat.length > 0) {
+                             clearInterval(cekDataInterval);
+                             bukaKartuPemeliharaanPublik(scanAlatId);
+                         }
+                     }, 300);
+                 }
+            };
         
     </script>
     
