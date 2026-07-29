@@ -872,6 +872,9 @@
 
         let dataBukuPetunjuk = [];
         let html5QrCodeScanner = null;
+        // Variabel untuk mendeteksi posisi awal sentuhan
+        let touchstartX = 0;
+        let touchendX = 0;
 
         let currentActiveRole = "Teknisi"; 
         let targetLoginRole = "";
@@ -3124,6 +3127,26 @@
                 alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini.");
             }
         }
+
+        function checkSwipeGesture() {
+            // Jika geseran ke kanan cukup panjang (lebih dari 100 pixel)
+            if (touchendX - touchstartX > 100) {
+                // Contoh: Jika sedang di dalam tab lain, geser ke kanan untuk kembali ke Dashboard
+                const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
+                if (activeTabContent && activeTabContent.id !== 'tab-dashboard') {
+                    switchTab('dashboard');
+                }
+            }
+        }
+        
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            checkSwipeGesture();
+        });
         
         window.onload = function() { 
              renderOpsiDropdownAwal(); 
