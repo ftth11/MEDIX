@@ -1539,10 +1539,15 @@
             const alatId = document.getElementById('ticket-form-alat').value;
             const keluhan = document.getElementById('ticket-form-keluhan').value;
             if(!alatId) return alert("Pilih alat terlebih dahulu dari dropdown pencarian!");
-
+        
             const now = new Date();
             const tglLaporStr = now.toISOString().substring(0, 10) + ' ' + now.toTimeString().substring(0, 5);
             
+            // Ambil nama alat dan ruangan untuk dicetak di pesan Telegram
+            const selectedAlatObj = dataAlat.find(a => a.id == alatId) || { nama: 'Alat Medis', ruangan: 'Unit' };
+            const namaAlatInfo = selectedAlatObj.nama;
+            const ruanganInfo = selectedAlatObj.ruangan || selectedAlatObj.lokasi || 'Unit';
+        
             const payloadTicket = { 
                 alatId, 
                 keluhan, 
@@ -1565,12 +1570,35 @@
             }).then(() => {
                 return db.collection("dataAlat").doc(alatId).update({ status: "Dalam Perbaikan" });
             }).then(() => {
+                
+                // ---> PANGGIL FUNGSI KIRIM TELEGRAM DI SINI <---
+                kirimNotifikasiTelegramOtomatis(namaAlatInfo, ruanganInfo, keluhan);
+        
                 document.getElementById('ticket-form-keluhan').value = "";
                 document.getElementById('ticket-form-alat').value = "";
                 document.getElementById('input-search-alat-ticket').value = "";
                 resetFotoTicketBefore();
                 alert("🎉 Tiket kerusakan beserta foto kondisi awal berhasil dikirim!");
             });
+        }
+        
+        // Fungsi pendukung untuk menembak API Telegram
+        function kirimNotifikasiTelegramOtomatis(namaAlat, ruangan, keluhan) {
+            const tokenBot = "8639957817:AAGVfrGvDMubnl9xEP0fDVGVcwTjw6ARTro";
+            const chatId = "-1004495239180";
+            
+            const pesan = `🚨 *LAPORAN KERUSAKAN ALAT MEDIS* 🚨\n\n` +
+                          `📌 *Alat:* ${namaAlat}\n` +
+                          `🏥 *Ruangan:* ${ruangan}\n` +
+                          `⚠️ *Keluhan:* ${keluhan}\n\n` +
+                          `_Segera buka aplikasi MEDIX untuk mengambil tindakan._`;
+        
+            const url = `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(pesan)}&parse_mode=Markdown`;
+        
+            fetch(url)
+                .then(response => response.json())
+                .then(data => console.log("Notifikasi Telegram terkirim:", data))
+                .catch(error => console.error("Gagal kirim Telegram:", error));
         }
 
         function renderDaftarTiketMasuk() {
