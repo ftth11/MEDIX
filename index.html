@@ -727,7 +727,7 @@
     <div id="modal-kalibrasi" class="fixed inset-0 bg-slate-950/60 z-50 flex items-center justify-center p-4 hidden text-xs no-print backdrop-blur-sm">
         <form onsubmit="submitUploadBerkasUniversal(event)" class="bg-slate-900 border border-white/10 w-full max-w-md rounded-2xl shadow-2xl text-slate-200">
             <div class="p-4 font-bold bg-slate-950 border-b border-white/5 flex justify-between items-center text-sm text-slate-300">
-                <span id="modal-upload-title">Upload Dokumen Aset Medis</span>
+                <span>Upload Dokumen Aset Medis</span>
                 <button type="button" onclick="toggleModal('modal-kalibrasi', false)" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-5 space-y-3 max-h-[70vh] overflow-y-auto no-scrollbar">
@@ -736,9 +736,9 @@
                 <div>
                     <label class="block mb-1 font-bold text-cyan-400">Pilih Jenis Dokumen yang Akan Diunggah: *</label>
                     <select id="form-upload-jenis-kategori" onchange="ubahTampilanFormUpload(this.value)" class="w-full bg-slate-950 text-white border border-white/10 p-2.5 rounded-xl outline-none font-bold">
-                        <option value="kalibrasi">📄 Sertifikat Kalibrasi</option>
-                        <option value="mandiri">📝 Lembar Kerja</option>
-                        <option value="sop">📖 Buku Petunjuk</option>
+                        <option value="kalibrasi">📄 Sertifikat Kalibrasi Resmi</option>
+                        <option value="mandiri">📝 Lembar Kerja (LK)</option>
+                        <option value="sop">📖 SOP / Buku Petunjuk (Manual Book)</option>
                     </select>
                 </div>
     
@@ -752,18 +752,28 @@
                     </div>
                 </div>
     
-                <!-- CONTAINER DINAMIS SESUAI KATEGORI -->
+                <!-- SECTION KHUSUS KALIBRASI (DENGAN OTOMATIS +1 TAHUN) -->
                 <div id="form-section-kalibrasi-Only" class="space-y-3">
                     <div class="grid grid-cols-2 gap-2">
-                        <div><label class="block mb-1 font-bold text-slate-400">Tanggal Uji *</label><input type="date" id="form-cal-tgl" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white"></div>
-                        <div><label class="block mb-1 font-bold text-slate-400">Masa Berlaku *</label><input type="date" id="form-cal-exp" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white"></div>
+                        <div>
+                            <label class="block mb-1 font-bold text-slate-400">Tanggal Uji *</label>
+                            <input type="date" id="form-cal-tgl" onchange="hitungOtomatisMasa BerlakuKalibrasi(this.value)" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white outline-none">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-bold text-slate-400">Masa Berlaku *</label>
+                            <input type="date" id="form-cal-exp" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white outline-none">
+                        </div>
                     </div>
                     <div><label class="block mb-1 font-bold text-slate-400">Nomor Sertifikat / Vendor Penguji</label><input type="text" id="form-cal-vendor" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white" placeholder="E.g., BPFK Jakarta"></div>
                     <div><label class="block mb-1 font-bold text-slate-400">Hasil Kelayakan Uji *</label><select id="form-cal-hasil" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white"><option value="Layak">🟢 Layak Digunakan</option><option value="Tidak Layak">🔴 Tidak Layak</option></select></div>
                 </div>
     
-                <div id="form-section-sop-Only" class="space-y-3 hidden">
-                    <div><label class="block mb-1 font-bold text-slate-400">Judul / Keterangan Dokumen SOP *</label><input type="text" id="form-sop-namafile" class="w-full border border-white/10 p-2 rounded-xl bg-slate-950 text-white" placeholder="Contoh: Panduan Operasional Infusion Pump"></div>
+                <!-- SECTION KHUSUS LK & SOP (SIMPEL SEPERTI BUKU PETUNJUK) -->
+                <div id="form-section-keterangan-Only" class="space-y-3 hidden">
+                    <div>
+                        <label class="block mb-1 font-bold text-slate-400" id="label-keterangan-teks">Nama / Keterangan Dokumen *</label>
+                        <input type="text" id="form-keterangan-namafile" class="w-full border border-white/10 p-2.5 rounded-xl bg-slate-950 text-white outline-none" placeholder="Contoh: LK Pemeliharaan Bulanan / Panduan Alat...">
+                    </div>
                 </div>
     
                 <!-- UPLOAD BERKAS FILE -->
@@ -775,7 +785,7 @@
             </div>
             <div class="p-4 bg-slate-950 border-t border-white/5 flex justify-end space-x-2">
                 <button type="button" onclick="toggleModal('modal-kalibrasi', false)" class="border border-white/10 px-4 py-1.5 rounded-xl">Batal</button>
-                <button type="submit" class="bg-blue-600 text-white px-5 py-1.5 rounded-xl font-bold">Simpan</button>
+                <button type="submit" class="bg-blue-600 text-white px-5 py-1.5 rounded-xl font-bold">Simpan & Integrasikan</button>
             </div>
         </form>
     </div>
@@ -3262,57 +3272,33 @@
 
             function ubahTampilanFormUpload(kategori) {
                 const secKalibrasi = document.getElementById('form-section-kalibrasi-Only');
-                const secSop = document.getElementById('form-section-sop-Only');
+                const secKet = document.getElementById('form-section-keterangan-Only');
+                const labelKet = document.getElementById('label-keterangan-teks');
                 
                 if (kategori === 'sop') {
                     if(secKalibrasi) secKalibrasi.classList.add('hidden');
-                    if(secSop) secSop.classList.remove('hidden');
+                    if(secKet) secKet.classList.remove('hidden');
+                    if(labelKet) labelKet.innerText = "Judul / Keterangan SOP *";
+                } else if (kategori === 'mandiri') {
+                    if(secKalibrasi) secKalibrasi.classList.add('hidden');
+                    if(secKet) secKet.classList.remove('hidden');
+                    if(labelKet) labelKet.innerText = "Nomor / Keterangan Lembar Kerja (LK) *";
                 } else {
                     if(secKalibrasi) secKalibrasi.classList.remove('hidden');
-                    if(secSop) secSop.classList.add('hidden');
+                    if(secKet) secKet.classList.add('hidden');
                 }
             }
             
-            function showDropdownKalibrasiAlat() {
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(container) {
-                    populasikanListAlatKalibrasiModal(document.getElementById('input-search-alat-kalibrasi').value);
-                    container.style.display = "block";
-                }
-            }
-            
-            function handleSearchKalibrasiAlat(kw) {
-                populasikanListAlatKalibrasiModal(kw);
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(container) container.style.display = "block";
-            }
-            
-            function populasikanListAlatKalibrasiModal(keyword = "") {
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(!container) return;
-                const kw = keyword.toLowerCase();
-                const filtered = dataAlat.filter(a => `${a.nama || ''} ${a.seri || ''} ${a.ruangan || a.lokasi || ''}`.toLowerCase().includes(kw));
+            // Fungsi otomatis menghitung masa berlaku kalibrasi 1 tahun ke depan
+            function hitungOtomatisMasaBerlakuKalibrasi(tglUjiValue) {
+                if(!tglUjiValue) return;
+                let tglUji = new Date(tglUjiValue);
+                tglUji.setFullYear(tglUji.getFullYear() + 1);
                 
-                if(filtered.length === 0) {
-                    container.innerHTML = `<div class="p-2.5 text-slate-400 italic text-center">Alat tidak ditemukan</div>`;
-                    return;
-                }
-            
-                container.innerHTML = filtered.map(a => `
-                    <div onclick="pilihAlatKalibrasiModalFinal('${a.id}')" class="p-2.5 hover:bg-blue-600/20 cursor-pointer border-b border-white/5 truncate">
-                        📌 <b>${a.nama}</b> | SN: <span class="font-mono text-cyan-400">${a.seri || '-'}</span> (${a.ruangan || a.lokasi || 'Unit'})
-                    </div>
-                `).join('');
-            }
-            
-            function pilihAlatKalibrasiModalFinal(alatId) {
-                const alat = dataAlat.find(a => a.id == alatId);
-                if(alat) {
-                    document.getElementById('form-cal-alat-id').value = alat.id;
-                    document.getElementById('input-search-alat-kalibrasi').value = `${alat.nama} (SN: ${alat.seri || '-'}) - [${alat.ruangan || alat.lokasi || 'Unit'}]`;
-                }
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(container) container.style.display = "none";
+                // Format ke YYYY-MM-DD agar masuk ke input type="date"
+                let tglExpFormatted = tglUji.toISOString().substring(0, 10);
+                const inputExp = document.getElementById('form-cal-exp');
+                if(inputExp) inputExp.value = tglExpFormatted;
             }
             
             function submitUploadBerkasUniversal(e) {
@@ -3345,20 +3331,21 @@
                         targetCollection = "bukuPetunjukAlat";
                         payload = {
                             alatId: alatId,
-                            namaFile: document.getElementById('form-sop-namafile').value || fileInput.name,
+                            namaFile: document.getElementById('form-keterangan-namafile').value || fileInput.name,
                             fileType: fileInput.type,
                             fileData: fileDataResult,
                             tglUpload: new Date().toISOString().substring(0, 10)
                         };
                     } else {
-                        // Lembar Kerja Mandiri Upload Manual
+                        // Lembar Kerja Mandiri Upload Manual (masuk ke koleksi lembarKerja agar tampil di tab Lembar Kerja)
                         targetCollection = "lembarKerja";
+                        let ketManual = document.getElementById('form-keterangan-namafile').value || "Upload LK Manual";
                         payload = {
                             alatId: alatId,
-                            noLk: "UPLOAD-MANUAL-" + Math.floor(Math.random() * 1000),
+                            noLk: ketManual,
                             textTgl: new Date().toISOString().substring(0, 10),
                             jenisKerja: "Corrective Maintenance",
-                            desc_kerja: "Upload Dokumen Lembar Kerja Mandiri oleh Admin/Teknisi.",
+                            desc_kerja: "Dokumen Lembar Kerja (LK) diunggah manual oleh Admin/Teknisi.",
                             hasilTunggal: "Alat Berfungsi Dengan Baik",
                             fotoAlat: fileDataResult,
                             isLocked: true,
