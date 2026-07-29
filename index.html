@@ -2617,19 +2617,21 @@
             const statReady = document.getElementById('stat-ready');
             const statBroken = document.getElementById('stat-broken');
             const statLogs = document.getElementById('stat-logs');
-
+        
             if(statTotal) statTotal.innerText = dataAlat.length;
             if(statReady) statReady.innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
             if(statBroken) statBroken.innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
             
-            let totalDocsCount = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length;
+            // Hitung total seluruh dokumen (Kalibrasi + Lembar Kerja + Keluhan Log + Buku Petunjuk/SOP)
+            let totalDocsCount = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length + dataBukuPetunjuk.length;
             dataKeluhanLog.forEach(lg => {
                 const sudahAdaLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi].some(lk => lk.alatId === lg.alatId);
                 if (!sudahAdaLk) totalDocsCount++;
             });
+            
             if(statLogs) statLogs.innerText = totalDocsCount;
         }
-
+        
         function previewFotoDipilih(input) {
             const file = input.files[0];
             if(file) {
@@ -2822,18 +2824,16 @@
                 if(tbodyBuku) {
                     const listBuku = dataBukuPetunjuk.filter(b => b.alatId == alatId);
                     
-                    // Sembunyikan kotak/form upload dokumen buku petunjuk di tab SOP
-                    const containerUploadBuku = document.querySelector('#tab-k-buku > div:first-child');
-                    if (containerUploadBuku) containerUploadBuku.style.display = 'none';
-    
                     if(listBuku.length === 0) {
-                        tbodyBuku.innerHTML = `<tr><td colspan="2" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah.</td></tr>`;
+                        tbodyBuku.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah untuk aset ini.</td></tr>`;
                     } else {
                         tbodyBuku.innerHTML = listBuku.map(b => `
                             <tr class="border-b border-white/5 hover:bg-white/[0.01]">
-                                <td class="p-4 font-bold text-white"><i class="fa-solid fa-book text-cyan-400 mr-2"></i> ${b.namaFile} <br><span class="text-[10px] text-slate-400 font-mono">${b.tglUpload}</span></td>
-                                <td class="p-4 text-center">
-                                    <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType}', '${b.namaFile}')" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview / Baca</button>
+                                <td class="p-4 font-bold text-white"><i class="fa-solid fa-book text-cyan-400 mr-2"></i> ${b.namaFile}</td>
+                                <td class="p-4 font-mono text-slate-400">${b.tglUpload || '-'}</td>
+                                <td class="p-4 text-center space-x-1">
+                                    <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType || 'application/pdf'}', '${b.namaFile}')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview</button>
+                                    ${currentActiveRole==='User'?'':`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}
                                 </td>
                             </tr>
                         `).join('');
