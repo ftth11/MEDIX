@@ -755,16 +755,13 @@
                     <div><p class="text-slate-500 font-bold uppercase text-[9px]">Unit / Ruangan:</p><p id="kartu-lokasi" class="font-bold text-blue-400 text-xs truncate">-</p></div>
                 </div>
                 
-                <!-- Kotak Barcode agar pas di sebelah kanan tanpa area kosong berlebih -->
-                <div class="flex items-center space-x-3 bg-white/5 px-3 py-2 rounded-xl border border-white/10 shrink-0">
+                <!-- KOTAK BARCODE: HANYA MENAMPILKAN GAMBAR QR CODE, KLIK PADA QR CODE UNTUK DOWNLOAD -->
+                <div class="flex items-center bg-white/5 px-3 py-2 rounded-xl border border-white/10 shrink-0">
                     <div class="flex flex-col items-center">
                         <canvas id="canvas-label-print" class="hidden"></canvas>
-                        <div id="qrcode-container" class="w-[80px] h-[80px] flex items-center justify-center bg-white p-1 rounded shadow"></div>
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <button type="button" onclick="downloadLabelBarcodeFisik()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] transition flex items-center justify-center space-x-1 shadow">
-                            <i class="fa-solid fa-download"></i> <span>Download</span>
-                        </button>
+                        
+                        <!-- QR Code dibungkus event onclick dan diberi pointer agar bisa diklik untuk download -->
+                        <div id="qrcode-container" onclick="downloadLabelBarcodeFisik()" class="w-[80px] h-[80px] flex items-center justify-center bg-white p-1 rounded shadow cursor-pointer transition hover:scale-105" title="Klik untuk download label barcode"></div>
                     </div>
                 </div>
             </div>
