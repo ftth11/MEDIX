@@ -2394,6 +2394,19 @@
             document.getElementById('btn-cancel-edit-user').classList.remove('hidden');
         }
 
+        function hapusAkunUserOlehAdmin(userId, namaUser) {
+            if (confirm(`Apakah Anda yakin ingin menghapus akun "${namaUser}" secara permanen dari sistem?`)) {
+                db.collection("users").doc(userId).delete()
+                    .then(() => {
+                        alert(`🎉 Akun "${namaUser}" berhasil dihapus.`);
+                    })
+                    .catch((error) => {
+                        console.error("Gagal menghapus akun: ", error);
+                        alert("❌ Terjadi kesalahan saat menghapus akun dari server.");
+                    });
+            }
+        }
+
         function gantiSubTabDokumen(t) { 
             subTabDokumenAktif = t; 
             const tabAll = document.getElementById('doc-tab-all');
