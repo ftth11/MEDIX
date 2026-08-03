@@ -142,12 +142,12 @@
     <!-- GATEWAY 1: SISTEM MULTI-USER LOGIN -->
     <div id="auth-gate-screen" class="fixed inset-0 bg-slate-950 z-[9999] flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-white/10 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 text-center relative z-10">
-            <div class="ml-auto flex items-center space-x-3">
-                <button onclick="toggleDarkMode()" class="text-slate-400 hover:text-cyan-400 p-2 rounded-xl bg-slate-800/50 hover:bg-slate-800 transition border border-white/5" title="Ubah Mode Tampilan">
-                    <i id="theme-icon" class="fa-solid fa-moon text-sm text-amber-400"></i>
+            <div class="absolute top-3 right-3 z-30">
+                <button onclick="toggleDarkMode()" type="button" class="text-slate-400 hover:text-cyan-400 p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 transition border border-white/5 shadow-md cursor-pointer" title="Ubah Mode Tampilan">
+                    <i id="theme-icon" class="fa-solid fa-sun text-sm text-amber-400"></i>
                 </button>
             </div>
-            <div class="w-16 h-16 rounded-full overflow-hidden mx-auto border-2 border-cyan-500/30 shadow-lg shadow-blue-500/20 flex items-center justify-center bg-slate-800">
+            <div class="w-16 h-16 rounded-full overflow-hidden mx-auto border-2 border-cyan-500/30 shadow-lg shadow-blue-500/20 flex items-center justify-center bg-slate-800 mt-2">
                 <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-gate').classList.remove('hidden')" class="w-full h-full object-cover" alt="Logo">
                 <i id="fallback-icon-gate" class="fa-solid fa-heart-pulse text-3xl text-cyan-400"></i>
             </div>
