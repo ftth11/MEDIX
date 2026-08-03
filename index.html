@@ -59,8 +59,7 @@
         }
 
         /* ==========================================================
-           CUSTOM LIGHT MODE: ELEGAN, SEJUK (HIJAU, BIRU, UNGU)
-           BERSIH TOTAL DARI LATAR BELAKANG ABU-ABU KUSAM/GELAP
+           CUSTOM LIGHT MODE: ELEGAN, BERSIH, KONTRAS TINGGI
            ========================================================== */
         body.light-mode {
             background-color: #f4f7fa !important;
@@ -75,17 +74,76 @@
             background-color: #f4f7fa !important;
         }
 
-        /* Membersihkan seluruh card, modal, dan panel dari latar gelap */
+        /* Card, Panel, & Seluruh Modal */
         body.light-mode .glass-panel,
         body.light-mode div[id^="modal-"] > div,
-        body.light-mode #area-lembar-kerja-resmi > div {
+        body.light-mode #area-lembar-kerja-resmi > div,
+        body.light-mode #modal-kartu > div {
             background: #ffffff !important;
             border: 1px solid #cbd5e1 !important;
             color: #0f172a !important;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
         }
 
-        /* 1. Sidebar & Tombol Garis Tiga (Sidebar Toggle) */
+        /* 1. Modal Registrasi / Edit Alat (Memperbaiki background gelap form) */
+        body.light-mode #modal-alat,
+        body.light-mode #modal-alat > form {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+        body.light-mode #modal-alat div[class*="bg-slate-"],
+        body.light-mode #modal-alat div[class*="bg-gray-"] {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        /* 2. Kolom Hak Akses & Kotak "Tentukan Izin Akses & Level Detail" */
+        body.light-mode div.bg-slate-950\/60,
+        body.light-mode div.bg-slate-950\/50,
+        body.light-mode div.bg-slate-900,
+        body.light-mode div.bg-slate-950 {
+            background-color: #f8fafc !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        /* Menghilangkan efek kotak gelap pada badge Hak Akses di Tabel User */
+        body.light-mode table td span.bg-slate-800,
+        body.light-mode table td span[class*="bg-"] {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+            font-weight: 700;
+        }
+
+        /* 3. Rekam Jejak Pemeliharaan Aset & Buku Petunjuk */
+        body.light-mode #modal-kartu {
+            background-color: #f4f7fa !important;
+            color: #0f172a !important;
+        }
+        body.light-mode #modal-kartu .bg-slate-950,
+        body.light-mode #modal-kartu .bg-slate-900,
+        body.light-mode #modal-kartu div[class*="bg-slate-"] {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border-color: #e2e8f0 !important;
+        }
+        /* Membuat baris/kolom "Belum ada rekapitulasi riwayat pekerjaan" menjadi putih bersih dan jelas */
+        body.light-mode #kartu-list-semua tr,
+        body.light-mode #tab-k-semua div,
+        body.light-mode tbody tr td {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+        body.light-mode .kartu-tab {
+            color: #334155 !important;
+            font-weight: 700 !important;
+        }
+        body.light-mode .kartu-tab.active {
+            color: #2563eb !important;
+            border-bottom-color: #2563eb !important;
+        }
+
+        /* Sidebar & Menu Navigasi */
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
             border-right: 1px solid #e2e8f0 !important;
@@ -108,21 +166,7 @@
             border-left: 4px solid #7c3aed !important;
         }
 
-        /* 2. Profil Akun di Sidebar & Kotak Izin Akses */
-        body.light-mode div[class*="bg-slate-"],
-        body.light-mode div[class*="bg-gray-"] {
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
-            border-color: #cbd5e1 !important;
-        }
-        body.light-mode #app-sidebar div.bg-slate-950\/50,
-        body.light-mode div.bg-slate-950\/60 {
-            background-color: #f1f5f9 !important;
-            border: 1px solid #cbd5e1 !important;
-            color: #0f172a !important;
-        }
-
-        /* 3. Logo / Tombol Mode (Matahari/Bulan di Pojok Kanan) */
+        /* Logo / Tombol Mode di Pojok Kanan Atas */
         body.light-mode header button[onclick*="toggleLightDarkMode"] {
             background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%) !important;
             color: #ffffff !important;
@@ -130,7 +174,7 @@
             box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
         }
 
-        /* 4. Judul Halaman & Master Data Aset (Menghilangkan kotak abu) */
+        /* Judul & Master Data Aset */
         body.light-mode h2.bg-slate-900\/60,
         body.light-mode div.bg-slate-900\/60 {
             background: transparent !important;
@@ -140,7 +184,7 @@
             padding-left: 0 !important;
         }
 
-        /* 5. Tombol Aksi & "Buat Lembar Kerja" (Gradasi Hijau-Biru-Ungu) */
+        /* Tombol Aksi & "Buat Lembar Kerja" */
         body.light-mode button.bg-gradient-to-r,
         body.light-mode button[onclick*="bukaLembarKerjaBaruKosong"],
         body.light-mode button[onclick*="submitFormAlatMaster"],
@@ -151,7 +195,7 @@
             font-weight: 700 !important;
         }
 
-        /* 6. Riwayat & Dokumen Aset (Sub-Tab & Tabel) */
+        /* Sub-Tab Navigasi Riwayat Dokumen */
         body.light-mode .flex.bg-slate-900\/80 {
             background-color: #e2e8f0 !important;
             border: 1px solid #cbd5e1 !important;
@@ -167,7 +211,7 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
 
-        /* Tabel & Kolom Ruangan / Hak Akses */
+        /* Tabel & Kolom */
         body.light-mode table th {
             background-color: #e2e8f0 !important;
             color: #0f172a !important;
@@ -178,17 +222,8 @@
             color: #1e293b !important;
             border-bottom: 1px solid #f1f5f9 !important;
         }
-        /* Menghilangkan efek blok abu-abu pada data tabel (Ruangan / Hak Akses) */
-        body.light-mode td span.bg-slate-950\/40,
-        body.light-mode td span,
-        body.light-mode td div {
-            background-color: transparent !important;
-            border: none !important;
-            color: #1e293b !important;
-            font-weight: 600;
-        }
 
-        /* 7. Registrasi Akun & Kolom Hak Akses (Checkbox / Level Detail) */
+        /* Input, Select, Dropdown */
         body.light-mode input, 
         body.light-mode select, 
         body.light-mode textarea {
@@ -210,7 +245,7 @@
             color: #7c3aed !important;
         }
 
-        /* Tombol Batal & Tombol Aksi Sekunder */
+        /* Tombol Batal / Sekunder */
         body.light-mode button.bg-slate-800,
         body.light-mode button.bg-gray-400,
         body.light-mode button[onclick*="kembali"],
