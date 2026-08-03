@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEDIX</title>
+
+    <div class="ml-auto flex items-center space-x-3">
+        <button onclick="toggleDarkMode()" class="text-slate-400 hover:text-cyan-400 p-2 rounded-xl bg-slate-800/50 hover:bg-slate-800 transition border border-white/5" title="Ubah Mode Tampilan">
+            <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+        </button>
+    </div>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
     
@@ -23,7 +29,8 @@
 
     <style>
         html, body {
-            background-color: #0b0f19 !important;
+            background-color: #f8fafc !important;
+            color: #1e293b !important;
             background-size: cover !important;
             background-position: center center !important;
             background-repeat: no-repeat !important;
@@ -32,6 +39,23 @@
             -webkit-overflow-scrolling: touch;
             min-height: 100vh;
             overflow-x: hidden;
+        }
+        html.dark, html.dark body {
+            background-color: #0b0f19 !important; /* Dark Mode */
+            color: #e2e8f0 !important;
+        }
+        
+        /* Panel Glassmorphism adaptif */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7) !important;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        html.dark .glass-panel {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
         }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
@@ -127,6 +151,9 @@
     </style>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b0f19">
+    tailwind.config = {
+        darkMode: 'class',
+    }
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-200 transition-all duration-500 no-scrollbar">
@@ -1002,6 +1029,35 @@
                 }
             } catch(err) {}
         });
+
+        // Fungsi untuk toggle Dark/Light Mode
+        function toggleDarkMode() {
+            const htmlEl = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (htmlEl.classList.contains('dark')) {
+                htmlEl.classList.remove('dark');
+                localStorage.setItem('medix_theme', 'light');
+                if(themeIcon) themeIcon.className = "fa-solid fa-moon text-sm";
+            } else {
+                htmlEl.classList.add('dark');
+                localStorage.setItem('medix_theme', 'dark');
+                if(themeIcon) themeIcon.className = "fa-solid fa-sun text-sm text-amber-400";
+            }
+        }
+        
+        // Jalankan saat halaman pertama kali dimuat untuk membaca preferensi tersimpan
+        (function() {
+            const savedTheme = localStorage.getItem('medix_theme') || 'dark'; // Default Dark Mode
+            const themeIcon = document.getElementById('theme-icon');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                if(themeIcon) themeIcon.className = "fa-solid fa-sun text-sm text-amber-400";
+            } else {
+                document.documentElement.classList.remove('dark');
+                if(themeIcon) themeIcon.className = "fa-solid fa-moon text-sm";
+            }
+        })();
 
         function toggleLihatPassword(inputId, tombolEl) {
             const field = document.getElementById(inputId);
