@@ -33,89 +33,98 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* --- LIGHT MODE REVISI TOTAL & PROFESIONAL --- */
+        /* --- LIGHT MODE SEJUK, ELEGAN & RAMAH DI MATA --- */
         body.light-mode {
-            background-color: #f1f5f9 !important;
-            color: #0f172a !important;
+            background-color: #f4f6f9 !important; /* Warna dasar abu-abu kehijauan/kebiruan yang sangat sejuk */
+            color: #1e293b !important;
         }
         body.light-mode header {
             background-color: #ffffff !important;
-            border-bottom: 1px solid #cbd5e1 !important;
+            border-bottom: 1px solid #e2e8f0 !important;
         }
         body.light-mode #main-content-area,
         body.light-mode main {
-            background-color: #f1f5f9 !important;
+            background-color: #f4f6f9 !important;
         }
         body.light-mode .glass-panel,
         body.light-mode div[id^="modal-"] > div,
         body.light-mode #area-lembar-kerja-resmi > div {
             background: #ffffff !important;
-            border: 1px solid #cbd5e1 !important;
-            color: #0f172a !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0 !important;
+            color: #1e293b !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
         }
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
-            border-right: 1px solid #cbd5e1 !important;
-            color: #0f172a !important;
+            border-right: 1px solid #e2e8f0 !important;
+            color: #1e293b !important;
         }
         body.light-mode .sidebar-item {
-            color: #334155 !important;
+            color: #475569 !important;
         }
         body.light-mode .sidebar-item:hover, 
         body.light-mode .sidebar-item.active {
             background: #e2e8f0 !important;
             color: #0f172a !important;
         }
+        
+        /* Tabel & Menghilangkan Efek Kotak/Badge Ruangan yang Tumpang Tindih */
         body.light-mode table th {
-            background-color: #e2e8f0 !important;
-            color: #0f172a !important;
+            background-color: #e8ecf2 !important;
+            color: #1e293b !important;
             border-bottom: 2px solid #cbd5e1 !important;
-            font-weight: 800 !important;
+            font-weight: 700 !important;
         }
         body.light-mode table td {
-            color: #1e293b !important;
+            color: #334155 !important;
             border-bottom: 1px solid #f1f5f9 !important;
         }
+        /* Menghilangkan background badge ruangan agar teks tampil bersih tanpa tumpang tindih */
+        body.light-mode td span.bg-slate-950\/40,
+        body.light-mode td .bg-slate-950,
+        body.light-mode td div[class*="rounded"] {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            color: #334155 !important;
+            font-weight: 600;
+        }
+        
         body.light-mode input, 
         body.light-mode select, 
         body.light-mode textarea {
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
-            border: 1px solid #94a3b8 !important;
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border: 1px solid #cbd5e1 !important;
         }
         body.light-mode input::placeholder {
-            color: #64748b !important;
+            color: #94a3b8 !important;
         }
-        /* Memperjelas teks label, statistik, dan paragraf agar sangat kontras dibaca */
+        
+        /* Memperjelas seluruh teks label, statistik, dan judul agar sangat kontras dan nyaman */
         body.light-mode h3, 
         body.light-mode h2, 
         body.light-mode h4,
         body.light-mode span,
         body.light-mode p,
         body.light-mode label {
-            color: #0f172a !important;
+            color: #1e293b !important;
         }
         body.light-mode .text-slate-400,
         body.light-mode .text-slate-500 {
             color: #475569 !important;
         }
         body.light-mode .text-slate-300 {
-            color: #1e293b !important;
+            color: #334155 !important;
         }
-        /* Perbaikan khusus background gelap di sidebar bawah dan badge role */
         body.light-mode .bg-slate-900,
         body.light-mode .bg-slate-950,
         body.light-mode .bg-slate-950\/50,
         body.light-mode .bg-slate-950\/60 {
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
-            border-color: #cbd5e1 !important;
-        }
-        body.light-mode span.bg-slate-800 {
-            background-color: #e2e8f0 !important;
-            color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-color: #e2e8f0 !important;
         }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
@@ -1396,13 +1405,37 @@
                 const ctxKondisi = document.getElementById('chartKondisiAlat');
                 if (ctxKondisi) {
                     if (instanceChartKondisi) instanceChartKondisi.destroy();
+                    
+                    // Deteksi apakah mode terang sedang aktif untuk menyesuaikan warna teks legend chart
+                    const isLight = document.getElementById('main-app-body').classList.contains('light-mode');
+                    const textColor = isLight ? '#1e293b' : '#94a3b8';
+                
                     instanceChartKondisi = new Chart(ctxKondisi, {
                         type: 'doughnut',
                         data: {
                             labels: ['Siap Digunakan', 'Dalam Perbaikan'],
-                            datasets: [{ data: [jReady, jBroken], backgroundColor: ['rgba(16, 185, 129, 0.75)', 'rgba(244, 63, 94, 0.75)'], borderColor: ['#10b981', '#f43f5e'], borderWidth: 1.5 }]
+                            datasets: [{ 
+                                data: [jReady, jBroken], 
+                                backgroundColor: ['rgba(16, 185, 129, 0.85)', 'rgba(244, 63, 94, 0.85)'], 
+                                borderColor: isLight ? '#ffffff' : '#10b981', 
+                                borderWidth: 1.5 
+                            }]
                         },
-                        options: { plugins: { legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } }, cutout: '70%', responsive: true, maintainAspectRatio: false }
+                        options: { 
+                            plugins: { 
+                                legend: { 
+                                    display: true, 
+                                    position: 'bottom', 
+                                    labels: { 
+                                        color: textColor, // Menyesuaikan warna teks otomatis (Gelap untuk terang, Terang untuk gelap)
+                                        font: { size: 11, weight: 'bold' } 
+                                    } 
+                                } 
+                            }, 
+                            cutout: '70%', 
+                            responsive: true, 
+                            maintainAspectRatio: false 
+                        }
                     });
                 }
 
