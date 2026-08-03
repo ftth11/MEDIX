@@ -33,6 +33,38 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+        /* --- LIGHT MODE STYLING --- */
+        body.light-mode {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+        }
+        body.light-mode header {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+        }
+        body.light-mode .glass-panel {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            color: #0f172a !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        body.light-mode #app-sidebar {
+            background-color: #ffffff !important;
+            border-right: 1px solid #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+        body.light-mode table th {
+            background-color: #f8fafc !important;
+            color: #475569 !important;
+        }
+        body.light-mode table td {
+            color: #1e293b !important;
+        }
+        body.light-mode input, body.light-mode select {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
             border-left: 4px solid #3b82f6;
@@ -127,6 +159,9 @@
     </style>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b0f19">
+    <button onclick="toggleLightDarkMode()" class="ml-auto text-slate-400 hover:text-cyan-400 p-2 rounded-xl hover:bg-slate-800/50 transition" title="Ganti Mode Tampilan">
+        <i id="theme-icon" class="fa-solid fa-sun text-lg"></i>
+    </button>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-200 transition-all duration-500 no-scrollbar">
@@ -1001,6 +1036,31 @@
                     if(el) el.style.display = 'none';
                 }
             } catch(err) {}
+        });
+
+        function toggleLightDarkMode() {
+            const body = document.getElementById('main-app-body');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('medix_theme', 'light');
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-500";
+            } else {
+                localStorage.setItem('medix_theme', 'dark');
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-cyan-400";
+            }
+        }
+        
+        // Jalankan saat halaman dimuat untuk mengecek preferensi terakhir pengguna
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('medix_theme');
+            const themeIcon = document.getElementById('theme-icon');
+            if (savedTheme === 'light') {
+                document.getElementById('main-app-body').classList.add('light-mode');
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-500";
+            }
         });
 
         function toggleLihatPassword(inputId, tombolEl) {
