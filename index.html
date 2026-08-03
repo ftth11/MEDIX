@@ -35,12 +35,15 @@
         }     
         /* Panel Glassmorphism adaptif */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            color: #0f172a;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            color: #0f172a !important;
+        }
+        .glass-panel p, .glass-panel h3, .glass-panel span {
+            color: inherit;
         }
         html.dark .glass-panel {
             background-color: #0b0f19 !important;
@@ -52,9 +55,13 @@
             box-shadow: none;
             color: #e2e8f0 !important;
         }
-        html.dark table tbody tr {
+        table tbody tr {
             color: #1e293b !important;
             border-buttom: 1px solid #e2e8f0;
+        }
+        html.dark table tbody tr {
+            color: #cbd5e1 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
