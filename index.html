@@ -33,61 +33,65 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* --- LIGHT MODE SEJUK, ELEGAN & RAMAH DI MATA --- */
+        /* --- LIGHT MODE: TEMA SEJUK (HIJAU, BIRU, UNGU) & KONTRAS TINGGI --- */
         body.light-mode {
-            background-color: #f4f6f9 !important; /* Warna dasar abu-abu kehijauan/kebiruan yang sangat sejuk */
-            color: #1e293b !important;
+            background-color: #f0f4f8 !important;
+            color: #0f172a !important;
         }
         body.light-mode header {
             background-color: #ffffff !important;
-            border-bottom: 1px solid #e2e8f0 !important;
+            border-bottom: 1px solid #cbd5e1 !important;
         }
         body.light-mode #main-content-area,
         body.light-mode main {
-            background-color: #f4f6f9 !important;
+            background-color: #f0f4f8 !important;
         }
         body.light-mode .glass-panel,
         body.light-mode div[id^="modal-"] > div,
         body.light-mode #area-lembar-kerja-resmi > div {
             background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            color: #1e293b !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
         }
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
-            border-right: 1px solid #e2e8f0 !important;
-            color: #1e293b !important;
+            border-right: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
         }
         body.light-mode .sidebar-item {
-            color: #475569 !important;
+            color: #334155 !important;
         }
         body.light-mode .sidebar-item:hover, 
         body.light-mode .sidebar-item.active {
-            background: #e2e8f0 !important;
-            color: #0f172a !important;
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%) !important;
+            color: #2563eb !important;
+            border-left: 4px solid #7c3aed !important;
         }
         
-        /* Tabel & Menghilangkan Efek Kotak/Badge Ruangan yang Tumpang Tindih */
+        /* Tabel & Menghilangkan Total Efek Kotak/Badge Blok pada Kolom Ruangan */
         body.light-mode table th {
-            background-color: #e8ecf2 !important;
-            color: #1e293b !important;
-            border-bottom: 2px solid #cbd5e1 !important;
-            font-weight: 700 !important;
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            border-bottom: 2px solid #94a3b8 !important;
+            font-weight: 800 !important;
         }
         body.light-mode table td {
-            color: #334155 !important;
-            border-bottom: 1px solid #f1f5f9 !important;
+            color: #1e293b !important;
+            border-bottom: 1px solid #e2e8f0 !important;
         }
-        /* Menghilangkan background badge ruangan agar teks tampil bersih tanpa tumpang tindih */
-        body.light-mode td span.bg-slate-950\/40,
-        body.light-mode td .bg-slate-950,
-        body.light-mode td div[class*="rounded"] {
+        /* Menghilangkan background kotak/blok abu-abu pada nama ruangan di tabel */
+        body.light-mode td span,
+        body.light-mode td div {
             background-color: transparent !important;
-            border: none !important;
             box-shadow: none !important;
+        }
+        body.light-mode td .p-3 span,
+        body.light-mode td span.bg-slate-950\/40 {
+            background: transparent !important;
+            border: none !important;
             padding: 0 !important;
-            color: #334155 !important;
+            color: #1e293b !important;
             font-weight: 600;
         }
         
@@ -95,36 +99,26 @@
         body.light-mode select, 
         body.light-mode textarea {
             background-color: #ffffff !important;
-            color: #1e293b !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-        body.light-mode input::placeholder {
-            color: #94a3b8 !important;
+            color: #0f172a !important;
+            border: 1px solid #94a3b8 !important;
         }
         
-        /* Memperjelas seluruh teks label, statistik, dan judul agar sangat kontras dan nyaman */
+        /* Memperjelas seluruh teks agar tajam, kontras, dan sangat mudah dibaca */
         body.light-mode h3, 
         body.light-mode h2, 
         body.light-mode h4,
-        body.light-mode span,
         body.light-mode p,
         body.light-mode label {
-            color: #1e293b !important;
+            color: #0f172a !important;
+            font-weight: 700;
         }
         body.light-mode .text-slate-400,
         body.light-mode .text-slate-500 {
-            color: #475569 !important;
+            color: #334155 !important;
+            font-weight: 600;
         }
         body.light-mode .text-slate-300 {
-            color: #334155 !important;
-        }
-        body.light-mode .bg-slate-900,
-        body.light-mode .bg-slate-950,
-        body.light-mode .bg-slate-950\/50,
-        body.light-mode .bg-slate-950\/60 {
-            background-color: #ffffff !important;
             color: #1e293b !important;
-            border-color: #e2e8f0 !important;
         }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
@@ -1401,23 +1395,21 @@
                 if(dataAlat.length === 0) return;
                 const jReady = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
                 const jBroken = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
-
+        
+                const isLight = document.getElementById('main-app-body').classList.contains('light-mode');
+                const textColor = isLight ? '#0f172a' : '#94a3b8';
+        
                 const ctxKondisi = document.getElementById('chartKondisiAlat');
                 if (ctxKondisi) {
                     if (instanceChartKondisi) instanceChartKondisi.destroy();
-                    
-                    // Deteksi apakah mode terang sedang aktif untuk menyesuaikan warna teks legend chart
-                    const isLight = document.getElementById('main-app-body').classList.contains('light-mode');
-                    const textColor = isLight ? '#1e293b' : '#94a3b8';
-                
                     instanceChartKondisi = new Chart(ctxKondisi, {
                         type: 'doughnut',
                         data: {
                             labels: ['Siap Digunakan', 'Dalam Perbaikan'],
                             datasets: [{ 
                                 data: [jReady, jBroken], 
-                                backgroundColor: ['rgba(16, 185, 129, 0.85)', 'rgba(244, 63, 94, 0.85)'], 
-                                borderColor: isLight ? '#ffffff' : '#10b981', 
+                                backgroundColor: ['rgba(13, 148, 136, 0.85)', 'rgba(124, 58, 237, 0.85)'], // Perpaduan Hijau Toska & Ungu
+                                borderColor: isLight ? '#ffffff' : '#0d9488', 
                                 borderWidth: 1.5 
                             }]
                         },
@@ -1427,7 +1419,7 @@
                                     display: true, 
                                     position: 'bottom', 
                                     labels: { 
-                                        color: textColor, // Menyesuaikan warna teks otomatis (Gelap untuk terang, Terang untuk gelap)
+                                        color: textColor, 
                                         font: { size: 11, weight: 'bold' } 
                                     } 
                                 } 
@@ -1438,27 +1430,26 @@
                         }
                     });
                 }
-
+        
                 const hitungRuangan = {};
                 dataAlat.forEach(a => {
                     let namaRuang = a.ruangan || a.edar || a.lokasi || 'Umum';
                     hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
                 });
-
+        
                 const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]);
                 const labelRuangan = ruanganTerurut.map(item => item[0]);
                 const skorRuangan = ruanganTerurut.map(item => item[1]);
-
+        
                 const ctxRuangan = document.getElementById('chartSebaranRuangan');
                 if (ctxRuangan && labelRuangan.length > 0) {
                     if (instanceChartRuangan) instanceChartRuangan.destroy();
                     
-                    // Buat efek gradien warna biru modern
                     const ctx = ctxRuangan.getContext('2d');
                     const gradient = ctx.createLinearGradient(0, 0, 500, 0);
-                    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
-                    gradient.addColorStop(1, 'rgba(6, 182, 212, 0.8)');
-
+                    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.85)'); // Biru
+                    gradient.addColorStop(1, 'rgba(124, 58, 237, 0.85)'); // Ungu
+        
                     instanceChartRuangan = new Chart(ctxRuangan, {
                         type: 'bar',
                         data: {
@@ -1467,39 +1458,31 @@
                                 label: 'Jumlah Aset',
                                 data: skorRuangan,
                                 backgroundColor: gradient,
-                                borderColor: '#38bdf8',
+                                borderColor: '#7c3aed',
                                 borderWidth: 1,
                                 borderRadius: 4,
                                 barPercentage: 0.7
                             }]
                         },
                         options: {
-                            indexAxis: 'y', // <--- MEMBUAT GRAFIK MENJADI HORIZONTAL (NAMA RUANGAN TAMPIL SEMUA KE BAWAH)
+                            indexAxis: 'y',
                             responsive: true,
                             maintainAspectRatio: false,
                             scales: {
                                 x: {
-                                    grid: { color: 'rgba(255,255,255,0.05)' },
-                                    ticks: { color: '#94a3b8', font: { size: 10 } }
+                                    grid: { color: isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.05)' },
+                                    ticks: { color: textColor, font: { size: 10, weight: 'bold' } }
                                 },
                                 y: {
                                     grid: { display: false },
                                     ticks: { 
-                                        color: '#e2e8f0', 
-                                        font: { size: 10, weight: 'bold' } 
+                                        color: textColor, // Menjamin nama-nama ruangan di grafik terbaca sangat jelas
+                                        font: { size: 11, weight: 'bold' } 
                                     }
                                 }
                             },
                             plugins: { 
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: '#0f172a',
-                                    titleColor: '#38bdf8',
-                                    bodyColor: '#fff',
-                                    borderColor: 'rgba(255,255,255,1)',
-                                    borderWidth: 1,
-                                    padding: 10
-                                }
+                                legend: { display: false }
                             }
                         }
                     });
