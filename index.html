@@ -151,9 +151,6 @@
     </style>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b0f19">
-    tailwind.config = {
-        darkMode: 'class',
-    }
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-200 transition-all duration-500 no-scrollbar">
@@ -950,6 +947,10 @@
         
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
+
+        tailwind.config = {
+            darkMode: 'class',
+        }
 
         // Memantau Trouble Tickets secara real-time untuk memicu alarm & notifikasi admin/teknisi
         let isFirstLoadTickets = true;
