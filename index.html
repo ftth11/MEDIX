@@ -33,80 +33,89 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* --- LIGHT MODE STYLING --- */
+        /* --- LIGHT MODE REVISI TOTAL & PROFESIONAL --- */
         body.light-mode {
-            background-color: #f8fafc !important;
+            background-color: #f1f5f9 !important;
             color: #0f172a !important;
         }
         body.light-mode header {
             background-color: #ffffff !important;
-            border-bottom: 1px solid #e2e8f0 !important;
+            border-bottom: 1px solid #cbd5e1 !important;
         }
         body.light-mode #main-content-area,
         body.light-mode main {
-            background-color: #f8fafc !important;
+            background-color: #f1f5f9 !important;
         }
         body.light-mode .glass-panel,
-        body.light-mode div[id^="modal-"] > div {
+        body.light-mode div[id^="modal-"] > div,
+        body.light-mode #area-lembar-kerja-resmi > div {
             background: #ffffff !important;
             border: 1px solid #cbd5e1 !important;
             color: #0f172a !important;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
-            border-right: 1px solid #e2e8f0 !important;
+            border-right: 1px solid #cbd5e1 !important;
             color: #0f172a !important;
         }
         body.light-mode .sidebar-item {
-            color: #475569 !important;
+            color: #334155 !important;
         }
-        body.light-mode .sidebar-item:hover,
+        body.light-mode .sidebar-item:hover, 
         body.light-mode .sidebar-item.active {
-            background: #f1f5f9 !important;
+            background: #e2e8f0 !important;
             color: #0f172a !important;
         }
         body.light-mode table th {
-            background-color: #f1f5f9 !important;
-            color: #1e293b !important;
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
             border-bottom: 2px solid #cbd5e1 !important;
+            font-weight: 800 !important;
         }
         body.light-mode table td {
-            color: #334155 !important;
+            color: #1e293b !important;
             border-bottom: 1px solid #f1f5f9 !important;
         }
         body.light-mode input, 
-        body.light-mode select 
+        body.light-mode select, 
         body.light-mode textarea {
-            background-color: #ffffff !important;
+            background-color: #f8fafc !important;
             color: #0f172a !important;
             border: 1px solid #94a3b8 !important;
         }
         body.light-mode input::placeholder {
-            color: #94a3b8 !important;
+            color: #64748b !important;
         }
-        /* Memperjelas teks statistik & label di mode terang agar sangat terbaca */
+        /* Memperjelas teks label, statistik, dan paragraf agar sangat kontras dibaca */
         body.light-mode h3, 
         body.light-mode h2, 
         body.light-mode h4,
         body.light-mode span,
-        body.light-mode p {
-            color: inherit;
+        body.light-mode p,
+        body.light-mode label {
+            color: #0f172a !important;
         }
-        body.light-mode .text-slate-400 {
+        body.light-mode .text-slate-400,
+        body.light-mode .text-slate-500 {
             color: #475569 !important;
         }
         body.light-mode .text-slate-300 {
             color: #1e293b !important;
         }
+        /* Perbaikan khusus background gelap di sidebar bawah dan badge role */
         body.light-mode .bg-slate-900,
-        body.light-mode .bg-slate-950 {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-        }
-        body.light-mode #modal-kartu {
+        body.light-mode .bg-slate-950,
+        body.light-mode .bg-slate-950\/50,
+        body.light-mode .bg-slate-950\/60 {
             background-color: #f8fafc !important;
             color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+        body.light-mode span.bg-slate-800 {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
         }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
@@ -320,9 +329,10 @@
         <!-- AREA UTAMA APLIKASI -->
         <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
             
-            <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center no-print border-b border-slate-800/80">
+            <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center justify-between no-print border-b border-slate-800/80">
+                <!-- Kiri: Tombol Sidebar & Judul -->
                 <div class="flex items-center space-x-4">
-                    <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 mr-5 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
+                    <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
                         <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                     <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
@@ -330,6 +340,8 @@
                         <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
                     </div>
                 </div>
+                
+                <!-- Kanan Pojok: Tombol Pengalih Tema -->
                 <button onclick="toggleLightDarkMode()" class="text-slate-400 hover:text-amber-400 p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 transition cursor-pointer shadow-sm" title="Ganti Mode Tampilan">
                     <i id="theme-icon" class="fa-solid fa-moon text-lg text-amber-400"></i>
                 </button>
@@ -1091,14 +1103,14 @@
             
             if (body.classList.contains('light-mode')) {
                 localStorage.setItem('medix_theme', 'light');
-                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500";
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500"; // Matahari untuk mode terang
             } else {
                 localStorage.setItem('medix_theme', 'dark');
-                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-cyan-400";
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400"; // Bulan untuk mode gelap
             }
         }
         
-        // Jalankan saat halaman dimuat untuk mengecek preferensi terakhir pengguna
+        // Inisialisasi status saat halaman dimuat
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('medix_theme');
             const themeIcon = document.getElementById('theme-icon');
