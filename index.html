@@ -59,7 +59,7 @@
         }
 
         /* ==========================================================
-           CUSTOM LIGHT MODE: ELEGAN, BERSIH, KONTRAS TINGGI
+           CUSTOM LIGHT MODE: ELEGAN, SEJUK (HIJAU, BIRU, UNGU)
            ========================================================== */
         body.light-mode {
             background-color: #f4f7fa !important;
@@ -73,8 +73,6 @@
         body.light-mode main {
             background-color: #f4f7fa !important;
         }
-
-        /* Card, Panel, & Seluruh Modal */
         body.light-mode .glass-panel,
         body.light-mode div[id^="modal-"] > div,
         body.light-mode #area-lembar-kerja-resmi > div,
@@ -84,76 +82,10 @@
             color: #0f172a !important;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
         }
-
-        /* 1. Modal Registrasi / Edit Alat (Memperbaiki background gelap form) */
-        body.light-mode #modal-alat,
-        body.light-mode #modal-alat > form {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-        }
-        body.light-mode #modal-alat div[class*="bg-slate-"],
-        body.light-mode #modal-alat div[class*="bg-gray-"] {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-        }
-
-        /* 2. Kolom Hak Akses & Kotak "Tentukan Izin Akses & Level Detail" */
-        body.light-mode div.bg-slate-950\/60,
-        body.light-mode div.bg-slate-950\/50,
-        body.light-mode div.bg-slate-900,
-        body.light-mode div.bg-slate-950 {
-            background-color: #f8fafc !important;
-            border: 1px solid #cbd5e1 !important;
-            color: #0f172a !important;
-        }
-        /* Menghilangkan efek kotak gelap pada badge Hak Akses di Tabel User */
-        body.light-mode table td span.bg-slate-800,
-        body.light-mode table td span[class*="bg-"] {
-            background-color: #e2e8f0 !important;
-            color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
-            font-weight: 700;
-        }
-
-        /* 3. Rekam Jejak Pemeliharaan Aset & Buku Petunjuk */
-        body.light-mode #modal-kartu {
-            background-color: #f4f7fa !important;
-            color: #0f172a !important;
-        }
-        body.light-mode #modal-kartu .bg-slate-950,
-        body.light-mode #modal-kartu .bg-slate-900,
-        body.light-mode #modal-kartu div[class*="bg-slate-"] {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-            border-color: #e2e8f0 !important;
-        }
-        /* Membuat baris/kolom "Belum ada rekapitulasi riwayat pekerjaan" menjadi putih bersih dan jelas */
-        body.light-mode #kartu-list-semua tr,
-        body.light-mode #tab-k-semua div,
-        body.light-mode tbody tr td {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-        }
-        body.light-mode .kartu-tab {
-            color: #334155 !important;
-            font-weight: 700 !important;
-        }
-        body.light-mode .kartu-tab.active {
-            color: #2563eb !important;
-            border-bottom-color: #2563eb !important;
-        }
-
-        /* Sidebar & Menu Navigasi */
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
             border-right: 1px solid #e2e8f0 !important;
             color: #0f172a !important;
-        }
-        body.light-mode button[onclick*="toggleSidebarMenu"] {
-            background: linear-gradient(135deg, #0d9488 0%, #2563eb 100%) !important;
-            color: #ffffff !important;
-            border-radius: 12px;
-            padding: 8px 10px;
         }
         body.light-mode .sidebar-item {
             color: #334155 !important;
@@ -165,53 +97,6 @@
             color: #0d9488 !important;
             border-left: 4px solid #7c3aed !important;
         }
-
-        /* Logo / Tombol Mode di Pojok Kanan Atas */
-        body.light-mode header button[onclick*="toggleLightDarkMode"] {
-            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%) !important;
-            color: #ffffff !important;
-            border: none !important;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
-        }
-
-        /* Judul & Master Data Aset */
-        body.light-mode h2.bg-slate-900\/60,
-        body.light-mode div.bg-slate-900\/60 {
-            background: transparent !important;
-            border: none !important;
-            color: #0f172a !important;
-            font-weight: 800;
-            padding-left: 0 !important;
-        }
-
-        /* Tombol Aksi & "Buat Lembar Kerja" */
-        body.light-mode button.bg-gradient-to-r,
-        body.light-mode button[onclick*="bukaLembarKerjaBaruKosong"],
-        body.light-mode button[onclick*="submitFormAlatMaster"],
-        body.light-mode button[type="submit"] {
-            background: linear-gradient(135deg, #0d9488 0%, #2563eb 50%, #7c3aed 100%) !important;
-            color: #ffffff !important;
-            border: none !important;
-            font-weight: 700 !important;
-        }
-
-        /* Sub-Tab Navigasi Riwayat Dokumen */
-        body.light-mode .flex.bg-slate-900\/80 {
-            background-color: #e2e8f0 !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-        body.light-mode .flex.bg-slate-900\/80 button {
-            color: #334155 !important;
-            background: transparent !important;
-            font-weight: 700;
-        }
-        body.light-mode .flex.bg-slate-900\/80 button.bg-blue-600 {
-            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-        }
-
-        /* Tabel & Kolom */
         body.light-mode table th {
             background-color: #e2e8f0 !important;
             color: #0f172a !important;
@@ -222,8 +107,6 @@
             color: #1e293b !important;
             border-bottom: 1px solid #f1f5f9 !important;
         }
-
-        /* Input, Select, Dropdown */
         body.light-mode input, 
         body.light-mode select, 
         body.light-mode textarea {
@@ -234,43 +117,6 @@
         body.light-mode input::placeholder {
             color: #64748b !important;
         }
-        body.light-mode div[id^="dropdown-pilih-"],
-        body.light-mode select option {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-        body.light-mode div[id^="dropdown-pilih-"] > div:hover {
-            background-color: #ede9fe !important;
-            color: #7c3aed !important;
-        }
-
-        /* Tombol Batal / Sekunder */
-        body.light-mode button.bg-slate-800,
-        body.light-mode button.bg-gray-400,
-        body.light-mode button[onclick*="kembali"],
-        body.light-mode button[onclick*="tutup"],
-        body.light-mode button[onclick*="reset"] {
-            background: linear-gradient(135deg, #475569 0%, #334155 100%) !important;
-            color: #ffffff !important;
-            font-weight: 700 !important;
-            border: none !important;
-        }
-
-        /* Footer Sidebar (Copyright) */
-        body.light-mode #app-sidebar div.border-t.bg-slate-950\/60,
-        body.light-mode #app-sidebar div[class*="border-t"] {
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
-            border-top: 1px solid #cbd5e1 !important;
-            font-weight: 700;
-        }
-        body.light-mode #app-sidebar span, 
-        body.light-mode #app-sidebar button {
-            color: #0f172a !important;
-        }
-
-        /* Teks Umum, Label, dan Judul */
         body.light-mode h3, 
         body.light-mode h2, 
         body.light-mode h4,
@@ -477,7 +323,6 @@
         <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
             
             <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center justify-between no-print border-b border-slate-800/80">
-                <!-- Kiri: Tombol Sidebar & Judul -->
                 <div class="flex items-center space-x-4">
                     <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
                         <i class="fa-solid fa-bars text-xl"></i>
@@ -488,7 +333,7 @@
                     </div>
                 </div>
                 
-                <!-- Kanan Pojok: Tombol Pengalih Tema -->
+                <!-- TOMBOL PENGALIH TEMA DI POJOK KANAN ATAS -->
                 <button onclick="toggleLightDarkMode()" class="text-slate-400 hover:text-amber-400 p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 transition cursor-pointer shadow-sm" title="Ganti Mode Tampilan">
                     <i id="theme-icon" class="fa-solid fa-moon text-lg text-amber-400"></i>
                 </button>
@@ -1163,34 +1008,56 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
+        // Fungsi Pengalih Light/Dark Mode
+        function toggleLightDarkMode() {
+            const body = document.getElementById('main-app-body');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('medix_theme', 'light');
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500";
+            } else {
+                localStorage.setItem('medix_theme', 'dark');
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('medix_theme');
+            const themeIcon = document.getElementById('theme-icon');
+            if (savedTheme === 'light') {
+                document.getElementById('main-app-body').classList.add('light-mode');
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500";
+            } else {
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400";
+            }
+        });
+
         // Memantau Trouble Tickets secara real-time untuk memicu alarm & notifikasi admin/teknisi
         let isFirstLoadTickets = true;
         
         db.collection("troubleTickets").onSnapshot((snapshot) => {
             if (isFirstLoadTickets) {
                 isFirstLoadTickets = false;
-                return; // Lewatkan saat inisialisasi awal agar tidak berdering saat halaman pertama kali dibuka
+                return;
             }
         
             snapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
                     const ticketData = change.doc.data();
                     
-                    // Periksa apakah akun yang sedang login adalah Admin atau Teknisi
                     if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
-                        
-                        // 1. Putar Nada Dering / Alarm
                         const audioAlert = document.getElementById('alarm-notifikasi-tiket');
                         if (audioAlert) {
                             audioAlert.play().catch(err => {
-                                console.log("Audio play blocked by browser policy until user interacts:", err);
+                                console.log("Audio play blocked by browser policy:", err);
                             });
                         }
         
-                        // 2. Munculkan Alert / Notifikasi Visual di Layar HP/PC
                         alert(`🚨 LAPORAN KERUSAKAN BARU!\n\nKeluhan: ${ticketData.keluhan}\nSegera periksa menu Pelaporan Kerusakan.`);
                         
-                        // Refresh tabel tiket otomatis jika fungsi render tersedia
                         if (typeof renderDaftarTiketMasuk === 'function') {
                             renderDaftarTiketMasuk();
                         }
@@ -1201,7 +1068,6 @@
         
         let dataBukuPetunjuk = [];
         let html5QrCodeScanner = null;
-        // Variabel untuk mendeteksi posisi awal sentuhan
         let touchstartX = 0;
         let touchendX = 0;
         let riwayatNavigasiTab = ['dashboard'];
@@ -1224,7 +1090,6 @@
         let globalSelectedAlatIdUntukLog = ""; 
         let globalSelectedAlatIdForLog = "";
 
-        // Safe Click Outbound untuk Dropdown
         document.addEventListener('click', function(e) {
             try {
                 if (!e.target.closest('#input-search-alat-etiket') && !e.target.closest('#dropdown-pilih-alat-etiket')) {
@@ -1240,33 +1105,6 @@
                     if(el) el.style.display = 'none';
                 }
             } catch(err) {}
-        });
-
-        function toggleLightDarkMode() {
-            const body = document.getElementById('main-app-body');
-            const themeIcon = document.getElementById('theme-icon');
-            
-            body.classList.toggle('light-mode');
-            
-            if (body.classList.contains('light-mode')) {
-                localStorage.setItem('medix_theme', 'light');
-                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500"; // Matahari untuk mode terang
-            } else {
-                localStorage.setItem('medix_theme', 'dark');
-                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400"; // Bulan untuk mode gelap
-            }
-        }
-        
-        // Inisialisasi status saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('medix_theme');
-            const themeIcon = document.getElementById('theme-icon');
-            if (savedTheme === 'light') {
-                document.getElementById('main-app-body').classList.add('light-mode');
-                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500";
-            } else {
-                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400";
-            }
         });
 
         function toggleLihatPassword(inputId, tombolEl) {
@@ -1437,7 +1275,6 @@
               });
         }
 
-        // --- SNAPSHOT LISTENER DATABASE (AMAN & NON-BLOCKING) ---
         db.collection("users").onSnapshot((querySnapshot) => {
             dataUserSistem = [];
             querySnapshot.forEach((doc) => { dataUserSistem.push({ id: doc.id, ...doc.data() }); });
@@ -1539,10 +1376,10 @@
                 if(dataAlat.length === 0) return;
                 const jReady = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
                 const jBroken = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
-        
+
                 const isLight = document.getElementById('main-app-body').classList.contains('light-mode');
                 const textColor = isLight ? '#0f172a' : '#94a3b8';
-        
+
                 const ctxKondisi = document.getElementById('chartKondisiAlat');
                 if (ctxKondisi) {
                     if (instanceChartKondisi) instanceChartKondisi.destroy();
@@ -1550,50 +1387,31 @@
                         type: 'doughnut',
                         data: {
                             labels: ['Siap Digunakan', 'Dalam Perbaikan'],
-                            datasets: [{ 
-                                data: [jReady, jBroken], 
-                                backgroundColor: ['rgba(13, 148, 136, 0.85)', 'rgba(124, 58, 237, 0.85)'], // Perpaduan Hijau Toska & Ungu
-                                borderColor: isLight ? '#ffffff' : '#0d9488', 
-                                borderWidth: 1.5 
-                            }]
+                            datasets: [{ data: [jReady, jBroken], backgroundColor: ['rgba(13, 148, 136, 0.85)', 'rgba(124, 58, 237, 0.85)'], borderColor: isLight ? '#ffffff' : '#0d9488', borderWidth: 1.5 }]
                         },
-                        options: { 
-                            plugins: { 
-                                legend: { 
-                                    display: true, 
-                                    position: 'bottom', 
-                                    labels: { 
-                                        color: textColor, 
-                                        font: { size: 11, weight: 'bold' } 
-                                    } 
-                                } 
-                            }, 
-                            cutout: '70%', 
-                            responsive: true, 
-                            maintainAspectRatio: false 
-                        }
+                        options: { plugins: { legend: { display: true, position: 'bottom', labels: { color: textColor, font: { size: 10, weight: 'bold' } } } }, cutout: '70%', responsive: true, maintainAspectRatio: false }
                     });
                 }
-        
+
                 const hitungRuangan = {};
                 dataAlat.forEach(a => {
                     let namaRuang = a.ruangan || a.edar || a.lokasi || 'Umum';
                     hitungRuangan[namaRuang] = (hitungRuangan[namaRuang] || 0) + 1;
                 });
-        
+
                 const ruanganTerurut = Object.entries(hitungRuangan).sort((x, y) => y[1] - x[1]);
                 const labelRuangan = ruanganTerurut.map(item => item[0]);
                 const skorRuangan = ruanganTerurut.map(item => item[1]);
-        
+
                 const ctxRuangan = document.getElementById('chartSebaranRuangan');
                 if (ctxRuangan && labelRuangan.length > 0) {
                     if (instanceChartRuangan) instanceChartRuangan.destroy();
                     
                     const ctx = ctxRuangan.getContext('2d');
                     const gradient = ctx.createLinearGradient(0, 0, 500, 0);
-                    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.85)'); // Biru
-                    gradient.addColorStop(1, 'rgba(124, 58, 237, 0.85)'); // Ungu
-        
+                    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.85)');
+                    gradient.addColorStop(1, 'rgba(124, 58, 237, 0.85)');
+
                     instanceChartRuangan = new Chart(ctxRuangan, {
                         type: 'bar',
                         data: {
@@ -1620,13 +1438,21 @@
                                 y: {
                                     grid: { display: false },
                                     ticks: { 
-                                        color: textColor, // Menjamin nama-nama ruangan di grafik terbaca sangat jelas
-                                        font: { size: 11, weight: 'bold' } 
+                                        color: textColor, 
+                                        font: { size: 10, weight: 'bold' } 
                                     }
                                 }
                             },
                             plugins: { 
-                                legend: { display: false }
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0f172a',
+                                    titleColor: '#38bdf8',
+                                    bodyColor: '#fff',
+                                    borderColor: 'rgba(255,255,255,1)',
+                                    borderWidth: 1,
+                                    padding: 10
+                                }
                             }
                         }
                     });
@@ -1650,12 +1476,6 @@
                 }
             });
             if(htmlWarning !== "") { warningList.innerHTML = htmlWarning; warningBox.classList.remove('hidden'); } else { warningBox.classList.add('hidden'); }
-        }
-
-        function showDropdownAlat(targetType) {
-            if(targetType === 'kalibrasi') {
-                document.getElementById('form-cal-alat').style.display = "block";
-            }
         }
 
         function populasikanDropdownEtiketAlat(keyword = "") {
@@ -1756,24 +1576,6 @@
             }
         }
 
-        function handleSearchInputAlat(targetType, kw) {
-            if(targetType === 'kalibrasi') {
-                populasikanDropdownAlatDiKalibrasi(kw);
-                document.getElementById('form-cal-alat').style.display = "block";
-            }
-        }
-
-        function pilihItemAlatDariDropdown(targetType, selectEl) {
-            const selectedVal = selectEl.value;
-            const selectedOptText = selectEl.options[selectEl.selectedIndex]?.text || "";
-            if(!selectedVal) return;
-
-            if(targetType === 'kalibrasi') {
-                document.getElementById('input-search-alat-kalibrasi').value = selectedOptText;
-                selectEl.style.display = "none";
-            }
-        }
-
         function previewFotoTiketDipilih(input) {
             const file = input.files[0];
             if(file) {
@@ -1822,7 +1624,6 @@
             const now = new Date();
             const tglLaporStr = now.toISOString().substring(0, 10) + ' ' + now.toTimeString().substring(0, 5);
             
-            // Ambil nama alat dan ruangan untuk dicetak di pesan Telegram
             const selectedAlatObj = dataAlat.find(a => a.id == alatId) || { nama: 'Alat Medis', ruangan: 'Unit' };
             const namaAlatInfo = selectedAlatObj.nama;
             const ruanganInfo = selectedAlatObj.ruangan || selectedAlatObj.lokasi || 'Unit';
@@ -1849,8 +1650,6 @@
             }).then(() => {
                 return db.collection("dataAlat").doc(alatId).update({ status: "Dalam Perbaikan" });
             }).then(() => {
-                
-                // ---> PANGGIL FUNGSI KIRIM TELEGRAM DI SINI <---
                 kirimNotifikasiTelegramOtomatis(namaAlatInfo, ruanganInfo, keluhan);
         
                 document.getElementById('ticket-form-keluhan').value = "";
@@ -1861,7 +1660,6 @@
             });
         }
         
-        // Fungsi pendukung untuk menembak API Telegram
         function kirimNotifikasiTelegramOtomatis(namaAlat, ruangan, keluhan) {
             const tokenBot = "8639957817:AAGVfrGvDMubnl9xEP0fDVGVcwTjw6ARTro";
             const chatId = "-1004495239180";
@@ -1874,10 +1672,7 @@
         
             const url = `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(pesan)}&parse_mode=Markdown`;
         
-            fetch(url)
-                .then(response => response.json())
-                .then(data => console.log("Notifikasi Telegram terkirim:", data))
-                .catch(error => console.error("Gagal kirim Telegram:", error));
+            fetch(url).catch(error => console.error("Gagal kirim Telegram:", error));
         }
 
         function renderDaftarTiketMasuk() {
@@ -2054,7 +1849,7 @@
                         <td class="p-3">${dTipe}</td>
                         <td class="p-3 font-mono font-bold">${dSeri}</td>
                         <td class="p-3 font-mono text-cyan-300">${dIzin}</td>
-                        <td class="p-3"><span class="bg-slate-950/40 px-2 py-1 rounded border border-white/10">${dLokasi}</span></td>
+                        <td class="p-3">${dLokasi}</td>
                         <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status==='Siap Digunakan'?'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20':'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">${a.status || 'Siap Pakai'}</span>${infoCal}</td>
                         <td class="p-3 text-center">${aksiManajemenHTML}</td>
                     </tr>
@@ -2070,7 +1865,7 @@
             }
 
             const alatIdRaw = document.getElementById('dlk-selected-alat-id').value;
-            if(!alatIdRaw) return alert("Belum ada alat yang terpilih pada Lembar Kerja ini! Silakan cari dan pilih alat berdasarkan S/N.");
+            if(!alatIdRaw) return alert("Belum ada alat yang terpilih pada Lembar Kerja ini!");
             const tekNama = document.getElementById('dlk-select-nama-teknisi').value;
             if(!tekNama) return alert("Silakan pilih Nama Teknisi!");
 
@@ -2128,7 +1923,7 @@
                         db.collection("troubleTickets").doc(docT.id).update({ statusTiket: "Selesai" });
                     });
                     document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                    alert(`🎉 Lembar Kerja #${payload.noLk} Berhasil Diperbarui, Dikunci Permanen, & Kalibrasi Tersimpan!`);
+                    alert(`🎉 Lembar Kerja #${payload.noLk} Berhasil Diperbarui & Disimpan!`);
                 });
             } else {
                 db.collection("lembarKerja").get().then((snap) => {
@@ -2148,7 +1943,7 @@
                         return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
                     }).then(() => {
                         document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                        alert(`🎉 Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan, Dikunci Permanen, & Kalibrasi Tersimpan!`);
+                        alert(`🎉 Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan!`);
                     });
                 });
             }
@@ -2293,7 +2088,7 @@
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             
             if(!record) {
-                alert("Dokumen lembar kerja tidak ditemukan di memori.");
+                alert("Dokumen lembar kerja tidak ditemukan.");
                 return;
             }
             
@@ -2538,7 +2333,7 @@
                         menuAkses: ['dashboard', 'master', 'ticket', 'riwayat']
                     };
                     db.collection("users").add(payloadUser).then(() => {
-                        alert(`🎉 ${targetRoleName} baru "${cleanNama}" berhasil disimpan otomatis ke sistem!`);
+                        alert(`🎉 ${targetRoleName} baru "${cleanNama}" berhasil disimpan!`);
                     }).catch(err => {
                         console.error(err);
                         alert("Gagal menyimpan data ke database.");
@@ -2555,20 +2350,17 @@
             
             let docs = [];
             
-            // 1. Data Sertifikat Kalibrasi
             dataKalibrasi.forEach(c => { 
                 const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
                 docs.push({ id: c.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); 
             });
             
-            // 2. Data Lembar Kerja (LK)
             const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             combinedLk.forEach(lk => { 
                 const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
                 docs.push({ id: lk.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Baik', koleksiDb: 'lembarKerja' }); 
             });
             
-            // 3. Data Laporan Kerusakan Log
             dataKeluhanLog.forEach(lg => {
                 const sudahAdaLk = combinedLk.some(lk => lk.alatId === lg.alatId);
                 if (!sudahAdaLk) {
@@ -2577,13 +2369,11 @@
                 }
             });
         
-            // 4. Data SOP / Buku Petunjuk
             dataBukuPetunjuk.forEach(b => {
                 const a = dataAlat.find(i => i.id == b.alatId) || { nama: 'Alat Medis', tipe: '-' };
                 docs.push({ id: b.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'SOP / Buku Petunjuk', tgl: b.tglUpload || '-', desc: b.namaFile, file: b.fileData, type: 'sop-preview', fileType: b.fileType, hasil: 'Tersedia', koleksiDb: 'bukuPetunjukAlat' });
             });
         
-            // Filter berdasarkan sub-tab aktif
             if(subTabDokumenAktif === 'kalibrasi') docs = docs.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
             if(subTabDokumenAktif === 'mandiri') docs = docs.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi' && d.jenis !== 'Sertifikat Kalibrasi' && d.jenis !== 'SOP / Buku Petunjuk');
             if(subTabDokumenAktif === 'sop') docs = docs.filter(d => d.jenis === 'SOP / Buku Petunjuk');
@@ -2598,7 +2388,6 @@
             tBody.innerHTML = docs.map(d => {
                 let tombolAksiHapus = "";
                 if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
-                    // Jika jenisnya SOP/Buku Petunjuk, panggil fungsi hapusBukuPetunjuk secara spesifik agar terhapus tuntas
                     if (d.jenis === 'SOP / Buku Petunjuk') {
                         tombolAksiHapus = `<button onclick="hapusBukuPetunjuk('${d.id}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition" title="Hapus Berkas"><i class="fa-solid fa-trash"></i></button>`;
                     } else {
@@ -2732,23 +2521,10 @@
             } 
         }
 
-        function submitKalibrasi(e) { 
-            e.preventDefault(); 
-            const aId = document.getElementById('form-cal-alat').value; 
-            const hasil = document.getElementById('form-cal-hasil').value; 
-            let reader = new FileReader(); 
-            reader.readAsDataURL(document.getElementById('form-cal-pdf-file').files[0]); 
-            reader.onload = function() { 
-                const payload = { alatId: aId, tgl: document.getElementById('form-cal-tgl').value, exp: document.getElementById('form-cal-exp').value, vendor: document.getElementById('form-cal-vendor').value, certPdf: reader.result, hasil: hasil }; 
-                db.collection("dataKalibrasi").add(payload).then(() => { toggleModal('modal-kalibrasi', false); document.getElementById('input-search-alat-kalibrasi').value = ""; document.getElementById('form-cal-alat').style.display = "none"; alert("Sertifikat Kalibrasi Diunggah!"); }); 
-            } 
-        }
-
         function submitFormUserAdmin(e) {
             e.preventDefault();
             const id = document.getElementById('user-form-id').value;
             
-            // Susun struktur izin akses mendetail berdasarkan pilihan Admin
             const menuAksesPayload = {
                 dashboard: { 
                     read: document.getElementById('akses-dash-read').checked, 
@@ -2761,7 +2537,7 @@
                 },
                 ticket: { 
                     read: document.getElementById('akses-ticket-read').checked, 
-                    edit: document.getElementById('akses-ticket-edit').checked, // Berfungsi sebagai izin kerjakan/proses tiket
+                    edit: document.getElementById('akses-ticket-edit').checked,
                     hapus: document.getElementById('akses-ticket-hapus').checked 
                 },
                 riwayat: { 
@@ -2803,7 +2579,6 @@
             document.getElementById('user-form-password').value = userObj.password || '';
             document.getElementById('user-form-role').value = userObj.role || 'User';
         
-            // Ambil data menuAkses dan set status checkbox
             const m = userObj.menuAkses || {};
             
             if(document.getElementById('akses-dash-read')) document.getElementById('akses-dash-read').checked = m.dashboard ? m.dashboard.read : true;
@@ -2847,98 +2622,16 @@
             const tabMan = document.getElementById('doc-tab-mandiri');
             const tabSop = document.getElementById('doc-tab-sop');
         
-            // Reset warna semua tombol tab menjadi transparan
             [tabAll, tabCal, tabMan, tabSop].forEach(btn => {
                 if(btn) btn.className = "px-3 py-2 rounded-lg flex-1 text-center transition text-slate-400";
             });
         
-            // Berikan warna aktif (biru) pada tab yang sedang dipilih
             if(t === 'all' && tabAll) tabAll.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
             if(t === 'kalibrasi' && tabCal) tabCal.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
             if(t === 'mandiri' && tabMan) tabMan.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
             if(t === 'sop' && tabSop) tabSop.className = "px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition";
         
             renderTabelPusatDokumen(); 
-        }
-        
-        function renderTabelPusatDokumen() {
-            const tBody = document.getElementById('table-kalibrasi-body'); 
-            if(!tBody) return; 
-            
-            let docs = [];
-            
-            // 1. Data Sertifikat Kalibrasi
-            dataKalibrasi.forEach(c => { 
-                const a = dataAlat.find(i => i.id == c.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
-                docs.push({ id: c.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'Sertifikat Kalibrasi Resmi', tgl: c.tgl, desc: c.vendor, file: c.certPdf, type: 'pdf', hasil: c.hasil, koleksiDb: 'dataKalibrasi' }); 
-            });
-            
-            // 2. Data Lembar Kerja (LK)
-            const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
-            combinedLk.forEach(lk => { 
-                const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
-                docs.push({ id: lk.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Baik', koleksiDb: 'lembarKerja' }); 
-            });
-            
-            // 3. Data Laporan Kerusakan Log
-            dataKeluhanLog.forEach(lg => {
-                const sudahAdaLk = combinedLk.some(lk => lk.alatId === lg.alatId);
-                if (!sudahAdaLk) {
-                    const a = dataAlat.find(i => i.id == lg.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
-                    docs.push({ id: lg.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'Laporan Kerusakan', tgl: lg.textTgl, desc: lg.desc_kerja, file: '#', type: 'log-only', hasil: lg.hasilTunggal || 'Menunggu', koleksiDb: 'laporanKeluhanLog' });
-                }
-            });
-        
-            // 4. Data SOP / Buku Petunjuk
-            dataBukuPetunjuk.forEach(b => {
-                const a = dataAlat.find(i => i.id == b.alatId) || { nama: 'Alat Medis', tipe: '-' };
-                docs.push({ id: b.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: 'SOP / Buku Petunjuk', tgl: b.tglUpload || '-', desc: b.namaFile, file: b.fileData, type: 'sop-preview', fileType: b.fileType, hasil: 'Tersedia', koleksiDb: 'bukuPetunjukAlat' });
-            });
-        
-            // Filter berdasarkan sub-tab aktif
-            if(subTabDokumenAktif === 'kalibrasi') docs = docs.filter(d => d.jenis === 'Sertifikat Kalibrasi Resmi');
-            if(subTabDokumenAktif === 'mandiri') docs = docs.filter(d => d.jenis !== 'Sertifikat Kalibrasi Resmi' && d.jenis !== 'Sertifikat Kalibrasi' && d.jenis !== 'SOP / Buku Petunjuk');
-            if(subTabDokumenAktif === 'sop') docs = docs.filter(d => d.jenis === 'SOP / Buku Petunjuk');
-        
-            docs.sort((x,y) => String(y.tgl).localeCompare(String(x.tgl)));
-            
-            if(docs.length === 0) { 
-                tBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Tidak ada berkas dokumen pada kategori ini.</td></tr>`; 
-                return; 
-            }
-            
-            tBody.innerHTML = docs.map(d => {
-                let tombolAksiHapus = "";
-                if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
-                    tombolAksiHapus = `<button onclick="hapusDokumenPusatRiwayat('${d.id}', '${d.koleksiDb}')" class="bg-rose-600/20 text-rose-400 p-1.5 rounded-r-lg hover:bg-rose-600 transition" title="Hapus Berkas"><i class="fa-solid fa-trash"></i></button>`;
-                } else {
-                    tombolAksiHapus = `<span class="p-1.5 text-slate-600"><i class="fa-solid fa-lock text-[10px]"></i></span>`;
-                }
-        
-                let tombolLihat = "";
-                if(d.type === 'pdf') {
-                    tombolLihat = `<button onclick="lihatFileLangsung('${d.file}','pdf','Sertifikat')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Lihat Dokumen"><i class="fa-solid fa-eye"></i></button>`;
-                } else if(d.type === 'lk-print') {
-                    tombolLihat = `<button onclick="bukaLembarKerjaDinamisDariLog('${d.file}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Lihat LK"><i class="fa-solid fa-eye"></i></button>`;
-                } else if(d.type === 'sop-preview') {
-                    tombolLihat = `<button onclick="previewDokumenBukuPetunjuk('${d.file}', '${d.fileType || 'application/pdf'}', '${d.desc}')" class="bg-blue-600/20 text-blue-400 p-1.5 rounded-l-lg hover:bg-blue-600 transition" title="Preview SOP"><i class="fa-solid fa-book-open"></i></button>`;
-                } else {
-                    tombolLihat = `<span class="text-[10px] text-slate-500 italic px-2">Log</span>`;
-                }
-        
-                let formatTglDokumen = d.tgl ? String(d.tgl).replace('T', ' ') : '-';
-        
-                return `
-                    <tr class="border-b border-white/5 hover:bg-white/[0.01]">
-                        <td class="p-4"><b>${d.namaAlat}</b><br><span class="text-[10px] text-slate-500 font-mono">SN: ${d.seri}</span></td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${d.jenis.includes('Kalibrasi')?'bg-amber-500/10 text-amber-400':d.jenis.includes('SOP')?'bg-cyan-500/10 text-cyan-400':d.jenis.includes('Laporan')?'bg-rose-500/10 text-rose-400':'bg-indigo-500/10 text-indigo-400'}">${d.jenis}</span></td>
-                        <td class="p-4 font-mono text-[11px]">${formatTglDokumen}</td>
-                        <td class="p-4 text-slate-400 max-w-xs truncate">${d.desc}</td>
-                        <td class="p-4 text-center"><div class="inline-flex rounded-lg shadow-sm">${tombolLihat}${tombolAksiHapus}</div></td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${d.hasil.includes('Baik')||d.hasil==='Layak'||d.hasil==='Tersedia'?'bg-emerald-500/10 text-emerald-400':'bg-rose-500/10 text-rose-400'}">${d.hasil}</span></td>
-                    </tr>
-                `;
-            }).join('');
         }
         
         function toggleModal(id, s) { 
@@ -2965,7 +2658,6 @@
             if(statReady) statReady.innerText = dataAlat.filter(a => a.status === 'Siap Digunakan').length;
             if(statBroken) statBroken.innerText = dataAlat.filter(a => a.status === 'Dalam Perbaikan').length;
             
-            // Hitung total seluruh dokumen (Kalibrasi + Lembar Kerja + Keluhan Log + Buku Petunjuk/SOP)
             let totalDocsCount = dataKalibrasi.length + dataPerbaikan.length + dataPM.length + dataInspeksi.length + dataBukuPetunjuk.length;
             dataKeluhanLog.forEach(lg => {
                 const sudahAdaLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi].some(lk => lk.alatId === lg.alatId);
@@ -3035,7 +2727,7 @@
         
         function hapusDokumenLogSpesifik(docId, koleksiNama) {
             if(currentActiveRole === 'User' && koleksiNama !== 'laporanKeluhanLog') {
-                alert("❌ Akses ditolak! Akun User hanya dapat melihat dokumen.");
+                alert("❌ Akses ditolak!");
                 return;
             }
             if(confirm("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?")) {
@@ -3051,7 +2743,7 @@
 
         function hapusDokumenPusatRiwayat(id, kol) { 
             if(currentActiveRole === 'User' && kol !== 'laporanKeluhanLog') {
-                alert("❌ Akses ditolak! Akun User hanya dapat melihat dokumen.");
+                alert("❌ Akses ditolak!");
                 return;
             }
             if(confirm("Hapus dokumen arsip ini?")) { db.collection(kol).doc(id).delete().then(() => alert("🎉 Dokumen dibersihkan!")); } 
@@ -3114,7 +2806,6 @@
                     });
                 }
                 
-                // Sembunyikan tombol "Download Label" di sebelah QR Code jika diakses via scan publik/user
                 const boxDownloadLabel = qrContainer ? qrContainer.closest('.md\\:col-span-4') : null;
                 if (boxDownloadLabel) {
                     const tombolDownload = boxDownloadLabel.querySelector('button');
@@ -3157,61 +2848,31 @@
                 const lkPreventive = document.getElementById('kartu-list-preventive');
                 const lkInspeksi = document.getElementById('kartu-list-inspeksi');
                 const lkKalibrasi = document.getElementById('kartu-list-kalibrasi');
-    
-                if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button></td></tr>`).join('');
-                if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button></td></tr>`).join('');
-                if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button></td></tr>`).join('');
-                if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button></td></tr>`).join('');
+
+                if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+                if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+                if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+                if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
                 
                 const tbodyBuku = document.getElementById('kartu-list-buku-petunjuk');
                 if(tbodyBuku) {
                     const listBuku = dataBukuPetunjuk.filter(b => b.alatId == alatId);
-                    
                     if(listBuku.length === 0) {
-                        tbodyBuku.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah untuk aset ini.</td></tr>`;
+                        tbodyBuku.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah.</td></tr>`;
                     } else {
                         tbodyBuku.innerHTML = listBuku.map(b => `
                             <tr class="border-b border-white/5 hover:bg-white/[0.01]">
                                 <td class="p-4 font-bold text-white"><i class="fa-solid fa-book text-cyan-400 mr-2"></i> ${b.namaFile}</td>
-                                <td class="p-4 font-mono text-slate-400">${b.tglUpload || '-'}</td>
+                                <td class="p-4 font-mono text-slate-400">${b.tglUpload}</td>
                                 <td class="p-4 text-center space-x-1">
-                                    <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType || 'application/pdf'}', '${b.namaFile}')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview</button>
-                                    ${currentActiveRole==='User'?'':`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}
+                                    <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType}', '${b.namaFile}')" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview</button>
+                                    ${currentActiveRole==='User'?'':`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}
                                 </td>
                             </tr>
                         `).join('');
                     }
                 }
-            }
-        
-            const lkCorrective = document.getElementById('kartu-list-corrective');
-            const lkPreventive = document.getElementById('kartu-list-preventive');
-            const lkInspeksi = document.getElementById('kartu-list-inspeksi');
-            const lkKalibrasi = document.getElementById('kartu-list-kalibrasi');
-
-            if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-400 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDariLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-400 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-500/10 text-rose-400 border px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            
-            const tbodyBuku = document.getElementById('kartu-list-buku-petunjuk');
-            if(tbodyBuku) {
-                const listBuku = dataBukuPetunjuk.filter(b => b.alatId == alatId);
-                if(listBuku.length === 0) {
-                    tbodyBuku.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Belum ada dokumen buku petunjuk / SOP diunggah.</td></tr>`;
-                } else {
-                    tbodyBuku.innerHTML = listBuku.map(b => `
-                        <tr class="border-b border-white/5 hover:bg-white/[0.01]">
-                            <td class="p-4 font-bold text-white"><i class="fa-solid fa-book text-cyan-400 mr-2"></i> ${b.namaFile}</td>
-                            <td class="p-4 font-mono text-slate-400">${b.tglUpload}</td>
-                            <td class="p-4 text-center space-x-1">
-                                <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType}', '${b.namaFile}')" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview</button>
-                                ${currentActiveRole==='User'?'':`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            }
+        }
 
         function downloadLabelBarcodeFisik() {
             if(!globalSelectedAlatIdForLog) return;
@@ -3220,7 +2881,7 @@
 
             const qrContainer = document.getElementById('qrcode-container');
             const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
-            if(!qrImg) return alert("QR Code sedang dimuat, silakan coba beberapa saat lagi.");
+            if(!qrImg) return alert("QR Code sedang dimuat.");
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -3243,13 +2904,6 @@
             ctx.font = "bold 13px sans-serif";
             ctx.fillStyle = "#334155";
             ctx.fillText("LABEL REKAM JEJAK & AKREDITASI ASET", canvas.width / 2, 68);
-
-            ctx.beginPath();
-            ctx.moveTo(30, 78);
-            ctx.lineTo(canvas.width - 30, 78);
-            ctx.lineWidth = 1.5;
-            ctx.strokeStyle = "#cbd5e1";
-            ctx.stroke();
 
             let imgQr = new Image();
             imgQr.crossOrigin = "anonymous";
@@ -3295,12 +2949,6 @@
                 ctx.fillStyle = "#2563eb";
                 ctx.fillText(alat.ruangan || alat.lokasi || "-", startX, startY + 170);
 
-                ctx.font = "italic 10px sans-serif";
-                ctx.fillStyle = "#64748b";
-                ctx.textAlign = "center";
-                ctx.fillText("Tempelkan label ini pada fisik alat medis untuk memudahkan pemindaian.", canvas.width / 2, 365);
-
-                // Konversi kanvas ke format Blob agar aman untuk aplikasi terinstal di HP
                 canvas.toBlob(function(blob) {
                     const blobUrl = URL.createObjectURL(blob);
                     const downloadLink = document.createElement('a');
@@ -3315,16 +2963,6 @@
                     alert("🎉 Label berhasil diunduh ke HP Anda!");
                 }, 'image/png');
             };
-        }
-        
-        // Fungsi pendukung unduh standar
-        function triggerDownloadFallback(imageURI, alat) {
-            const downloadLink = document.createElement('a');
-            downloadLink.href = imageURI;
-            downloadLink.download = `Label_Barcode_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
         }
         
         function initSignatures() {
@@ -3368,7 +3006,6 @@
                     
                     canvas.onmousedown = startDrawing; 
                     canvas.onmousemove = draw; 
-                    
                     canvas.ontouchstart = startDrawing; 
                     canvas.ontouchmove = draw; 
                     canvas.ontouchend = () => isDrawing = false;
@@ -3378,12 +3015,11 @@
             }
         }
 
-        // Aman untuk mouse up global tanpa konflik
         window.addEventListener('mouseup', () => {});
 
         function unggahBukuPetunjukBaru() {
             if(currentActiveRole === 'User') {
-                alert("❌ Akses ditolak! Hanya Admin dan Teknisi yang dapat mengunggah buku petunjuk.");
+                alert("❌ Akses ditolak!");
                 return;
             }
             const fileInput = document.getElementById('input-buku-petunjuk-file');
@@ -3404,9 +3040,6 @@
                 db.collection("bukuPetunjukAlat").add(payload).then(() => {
                     fileInput.value = "";
                     alert("🎉 Dokumen Buku Petunjuk / SOP berhasil diunggah!");
-                }).catch(err => {
-                    console.error(err);
-                    alert("Gagal mengunggah berkas ke database.");
                 });
             };
         }
@@ -3446,19 +3079,15 @@
                     { fps: 10, qrbox: { width: 200, height: 200 } },
                     (decodedText) => {
                         tutupModalScanQrPublik();
-                        
-                        // Ekstrak ID alat dengan aman baik dari URL lengkap maupun teks ID murni
                         let targetAlatId = decodedText.trim();
                         if (decodedText.includes("?alat=")) {
                             const parts = decodedText.split("?alat=");
                             targetAlatId = parts[1].trim();
                         }
-                        
                         bukaKartuPemeliharaanPublik(targetAlatId);
                     },
                     (errorMessage) => {}
                 ).catch(err => {
-                    console.error("Gagal akses kamera:", err);
                     alert("Tidak dapat mengakses kamera perangkat.");
                 });
             }, 300);
@@ -3478,47 +3107,40 @@
         
         function bukaKartuPemeliharaanPublik(alatId) {
             if (!dataAlat || dataAlat.length === 0) {
-                alert("⏳ Data aset sedang dimuat dari server, silakan coba scan ulang dalam beberapa detik.");
+                alert("⏳ Data aset sedang dimuat dari server...");
                 return;
             }
 
             const alat = dataAlat.find(a => a.id == alatId || a.seri == alatId);
             
             if (!alat) {
-                alert("❌ Barcode discan, tetapi ID / Seri alat tidak ditemukan di dalam database master aset!");
+                alert("❌ ID / Seri alat tidak ditemukan di dalam database!");
                 return;
             }
 
-            // Sembunyikan layar login / gate screen
             const authGate = document.getElementById('auth-gate-screen');
             if (authGate) authGate.classList.add('hidden');
 
-            // Sembunyikan Sidebar aplikasi agar tidak bisa pindah-pindah menu
             const sidebar = document.getElementById('app-sidebar');
             if (sidebar) sidebar.style.display = 'none';
 
-            // Set role publik
             currentActiveRole = "User"; 
-
-            // Panggil fungsi utama rekam jejak aset
             bukaKartuPemeliharaan(alat.id);
 
-            // Sembunyikan tombol "Tutup Log" di pojok kanan atas khusus dari scan barcode publik
             setTimeout(() => {
                 const modalKartuHeader = document.querySelector('#modal-kartu .bg-slate-950.text-white');
                 if (modalKartuHeader) {
                     const tombolTutup = modalKartuHeader.querySelector('button');
                     if (tombolTutup) {
-                        tombolTutup.style.display = 'none'; // Tombol X Tutup Log disembunyikan
+                        tombolTutup.style.display = 'none';
                     }
                 }
             }, 100);
         }
 
-        // Fungsi untuk mencetak / mendownload label barcode massal seluruh alkes dalam bentuk PDF
         function cetakLabelBarcodeMassalPdf() {
             if (!dataAlat || dataAlat.length === 0) {
-                alert("❌ Data aset medis sedang dimuat atau kosong. Tunggu sebentar lalu coba lagi!");
+                alert("❌ Data aset medis sedang dimuat atau kosong.");
                 return;
             }
 
@@ -3570,7 +3192,6 @@
                 <body>
                     <div class="no-print" style="text-align: center; margin-bottom: 15px; background: #f1f5f9; padding: 12px; border-radius: 6px;">
                         <button onclick="window.print()" style="background: #2563eb; color: #fff; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px;">🖨️ Cetak / Simpan sebagai PDF</button>
-                        <p style="margin: 6px 0 0 0; font-size: 11px; color: #475569;">(Pilih "Save as PDF" / "Simpan sebagai PDF" pada pilihan printer jika ingin mengunduhnya ke file PDF)</p>
                     </div>
                     <div class="grid-container">
             `;
@@ -3641,244 +3262,226 @@
                 </html>
             `;
 
-            // Buat Blob HTML agar browser tidak memblokir halaman kosong (about:blank)
-                    const blob = new Blob([htmlContent], { type: 'text/html' });
-                    const blobUrl = URL.createObjectURL(blob);
-                    
-                    const printWindow = window.open(blobUrl, '_blank');
-                    if (!printWindow) {
-                        alert("❌ Pop-up diblokir oleh browser Anda. Izinkan pop-up untuk situs ini.");
-                    }
-                }
-                
-            // Fungsi universal untuk mundur secara bertahap (tutup modal dulu, baru mundur menu)
-            function mundurKeMenuSebelumnya() {
-                const modalKartu = document.getElementById('modal-kartu');
-                const areaLk = document.getElementById('area-lembar-kerja-resmi');
-                const modalPreview = document.getElementById('modal-preview');
-                const modalAlat = document.getElementById('modal-alat');
-                const modalKalibrasi = document.getElementById('modal-kalibrasi');
-                const modalScanner = document.getElementById('modal-scanner-publik');
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const blobUrl = URL.createObjectURL(blob);
+            const printWindow = window.open(blobUrl, '_blank');
+            if (!printWindow) {
+                alert("❌ Pop-up diblokir oleh browser Anda.");
+            }
+        }
         
-                if (modalScanner && !modalScanner.classList.contains('hidden')) {
-                    tutupModalScanQrPublik();
-                    return;
-                }
-                if (modalPreview && !modalPreview.classList.contains('hidden')) {
-                    toggleModal('modal-preview', false);
-                    return;
-                }
-                if (modalKartu && !modalKartu.classList.contains('hidden')) {
-                    toggleModal('modal-kartu', false);
-                    return;
-                }
-                if (areaLk && !areaLk.classList.contains('hidden')) {
-                    areaLk.classList.add('hidden');
-                    return;
-                }
-                if (modalAlat && !modalAlat.classList.contains('hidden')) {
-                    toggleModal('modal-alat', false);
-                    return;
-                }
-                if (modalKalibrasi && !modalKalibrasi.classList.contains('hidden')) {
-                    toggleModal('modal-kalibrasi', false);
-                    return;
-                }
-        
-                // Jika tidak ada modal terbuka, mundur ke tab/menu sebelumnya secara bertahap
-                if (riwayatNavigasiTab.length > 1) {
-                    riwayatNavigasiTab.pop(); 
-                    let tabSebelumnya = riwayatNavigasiTab[riwayatNavigasiTab.length - 1];
-                    originalSwitchTab(tabSebelumnya);
+        function mundurKeMenuSebelumnya() {
+            const modalKartu = document.getElementById('modal-kartu');
+            const areaLk = document.getElementById('area-lembar-kerja-resmi');
+            const modalPreview = document.getElementById('modal-preview');
+            const modalAlat = document.getElementById('modal-alat');
+            const modalKalibrasi = document.getElementById('modal-kalibrasi');
+            const modalScanner = document.getElementById('modal-scanner-publik');
+    
+            if (modalScanner && !modalScanner.classList.contains('hidden')) {
+                tutupModalScanQrPublik();
+                return;
+            }
+            if (modalPreview && !modalPreview.classList.contains('hidden')) {
+                toggleModal('modal-preview', false);
+                return;
+            }
+            if (modalKartu && !modalKartu.classList.contains('hidden')) {
+                toggleModal('modal-kartu', false);
+                return;
+            }
+            if (areaLk && !areaLk.classList.contains('hidden')) {
+                areaLk.classList.add('hidden');
+                return;
+            }
+            if (modalAlat && !modalAlat.classList.contains('hidden')) {
+                toggleModal('modal-alat', false);
+                return;
+            }
+            if (modalKalibrasi && !modalKalibrasi.classList.contains('hidden')) {
+                toggleModal('modal-kalibrasi', false);
+                return;
+            }
+    
+            if (riwayatNavigasiTab.length > 1) {
+                riwayatNavigasiTab.pop(); 
+                let tabSebelumnya = riwayatNavigasiTab[riwayatNavigasiTab.length - 1];
+                originalSwitchTab(tabSebelumnya);
+            }
+        }
+    
+        document.addEventListener('keydown', function(event) {
+            const isTyping = document.activeElement.tagName === 'INPUT' || 
+                             document.activeElement.tagName === 'TEXTAREA' || 
+                             document.activeElement.isContentEditable;
+    
+            if (!isTyping) {
+                if (event.key === 'Escape' || event.key === 'Backspace' || (event.altKey && event.key === 'ArrowLeft')) {
+                    event.preventDefault();
+                    mundurKeMenuSebelumnya();
                 }
             }
-        
-            // --- 2. PINTASAN KEYBOARD PC (ESC / BACKSPACE) YANG BERSIH ---
-            document.addEventListener('keydown', function(event) {
-                const isTyping = document.activeElement.tagName === 'INPUT' || 
-                                 document.activeElement.tagName === 'TEXTAREA' || 
-                                 document.activeElement.isContentEditable;
-        
-                if (!isTyping) {
-                    if (event.key === 'Escape' || event.key === 'Backspace' || (event.altKey && event.key === 'ArrowLeft')) {
-                        event.preventDefault();
-                        mundurKeMenuSebelumnya();
-                    }
-                }
-            });
-        
-            // --- 3. MENANGKAP TOMBOL BACK FISIK / GESTUR BACK DI ANDROID (PWA) ---
+        });
+    
+        window.history.pushState({ page: 'main' }, '', '');
+        window.addEventListener('popstate', function(event) {
             window.history.pushState({ page: 'main' }, '', '');
-        
-            window.addEventListener('popstate', function(event) {
-                window.history.pushState({ page: 'main' }, '', '');
-                mundurKeMenuSebelumnya();
-            });
-        
-            // --- 4. INISIALISASI SAAT HALAMAN DIMUAT ---
-            window.onload = function() { 
-                 renderOpsiDropdownAwal(); 
-                 gantiSubTabDokumen('all'); 
-                 setTimeout(renderGrafikDashboardDinamis, 500); 
-        
-                 // Tangkap parameter URL khusus untuk scan barcode secara aman
-                 const urlParams = new URLSearchParams(window.location.search);
-                 const scanAlatId = urlParams.get('alat');
-                 if (scanAlatId && scanAlatId.trim() !== "") {
-                     const cekDataInterval = setInterval(() => {
-                         if (dataAlat && dataAlat.length > 0) {
-                             clearInterval(cekDataInterval);
-                             bukaKartuPemeliharaanPublik(scanAlatId);
-                         }
-                     }, 300);
-                 }
-            };
+            mundurKeMenuSebelumnya();
+        });
+    
+        window.onload = function() { 
+             renderOpsiDropdownAwal(); 
+             gantiSubTabDokumen('all'); 
+             setTimeout(renderGrafikDashboardDinamis, 500); 
+    
+             const urlParams = new URLSearchParams(window.location.search);
+             const scanAlatId = urlParams.get('alat');
+             if (scanAlatId && scanAlatId.trim() !== "") {
+                 const cekDataInterval = setInterval(() => {
+                     if (dataAlat && dataAlat.length > 0) {
+                         clearInterval(cekDataInterval);
+                         bukaKartuPemeliharaanPublik(scanAlatId);
+                     }
+                 }, 300);
+             }
+        };
 
-            function ubahTampilanFormUpload(kategori) {
-                const secKalibrasi = document.getElementById('form-section-kalibrasi-Only');
-                const secKet = document.getElementById('form-section-keterangan-Only');
-                const labelKet = document.getElementById('label-keterangan-teks');
-                
-                if (kategori === 'sop') {
-                    if(secKalibrasi) secKalibrasi.classList.add('hidden');
-                    if(secKet) secKet.classList.remove('hidden');
-                    if(labelKet) labelKet.innerText = "Judul / Keterangan SOP *";
-                } else if (kategori === 'mandiri') {
-                    if(secKalibrasi) secKalibrasi.classList.add('hidden');
-                    if(secKet) secKet.classList.remove('hidden');
-                    if(labelKet) labelKet.innerText = "Nomor / Keterangan Lembar Kerja (LK) *";
+        function ubahTampilanFormUpload(kategori) {
+            const secKalibrasi = document.getElementById('form-section-kalibrasi-Only');
+            const secKet = document.getElementById('form-section-keterangan-Only');
+            const labelKet = document.getElementById('label-keterangan-teks');
+            
+            if (kategori === 'sop') {
+                if(secKalibrasi) secKalibrasi.classList.add('hidden');
+                if(secKet) secKet.classList.remove('hidden');
+                if(labelKet) labelKet.innerText = "Judul / Keterangan SOP *";
+            } else if (kategori === 'mandiri') {
+                if(secKalibrasi) secKalibrasi.classList.add('hidden');
+                if(secKet) secKet.classList.remove('hidden');
+                if(labelKet) labelKet.innerText = "Nomor / Keterangan Lembar Kerja (LK) *";
+            } else {
+                if(secKalibrasi) secKalibrasi.classList.remove('hidden');
+                if(secKet) secKet.classList.add('hidden');
+            }
+        }
+        
+        function hitungOtomatisMasaBerlakuKalibrasi(tglUjiValue) {
+            if(!tglUjiValue) return;
+            let tglUji = new Date(tglUjiValue);
+            tglUji.setFullYear(tglUji.getFullYear() + 1);
+            let tglExpFormatted = tglUji.toISOString().substring(0, 10);
+            const inputExp = document.getElementById('form-cal-exp');
+            if(inputExp) inputExp.value = tglExpFormatted;
+        }
+
+        function showDropdownKalibrasiAlat() {
+            const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+            if(container) {
+                populasikanListAlatKalibrasiModal(document.getElementById('input-search-alat-kalibrasi').value);
+                container.style.display = "block";
+            }
+        }
+
+        function handleSearchKalibrasiAlat(kw) {
+            populasikanListAlatKalibrasiModal(kw);
+            const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+            if(container) container.style.display = "block";
+        }
+        
+        function populasikanListAlatKalibrasiModal(keyword = "") {
+            const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+            if(!container) return;
+            const kw = keyword.toLowerCase();
+            const filtered = dataAlat.filter(a => `${a.nama || ''} ${a.seri || ''} ${a.ruangan || a.lokasi || ''}`.toLowerCase().includes(kw));
+            
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="p-2.5 text-slate-400 italic text-center">Alat tidak ditemukan</div>`;
+                return;
+            }
+        
+            container.innerHTML = filtered.map(a => `
+                <div onclick="pilihAlatKalibrasiModalFinal('${a.id}')" class="p-2.5 hover:bg-blue-600/20 cursor-pointer border-b border-white/5 truncate">
+                    📌 <b>${a.nama}</b> | SN: <span class="font-mono text-cyan-400">${a.seri || '-'}</span> (${a.ruangan || a.lokasi || 'Unit'})
+                </div>
+            `).join('');
+        }
+        
+        function pilihAlatKalibrasiModalFinal(alatId) {
+            const alat = dataAlat.find(a => a.id == alatId);
+            if(alat) {
+                document.getElementById('form-cal-alat-id').value = alat.id;
+                document.getElementById('input-search-alat-kalibrasi').value = `${alat.nama} (SN: ${alat.seri || '-'}) - [${alat.ruangan || alat.lokasi || 'Unit'}]`;
+            }
+            const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
+            if(container) container.style.display = "none";
+        }
+        
+        document.addEventListener('click', function(e) {
+            try {
+                if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#dropdown-pilih-alat-kalibrasi')) {
+                    const el = document.getElementById('dropdown-pilih-alat-kalibrasi');
+                    if(el) el.style.display = 'none';
+                }
+            } catch(err) {}
+        });
+    
+        function submitUploadBerkasUniversal(e) {
+            e.preventDefault();
+            const alatId = document.getElementById('form-cal-alat-id').value;
+            if(!alatId) return alert("Pilih instrumen alat medis terlebih dahulu!");
+            
+            const jenisKategori = document.getElementById('form-upload-jenis-kategori').value;
+            const fileInput = document.getElementById('form-cal-pdf-file').files[0];
+            if(!fileInput) return alert("Pilih file berkas yang akan diunggah!");
+        
+            const reader = new FileReader();
+            reader.readAsDataURL(fileInput);
+            reader.onload = function(event) {
+                const fileDataResult = event.target.result;
+                let targetCollection = "dataKalibrasi";
+                let payload = {};
+        
+                if (jenisKategori === 'kalibrasi') {
+                    targetCollection = "dataKalibrasi";
+                    payload = {
+                        alatId: alatId,
+                        tgl: document.getElementById('form-cal-tgl').value,
+                        exp: document.getElementById('form-cal-exp').value,
+                        vendor: document.getElementById('form-cal-vendor').value || "Eksternal / Vendor",
+                        certPdf: fileDataResult,
+                        hasil: document.getElementById('form-cal-hasil').value
+                    };
+                } else if (jenisKategori === 'sop') {
+                    targetCollection = "bukuPetunjukAlat";
+                    payload = {
+                        alatId: alatId,
+                        namaFile: document.getElementById('form-keterangan-namafile').value || fileInput.name,
+                        fileType: fileInput.type,
+                        fileData: fileDataResult,
+                        tglUpload: new Date().toISOString().substring(0, 10)
+                    };
                 } else {
-                    if(secKalibrasi) secKalibrasi.classList.remove('hidden');
-                    if(secKet) secKet.classList.add('hidden');
+                    targetCollection = "lembarKerja";
+                    let ketManual = document.getElementById('form-keterangan-namafile').value || "Upload LK Manual";
+                    payload = {
+                        alatId: alatId,
+                        noLk: ketManual,
+                        textTgl: new Date().toISOString().substring(0, 10),
+                        jenisKerja: "Corrective Maintenance",
+                        desc_kerja: "Dokumen Lembar Kerja (LK) diunggah manual.",
+                        hasilTunggal: "Alat Berfungsi Dengan Baik",
+                        fotoAlat: fileDataResult,
+                        isLocked: true,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
                 }
-            }
-            
-            // Fungsi otomatis menghitung masa berlaku kalibrasi 1 tahun ke depan
-            function hitungOtomatisMasaBerlakuKalibrasi(tglUjiValue) {
-                if(!tglUjiValue) return;
-                let tglUji = new Date(tglUjiValue);
-                tglUji.setFullYear(tglUji.getFullYear() + 1);
-                
-                // Format ke YYYY-MM-DD agar masuk ke input type="date"
-                let tglExpFormatted = tglUji.toISOString().substring(0, 10);
-                const inputExp = document.getElementById('form-cal-exp');
-                if(inputExp) inputExp.value = tglExpFormatted;
-            }
-
-            function showDropdownKalibrasiAlat() {
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(container) {
-                    populasikanListAlatKalibrasiModal(document.getElementById('input-search-alat-kalibrasi').value);
-                    container.style.display = "block";
-                }
-            }
-
-            function handleSearchKalibrasiAlat(kw) {
-                populasikanListAlatKalibrasiModal(kw);
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(container) container.style.display = "block";
-            }
-            
-            function populasikanListAlatKalibrasiModal(keyword = "") {
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(!container) return;
-                const kw = keyword.toLowerCase();
-                const filtered = dataAlat.filter(a => `${a.nama || ''} ${a.seri || ''} ${a.ruangan || a.lokasi || ''}`.toLowerCase().includes(kw));
-                
-                if(filtered.length === 0) {
-                    container.innerHTML = `<div class="p-2.5 text-slate-400 italic text-center">Alat tidak ditemukan</div>`;
-                    return;
-                }
-            
-                container.innerHTML = filtered.map(a => `
-                    <div onclick="pilihAlatKalibrasiModalFinal('${a.id}')" class="p-2.5 hover:bg-blue-600/20 cursor-pointer border-b border-white/5 truncate">
-                        📌 <b>${a.nama}</b> | SN: <span class="font-mono text-cyan-400">${a.seri || '-'}</span> (${a.ruangan || a.lokasi || 'Unit'})
-                    </div>
-                `).join('');
-            }
-            
-            function pilihAlatKalibrasiModalFinal(alatId) {
-                const alat = dataAlat.find(a => a.id == alatId);
-                if(alat) {
-                    document.getElementById('form-cal-alat-id').value = alat.id;
-                    document.getElementById('input-search-alat-kalibrasi').value = `${alat.nama} (SN: ${alat.seri || '-'}) - [${alat.ruangan || alat.lokasi || 'Unit'}]`;
-                }
-                const container = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                if(container) container.style.display = "none";
-            }
-            
-            // Event listener klik di luar untuk menutup dropdown kalibrasi secara aman
-            document.addEventListener('click', function(e) {
-                try {
-                    if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#dropdown-pilih-alat-kalibrasi')) {
-                        const el = document.getElementById('dropdown-pilih-alat-kalibrasi');
-                        if(el) el.style.display = 'none';
-                    }
-                } catch(err) {}
-            });
         
-            function submitUploadBerkasUniversal(e) {
-                e.preventDefault();
-                const alatId = document.getElementById('form-cal-alat-id').value;
-                if(!alatId) return alert("Pilih instrumen alat medis terlebih dahulu dari daftar pencarian!");
-                
-                const jenisKategori = document.getElementById('form-upload-jenis-kategori').value;
-                const fileInput = document.getElementById('form-cal-pdf-file').files[0];
-                if(!fileInput) return alert("Pilih file berkas yang akan diunggah!");
-            
-                const reader = new FileReader();
-                reader.readAsDataURL(fileInput);
-                reader.onload = function(event) {
-                    const fileDataResult = event.target.result;
-                    let targetCollection = "dataKalibrasi";
-                    let payload = {};
-            
-                    if (jenisKategori === 'kalibrasi') {
-                        targetCollection = "dataKalibrasi";
-                        payload = {
-                            alatId: alatId,
-                            tgl: document.getElementById('form-cal-tgl').value,
-                            exp: document.getElementById('form-cal-exp').value,
-                            vendor: document.getElementById('form-cal-vendor').value || "Eksternal / Vendor",
-                            certPdf: fileDataResult,
-                            hasil: document.getElementById('form-cal-hasil').value
-                        };
-                    } else if (jenisKategori === 'sop') {
-                        targetCollection = "bukuPetunjukAlat";
-                        payload = {
-                            alatId: alatId,
-                            namaFile: document.getElementById('form-keterangan-namafile').value || fileInput.name,
-                            fileType: fileInput.type,
-                            fileData: fileDataResult,
-                            tglUpload: new Date().toISOString().substring(0, 10)
-                        };
-                    } else {
-                        // Lembar Kerja Mandiri Upload Manual (masuk ke koleksi lembarKerja agar tampil di tab Lembar Kerja)
-                        targetCollection = "lembarKerja";
-                        let ketManual = document.getElementById('form-keterangan-namafile').value || "Upload LK Manual";
-                        payload = {
-                            alatId: alatId,
-                            noLk: ketManual,
-                            textTgl: new Date().toISOString().substring(0, 10),
-                            jenisKerja: "Corrective Maintenance",
-                            desc_kerja: "Dokumen Lembar Kerja (LK) diunggah manual oleh Admin/Teknisi.",
-                            hasilTunggal: "Alat Berfungsi Dengan Baik",
-                            fotoAlat: fileDataResult,
-                            isLocked: true,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        };
-                    }
-            
-                    db.collection(targetCollection).add(payload).then(() => {
-                        toggleModal('modal-kalibrasi', false);
-                        alert("🎉 Berkas berhasil diunggah dan terintegrasi otomatis ke Rekam Jejak Aset!");
-                    }).catch(err => {
-                        console.error(err);
-                        alert("Terjadi kesalahan saat mengunggah ke database.");
-                    });
-                };
-            }
-        
+                db.collection(targetCollection).add(payload).then(() => {
+                    toggleModal('modal-kalibrasi', false);
+                    alert("🎉 Berkas berhasil diunggah dan terintegrasi otomatis!");
+                });
+            };
+        }
     </script>
     
     <!-- MODAL KAMERA SCANNER QR PUBLIK -->
@@ -3890,12 +3493,12 @@
             </div>
             <p class="text-xs text-slate-400">Arahkan kamera HP ke QR Code fisik pada alat medis untuk melihat rekam jejak.</p>
             
-            <!-- Area Kamera Reader -->
             <div id="reader-scanner-div" class="w-full overflow-hidden rounded-xl bg-slate-950 border border-white/10"></div>
             
             <button onclick="tutupModalScanQrPublik()" class="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs py-2 rounded-xl font-bold">Batal / Tutup</button>
         </div>
     </div>
+
     <!-- Elemen Audio untuk Nada Dering Notifikasi Tiket Masuk -->
     <audio id="alarm-notifikasi-tiket" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
