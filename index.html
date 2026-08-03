@@ -9,11 +9,6 @@
     
     <!-- Core UI & Icon Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
-    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -28,46 +23,30 @@
 
     <style>
         html, body {
-            background-color: #f1f5f9;
-            color: #0f172a;
+            background-color: #0b0f19 !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
+            overscroll-behavior-y: none !important;
+            -webkit-overflow-scrolling: touch;
             min-height: 100vh;
             overflow-x: hidden;
-        }     
-        /* Panel Glassmorphism adaptif */
-        .glass-panel {
-            background: #ffffff;
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            color: #0f172a !important;
-        }
-        .glass-panel p, .glass-panel h3, .glass-panel span {
-            color: inherit;
-        }
-        html.dark .glass-panel {
-            background-color: #0b0f19 !important;
-            color: #e2e8f0 !important;
-        }
-        html.dark .glass-panel {
-            background: rgba(15, 23, 42, 0.8) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: none;
-            color: #e2e8f0 !important;
-        }
-        table tbody tr {
-            color: #1e293b !important;
-            border-buttom: 1px solid #e2e8f0;
-        }
-        html.dark table tbody tr {
-            color: #cbd5e1 !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
             border-left: 4px solid #3b82f6;
-        }      
+        }
         .kartu-tab.active { border-bottom-color: #3b82f6; color: #3b82f6; font-weight: bold; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.04) !important;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+        .sidebar-translate { transition: transform 0.3s ease-in-out; }
+        canvas { touch-action: none; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -150,15 +129,15 @@
     <meta name="theme-color" content="#0b0f19">
 </head>
     
-<body id="main-app-body" class="font-sans transition-all duration-500 no-scrollbar">
+<body id="main-app-body" class="font-sans text-slate-200 transition-all duration-500 no-scrollbar">
 
     <!-- GATEWAY 1: SISTEM MULTI-USER LOGIN -->
     <div id="auth-gate-screen" class="fixed inset-0 bg-slate-950 z-[9999] flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-white/10 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 text-center relative z-10">
             
-            <div class="w-16 h-16 rounded-full overflow-hidden mx-auto border-2 border-cyan-500/30 shadow-lg shadow-blue-500/20 flex items-center justify-center bg-slate-800 mt-2">
+            <div class="w-16 h-16 rounded-full overflow-hidden mx-auto border-2 border-cyan-500/30 shadow-lg shadow-blue-500/20 flex items-center justify-center">
                 <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-gate').classList.remove('hidden')" class="w-full h-full object-cover" alt="Logo">
-                <i id="fallback-icon-gate" class="fa-solid fa-heart-pulse text-3xl text-cyan-400"></i>
+                <i id="fallback-icon-gate" class="fa-solid fa-heart-pulse text-2xl text-cyan-400 hidden"></i>
             </div>
             
             <div>
@@ -273,11 +252,6 @@
                 <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
                     <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent select-none group-hover:from-cyan-400 group-hover:to-blue-400 transition duration-300">MEDIX</h1>
                     <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
-                </div>
-                <div class="absolute top-3 right-3 z-30">
-                    <button onclick="toggleDarkMode()" type="button" class="text-slate-400 hover:text-cyan-400 p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 transition border border-white/5 shadow-md cursor-pointer" title="Ubah Mode Tampilan">
-                        <i id="theme-icon" class="fa-solid fa-sun text-sm text-amber-400"></i>
-                    </button>
                 </div>
             </header>
 
@@ -950,10 +924,6 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        tailwind.config = {
-            darkMode: 'class',
-        }
-
         // Memantau Trouble Tickets secara real-time untuk memicu alarm & notifikasi admin/teknisi
         let isFirstLoadTickets = true;
         
@@ -1032,35 +1002,6 @@
                 }
             } catch(err) {}
         });
-
-        // Fungsi untuk toggle Dark/Light Mode
-        function toggleDarkMode() {
-            const htmlEl = document.documentElement;
-            const themeIcon = document.getElementById('theme-icon');
-            
-            if (htmlEl.classList.contains('dark')) {
-                htmlEl.classList.remove('dark');
-                localStorage.setItem('medix_theme', 'light');
-                if(themeIcon) themeIcon.className = "fa-solid fa-moon text-sm text-slate-700";
-            } else {
-                htmlEl.classList.add('dark');
-                localStorage.setItem('medix_theme', 'dark');
-                if(themeIcon) themeIcon.className = "fa-solid fa-sun text-sm text-amber-400";
-            }
-        }
-        
-        // Jalankan saat halaman pertama kali dimuat untuk membaca preferensi tersimpan
-        (function() {
-            const savedTheme = localStorage.getItem('medix_theme') || 'dark'; // Default Dark Mode
-            const themeIcon = document.getElementById('theme-icon');
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-                if(themeIcon) themeIcon.className = "fa-solid fa-sun text-sm text-amber-400";
-            } else {
-                document.documentElement.classList.remove('dark');
-                if(themeIcon) themeIcon.className = "fa-solid fa-moon text-sm text-slate-700";
-            }
-        })();
 
         function toggleLihatPassword(inputId, tombolEl) {
             const field = document.getElementById(inputId);
