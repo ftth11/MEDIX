@@ -35,18 +35,22 @@
         }
         /* --- LIGHT MODE STYLING --- */
         body.light-mode {
-            background-color: #f1f5f9 !important;
+            background-color: #ffffff !important;
             color: #0f172a !important;
         }
         body.light-mode header {
-            background-color: rgba(255, 255, 255, 0.9) !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+        body.light-mode #main-content-area,
+        body.light-mode main {
+            background-color: #ffffff !important;
         }
         body.light-mode .glass-panel {
-            background: rgba(255, 255, 255, 0.8) !important;
-            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
             color: #0f172a !important;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
@@ -54,14 +58,14 @@
             color: #0f172a !important;
         }
         body.light-mode table th {
-            background-color: #f8fafc !important;
-            color: #475569 !important;
+            background-color: #f1f5f9 !important;
+            color: #334155 !important;
         }
         body.light-mode table td {
             color: #1e293b !important;
         }
         body.light-mode input, body.light-mode select {
-            background-color: #f8fafc !important;
+            background-color: #ffffff !important;
             color: #0f172a !important;
             border: 1px solid #cbd5e1 !important;
         }
@@ -159,9 +163,6 @@
     </style>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b0f19">
-    <button onclick="toggleLightDarkMode()" class="ml-auto text-slate-400 hover:text-cyan-400 p-2 rounded-xl hover:bg-slate-800/50 transition" title="Ganti Mode Tampilan">
-        <i id="theme-icon" class="fa-solid fa-sun text-lg"></i>
-    </button>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-200 transition-all duration-500 no-scrollbar">
@@ -281,13 +282,18 @@
         <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
             
             <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center no-print border-b border-slate-800/80">
-                <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 mr-5 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
-                <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
-                    <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent select-none group-hover:from-cyan-400 group-hover:to-blue-400 transition duration-300">MEDIX</h1>
-                    <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
+                <div class="flex items-center">
+                    <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 mr-5 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
+                        <h1 class="text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent select-none group-hover:from-cyan-400 group-hover:to-blue-400 transition duration-300">MEDIX</h1>
+                        <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
+                    </div>
                 </div>
+                <button onclick="toggleLightDarkMode()" class="text-slate-400 hover:text-cyan-400 p-2.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Ganti Mode Tampilan">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg text-amber-400"></i>
+                </button>
             </header>
 
             <main class="w-full px-6 py-6 space-y-6 bg-transparent no-scrollbar">
@@ -1046,10 +1052,10 @@
             
             if (body.classList.contains('light-mode')) {
                 localStorage.setItem('medix_theme', 'light');
-                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-500";
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500";
             } else {
                 localStorage.setItem('medix_theme', 'dark');
-                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-cyan-400";
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-cyan-400";
             }
         }
         
@@ -1059,7 +1065,9 @@
             const themeIcon = document.getElementById('theme-icon');
             if (savedTheme === 'light') {
                 document.getElementById('main-app-body').classList.add('light-mode');
-                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-500";
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-500";
+            } else {
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400";
             }
         });
 
