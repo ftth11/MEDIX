@@ -60,11 +60,11 @@
 
         /* ==========================================================
            CUSTOM LIGHT MODE: ELEGAN, SEJUK (HIJAU, BIRU, UNGU)
-           BEBAS DARI KOTAK ABU-ABU KUSAM
+           BERSIH TOTAL DARI LATAR BELAKANG ABU-ABU KUSAM/GELAP
            ========================================================== */
         body.light-mode {
             background-color: #f4f7fa !important;
-            color: #1e293b !important;
+            color: #0f172a !important;
         }
         body.light-mode header {
             background-color: #ffffff !important;
@@ -75,34 +75,62 @@
             background-color: #f4f7fa !important;
         }
 
-        /* Panel, Kotak, Card, dan Modal tanpa latar abu kusam */
+        /* Membersihkan seluruh card, modal, dan panel dari latar gelap */
         body.light-mode .glass-panel,
         body.light-mode div[id^="modal-"] > div,
         body.light-mode #area-lembar-kerja-resmi > div {
             background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            color: #1e293b !important;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03);
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
         }
 
-        /* Sidebar & Menu Navigasi */
+        /* 1. Sidebar & Tombol Garis Tiga (Sidebar Toggle) */
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
             border-right: 1px solid #e2e8f0 !important;
-            color: #1e293b !important;
+            color: #0f172a !important;
+        }
+        body.light-mode button[onclick*="toggleSidebarMenu"] {
+            background: linear-gradient(135deg, #0d9488 0%, #2563eb 100%) !important;
+            color: #ffffff !important;
+            border-radius: 12px;
+            padding: 8px 10px;
         }
         body.light-mode .sidebar-item {
-            color: #475569 !important;
+            color: #334155 !important;
             font-weight: 600;
         }
         body.light-mode .sidebar-item:hover, 
         body.light-mode .sidebar-item.active {
-            background: linear-gradient(90deg, rgba(13, 148, 136, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%) !important;
+            background: linear-gradient(90deg, rgba(13, 148, 136, 0.12) 0%, rgba(37, 99, 235, 0.06) 100%) !important;
             color: #0d9488 !important;
             border-left: 4px solid #7c3aed !important;
         }
 
-        /* Menghilangkan Kotak Abu-Abu pada Judul Menu / Header Halaman (Misal: Riwayat & Dokumen Aset) */
+        /* 2. Profil Akun di Sidebar & Kotak Izin Akses */
+        body.light-mode div[class*="bg-slate-"],
+        body.light-mode div[class*="bg-gray-"] {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+        body.light-mode #app-sidebar div.bg-slate-950\/50,
+        body.light-mode div.bg-slate-950\/60 {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+
+        /* 3. Logo / Tombol Mode (Matahari/Bulan di Pojok Kanan) */
+        body.light-mode header button[onclick*="toggleLightDarkMode"] {
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+        }
+
+        /* 4. Judul Halaman & Master Data Aset (Menghilangkan kotak abu) */
         body.light-mode h2.bg-slate-900\/60,
         body.light-mode div.bg-slate-900\/60 {
             background: transparent !important;
@@ -112,26 +140,18 @@
             padding-left: 0 !important;
         }
 
-        /* Profil Pengguna di Sidebar (Menghapus kotak abu gelap) */
-        body.light-mode #app-sidebar div.bg-slate-950\/50,
-        body.light-mode #app-sidebar div[class*="bg-slate-"] {
-            background-color: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-            color: #1e293b !important;
+        /* 5. Tombol Aksi & "Buat Lembar Kerja" (Gradasi Hijau-Biru-Ungu) */
+        body.light-mode button.bg-gradient-to-r,
+        body.light-mode button[onclick*="bukaLembarKerjaBaruKosong"],
+        body.light-mode button[onclick*="submitFormAlatMaster"],
+        body.light-mode button[type="submit"] {
+            background: linear-gradient(135deg, #0d9488 0%, #2563eb 50%, #7c3aed 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            font-weight: 700 !important;
         }
 
-        /* Footer Sidebar (Copyright) */
-        body.light-mode #app-sidebar div.border-t.bg-slate-950\/60 {
-            background-color: #f8fafc !important;
-            color: #334155 !important;
-            border-top: 1px solid #e2e8f0 !important;
-        }
-        body.light-mode #app-sidebar span, 
-        body.light-mode #app-sidebar button {
-            color: #334155 !important;
-        }
-
-        /* Sub-Tab Navigasi (Menghapus latar abu gelap dan diganti gradasi Biru-Ungu & teks putih jelas) */
+        /* 6. Riwayat & Dokumen Aset (Sub-Tab & Tabel) */
         body.light-mode .flex.bg-slate-900\/80 {
             background-color: #e2e8f0 !important;
             border: 1px solid #cbd5e1 !important;
@@ -147,9 +167,9 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
 
-        /* Tabel & Kolom */
+        /* Tabel & Kolom Ruangan / Hak Akses */
         body.light-mode table th {
-            background-color: #f1f5f9 !important;
+            background-color: #e2e8f0 !important;
             color: #0f172a !important;
             border-bottom: 2px solid #cbd5e1 !important;
             font-weight: 800 !important;
@@ -158,22 +178,23 @@
             color: #1e293b !important;
             border-bottom: 1px solid #f1f5f9 !important;
         }
+        /* Menghilangkan efek blok abu-abu pada data tabel (Ruangan / Hak Akses) */
         body.light-mode td span.bg-slate-950\/40,
-        body.light-mode td div[class*="rounded"] {
+        body.light-mode td span,
+        body.light-mode td div {
             background-color: transparent !important;
             border: none !important;
-            padding: 0 !important;
             color: #1e293b !important;
             font-weight: 600;
         }
 
-        /* Input, Select, Dropdown di Seluruh Menu */
+        /* 7. Registrasi Akun & Kolom Hak Akses (Checkbox / Level Detail) */
         body.light-mode input, 
         body.light-mode select, 
         body.light-mode textarea {
             background-color: #ffffff !important;
             color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
+            border: 1px solid #94a3b8 !important;
         }
         body.light-mode input::placeholder {
             color: #64748b !important;
@@ -189,44 +210,39 @@
             color: #7c3aed !important;
         }
 
-        /* Tombol Batal & Tombol Aksi Sekunder (Diberi warna kontras jelas) */
+        /* Tombol Batal & Tombol Aksi Sekunder */
         body.light-mode button.bg-slate-800,
         body.light-mode button.bg-gray-400,
         body.light-mode button[onclick*="kembali"],
         body.light-mode button[onclick*="tutup"],
         body.light-mode button[onclick*="reset"] {
-            background-color: #475569 !important;
+            background: linear-gradient(135deg, #475569 0%, #334155 100%) !important;
             color: #ffffff !important;
             font-weight: 700 !important;
             border: none !important;
         }
-        body.light-mode button.bg-slate-800:hover,
-        body.light-mode button.bg-gray-400:hover {
-            background-color: #334155 !important;
-        }
 
-        /* Menu Gate / Login Screen dalam Mode Terang */
-        body.light-mode #auth-gate-screen {
-            background-color: rgba(15, 23, 42, 0.5) !important;
-        }
-        body.light-mode #auth-gate-screen > div {
-            background-color: #ffffff !important;
+        /* Footer Sidebar (Copyright) */
+        body.light-mode #app-sidebar div.border-t.bg-slate-950\/60,
+        body.light-mode #app-sidebar div[class*="border-t"] {
+            background-color: #f8fafc !important;
             color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
+            border-top: 1px solid #cbd5e1 !important;
+            font-weight: 700;
         }
-        body.light-mode #auth-gate-screen label,
-        body.light-mode #auth-gate-screen h2,
-        body.light-mode #auth-gate-screen p {
+        body.light-mode #app-sidebar span, 
+        body.light-mode #app-sidebar button {
             color: #0f172a !important;
         }
 
-        /* Teks Umum & Judul */
+        /* Teks Umum, Label, dan Judul */
         body.light-mode h3, 
         body.light-mode h2, 
         body.light-mode h4,
         body.light-mode p,
         body.light-mode label {
             color: #0f172a !important;
+            font-weight: 700;
         }
         body.light-mode .text-slate-400,
         body.light-mode .text-slate-500 {
@@ -235,6 +251,7 @@
         }
         body.light-mode .text-slate-300 {
             color: #1e293b !important;
+            font-weight: 600;
         }
 
         @media print {
