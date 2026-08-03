@@ -35,7 +35,7 @@
         }
         /* --- LIGHT MODE STYLING --- */
         body.light-mode {
-            background-color: #ffffff !important;
+            background-color: #f8fafc !important;
             color: #0f172a !important;
         }
         body.light-mode header {
@@ -44,30 +44,69 @@
         }
         body.light-mode #main-content-area,
         body.light-mode main {
-            background-color: #ffffff !important;
+            background-color: #f8fafc !important;
         }
-        body.light-mode .glass-panel {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
+        body.light-mode .glass-panel,
+        body.light-mode div[id^="modal-"] > div {
+            background: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
             color: #0f172a !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
         body.light-mode #app-sidebar {
             background-color: #ffffff !important;
             border-right: 1px solid #e2e8f0 !important;
             color: #0f172a !important;
         }
+        body.light-mode .sidebar-item {
+            color: #475569 !important;
+        }
+        body.light-mode .sidebar-item:hover,
+        body.light-mode .sidebar-item.active {
+            background: #f1f5f9 !important;
+            color: #0f172a !important;
+        }
         body.light-mode table th {
             background-color: #f1f5f9 !important;
-            color: #334155 !important;
+            color: #1e293b !important;
+            border-bottom: 2px solid #cbd5e1 !important;
         }
         body.light-mode table td {
-            color: #1e293b !important;
+            color: #334155 !important;
+            border-bottom: 1px solid #f1f5f9 !important;
         }
-        body.light-mode input, body.light-mode select {
+        body.light-mode input, 
+        body.light-mode select 
+        body.light-mode textarea {
             background-color: #ffffff !important;
             color: #0f172a !important;
-            border: 1px solid #cbd5e1 !important;
+            border: 1px solid #94a3b8 !important;
+        }
+        body.light-mode input::placeholder {
+            color: #94a3b8 !important;
+        }
+        /* Memperjelas teks statistik & label di mode terang agar sangat terbaca */
+        body.light-mode h3, 
+        body.light-mode h2, 
+        body.light-mode h4,
+        body.light-mode span,
+        body.light-mode p {
+            color: inherit;
+        }
+        body.light-mode .text-slate-400 {
+            color: #475569 !important;
+        }
+        body.light-mode .text-slate-300 {
+            color: #1e293b !important;
+        }
+        body.light-mode .bg-slate-900,
+        body.light-mode .bg-slate-950 {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+        body.light-mode #modal-kartu {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
         }
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
@@ -282,7 +321,7 @@
         <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
             
             <header class="bg-slate-900/80 backdrop-blur-md shadow-xl px-6 py-4 flex items-center no-print border-b border-slate-800/80">
-                <div class="flex items-center">
+                <div class="flex items-center space-x-4">
                     <button onclick="toggleSidebarMenu(true)" class="text-slate-400 hover:text-blue-400 mr-5 focus:outline-none p-1.5 rounded-xl hover:bg-slate-800 transition">
                         <i class="fa-solid fa-bars text-xl"></i>
                     </button>
@@ -291,7 +330,7 @@
                         <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mt-0.5 block pl-0.5">MEDICAL INVENTORY & MAINTENANCE EXCELLENCE</span>
                     </div>
                 </div>
-                <button onclick="toggleLightDarkMode()" class="text-slate-400 hover:text-cyan-400 p-2.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Ganti Mode Tampilan">
+                <button onclick="toggleLightDarkMode()" class="text-slate-400 hover:text-amber-400 p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 transition cursor-pointer shadow-sm" title="Ganti Mode Tampilan">
                     <i id="theme-icon" class="fa-solid fa-moon text-lg text-amber-400"></i>
                 </button>
             </header>
