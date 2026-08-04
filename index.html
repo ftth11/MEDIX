@@ -239,6 +239,56 @@
             background-color: #2563eb !important;
             color: #ffffff !important;
         }
+        /* ==========================================================
+           PERBAIKAN FINAL DARK MODE (STATUS, TOMBOL AKSI, & SIDEBAR)
+           ========================================================== */
+        
+        /* 1. Memperbaiki background putih pada badge Status / Kalibrasi di tabel */
+        body.dark-mode .bg-emerald-50 {
+            background-color: rgba(16, 185, 129, 0.15) !important;
+            color: #34d399 !important;
+            border-color: rgba(16, 185, 129, 0.3) !important;
+        }
+        body.dark-mode .bg-rose-50 {
+            background-color: rgba(244, 63, 94, 0.15) !important;
+            color: #fb7185 !important;
+            border-color: rgba(244, 63, 94, 0.3) !important;
+        }
+
+        /* 2. Memperbaiki tombol aksi pada kolom Kartu Pemeliharaan di tabel */
+        body.dark-mode table td button,
+        body.dark-mode .inline-flex.rounded-xl.border button {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark-mode table td button.bg-amber-50 {
+            background-color: rgba(245, 158, 11, 0.2) !important;
+            color: #fbbf24 !important;
+        }
+        body.dark-mode table td button.bg-blue-50 {
+            background-color: rgba(59, 130, 246, 0.2) !important;
+            color: #60a5fa !important;
+        }
+        body.dark-mode table td button.bg-rose-50 {
+            background-color: rgba(244, 63, 94, 0.2) !important;
+            color: #fb7185 !important;
+        }
+        body.dark-mode table td button:hover {
+            opacity: 0.85;
+        }
+
+        /* 3. Memperbaiki Header Sidebar & Efek Hover Logo MEDIX agar warna tetap stabil */
+        body.dark-mode #app-sidebar div[onclick*="switchTab"] {
+            background-color: #0f172a !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-mode #app-sidebar div[onclick*="switchTab"]:hover {
+            background-color: #1e293b !important;
+        }
+        
+        /* Mencegah teks / logo berubah menjadi warna putih polos yang menyilaukan/hilang saat di-hover */
+        body.dark-mode #app-sidebar div[onclick*="switchTab"] * {
+            color: inherit !important;
+        }
 
         .sidebar-translate { transition: transform 0.3s ease-in-out; }
         canvas { touch-action: none; }
