@@ -114,14 +114,14 @@
         }
 
         /* ==========================================================
-           OPSIONAL: DARK MODE KETIKA DI-TOGGLE KE GELAP
+           DARK MODE: GELAP TOTAL (SELURUH BACKGROUND & KOMPONEN)
            ========================================================== */
         body.dark-mode {
             background-color: #0b0f19 !important;
             color: #e2e8f0 !important;
         }
         body.dark-mode header {
-            background-color: rgba(15, 23, 42, 0.8) !important;
+            background-color: rgba(15, 23, 42, 0.95) !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         }
         body.dark-mode #main-content-area,
@@ -132,12 +132,12 @@
         body.dark-mode div[id^="modal-"] > div,
         body.dark-mode #area-lembar-kerja-resmi > div,
         body.dark-mode #modal-kartu > div {
-            background: rgba(255, 255, 255, 0.04) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: #111827 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
             color: #e2e8f0 !important;
         }
         body.dark-mode #app-sidebar {
-            background-color: rgba(15, 23, 42, 0.95) !important;
+            background-color: #0f172a !important;
             border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
             color: #ffffff !important;
         }
@@ -145,8 +145,9 @@
             color: #94a3b8 !important;
         }
         body.dark-mode table th {
-            background-color: rgba(15, 23, 42, 0.9) !important;
-            color: #94a3b8 !important;
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
         }
         body.dark-mode table td {
             color: #cbd5e1 !important;
@@ -157,10 +158,10 @@
         body.dark-mode textarea {
             background-color: #020617 !important;
             color: #ffffff !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
         }
         body.dark-mode h3, body.dark-mode h2, body.dark-mode h4, body.dark-mode p, body.dark-mode label {
-            color: #ffffff !important;
+            color: #f8fafc !important;
         }
         body.dark-mode .text-slate-400, body.dark-mode .text-slate-500 {
             color: #94a3b8 !important;
@@ -254,7 +255,7 @@
         <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" id="status-dot"></div>
     </div>
 
-    <div class="flex h-screen w-full relative no-scrollbar bg-[#f4f7fa]">
+    <div class="flex h-screen w-full relative no-scrollbar bg-transparent">
                 
         <!-- SIDEBAR MENU UTAMA MEDIX -->
         <div id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white text-slate-800 flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-200 transform -translate-x-full transition-transform duration-300 ease-in-out no-scrollbar">
@@ -980,7 +981,7 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        // Fungsi Pengalih Light/Dark Mode (Default saat ini adalah Light)
+        // Fungsi Pengalih Light/Dark Mode (Memperbaiki logika ikon: Mode Terang = Bulan, Mode Gelap = Matahari)
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
             const themeIcon = document.getElementById('theme-icon');
@@ -1302,7 +1303,7 @@
                         type: 'doughnut',
                         data: {
                             labels: ['Siap Digunakan', 'Dalam Perbaikan'],
-                            datasets: [{ data: [jReady, jBroken], backgroundColor: ['rgba(13, 148, 136, 0.85)', 'rgba(124, 58, 237, 0.85)'], borderColor: isDark ? '#0b0f19' : '#ffffff', borderWidth: 1.5 }]
+                            datasets: [{ data: [jReady, jBroken], backgroundColor: ['rgba(13, 148, 136, 0.85)', 'rgba(124, 58, 237, 0.85)'], borderColor: isDark ? '#111827' : '#ffffff', borderWidth: 1.5 }]
                         },
                         options: { plugins: { legend: { display: true, position: 'bottom', labels: { color: textColor, font: { size: 10, weight: 'bold' } } } }, cutout: '70%', responsive: true, maintainAspectRatio: false }
                     });
