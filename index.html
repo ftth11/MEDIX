@@ -990,10 +990,10 @@
             
             if (body.classList.contains('dark-mode')) {
                 localStorage.setItem('medix_theme', 'dark');
-                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-400"; // Mode gelap menampilkan ikon Matahari
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400"; // Mode gelap menampilkan ikon Matahari
             } else {
                 localStorage.setItem('medix_theme', 'light');
-                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-slate-700"; // Mode terang menampilkan ikon Bulan
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-slate-700"; // Mode terang menampilkan ikon Bulan
             }
             setTimeout(renderGrafikDashboardDinamis, 200);
         }
@@ -1003,10 +1003,10 @@
             const themeIcon = document.getElementById('theme-icon');
             if (savedTheme === 'dark') {
                 document.getElementById('main-app-body').classList.add('dark-mode');
-                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-amber-400";
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-amber-400";
             } else {
                 document.getElementById('main-app-body').classList.remove('dark-mode');
-                if (themeIcon) themeIcon.className = "fa-solid fa-moon text-lg text-slate-700";
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-slate-700";
             }
         });
 
