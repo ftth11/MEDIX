@@ -128,20 +128,49 @@
         body.dark-mode main {
             background-color: #0b0f19 !important;
         }
+
+        /* 1. Panel, Kotak Dialog, & Modal (Registrasi, Lembar Kerja, Kartu, dll) */
         body.dark-mode .glass-panel,
         body.dark-mode div[id^="modal-"] > div,
         body.dark-mode #area-lembar-kerja-resmi > div,
-        body.dark-mode #modal-kartu > div 
-        body.dark-mode #auth-gate-screen > div {
-            background: #111827 !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        body.dark-mode #modal-kartu > div,
+        body.dark-mode #auth-gate-screen > div,
+        body.dark-mode .bg-white {
+            background-color: #111827 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
             color: #e2e8f0 !important;
         }
+
+        /* 2. Sidebar, Profil User & Footer Bawah */
         body.dark-mode #app-sidebar {
             background-color: #0f172a !important;
             border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
             color: #ffffff !important;
         }
+        body.dark-mode #app-sidebar .bg-slate-50,
+        body.dark-mode #app-sidebar .border-t {
+            background-color: #0b0f19 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #94a3b8 !important;
+        }
+        body.dark-mode .sidebar-item {
+            color: #94a3b8 !important;
+        }
+        body.dark-mode .sidebar-item:hover, 
+        body.dark-mode .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(13, 148, 136, 0.2) 0%, rgba(37, 99, 235, 0.1) 100%) !important;
+            color: #22d3ee !important;
+        }
+
+        /* 3. Tombol Pengalih Tema (Logo Bulan/Matahari) */
+        body.dark-mode button[title="Ganti Mode Tampilan"],
+        body.dark-mode header button {
+            background-color: #1e293b !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #f8fafc !important;
+        }
+
+        /* 4. Tabel & Riwayat Dokumen */
         body.dark-mode table th {
             background-color: #1e293b !important;
             color: #f8fafc !important;
@@ -151,6 +180,11 @@
             color: #cbd5e1 !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
         }
+        body.dark-mode tr:hover {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        /* 5. Input, Select, Textarea, Form Registrasi, & Autentikasi Login */
         body.dark-mode input, 
         body.dark-mode select, 
         body.dark-mode textarea {
@@ -158,13 +192,52 @@
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
         }
-        body.dark-mode input::placeholder {
-            color: #94a3b8 !important;
+        body.dark-mode input::placeholder,
+        body.dark-mode textarea::placeholder {
+            color: #64748b !important;
+        }
+
+        /* Tombol Role pada Autentikasi Login */
+        body.dark-mode #box-pilih-role button.bg-slate-100,
+        body.dark-mode #box-pilih-role button.bg-slate-50 {
+            background-color: #1e293b !important;
+            color: #e2e8f0 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark-mode #box-pilih-role button.bg-slate-100:hover,
+        body.dark-mode #box-pilih-role button.bg-slate-50:hover {
+            background-color: #334155 !important;
+        }
+
+        /* 6. Judul, Teks, Label, & Sub-Tab Dokumen */
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, 
+        body.dark-mode h4, body.dark-mode p, body.dark-mode label,
+        body.dark-mode span:not(.text-emerald-600):not(.text-cyan-600):not(.text-blue-600):not(.text-rose-600) {
+            color: #f8fafc !important;
         }
         
-        /* Tipografi Heading & Label pada Mode Gelap */
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode p, body.dark-mode label {
-            color: #f8fafc !important;
+        body.dark-mode .bg-slate-100, 
+        body.dark-mode .bg-slate-200, 
+        body.dark-mode .bg-slate-50 {
+            background-color: #1e293b !important;
+            color: #e2e8f0 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Penyesuaian khusus sub-tab dokumen aktif/non-aktif */
+        body.dark-mode #doc-tab-all, 
+        body.dark-mode #doc-tab-kalibrasi, 
+        body.dark-mode #doc-tab-mandiri, 
+        body.dark-mode #doc-tab-sop {
+            background-color: #1e293b !important;
+            color: #94a3b8 !important;
+        }
+        body.dark-mode #doc-tab-all.bg-blue-600, 
+        body.dark-mode #doc-tab-kalibrasi.bg-blue-600, 
+        body.dark-mode #doc-tab-mandiri.bg-blue-600, 
+        body.dark-mode #doc-tab-sop.bg-blue-600 {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
         }
 
         .sidebar-translate { transition: transform 0.3s ease-in-out; }
