@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDIX</title>
+    <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
+    
+    <!-- PWA Manifest & Theme Color -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0f19">
     
     <!-- Core UI & Icon Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -238,24 +242,19 @@
             border-color: rgba(255, 255, 255, 0.1) !important;
             color: #38bdf8 !important;
         }
+
         /* ==========================================================
            PERBAIKAN EFEK HOVER TABEL (TRANSPARAN / TIDAK PUTIH)
            ========================================================== */
         tr {
             transition: background-color 0.15s ease-in-out;
         }
-
-        /* Efek hover pada Mode Terang */
         table tbody tr:hover {
             background-color: rgba(59, 130, 246, 0.06) !important;
         }
-
-        /* Efek hover pada Mode Gelap */
         body.dark-mode table tbody tr:hover {
             background-color: rgba(255, 255, 255, 0.03) !important;
         }
-        
-        /* Mencegah sel tabel mendadak mengubah warna teks saat di-hover */
         table tbody tr:hover td {
             color: inherit !important;
         }
@@ -280,8 +279,6 @@
             #dlk-txt-deskripsi-tunggal { display: block !important; height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; white-space: pre-wrap !important; word-wrap: break-word !important; border: none !important; background: transparent !important; padding: 0 !important; }
         }
     </style>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#f4f7fa">
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500 no-scrollbar">
@@ -314,7 +311,6 @@
                     <i class="fa-solid fa-user-nurse"></i> <span>User</span>
                 </button>
                 
-                <!-- TOMBOL SCAN BARCODE -->
                 <button type="button" onclick="bukaModalScanQrPublik()" class="w-full bg-emerald-600 hover:bg-emerald-700 p-2.5 rounded-xl text-xs font-bold text-white transition flex items-center justify-center space-x-2 shadow-lg cursor-pointer">
                     <i class="fa-solid fa-qrcode text-sm"></i> <span>Scan Barcode Alat</span>
                 </button>
@@ -343,7 +339,7 @@
         </div>
     </div>
 
-    <!-- INDIKATOR STATUS KONEKSI MINIMALIS -->
+    <!-- INDIKATOR STATUS KONEKSI -->
     <div id="db-status-loader" class="fixed bottom-3 right-3 z-50" title="Status Database Terhubung">
         <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" id="status-dot"></div>
     </div>
@@ -415,7 +411,6 @@
                     </div>
                 </div>
                 
-                <!-- TOMBOL PENGALIH TEMA -->
                 <button onclick="toggleLightDarkMode()" class="text-slate-600 hover:text-amber-500 p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 transition cursor-pointer shadow-sm" title="Ganti Mode Tampilan">
                     <i id="theme-icon" class="fa-solid fa-moon text-lg text-slate-700"></i>
                 </button>
@@ -471,6 +466,16 @@
                             <div class="w-full flex-1 relative overflow-y-auto no-scrollbar py-1">
                                 <canvas id="chartSebaranRuangan"></canvas>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- FITUR TAMBAHAN: Grafik Tren Kerusakan & Perbaikan (Predictive Maintenance) -->
+                    <div class="glass-panel p-4 rounded-2xl shadow-sm flex flex-col justify-between lg:col-span-3 h-[320px] mt-4">
+                        <h4 class="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center">
+                            <i class="fa-solid fa-chart-line mr-2 text-rose-500"></i> Tren Frekuensi Kerusakan & Perbaikan (Predictive Maintenance)
+                        </h4>
+                        <div class="w-full flex-1 relative overflow-hidden">
+                            <canvas id="chartTrenKerusakan"></canvas>
                         </div>
                     </div>
                 </div>
@@ -545,11 +550,17 @@
                 </div>
 
                 <div id="tab-kalibrasi" class="tab-content hidden space-y-6">
-                    <div class="flex justify-between items-center no-print">
+                    <div class="flex justify-between items-center no-print flex-wrap gap-2">
                         <h2 class="text-lg font-bold text-slate-900 bg-white px-4 py-1.5 rounded-xl border border-slate-200 shadow-sm">Riwayat & Dokumen Aset</h2>
-                        <button id="btn-upload-pdf-baru" onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition">
-                            <i class="fa-solid fa-file-arrow-up mr-1"></i> Upload Berkas PDF
-                        </button>
+                        <div class="flex items-center space-x-2">
+                            <!-- FITUR TAMBAHAN: Tombol Ekspor Laporan Bulanan PDF -->
+                            <button onclick="exportLaporanBulananPDF()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center">
+                                <i class="fa-solid fa-file-pdf mr-1.5"></i> Download Laporan Bulanan PDF
+                            </button>
+                            <button id="btn-upload-pdf-baru" onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition flex items-center">
+                                <i class="fa-solid fa-file-arrow-up mr-1.5"></i> Upload Berkas PDF
+                            </button>
+                        </div>
                     </div>
                     <!-- Sub-Tab Navigasi Dokumen -->
                     <div class="flex bg-slate-200 p-1 rounded-xl border border-slate-300 w-full text-[11px] font-bold text-slate-600 space-x-1 no-print shadow-sm">
@@ -1055,7 +1066,7 @@
         </div>
     </div>
 
-    <!-- Elemen Audio untuk Nada Dering Notifikasi Tiket Masuk -->
+    <!-- Audio Notifikasi Tiket Masuk -->
     <audio id="alarm-notifikasi-tiket" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
     </audio>
@@ -1074,7 +1085,15 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        // KUSTOM TOAST NOTIFICATION PENGGANTI ALERT() BAWAAN BROWSER
+        // PWA SERVICE WORKER REGISTRATION
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('ServiceWorker registered!'))
+                    .catch(err => console.log('ServiceWorker error:', err));
+            });
+        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             if(!container) return;
@@ -1102,7 +1121,6 @@
             }, 3000);
         }
 
-        // FUNGSI PENGALIH LIGHT / DARK MODE
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
             const themeIcon = document.getElementById('theme-icon');
@@ -1116,7 +1134,10 @@
                 localStorage.setItem('medix_theme', 'light');
                 if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-slate-700";
             }
-            setTimeout(renderGrafikDashboardDinamis, 200);
+            setTimeout(() => {
+                renderGrafikDashboardDinamis();
+                renderGrafikTrenKerusakan();
+            }, 200);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1158,7 +1179,7 @@
         
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
         let globalFilterStatus = "all"; subTabDokumenAktif = "all"; let stringFotoBase64 = "-"; let stringFotoBeforeBase64 = "-";
-        let instanceChartKondisi = null; let instanceChartRuangan = null;
+        let instanceChartKondisi = null; let instanceChartRuangan = null; let instanceChartTren = null;
 
         let terpakaiAlatKerja = []; 
         let terpakaiFisik = []; 
@@ -1319,7 +1340,10 @@
                           else if(izinRiwayat) switchTab('kalibrasi');
                       }
                       renderAll();
-                      setTimeout(renderGrafikDashboardDinamis, 300);
+                      setTimeout(() => {
+                          renderGrafikDashboardDinamis();
+                          renderGrafikTrenKerusakan();
+                      }, 300);
                   } else {
                       showToast("Username / password salah!", 'error');
                       if(submitBtn) { submitBtn.innerText = "Masuk"; submitBtn.disabled = false; }
@@ -1401,6 +1425,7 @@
             dataPM = dataLk.filter(d => d.jenisKerja === 'Preventive Maintenance').map(d => ({...d, desc: d.desc_kerja}));
             dataInspeksi = dataLk.filter(d => d.jenisKerja === 'Inspection').map(d => ({...d, desc: d.desc_kerja}));
             renderAll();
+            renderGrafikTrenKerusakan();
         });
 
         function aktualisasikanDotKoneksiHijau() {
@@ -1467,6 +1492,140 @@
                     });
                 }
             } catch (error) {}
+        }
+
+        // FITUR TAMBAHAN: Fungsi Render Grafik Tren Kerusakan (Predictive Maintenance)
+        function renderGrafikTrenKerusakan() {
+            const ctxEl = document.getElementById('chartTrenKerusakan');
+            if (!ctxEl) return;
+
+            const bulanCounts = { "Jan": 0, "Feb": 0, "Mar": 0, "Apr": 0, "Mei": 0, "Jun": 0, "Jul": 0, "Agt": 0, "Sep": 0, "Okt": 0, "Nov": 0, "Des": 0 };
+            const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
+
+            if (dataPerbaikan && Array.isArray(dataPerbaikan)) {
+                dataPerbaikan.forEach(item => {
+                    if (item.textTgl) {
+                        let d = new Date(item.textTgl);
+                        if (!isNaN(d.getMonth())) {
+                            let bStr = namaBulan[d.getMonth()];
+                            bulanCounts[bStr] = (bulanCounts[bStr] || 0) + 1;
+                        }
+                    }
+                });
+            }
+
+            const isDark = document.getElementById('main-app-body').classList.contains('dark-mode');
+            const textColor = isDark ? '#e2e8f0' : '#334155';
+
+            if (instanceChartTren) instanceChartTren.destroy();
+            instanceChartTren = new Chart(ctxEl, {
+                type: 'line',
+                data: {
+                    labels: namaBulan,
+                    datasets: [{
+                        label: 'Jumlah Kerusakan / Perbaikan',
+                        data: Object.values(bulanCounts),
+                        borderColor: '#f43f5e',
+                        backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }, ticks: { color: textColor } },
+                        y: { grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }, ticks: { color: textColor, precision: 0 } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // FITUR TAMBAHAN: Ekspor Laporan Bulanan PDF Profesional
+        function exportLaporanBulananPDF() {
+            let htmlContent = `
+                <!DOCTYPE html>
+                <html lang="id">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Laporan Rekapitulasi Pemeliharaan Alkes - UPTD RSUD Pondokgede</title>
+                    <style>
+                        body { font-family: sans-serif; padding: 20px; color: #000; background: #fff; }
+                        .kop { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+                        .kop h2 { margin: 0; font-size: 16px; text-transform: uppercase; }
+                        .kop h3 { margin: 5px 0; font-size: 14px; text-transform: uppercase; }
+                        .kop p { margin: 0; font-size: 10px; font-family: monospace; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
+                        table th, table td { border: 1px solid #333; padding: 6px 8px; text-align: left; }
+                        table th { background: #f1f5f9; }
+                        .tanda-tangan { margin-top: 40px; float: right; text-align: center; font-size: 12px; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="no-print" style="margin-bottom: 20px; text-align: right;">
+                        <button onclick="window.print()" style="background: #2563eb; color: #white; border: none; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer;">🖨️ Cetak / Simpan PDF</button>
+                    </div>
+                    <div class="kop">
+                        <h2>Pemerintah Kota Bekasi • Dinas Kesehatan</h2>
+                        <h3>UPTD Rumah Sakit Umum Daerah Pondokgede</h3>
+                        <p>Jl. Raya Jatiwaringin No.1, Kel. Jatiwaringin, Kec. Pondok Gede, Kota Bekasi</p>
+                    </div>
+                    <h3 style="text-align: center; font-size: 13px; text-decoration: underline; margin-bottom: 15px;">LAPORAN REKAPITULASI PEMELIHARAAN & PERBAIKAN ALAT KESEHATAN</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>No. Lembar Kerja</th>
+                                <th>Jenis Pekerjaan</th>
+                                <th>Waktu</th>
+                                <th>Uraian / Keterangan</th>
+                                <th>Hasil Akhir</th>
+                                <th>Teknisi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            let gabungLog = [...(dataPerbaikan || []), ...(dataPM || []), ...(dataInspeksi || [])];
+            if (gabungLog.length === 0) {
+                htmlContent += `<tr><td colspan="7" style="text-align: center; font-style: italic;">Tidak ada data riwayat pemeliharaan.</td></tr>`;
+            } else {
+                gabungLog.forEach((item, idx) => {
+                    htmlContent += `
+                        <tr>
+                            <td>${idx + 1}</td>
+                            <td><b>${item.noLk || '-'}</b></td>
+                            <td>${item.jenisKerja || '-'}</td>
+                            <td>${(item.textTgl || '-').replace('T', ' ')}</td>
+                            <td>${item.desc_kerja || item.desc || '-'}</td>
+                            <td><b>${item.hasilTunggal || '-'}</b></td>
+                            <td>${item.teknisiTtd || '-'}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            htmlContent += `
+                        </tbody>
+                    </table>
+                    <div class="tanda-tangan">
+                        <p>Bekasi, ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                        <p><b>Penanggung Jawab IPSRS Alkes</b></p>
+                        <br><br><br>
+                        <p><b>( ............................................ )</b></p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const blobUrl = URL.createObjectURL(blob);
+            const win = window.open(blobUrl, '_blank');
+            if (!win) showToast("Pop-up diblokir browser.", "error");
         }
 
         function evaluasiJatuhTempoKalibrasiMassal() {
@@ -2195,7 +2354,12 @@
             const btnEl = document.getElementById('btn-' + tId);
             if(btnEl) btnEl.classList.add('active'); 
             toggleSidebarMenu(false); 
-            if(tId === 'dashboard') setTimeout(renderGrafikDashboardDinamis, 300); 
+            if(tId === 'dashboard') {
+                setTimeout(() => {
+                    renderGrafikDashboardDinamis();
+                    renderGrafikTrenKerusakan();
+                }, 300);
+            }
             if (riwayatNavigasiTab[riwayatNavigasiTab.length - 1] !== tId) { riwayatNavigasiTab.push(tId); }
         }
         
@@ -2803,7 +2967,10 @@
         window.onload = function() { 
              renderOpsiDropdownAwal(); 
              gantiSubTabDokumen('all'); 
-             setTimeout(renderGrafikDashboardDinamis, 500); 
+             setTimeout(() => {
+                 renderGrafikDashboardDinamis();
+                 renderGrafikTrenKerusakan();
+             }, 500); 
              const urlParams = new URLSearchParams(window.location.search);
              const scanAlatId = urlParams.get('alat');
              if (scanAlatId && scanAlatId.trim() !== "") {
