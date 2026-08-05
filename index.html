@@ -238,6 +238,27 @@
             border-color: rgba(255, 255, 255, 0.1) !important;
             color: #38bdf8 !important;
         }
+        /* ==========================================================
+           PERBAIKAN EFEK HOVER TABEL (TRANSPARAN / TIDAK PUTIH)
+           ========================================================== */
+        tr {
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        /* Efek hover pada Mode Terang */
+        table tbody tr:hover {
+            background-color: rgba(59, 130, 246, 0.06) !important;
+        }
+
+        /* Efek hover pada Mode Gelap */
+        body.dark-mode table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.03) !important;
+        }
+        
+        /* Mencegah sel tabel mendadak mengubah warna teks saat di-hover */
+        table tbody tr:hover td {
+            color: inherit !important;
+        }
 
         .sidebar-translate { transition: transform 0.3s ease-in-out; }
         canvas { touch-action: none; }
