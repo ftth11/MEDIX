@@ -54,11 +54,12 @@
         .glass-panel,
         div[id^="modal-"] > div,
         #area-lembar-kerja-resmi > div,
-        #modal-kartu > div {
+        #modal-kartu > div
+        #auth-gate-screen > div {
             background: #f0fdf4 !important;
             border: 1px solid #5eead4 !important;
             color: #0f172a !important;
-            box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(13, 148, 136, 0.15);
         }
 
         #app-sidebar {
@@ -133,12 +134,18 @@
             color: #1e293b !important;
             font-weight: 600;
         }
+        /* 2. Menyesuaikan header atau bagian dalam modal agar ikut menyatu */
+        #modal-kartu .bg-slate-100,
+        #modal-kalibrasi .bg-slate-50,
+        #modal-alat .bg-slate-50 {
+            background-color: #ccfbf1 !important;
+            border-bottom: 1px solid #5eead4 !important;
+        }
         /* Mengubah overlay background login gate menjadi nuansa hijau tosca transparan */
         #auth-gate-screen {
-            background-color: rgba(13, 148, 136, 0.4) !important; /* Tosca transparan */
+            background-color: rgba(13, 148, 136, 0.45) !important; /* Tosca transparan */
             backdrop-filter: blur(8px);
         }
-
         /* Mengubah kotak putih login agar senada dengan panel (menjadi tosca sangat muda) */
         #auth-gate-screen > div {
             background-color: #f0fdf4 !important;
