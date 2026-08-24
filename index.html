@@ -1120,6 +1120,7 @@
         
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
         // PWA SERVICE WORKER REGISTRATION
         if ('serviceWorker' in navigator) {
@@ -1129,7 +1130,138 @@
                     .catch(err => console.log('ServiceWorker error:', err));
             });
         }
+        
+        async function loadFirebaseUserProfile(firebaseUser) {
+            if (!firebaseUser) {
+                return null;
+            }
+        
+            try {
+                const userRef = db
+                    .collection("users")
+                    .doc(firebaseUser.uid);
+        
+                const snap = await userRef.get();
+        
+                if (!snap.exists) {
+                    console.error(
+                        "Profil Firestore tidak ditemukan untuk UID:",
+                        firebaseUser.uid
+                    );
+        
+                    return null;
+                }
+        
+                const data = snap.data();
+        
+                if (data.aktif === false) {
+                    console.warn("Akun user tidak aktif.");
+                    return null;
+                }
+        
+                return {
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email || data.email || "",
+                    ...data
+                };
+        
+            } catch (error) {
+                console.error(
+                    "Gagal mengambil profil user:",
+                    error
+                );
+        
+                return null;
+            }
+        }
 
+        function applyUserContext(userData) {
+
+            if (!userData) {
+                return false;
+            }
+        
+            // Identitas user
+            currentUserNama =
+                userData.nama ||
+                userData.username ||
+                userData.email ||
+                "User";
+        
+            // Role
+            currentActiveRole =
+                userData.role || "User";
+        
+            // Permission
+            userAksesMenuArray =
+                userData.menuAkses ||
+                {
+                    dashboard: true,
+                    master: false,
+                    ticket: false,
+                    riwayat: false
+                };
+        
+            // Simpan data user untuk kebutuhan aplikasi lama
+            currentUser = {
+                uid: userData.uid,
+                email: userData.email || "",
+                nama: userData.nama || "",
+                username: userData.username || "",
+                role: userData.role || "User",
+                menuAkses: userData.menuAkses || {},
+                unitId: userData.unitId || null,
+                aktif: userData.aktif !== false
+            };
+        
+            return true;
+        }
+
+        async function loginWithFirebaseAuth(email, password) {
+
+            try {
+        
+                const credential =
+                    await auth.signInWithEmailAndPassword(
+                        email,
+                        password
+                    );
+        
+                const firebaseUser =
+                    credential.user;
+        
+                const userData =
+                    await loadFirebaseUserProfile(
+                        firebaseUser
+                    );
+        
+                if (!userData) {
+        
+                    await auth.signOut();
+        
+                    throw new Error(
+                        "Profil user tidak ditemukan atau akun tidak aktif."
+                    );
+                }
+        
+                userData.uid =
+                    firebaseUser.uid;
+        
+                applyUserContext(userData);
+        
+                return true;
+        
+            } catch (error) {
+        
+                console.error(
+                    "Firebase Authentication Error:",
+                    error
+                );
+        
+                throw error;
+            }
+        }
+        
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             if(!container) return;
@@ -1155,6 +1287,71 @@
                 toast.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => { toast.remove(); }, 300);
             }, 3000);
+        }
+
+        auth.onAuthStateChanged(async (firebaseUser) => {
+
+            if (!firebaseUser) {
+        
+                currentUser = null;
+        
+                console.log(
+                    "Tidak ada user Firebase yang login."
+                );
+        
+                return;
+            }
+        
+            console.log(
+                "Firebase user aktif:",
+                firebaseUser.uid
+            );
+        
+            const userData =
+                await loadFirebaseUserProfile(
+                    firebaseUser
+                );
+        
+            if (!userData) {
+        
+                await auth.signOut();
+        
+                return;
+            }
+        
+            userData.uid =
+                firebaseUser.uid;
+        
+            applyUserContext(userData);
+        
+            console.log(
+                "User context berhasil dimuat:",
+                currentUser
+            );
+        });
+
+        async function logoutFirebase() {
+
+            try {
+        
+                await auth.signOut();
+        
+                currentUser = null;
+                currentUserNama = "";
+                currentActiveRole = "";
+                userAksesMenuArray = [];
+        
+                console.log(
+                    "Firebase logout berhasil."
+                );
+        
+            } catch (error) {
+        
+                console.error(
+                    "Logout error:",
+                    error
+                );
+            }
         }
 
         function toggleLightDarkMode() {
@@ -1212,6 +1409,7 @@
         let targetLoginRole = "";
         let currentUserNama = "Teknisi";
         let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; 
+        let currentUser = null;
         
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
         let globalFilterStatus = "all"; subTabDokumenAktif = "all"; let stringFotoBase64 = "-"; let stringFotoBeforeBase64 = "-";
