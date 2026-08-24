@@ -1362,6 +1362,13 @@
 
         auth.onAuthStateChanged(async (firebaseUser) => {
 
+            const gateScreen =
+                document.getElementById('auth-gate-screen');
+        
+            // ============================================
+            // BELUM LOGIN
+            // ============================================
+        
             if (!firebaseUser) {
         
                 currentUser = null;
@@ -1370,37 +1377,118 @@
                     "Tidak ada user Firebase yang login."
                 );
         
+                if (gateScreen) {
+                    gateScreen.classList.remove('hidden');
+                }
+        
                 return;
             }
+        
+            // ============================================
+            // FIREBASE MENEMUKAN SESSION
+            // ============================================
         
             console.log(
                 "Firebase user aktif:",
                 firebaseUser.uid
             );
         
-            const userData =
-                await loadFirebaseUserProfile(
-                    firebaseUser
+            try {
+        
+                const userData =
+                    await loadFirebaseUserProfile(
+                        firebaseUser
+                    );
+        
+                if (!userData) {
+        
+                    await auth.signOut();
+        
+                    if (gateScreen) {
+                        gateScreen.classList.remove('hidden');
+                    }
+        
+                    return;
+                }
+        
+                userData.uid =
+                    firebaseUser.uid;
+        
+                // ========================================
+                // LOAD USER CONTEXT
+                // ========================================
+        
+                applyUserContext(userData);
+        
+                console.log(
+                    "User context berhasil dimuat:",
+                    currentUser
                 );
         
-            if (!userData) {
+                // ========================================
+                // USER SUDAH LOGIN
+                // TUTUP LOGIN GATE
+                // ========================================
+        
+                if (gateScreen) {
+                    gateScreen.classList.add('hidden');
+                }
+        
+                // ========================================
+                // TAMPILKAN ROLE
+                // ========================================
+        
+                const roleBadge =
+                    document.getElementById(
+                        'sidebar-role-badge'
+                    );
+        
+                if (roleBadge) {
+                    roleBadge.innerText =
+                        currentActiveRole;
+                }
+        
+                // ========================================
+                // RENDER ULANG DATA / DASHBOARD
+                // ========================================
+        
+                if (typeof renderAll === 'function') {
+                    renderAll();
+                }
+        
+                setTimeout(() => {
+        
+                    if (
+                        typeof renderGrafikDashboardDinamis ===
+                        'function'
+                    ) {
+                        renderGrafikDashboardDinamis();
+                    }
+        
+                    if (
+                        typeof renderGrafikTrenKerusakan ===
+                        'function'
+                    ) {
+                        renderGrafikTrenKerusakan();
+                    }
+        
+                }, 300);
+        
+            } catch (error) {
+        
+                console.error(
+                    "Gagal memulihkan session Firebase:",
+                    error
+                );
         
                 await auth.signOut();
         
-                return;
+                if (gateScreen) {
+                    gateScreen.classList.remove('hidden');
+                }
             }
-        
-            userData.uid =
-                firebaseUser.uid;
-        
-            applyUserContext(userData);
-        
-            console.log(
-                "User context berhasil dimuat:",
-                currentUser
-            );
         });
-
+        
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
             const themeIcon = document.getElementById('theme-icon');
