@@ -1289,6 +1289,30 @@
             }, 3000);
         }
 
+        async function logoutFirebase() {
+
+            try {
+        
+                await auth.signOut();
+        
+                currentUser = null;
+                currentUserNama = "";
+                currentActiveRole = "";
+                userAksesMenuArray = [];
+        
+                console.log(
+                    "Firebase logout berhasil."
+                );
+        
+            } catch (error) {
+        
+                console.error(
+                    "Logout error:",
+                    error
+                );
+            }
+        }
+
         auth.onAuthStateChanged(async (firebaseUser) => {
 
             if (!firebaseUser) {
@@ -1329,30 +1353,6 @@
                 currentUser
             );
         });
-
-        async function logoutFirebase() {
-
-            try {
-        
-                await auth.signOut();
-        
-                currentUser = null;
-                currentUserNama = "";
-                currentActiveRole = "";
-                userAksesMenuArray = [];
-        
-                console.log(
-                    "Firebase logout berhasil."
-                );
-        
-            } catch (error) {
-        
-                console.error(
-                    "Logout error:",
-                    error
-                );
-            }
-        }
 
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
