@@ -353,23 +353,63 @@
                 </button>
             </div>
             
-            <form id="form-login-kredensial" onsubmit="validasiKredensialUser(event)" class="hidden space-y-3 pt-2 text-left relative z-20">
+            <form id="form-login-kredensial"
+                  onsubmit="validasiKredensialUser(event)"
+                  class="hidden space-y-3 pt-2 text-left relative z-20">
+            
                 <div>
-                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1">Username</label>
-                    <input type="text" id="login-username" required class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 rounded-xl outline-none focus:border-cyan-500">
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1">
+                        Email
+                    </label>
+            
+                    <input
+                        type="email"
+                        id="login-email"
+                        required
+                        autocomplete="username"
+                        class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 rounded-xl outline-none focus:border-cyan-500"
+                    >
                 </div>
+            
                 <div>
-                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1">Password</label>
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1">
+                        Password
+                    </label>
+            
                     <div class="relative">
-                        <input type="password" id="login-password" required class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 pr-10 rounded-xl outline-none focus:border-cyan-500">
-                        <button type="button" onclick="toggleLihatPassword('login-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
+                        <input
+                            type="password"
+                            id="login-password"
+                            required
+                            autocomplete="current-password"
+                            class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 pr-10 rounded-xl outline-none focus:border-cyan-500"
+                        >
+            
+                        <button
+                            type="button"
+                            onclick="toggleLihatPassword('login-password', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
+                        >
                             <i class="fa-solid fa-eye text-xs"></i>
                         </button>
                     </div>
                 </div>
+            
                 <div class="flex space-x-2 pt-1">
-                    <button type="button" onclick="kembaliKePilihRole()" class="flex-1 bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-medium cursor-pointer">Kembali</button>
-                    <button type="submit" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs py-2 rounded-xl font-bold transition cursor-pointer">Masuk</button>
+                    <button
+                        type="button"
+                        onclick="kembaliKePilihRole()"
+                        class="flex-1 bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-medium cursor-pointer"
+                    >
+                        Kembali
+                    </button>
+            
+                    <button
+                        type="submit"
+                        class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs py-2 rounded-xl font-bold transition cursor-pointer"
+                    >
+                        Masuk
+                    </button>
                 </div>
             </form>
     
@@ -1453,18 +1493,29 @@
 
         function pilihRoleSebelumLogin(role) {
             targetLoginRole = role;
+        
             const boxRole = document.getElementById('box-pilih-role');
             const formLogin = document.getElementById('form-login-kredensial');
             const subtitle = document.getElementById('gate-subtitle');
-            
-            if(boxRole) boxRole.classList.add('hidden');
-            if(formLogin) formLogin.classList.remove('hidden');
-            if(subtitle) subtitle.innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
-            
-            const uInput = document.getElementById('login-username');
-            const pInput = document.getElementById('login-password');
-            if(uInput) uInput.value = "";
-            if(pInput) pInput.value = "";
+        
+            if (boxRole) boxRole.classList.add('hidden');
+            if (formLogin) formLogin.classList.remove('hidden');
+        
+            if (subtitle) {
+                subtitle.innerText =
+                    "Silakan masukkan email dan password";
+            }
+        
+            const emailInput =
+                document.getElementById('login-email');
+        
+            const passwordInput =
+                document.getElementById('login-password');
+        
+            if (emailInput) emailInput.value = "";
+            if (passwordInput) passwordInput.value = "";
+        
+            if (emailInput) emailInput.focus();
         }
 
         function kembaliKePilihRole() {
@@ -1478,118 +1529,406 @@
             if(subtitle) subtitle.innerText = "MEDICAL INVENTORY & MAINTENANCE EXCELLENCE";
         }
 
-        function validasiKredensialUser(e) {
+        async function validasiKredensialUser(e) {
+
             e.preventDefault();
-            const uNameEl = document.getElementById('login-username');
-            const uPassEl = document.getElementById('login-password');
-            if(!uNameEl || !uPassEl) return;
-
-            const uName = uNameEl.value.trim();
-            const uPass = uPassEl.value;
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            
-            if(submitBtn) { submitBtn.innerText = "Memverifikasi..."; submitBtn.disabled = true; }
-
-            let rolePencarian = [targetLoginRole];
-            if (targetLoginRole === 'Admin') { rolePencarian = ['Admin', 'Manajemen', 'administrator', 'admin']; }
-
-            db.collection("users")
-              .where("username", "==", uName)
-              .where("password", "==", uPass)
-              .where("role", "in", rolePencarian)
-              .get()
-              .then((querySnapshot) => {
-                  if (!querySnapshot.empty) {
-                      let tglMenu = {};
-                      querySnapshot.forEach((doc) => {
-                          const uData = doc.data();
-                          currentUserNama = uData.nama || uName;
-                          tglMenu = uData.menuAkses || { dashboard: { read: true, edit: true }, master: { read: false, edit: false }, ticket: { read: false, edit: false }, riwayat: { read: false, edit: false } };
-                      });
-
-                      currentActiveRole = targetLoginRole;
-                      userAksesMenuArray = tglMenu;
-                      
-                      const gateScreen = document.getElementById('auth-gate-screen');
-                      if(gateScreen) gateScreen.classList.add('hidden');
-                      
-                      const roleBadge = document.getElementById('sidebar-role-badge');
-                      if(roleBadge) roleBadge.innerText = currentActiveRole;
-                      
-                      const profilCard = document.querySelector('#app-sidebar p.truncate');
-                      if (profilCard) profilCard.innerText = currentUserNama;
-
-                      const containerMasterAction = document.getElementById('master-action-buttons-container');
-                      if (containerMasterAction) {
-                          if (currentActiveRole === 'Admin') {
-                              containerMasterAction.innerHTML = `
-                                  <button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>
-                                  <button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>
-                                  <label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer">
-                                      <i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel
-                                      <input type="file" id="file-excel-input" accept=".xlsx, .xls, .csv" onchange="importDataDariExcel(event)" class="hidden">
-                                  </label>
-                                  <button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>
-                              `;
-                          } else { containerMasterAction.innerHTML = ``; }
-                      }
-
-                      const btnUploadPdf = document.getElementById('btn-upload-pdf-baru');
-                      if(btnUploadPdf) {
-                          if(currentActiveRole === 'User') btnUploadPdf.classList.add('hidden');
-                          else btnUploadPdf.classList.remove('hidden');
-                      }
-
-                      if (currentActiveRole === 'Admin') {
-                          document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
-                          document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.remove('hidden'));
-                          document.getElementById('btn-dashboard').classList.remove('hidden');
-                          document.getElementById('btn-data-alat').classList.remove('hidden');
-                          document.getElementById('btn-ticket-system').classList.remove('hidden');
-                          document.getElementById('btn-kalibrasi').classList.remove('hidden');
-                          document.getElementById('box-form-buat-ticket').classList.add('hidden');
-                          switchTab('dashboard');
-                      } else {
-                          document.querySelectorAll('.menu-akses-admin-saja').forEach(el => el.classList.add('hidden'));
-                          if (currentActiveRole === 'Teknisi') {
-                              document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.remove('hidden'));
-                              document.getElementById('box-form-buat-ticket').classList.add('hidden');
-                          } else { 
-                              document.querySelectorAll('.menu-akses-teknisi').forEach(el => el.classList.add('hidden'));
-                              document.getElementById('box-form-buat-ticket').classList.remove('hidden');
-                          }
-
-                          const izinDash = userAksesMenuArray.dashboard ? (userAksesMenuArray.dashboard.read || userAksesMenuArray.dashboard.edit) : true;
-                          const izinMaster = userAksesMenuArray.master ? (userAksesMenuArray.master.read || userAksesMenuArray.master.edit) : false;
-                          const izinTicket = userAksesMenuArray.ticket ? (userAksesMenuArray.ticket.read || userAksesMenuArray.ticket.edit) : false;
-                          const izinRiwayat = userAksesMenuArray.riwayat ? (userAksesMenuArray.riwayat.read || userAksesMenuArray.riwayat.edit) : false;
-
-                          document.getElementById('btn-dashboard').classList.toggle('hidden', !izinDash);
-                          document.getElementById('btn-data-alat').classList.toggle('hidden', !izinMaster);
-                          document.getElementById('btn-ticket-system').classList.toggle('hidden', !izinTicket);
-                          document.getElementById('btn-kalibrasi').classList.toggle('hidden', !izinRiwayat);
-
-                          if(izinDash) switchTab('dashboard');
-                          else if(izinMaster) switchTab('data-alat');
-                          else if(izinTicket) switchTab('ticket-system');
-                          else if(izinRiwayat) switchTab('kalibrasi');
-                      }
-                      renderAll();
-                      setTimeout(() => {
-                          renderGrafikDashboardDinamis();
-                          renderGrafikTrenKerusakan();
-                      }, 300);
-                  } else {
-                      showToast("Username / password salah!", 'error');
-                      if(submitBtn) { submitBtn.innerText = "Masuk"; submitBtn.disabled = false; }
-                  }
-              })
-              .catch((err) => {
-                  showToast("Koneksi cloud bermasalah.", 'error');
-                  if(submitBtn) { submitBtn.innerText = "Masuk"; submitBtn.disabled = false; }
-              });
+        
+            const emailEl =
+                document.getElementById('login-email');
+        
+            const passwordEl =
+                document.getElementById('login-password');
+        
+            if (!emailEl || !passwordEl) {
+                return;
+            }
+        
+            const email =
+                emailEl.value.trim();
+        
+            const password =
+                passwordEl.value;
+        
+            const submitBtn =
+                e.target.querySelector('button[type="submit"]');
+        
+            if (submitBtn) {
+                submitBtn.innerText = "Memverifikasi...";
+                submitBtn.disabled = true;
+            }
+        
+            try {
+        
+                // ============================================
+                // FIREBASE AUTHENTICATION
+                // ============================================
+        
+                await loginWithFirebaseAuth(
+                    email,
+                    password
+                );
+        
+                // ============================================
+                // USER CONTEXT SUDAH DIISI OLEH
+                // applyUserContext()
+                // ============================================
+        
+                console.log(
+                    "Login MEDIX berhasil:",
+                    currentUser
+                );
+        
+                // ============================================
+                // TUTUP LOGIN GATE
+                // ============================================
+        
+                const gateScreen =
+                    document.getElementById('auth-gate-screen');
+        
+                if (gateScreen) {
+                    gateScreen.classList.add('hidden');
+                }
+        
+                // ============================================
+                // ROLE BADGE
+                // MENGGUNAKAN ROLE ASLI DARI FIRESTORE
+                // ============================================
+        
+                const roleBadge =
+                    document.getElementById('sidebar-role-badge');
+        
+                if (roleBadge) {
+                    roleBadge.innerText =
+                        currentActiveRole;
+                }
+        
+                // ============================================
+                // NAMA USER
+                // ============================================
+        
+                const profilCard =
+                    document.querySelector(
+                        '#app-sidebar p.truncate'
+                    );
+        
+                if (profilCard) {
+                    profilCard.innerText =
+                        currentUserNama;
+                }
+        
+                // ============================================
+                // MASTER ACTION BUTTONS
+                // ============================================
+        
+                const containerMasterAction =
+                    document.getElementById(
+                        'master-action-buttons-container'
+                    );
+        
+                if (containerMasterAction) {
+        
+                    if (currentActiveRole === 'Admin') {
+        
+                        containerMasterAction.innerHTML = `
+        
+                            <button
+                                onclick="cetakLabelBarcodeMassalPdf()"
+                                class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"
+                            >
+                                <i class="fa-solid fa-file-pdf mr-1.5"></i>
+                                Cetak Label Massal
+                            </button>
+        
+                            <button
+                                onclick="exportKeExcelMassal()"
+                                class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"
+                            >
+                                <i class="fa-solid fa-file-excel mr-1.5"></i>
+                                Export Excel
+                            </button>
+        
+                            <label
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-arrow-up mr-1.5"></i>
+                                Import Excel
+        
+                                <input
+                                    type="file"
+                                    id="file-excel-input"
+                                    accept=".xlsx, .xls, .csv"
+                                    onchange="importDataDariExcel(event)"
+                                    class="hidden"
+                                >
+                            </label>
+        
+                            <button
+                                onclick="openModalAlatManual()"
+                                class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"
+                            >
+                                <i class="fa-solid fa-plus mr-1"></i>
+                                Tambah Manual
+                            </button>
+                        `;
+        
+                    } else {
+        
+                        containerMasterAction.innerHTML = '';
+        
+                    }
+                }
+        
+                // ============================================
+                // UPLOAD PDF
+                // ============================================
+        
+                const btnUploadPdf =
+                    document.getElementById(
+                        'btn-upload-pdf-baru'
+                    );
+        
+                if (btnUploadPdf) {
+        
+                    if (currentActiveRole === 'User') {
+                        btnUploadPdf.classList.add('hidden');
+                    } else {
+                        btnUploadPdf.classList.remove('hidden');
+                    }
+        
+                }
+        
+                // ============================================
+                // ROLE-BASED UI
+                // ============================================
+        
+                if (currentActiveRole === 'Admin') {
+        
+                    document
+                        .querySelectorAll('.menu-akses-teknisi')
+                        .forEach(el =>
+                            el.classList.remove('hidden')
+                        );
+        
+                    document
+                        .querySelectorAll('.menu-akses-admin-saja')
+                        .forEach(el =>
+                            el.classList.remove('hidden')
+                        );
+        
+                    document
+                        .getElementById('btn-dashboard')
+                        .classList.remove('hidden');
+        
+                    document
+                        .getElementById('btn-data-alat')
+                        .classList.remove('hidden');
+        
+                    document
+                        .getElementById('btn-ticket-system')
+                        .classList.remove('hidden');
+        
+                    document
+                        .getElementById('btn-kalibrasi')
+                        .classList.remove('hidden');
+        
+                    document
+                        .getElementById('box-form-buat-ticket')
+                        .classList.add('hidden');
+        
+                    switchTab('dashboard');
+        
+                } else {
+        
+                    document
+                        .querySelectorAll('.menu-akses-admin-saja')
+                        .forEach(el =>
+                            el.classList.add('hidden')
+                        );
+        
+                    if (currentActiveRole === 'Teknisi') {
+        
+                        document
+                            .querySelectorAll('.menu-akses-teknisi')
+                            .forEach(el =>
+                                el.classList.remove('hidden')
+                            );
+        
+                        document
+                            .getElementById('box-form-buat-ticket')
+                            .classList.add('hidden');
+        
+                    } else {
+        
+                        document
+                            .querySelectorAll('.menu-akses-teknisi')
+                            .forEach(el =>
+                                el.classList.add('hidden')
+                            );
+        
+                        document
+                            .getElementById('box-form-buat-ticket')
+                            .classList.remove('hidden');
+                    }
+        
+                    // ========================================
+                    // MENU ACCESS
+                    // ========================================
+        
+                    const izinDash =
+                        userAksesMenuArray.dashboard
+                            ? (
+                                userAksesMenuArray.dashboard.read ||
+                                userAksesMenuArray.dashboard.edit
+                            )
+                            : true;
+        
+                    const izinMaster =
+                        userAksesMenuArray.master
+                            ? (
+                                userAksesMenuArray.master.read ||
+                                userAksesMenuArray.master.edit
+                            )
+                            : false;
+        
+                    const izinTicket =
+                        userAksesMenuArray.ticket
+                            ? (
+                                userAksesMenuArray.ticket.read ||
+                                userAksesMenuArray.ticket.edit
+                            )
+                            : false;
+        
+                    const izinRiwayat =
+                        userAksesMenuArray.riwayat
+                            ? (
+                                userAksesMenuArray.riwayat.read ||
+                                userAksesMenuArray.riwayat.edit
+                            )
+                            : false;
+        
+                    document
+                        .getElementById('btn-dashboard')
+                        .classList.toggle(
+                            'hidden',
+                            !izinDash
+                        );
+        
+                    document
+                        .getElementById('btn-data-alat')
+                        .classList.toggle(
+                            'hidden',
+                            !izinMaster
+                        );
+        
+                    document
+                        .getElementById('btn-ticket-system')
+                        .classList.toggle(
+                            'hidden',
+                            !izinTicket
+                        );
+        
+                    document
+                        .getElementById('btn-kalibrasi')
+                        .classList.toggle(
+                            'hidden',
+                            !izinRiwayat
+                        );
+        
+                    if (izinDash) {
+                        switchTab('dashboard');
+        
+                    } else if (izinMaster) {
+                        switchTab('data-alat');
+        
+                    } else if (izinTicket) {
+                        switchTab('ticket-system');
+        
+                    } else if (izinRiwayat) {
+                        switchTab('kalibrasi');
+                    }
+                }
+        
+                // ============================================
+                // RENDER APLIKASI
+                // ============================================
+        
+                renderAll();
+        
+                setTimeout(() => {
+        
+                    renderGrafikDashboardDinamis();
+        
+                    renderGrafikTrenKerusakan();
+        
+                }, 300);
+        
+                // ============================================
+                // RESET BUTTON
+                // ============================================
+        
+                if (submitBtn) {
+                    submitBtn.innerText = "Masuk";
+                    submitBtn.disabled = false;
+                }
+        
+            } catch (error) {
+        
+                console.error(
+                    "Login MEDIX gagal:",
+                    error
+                );
+        
+                let pesan =
+                    "Email atau password salah.";
+        
+                if (
+                    error &&
+                    error.code ===
+                    'auth/user-not-found'
+                ) {
+        
+                    pesan =
+                        "Akun tidak ditemukan.";
+        
+                } else if (
+                    error &&
+                    error.code ===
+                    'auth/wrong-password'
+                ) {
+        
+                    pesan =
+                        "Password salah.";
+        
+                } else if (
+                    error &&
+                    error.code ===
+                    'auth/invalid-email'
+                ) {
+        
+                    pesan =
+                        "Format email tidak valid.";
+        
+                } else if (
+                    error &&
+                    error.message
+                ) {
+        
+                    pesan =
+                        error.message;
+                }
+        
+                showToast(
+                    pesan,
+                    'error'
+                );
+        
+                if (submitBtn) {
+                    submitBtn.innerText = "Masuk";
+                    submitBtn.disabled = false;
+                }
+            }
         }
-
+        
         db.collection("users").onSnapshot((querySnapshot) => {
             dataUserSistem = [];
             querySnapshot.forEach((doc) => { dataUserSistem.push({ id: doc.id, ...doc.data() }); });
