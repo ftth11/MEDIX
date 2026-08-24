@@ -1261,6 +1261,12 @@
                 throw error;
             }
         }
+
+        let currentActiveRole = "Teknisi"; 
+        let targetLoginRole = "";
+        let currentUserNama = "Teknisi";
+        let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; 
+        let currentUser = null;
         
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -1404,12 +1410,6 @@
         let dataBukuPetunjuk = [];
         let html5QrCodeScanner = null;
         let riwayatNavigasiTab = ['dashboard'];
-
-        let currentActiveRole = "Teknisi"; 
-        let targetLoginRole = "";
-        let currentUserNama = "Teknisi";
-        let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; 
-        let currentUser = null;
         
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
         let globalFilterStatus = "all"; subTabDokumenAktif = "all"; let stringFotoBase64 = "-"; let stringFotoBeforeBase64 = "-";
