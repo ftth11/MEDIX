@@ -469,7 +469,12 @@
                 </div>
                 <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-[10px] text-slate-500 font-mono">
                     <span>© 2026 - MEDIX RSUD PONDOKGEDE</span>
-                    <button onclick="location.reload()" class="hover:text-rose-600" title="Keluar"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    <button
+                        onclick="logoutFirebase()"
+                        class="hover:text-rose-600"
+                        title="Keluar">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1807,12 +1812,45 @@
 
             try {
         
+                console.log(
+                    "Memulai proses logout..."
+                );
+        
+                // ========================================
+                // LOGOUT FIREBASE
+                // ========================================
+        
                 await auth.signOut();
+        
+                // ========================================
+                // RESET CONTEXT APLIKASI
+                // ========================================
         
                 currentUser = null;
                 currentUserNama = "";
                 currentActiveRole = "";
-                userAksesMenuArray = [];
+                userAksesMenuArray = {};
+        
+                // ========================================
+                // RESET LOGIN ROLE
+                // ========================================
+        
+                targetLoginRole = "";
+        
+                // ========================================
+                // TAMPILKAN LOGIN
+                // ========================================
+        
+                const gateScreen =
+                    document.getElementById(
+                        'auth-gate-screen'
+                    );
+        
+                if (gateScreen) {
+                    gateScreen.classList.remove(
+                        'hidden'
+                    );
+                }
         
                 console.log(
                     "Firebase logout berhasil."
@@ -1823,6 +1861,11 @@
                 console.error(
                     "Logout error:",
                     error
+                );
+        
+                showToast(
+                    "Gagal logout. Silakan coba lagi.",
+                    "error"
                 );
             }
         }
