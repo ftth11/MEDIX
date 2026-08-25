@@ -1331,7 +1331,21 @@
                         read: false,
                         edit: false
                     }
+
+                    equipment: {
+                        read: true,
+                        edit: true
+                    }
                 };
+            
+            if (!userAksesMenuArray.equipment) {
+
+                userAksesMenuArray.equipment = {
+                    read: false,
+                    edit: false
+                };
+            
+            }
         
             // Simpan data user untuk kebutuhan aplikasi lama
             currentUser = {
@@ -1601,6 +1615,7 @@
         let currentUserNama = "";
         let userAksesMenuArray = {};
         let currentUser = null;
+        let dataEquipment = [];
         
         let firestoreListenerSudahDimulai = false;
 
@@ -1948,6 +1963,361 @@
                     );
         
                 }
+            );
+
+            db.collection("equipment").onSnapshot(
+                (snapshot) => {
+            
+                    dataEquipment = [];
+            
+                    snapshot.forEach((doc) => {
+            
+                        dataEquipment.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+            
+                    });
+            
+                    console.log(
+                        "Equipment berhasil dimuat:",
+                        dataEquipment.length
+                    );
+            
+                    renderEquipmentTable();
+            
+                },
+                (error) => {
+            
+                    console.error(
+                        "Listener equipment gagal:",
+                        error
+                    );
+            
+                }
+            );
+        }
+
+        function getDefaultEquipmentPermission(role) {
+
+            if (role === "Admin") {
+        
+                return {
+                    read: true,
+                    edit: true
+                };
+        
+            }
+        
+            if (role === "Teknisi") {
+        
+                return {
+                    read: true,
+                    edit: true
+                };
+        
+            }
+        
+            if (role === "User") {
+        
+                return {
+                    read: true,
+                    edit: false
+                };
+        
+            }
+        
+            return {
+                read: false,
+                edit: false
+            };
+        }
+
+        function renderEquipmentTable() {
+
+            const tbody =
+                document.getElementById(
+                    "table-equipment-body"
+                );
+        
+            if (!tbody) {
+                return;
+            }
+        
+        
+            const searchInput =
+                document.getElementById(
+                    "search-equipment"
+                );
+        
+            const statusInput =
+                document.getElementById(
+                    "filter-equipment-status"
+                );
+        
+            const kondisiInput =
+                document.getElementById(
+                    "filter-equipment-kondisi"
+                );
+        
+        
+            const keyword =
+                (
+                    searchInput?.value || ""
+                )
+                .trim()
+                .toLowerCase();
+        
+        
+            const filterStatus =
+                statusInput?.value || "";
+        
+            const filterKondisi =
+                kondisiInput?.value || "";
+        
+        
+            const filtered =
+                dataEquipment.filter(
+                    (item) => {
+        
+                        const searchable = [
+        
+                            item.kodeAlat,
+        
+                            item.namaAlat,
+        
+                            item.merk,
+        
+                            item.tipe,
+        
+                            item.serialNumber,
+        
+                            item.lokasi
+        
+                        ]
+                        .filter(Boolean)
+                        .join(" ")
+                        .toLowerCase();
+        
+        
+                        const cocokSearch =
+                            !keyword ||
+                            searchable.includes(keyword);
+        
+        
+                        const cocokStatus =
+                            !filterStatus ||
+                            item.status === filterStatus;
+        
+        
+                        const cocokKondisi =
+                            !filterKondisi ||
+                            item.kondisi === filterKondisi;
+        
+        
+                        return (
+                            cocokSearch &&
+                            cocokStatus &&
+                            cocokKondisi
+                        );
+        
+                    }
+                );
+        
+        
+            if (filtered.length === 0) {
+        
+                tbody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="7"
+                            class="px-4 py-10 text-center text-slate-400"
+                        >
+                            Belum ada data equipment.
+                        </td>
+                    </tr>
+                `;
+        
+                return;
+            }
+        
+        
+            const bolehEdit =
+                userAksesMenuArray?.equipment?.edit === true;
+        
+        
+            tbody.innerHTML =
+                filtered.map(
+                    (item) => {
+        
+                        const kondisi =
+                            item.kondisi || "-";
+        
+                        const status =
+                            item.status || "-";
+        
+        
+                        return `
+        
+                            <tr class="hover:bg-slate-50">
+        
+                                <td class="px-4 py-3 font-mono font-semibold text-slate-700">
+                                    ${escapeHtmlEquipment(item.kodeAlat || "-")}
+                                </td>
+        
+                                <td class="px-4 py-3 font-semibold text-slate-800">
+                                    ${escapeHtmlEquipment(item.namaAlat || "-")}
+                                </td>
+        
+                                <td class="px-4 py-3 text-slate-600">
+                                    ${escapeHtmlEquipment(
+                                        [item.merk, item.tipe]
+                                            .filter(Boolean)
+                                            .join(" / ") || "-"
+                                    )}
+                                </td>
+        
+                                <td class="px-4 py-3 text-slate-600">
+                                    ${escapeHtmlEquipment(item.lokasi || "-")}
+                                </td>
+        
+                                <td class="px-4 py-3">
+                                    ${badgeEquipment(kondisi)}
+                                </td>
+        
+                                <td class="px-4 py-3">
+                                    ${badgeEquipment(status)}
+                                </td>
+        
+                                <td class="px-4 py-3 text-center">
+        
+                                    <button
+                                        type="button"
+                                        onclick="lihatDetailEquipment('${item.id}')"
+                                        class="px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200"
+                                    >
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+        
+                                    ${
+                                        bolehEdit
+                                        ? `
+                                            <button
+                                                type="button"
+                                                onclick="editEquipment('${item.id}')"
+                                                class="px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-700 text-xs font-semibold hover:bg-amber-100"
+                                            >
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                        `
+                                        : ""
+                                    }
+        
+                                </td>
+        
+                            </tr>
+        
+                        `;
+        
+                    }
+                )
+                .join("");
+        }
+
+        function escapeHtmlEquipment(value) {
+        
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function badgeEquipment(value) {
+
+            const safe =
+                escapeHtmlEquipment(value);
+        
+            return `
+                <span class="inline-flex px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold">
+                    ${safe}
+                </span>
+            `;
+        }
+
+        function bukaFormEquipment() {
+
+            const bolehEdit =
+                userAksesMenuArray?.equipment?.edit === true;
+        
+            if (!bolehEdit) {
+        
+                showToast(
+                    "Anda tidak memiliki izin untuk menambahkan equipment.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            showToast(
+                "Form Equipment akan kita aktifkan pada STEP 4.3.",
+                "info"
+            );
+        }
+
+        function lihatDetailEquipment(id) {
+
+            const equipment =
+                dataEquipment.find(
+                    item => item.id === id
+                );
+        
+            if (!equipment) {
+        
+                showToast(
+                    "Data equipment tidak ditemukan.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            console.log(
+                "Detail Equipment:",
+                equipment
+            );
+        
+            showToast(
+                `Equipment: ${equipment.namaAlat || "-"}`,
+                "info"
+            );
+        }
+
+        function editEquipment(id) {
+
+            const bolehEdit =
+                userAksesMenuArray?.equipment?.edit === true;
+        
+            if (!bolehEdit) {
+        
+                showToast(
+                    "Anda tidak memiliki izin untuk mengubah equipment.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            console.log(
+                "Edit equipment:",
+                id
+            );
+        
+            showToast(
+                "Form edit akan kita aktifkan pada STEP 4.3.",
+                "info"
             );
         }
         
