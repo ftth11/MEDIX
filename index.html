@@ -1308,6 +1308,290 @@
         let currentUserNama = "Teknisi";
         let userAksesMenuArray = ["dashboard", "master", "ticket", "riwayat"]; 
         let currentUser = null;
+        let firestoreListenerSudahDimulai = false;
+
+        function mulaiListenerFirestore() {
+
+            console.log(
+                "Memulai listener Firestore..."
+            );
+        
+            db.collection("users").onSnapshot(
+                (querySnapshot) => {
+        
+                    dataUserSistem = [];
+        
+                    querySnapshot.forEach((doc) => {
+                        dataUserSistem.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+        
+                    listNamaTeknisi =
+                        dataUserSistem
+                            .filter(u => u.role === 'Teknisi')
+                            .map(u => u.nama);
+        
+                    listNamaSaksi =
+                        dataUserSistem
+                            .filter(u => u.role === 'User')
+                            .map(u => u.nama);
+        
+                    populasikanDropdownNamaTandaTangan();
+        
+                    // bagian render user Anda yang sekarang
+                    // tetap diletakkan di sini
+                },
+                (error) => {
+        
+                    console.error(
+                        "Listener users gagal:",
+                        error
+                    );
+        
+                }
+            );
+        
+        
+            db.collection("dataAlat").onSnapshot(
+                (querySnapshot) => {
+        
+                    dataAlat = [];
+        
+                    querySnapshot.forEach((doc) => {
+        
+                        dataAlat.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+        
+                    });
+        
+                    dataAlat.sort((a, b) => {
+        
+                        let namaA =
+                            (a.nama || "").toUpperCase();
+        
+                        let namaB =
+                            (b.nama || "").toUpperCase();
+        
+                        return namaA < namaB
+                            ? -1
+                            : namaA > namaB
+                                ? 1
+                                : 0;
+                    });
+        
+                    aktualisasikanDotKoneksiHijau();
+        
+                    evaluasiJatuhTempoKalibrasiMassal();
+        
+                    renderAll();
+        
+                    populasikanDropdownAlatDiKalibrasi();
+        
+                    populasikanDropdownAlatDiWorksheet();
+        
+                    populasikanDropdownEtiketAlat();
+        
+                },
+                (error) => {
+        
+                    console.error(
+                        "Listener dataAlat gagal:",
+                        error
+                    );
+        
+                }
+            );
+        
+        
+            db.collection("dataKalibrasi").onSnapshot(
+                (querySnapshot) => {
+        
+                    dataKalibrasi = [];
+        
+                    querySnapshot.forEach((doc) => {
+        
+                        dataKalibrasi.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+        
+                    });
+        
+                    evaluasiJatuhTempoKalibrasiMassal();
+        
+                    renderAll();
+        
+                },
+                (error) => {
+        
+                    console.error(
+                        "Listener dataKalibrasi gagal:",
+                        error
+                    );
+        
+                }
+            );
+        
+        
+            db.collection("troubleTickets").onSnapshot(
+                (querySnapshot) => {
+        
+                    dataTiket = [];
+        
+                    querySnapshot.forEach((doc) => {
+        
+                        dataTiket.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+        
+                    });
+        
+                    renderDaftarTiketMasuk();
+        
+                },
+                (error) => {
+        
+                    console.error(
+                        "Listener troubleTickets gagal:",
+                        error
+                    );
+        
+                }
+            );
+        
+        
+            db.collection("bukuPetunjukAlat").onSnapshot(
+                (querySnapshot) => {
+        
+                    dataBukuPetunjuk = [];
+        
+                    querySnapshot.forEach((doc) => {
+        
+                        dataBukuPetunjuk.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+        
+                    });
+        
+                    if (globalSelectedAlatIdForLog) {
+        
+                        bukaKartuPemeliharaan(
+                            globalSelectedAlatIdForLog
+                        );
+        
+                    }
+        
+                },
+                (error) => {
+        
+                    console.error(
+                        "Listener bukuPetunjukAlat gagal:",
+                        error
+                    );
+        
+                }
+            );
+        
+        
+            db.collection("laporanKeluhanLog").onSnapshot(
+                (querySnapshot) => {
+        
+                    dataKeluhanLog = [];
+        
+                    querySnapshot.forEach((doc) => {
+        
+                        dataKeluhanLog.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+        
+                    });
+        
+                    renderAll();
+        
+                },
+                (error) => {
+        
+                    console.error(
+                        "Listener laporanKeluhanLog gagal:",
+                        error
+                    );
+        
+                }
+            );
+        
+        
+            db.collection("lembarKerja").onSnapshot(
+                (querySnapshot) => {
+        
+                    const dataLk = [];
+        
+                    querySnapshot.forEach((doc) => {
+        
+                        dataLk.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+        
+                    });
+        
+                    dataPerbaikan =
+                        dataLk
+                            .filter(
+                                d =>
+                                    d.jenisKerja ===
+                                    'Corrective Maintenance'
+                            )
+                            .map(d => ({
+                                ...d,
+                                desc: d.desc_kerja
+                            }));
+        
+                    dataPM =
+                        dataLk
+                            .filter(
+                                d =>
+                                    d.jenisKerja ===
+                                    'Preventive Maintenance'
+                            )
+                            .map(d => ({
+                                ...d,
+                                desc: d.desc_kerja
+                            }));
+        
+                    dataInspeksi =
+                        dataLk
+                            .filter(
+                                d =>
+                                    d.jenisKerja ===
+                                    'Inspection'
+                            )
+                            .map(d => ({
+                                ...d,
+                                desc: d.desc_kerja
+                            }));
+        
+                    renderAll();
+        
+                    renderGrafikTrenKerusakan();
+        
+                },
+                (error) => {
+        
+                    console.error(
+                        "Listener lembarKerja gagal:",
+                        error
+                    );
+        
+                }
+            );
+        }
         
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
