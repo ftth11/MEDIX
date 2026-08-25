@@ -1624,35 +1624,91 @@
                 }
             );
         
-        
+            let isFirstLoadTickets = true;
+            
             db.collection("troubleTickets").onSnapshot(
                 (querySnapshot) => {
-        
+            
                     dataTiket = [];
-        
+            
                     querySnapshot.forEach((doc) => {
-        
+            
                         dataTiket.push({
                             id: doc.id,
                             ...doc.data()
                         });
-        
+            
                     });
-        
+            
+            
+                    // =========================================
+                    // DETEKSI TICKET BARU
+                    // =========================================
+            
+                    if (isFirstLoadTickets) {
+            
+                        isFirstLoadTickets = false;
+            
+                    } else {
+            
+                        querySnapshot.docChanges()
+                            .forEach((change) => {
+            
+                                if (change.type === "added") {
+            
+                                    const ticketData =
+                                        change.doc.data();
+            
+            
+                                    if (
+                                        currentActiveRole === 'Admin' ||
+                                        currentActiveRole === 'Teknisi'
+                                    ) {
+            
+                                        const audioAlert =
+                                            document.getElementById(
+                                                'alarm-notifikasi-tiket'
+                                            );
+            
+                                        if (audioAlert) {
+            
+                                            audioAlert
+                                                .play()
+                                                .catch(
+                                                    err => {}
+                                                );
+                                        }
+            
+            
+                                        showToast(
+                                            `Laporan Kerusakan Baru: ${ticketData.keluhan}`,
+                                            'error'
+                                        );
+                                    }
+                                }
+            
+                            });
+                    }
+            
+            
+                    // =========================================
+                    // RENDER DAFTAR TICKET
+                    // =========================================
+            
                     renderDaftarTiketMasuk();
-        
+            
                 },
+            
                 (error) => {
-        
+            
                     console.error(
                         "Listener troubleTickets gagal:",
                         error
                     );
-        
+            
                 }
             );
-        
-        
+                
             db.collection("bukuPetunjukAlat").onSnapshot(
                 (querySnapshot) => {
         
@@ -2049,22 +2105,6 @@
                 document.getElementById('main-app-body').classList.remove('dark-mode');
                 if (themeIcon) themeIcon.className = "fa-solid fa-sun text-lg text-slate-700";
             }
-        });
-
-        let isFirstLoadTickets = true;
-        db.collection("troubleTickets").onSnapshot((snapshot) => {
-            if (isFirstLoadTickets) { isFirstLoadTickets = false; return; }
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const ticketData = change.doc.data();
-                    if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
-                        const audioAlert = document.getElementById('alarm-notifikasi-tiket');
-                        if (audioAlert) { audioAlert.play().catch(err => {}); }
-                        showToast(`Laporan Kerusakan Baru: ${ticketData.keluhan}`, 'error');
-                        if (typeof renderDaftarTiketMasuk === 'function') { renderDaftarTiketMasuk(); }
-                    }
-                }
-            });
         });
         
         let dataBukuPetunjuk = [];
