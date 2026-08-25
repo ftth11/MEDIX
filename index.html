@@ -458,6 +458,9 @@
                         <button onclick="switchTab('kelola-akun')" id="btn-kelola-akun" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition menu-akses-admin-saja hidden">
                             <i class="fa-solid fa-users-gear w-5 text-rose-500"></i><span>Kelola Akun User</span>
                         </button>
+                        <button onclick="switchTab('equipment')" id="btn-equipment" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
+                            <i class="fa-solid fa-hospital w-5 text-rose-500"></i><span>Equipment Management</span>
+                        </button>
                         
                         <div id="btn-aksi-cepat-container" class="pt-4 mt-4 border-t border-slate-100 space-y-2 menu-akses-teknisi hidden">
                             <span class="block px-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Aksi Cepat</span>
@@ -644,6 +647,7 @@
                             </button>
                         </div>
                     </div>
+                    
                     <!-- Sub-Tab Navigasi Dokumen -->
                     <div class="flex bg-slate-200 p-1 rounded-xl border border-slate-300 w-full text-[11px] font-bold text-slate-600 space-x-1 no-print shadow-sm">
                         <button onclick="gantiSubTabDokumen('all')" id="doc-tab-all" class="px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition">Semua</button>
@@ -741,6 +745,72 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <div id="tab-equipment" class="hidden">
+
+                    <div class="flex items-center justify-between mb-6">
+                
+                        <div>
+                            <h2 class="text-2xl font-bold">
+                                Equipment Management
+                            </h2>
+                
+                            <p class="text-sm text-slate-500">
+                                Pengelolaan alat kesehatan
+                            </p>
+                        </div>
+                
+                        <button
+                            id="btn-tambah-equipment"
+                            class="..."
+                        >
+                            <i class="fa-solid fa-plus"></i>
+                            Tambah Equipment
+                        </button>
+                
+                    </div>
+                
+                
+                    <div class="bg-white rounded-2xl shadow-sm border">
+                
+                        <div class="p-4 border-b">
+                
+                            <input
+                                id="search-equipment"
+                                type="text"
+                                placeholder="Cari kode, nama, merk, atau serial number..."
+                                class="..."
+                            >
+                
+                        </div>
+                
+                
+                        <div class="overflow-x-auto">
+                
+                            <table class="w-full">
+                
+                                <thead>
+                                    <tr>
+                                        <th>Kode</th>
+                                        <th>Nama Alat</th>
+                                        <th>Merk / Tipe</th>
+                                        <th>Lokasi</th>
+                                        <th>Kondisi</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                
+                                <tbody id="table-equipment-body">
+                                </tbody>
+                
+                            </table>
+                
+                        </div>
+                
+                    </div>
+                
                 </div>
 
             </main>
@@ -1330,6 +1400,16 @@
                         permission.riwayat.edit === true
                     )
                 );
+
+            const izinEquipment =
+                permission.equipment === true ||
+                (
+                    permission.equipment &&
+                    (
+                        permission.equipment.read === true ||
+                        permission.equipment.edit === true
+                    )
+                );
         
             const btnDashboard =
                 document.getElementById(
@@ -1349,6 +1429,11 @@
             const btnKalibrasi =
                 document.getElementById(
                     'btn-kalibrasi'
+                );
+
+            const btnEquipment =
+                document.getElementById(
+                    'btn-equipment'
                 );
         
         
@@ -1377,6 +1462,13 @@
                 btnKalibrasi.classList.toggle(
                     'hidden',
                     !izinRiwayat
+                );
+            }
+
+            if (btnEquipment) {
+                btnEquipment.classList.toggle(
+                    'hidden',
+                    !izinEquipment
                 );
             }
         
