@@ -1292,37 +1292,44 @@
                 userAksesMenuArray || {};
         
             const izinDash =
-                permission.dashboard
-                    ? (
-                        permission.dashboard.read ||
-                        permission.dashboard.edit
+                permission.dashboard === true ||
+                (
+                    permission.dashboard &&
+                    (
+                        permission.dashboard.read === true ||
+                        permission.dashboard.edit === true
                     )
-                    : false;
-        
+                );
+            
             const izinMaster =
-                permission.master
-                    ? (
-                        permission.master.read ||
-                        permission.master.edit
+                permission.master === true ||
+                (
+                    permission.master &&
+                    (
+                        permission.master.read === true ||
+                        permission.master.edit === true
                     )
-                    : false;
-        
+                );
+            
             const izinTicket =
-                permission.ticket
-                    ? (
-                        permission.ticket.read ||
-                        permission.ticket.edit
+                permission.ticket === true ||
+                (
+                    permission.ticket &&
+                    (
+                        permission.ticket.read === true ||
+                        permission.ticket.edit === true
                     )
-                    : false;
-        
+                );
+            
             const izinRiwayat =
-                permission.riwayat
-                    ? (
-                        permission.riwayat.read ||
-                        permission.riwayat.edit
+                permission.riwayat === true ||
+                (
+                    permission.riwayat &&
+                    (
+                        permission.riwayat.read === true ||
+                        permission.riwayat.edit === true
                     )
-                    : false;
-        
+                );
         
             const btnDashboard =
                 document.getElementById(
