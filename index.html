@@ -2858,7 +2858,7 @@
                     "modal-detail-equipment";
         
                 modal.className =
-                    "fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4";
+                    "hidden fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4";
         
                 modal.innerHTML = `
         
@@ -3089,6 +3089,24 @@
             modal.classList.remove(
                 "hidden"
             );
+        }
+
+        function tutupDetailEquipment() {
+
+            const modal =
+                document.getElementById(
+                    "modal-detail-equipment"
+                );
+        
+            if (!modal) {
+                console.warn(
+                    "Modal detail equipment tidak ditemukan."
+                );
+                return;
+            }
+        
+            modal.classList.add("hidden");
+        
         }
         
         function showToast(message, type = 'success') {
