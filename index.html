@@ -2248,8 +2248,11 @@
 
         function bukaFormEquipment() {
 
+            const permission =
+                userAksesMenuArray?.equipment;
+        
             const bolehEdit =
-                userAksesMenuArray?.equipment?.edit === true;
+                permission?.edit === true;
         
             if (!bolehEdit) {
         
@@ -2261,12 +2264,293 @@
                 return;
             }
         
-            showToast(
-                "Form Equipment akan kita aktifkan pada STEP 4.3.",
-                "info"
-            );
+        
+            const modal =
+                document.getElementById(
+                    "modal-equipment"
+                );
+        
+            if (!modal) {
+        
+                console.error(
+                    "Modal equipment tidak ditemukan."
+                );
+        
+                return;
+            }
+        
+        
+            document.getElementById(
+                "judul-modal-equipment"
+            ).textContent =
+                "Tambah Equipment";
+        
+        
+            document.getElementById(
+                "form-equipment"
+            ).reset();
+        
+        
+            document.getElementById(
+                "equipment-id"
+            ).value = "";
+        
+        
+            modal.classList.remove("hidden");
         }
 
+        function tutupFormEquipment() {
+
+            const modal =
+                document.getElementById(
+                    "modal-equipment"
+                );
+        
+            if (modal) {
+        
+                modal.classList.add(
+                    "hidden"
+                );
+        
+            }
+        
+        }
+
+        async function simpanEquipment(event) {
+
+            event.preventDefault();
+        
+        
+            const permission =
+                userAksesMenuArray?.equipment;
+        
+            if (!permission?.edit) {
+        
+                showToast(
+                    "Anda tidak memiliki izin untuk menyimpan equipment.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+        
+            const btn =
+                document.getElementById(
+                    "btn-simpan-equipment"
+                );
+        
+        
+            const id =
+                document.getElementById(
+                    "equipment-id"
+                ).value.trim();
+        
+        
+            const data = {
+        
+                kodeAlat:
+                    document.getElementById(
+                        "equipment-kode"
+                    ).value.trim(),
+        
+                namaAlat:
+                    document.getElementById(
+                        "equipment-nama"
+                    ).value.trim(),
+        
+                kategori:
+                    document.getElementById(
+                        "equipment-kategori"
+                    ).value.trim(),
+        
+                merk:
+                    document.getElementById(
+                        "equipment-merk"
+                    ).value.trim(),
+        
+                tipe:
+                    document.getElementById(
+                        "equipment-tipe"
+                    ).value.trim(),
+        
+                serialNumber:
+                    document.getElementById(
+                        "equipment-serial"
+                    ).value.trim(),
+        
+                tahunPengadaan:
+                    document.getElementById(
+                        "equipment-tahun"
+                    ).value
+                        ? Number(
+                            document.getElementById(
+                                "equipment-tahun"
+                            ).value
+                        )
+                        : null,
+        
+                tanggalPengadaan:
+                    document.getElementById(
+                        "equipment-tanggal-pengadaan"
+                    ).value || null,
+        
+                vendor:
+                    document.getElementById(
+                        "equipment-vendor"
+                    ).value.trim(),
+        
+                nilaiPerolehan:
+                    document.getElementById(
+                        "equipment-nilai"
+                    ).value
+                        ? Number(
+                            document.getElementById(
+                                "equipment-nilai"
+                            ).value
+                        )
+                        : 0,
+        
+                unitId:
+                    document.getElementById(
+                        "equipment-unit"
+                    ).value.trim(),
+        
+                lokasi:
+                    document.getElementById(
+                        "equipment-lokasi"
+                    ).value.trim(),
+        
+                kondisi:
+                    document.getElementById(
+                        "equipment-kondisi"
+                    ).value,
+        
+                status:
+                    document.getElementById(
+                        "equipment-status"
+                    ).value,
+        
+                tanggalGaransiMulai:
+                    document.getElementById(
+                        "equipment-garansi-mulai"
+                    ).value || null,
+        
+                tanggalGaransiBerakhir:
+                    document.getElementById(
+                        "equipment-garansi-akhir"
+                    ).value || null,
+        
+                jadwalMaintenanceBerikutnya:
+                    document.getElementById(
+                        "equipment-maintenance"
+                    ).value || null,
+        
+                keterangan:
+                    document.getElementById(
+                        "equipment-keterangan"
+                    ).value.trim(),
+        
+                updatedAt:
+                    firebase.firestore.FieldValue.serverTimestamp(),
+        
+                updatedBy:
+                    currentUser?.uid ||
+                    null
+        
+            };
+        
+        
+            if (!data.kodeAlat) {
+        
+                showToast(
+                    "Kode alat wajib diisi.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+        
+            if (!data.namaAlat) {
+        
+                showToast(
+                    "Nama alat wajib diisi.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+        
+            try {
+        
+                btn.disabled = true;
+        
+                btn.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+        
+        
+                if (id) {
+        
+                    await db
+                        .collection("equipment")
+                        .doc(id)
+                        .update(data);
+        
+                } else {
+        
+                    data.createdAt =
+                        firebase.firestore.FieldValue
+                            .serverTimestamp();
+        
+                    data.createdBy =
+                        currentUser?.uid ||
+                        null;
+        
+                    await db
+                        .collection("equipment")
+                        .add(data);
+        
+                }
+        
+        
+                tutupFormEquipment();
+        
+        
+                showToast(
+                    id
+                        ? "Equipment berhasil diperbarui."
+                        : "Equipment berhasil ditambahkan.",
+                    "success"
+                );
+        
+        
+            } catch (error) {
+        
+                console.error(
+                    "Gagal menyimpan equipment:",
+                    error
+                );
+        
+                showToast(
+                    "Gagal menyimpan equipment: " +
+                    error.message,
+                    "error"
+                );
+        
+        
+            } finally {
+        
+                btn.disabled = false;
+        
+                btn.innerHTML =
+                    '<i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Equipment';
+        
+            }
+        
+        }
+        
         function lihatDetailEquipment(id) {
 
             const equipment =
@@ -4720,5 +5004,472 @@
             };
         }
     </script>
+
+    <!-- =========================================================
+         MODAL EQUIPMENT
+    ========================================================= -->
+    
+    <div
+        id="modal-equipment"
+        class="hidden fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center p-4"
+    >
+    
+        <div
+            class="bg-white w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
+        >
+    
+            <!-- HEADER -->
+    
+            <div class="flex items-center justify-between px-6 py-4 border-b">
+    
+                <div>
+    
+                    <h3
+                        id="judul-modal-equipment"
+                        class="text-xl font-bold text-slate-800"
+                    >
+                        Tambah Equipment
+                    </h3>
+    
+                    <p class="text-sm text-slate-500">
+                        Data master alat kesehatan
+                    </p>
+    
+                </div>
+    
+                <button
+                    type="button"
+                    onclick="tutupFormEquipment()"
+                    class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500"
+                >
+    
+                    <i class="fa-solid fa-xmark"></i>
+    
+                </button>
+    
+            </div>
+    
+    
+            <!-- FORM -->
+    
+            <form
+                id="form-equipment"
+                onsubmit="simpanEquipment(event)"
+                class="p-6"
+            >
+    
+                <input
+                    type="hidden"
+                    id="equipment-id"
+                >
+    
+    
+                <!-- INFORMASI DASAR -->
+    
+                <div class="mb-6">
+    
+                    <h4 class="font-bold text-slate-800 mb-4">
+                        Informasi Dasar
+                    </h4>
+    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Kode Alat
+                            </label>
+    
+                            <input
+                                id="equipment-kode"
+                                type="text"
+                                required
+                                placeholder="EQ-00001"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Nama Alat
+                            </label>
+    
+                            <input
+                                id="equipment-nama"
+                                type="text"
+                                required
+                                placeholder="Patient Monitor"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Kategori
+                            </label>
+    
+                            <input
+                                id="equipment-kategori"
+                                type="text"
+                                placeholder="Patient Monitor"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Merk
+                            </label>
+    
+                            <input
+                                id="equipment-merk"
+                                type="text"
+                                placeholder="Mindray"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Tipe / Model
+                            </label>
+    
+                            <input
+                                id="equipment-tipe"
+                                type="text"
+                                placeholder="BeneView T5"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Serial Number
+                            </label>
+    
+                            <input
+                                id="equipment-serial"
+                                type="text"
+                                placeholder="SN123456"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+    
+    
+                <!-- PENGADAAN -->
+    
+                <div class="mb-6">
+    
+                    <h4 class="font-bold text-slate-800 mb-4">
+                        Informasi Pengadaan
+                    </h4>
+    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Tahun Pengadaan
+                            </label>
+    
+                            <input
+                                id="equipment-tahun"
+                                type="number"
+                                min="1900"
+                                max="2100"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Tanggal Pengadaan
+                            </label>
+    
+                            <input
+                                id="equipment-tanggal-pengadaan"
+                                type="date"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Vendor / Supplier
+                            </label>
+    
+                            <input
+                                id="equipment-vendor"
+                                type="text"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Nilai Perolehan
+                            </label>
+    
+                            <input
+                                id="equipment-nilai"
+                                type="number"
+                                min="0"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+    
+    
+                <!-- LOKASI -->
+    
+                <div class="mb-6">
+    
+                    <h4 class="font-bold text-slate-800 mb-4">
+                        Lokasi & Status
+                    </h4>
+    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Unit
+                            </label>
+    
+                            <input
+                                id="equipment-unit"
+                                type="text"
+                                placeholder="ICU"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Lokasi
+                            </label>
+    
+                            <input
+                                id="equipment-lokasi"
+                                type="text"
+                                placeholder="Ruang ICU"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Kondisi
+                            </label>
+    
+                            <select
+                                id="equipment-kondisi"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                                <option value="Baik">
+                                    Baik
+                                </option>
+    
+                                <option value="Rusak Ringan">
+                                    Rusak Ringan
+                                </option>
+    
+                                <option value="Rusak Berat">
+                                    Rusak Berat
+                                </option>
+    
+                                <option value="Tidak Layak">
+                                    Tidak Layak
+                                </option>
+    
+                            </select>
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Status
+                            </label>
+    
+                            <select
+                                id="equipment-status"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                                <option value="Aktif">
+                                    Aktif
+                                </option>
+    
+                                <option value="Maintenance">
+                                    Maintenance
+                                </option>
+    
+                                <option value="Tidak Aktif">
+                                    Tidak Aktif
+                                </option>
+    
+                                <option value="Dipinjamkan">
+                                    Dipinjamkan
+                                </option>
+    
+                                <option value="Dihapuskan">
+                                    Dihapuskan
+                                </option>
+    
+                            </select>
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+    
+    
+                <!-- GARANSI -->
+    
+                <div class="mb-6">
+    
+                    <h4 class="font-bold text-slate-800 mb-4">
+                        Garansi & Jadwal
+                    </h4>
+    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Garansi Mulai
+                            </label>
+    
+                            <input
+                                id="equipment-garansi-mulai"
+                                type="date"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Garansi Berakhir
+                            </label>
+    
+                            <input
+                                id="equipment-garansi-akhir"
+                                type="date"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+    
+                        <div>
+    
+                            <label class="block text-sm font-semibold mb-1">
+                                Maintenance Berikutnya
+                            </label>
+    
+                            <input
+                                id="equipment-maintenance"
+                                type="date"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                            >
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+    
+    
+                <!-- KETERANGAN -->
+    
+                <div class="mb-6">
+    
+                    <label class="block text-sm font-semibold mb-1">
+                        Keterangan
+                    </label>
+    
+                    <textarea
+                        id="equipment-keterangan"
+                        rows="4"
+                        class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
+                    ></textarea>
+    
+                </div>
+    
+    
+                <!-- FOOTER -->
+    
+                <div class="flex justify-end gap-3 pt-4 border-t">
+    
+                    <button
+                        type="button"
+                        onclick="tutupFormEquipment()"
+                        class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"
+                    >
+                        Batal
+                    </button>
+    
+                    <button
+                        type="submit"
+                        id="btn-simpan-equipment"
+                        class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-semibold"
+                    >
+                        <i class="fa-solid fa-floppy-disk mr-1"></i>
+                        Simpan Equipment
+                    </button>
+    
+                </div>
+    
+            </form>
+    
+        </div>
+    
+    </div>
 </body>
 </html>
