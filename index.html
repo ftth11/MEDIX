@@ -1242,10 +1242,25 @@
             userAksesMenuArray =
                 userData.menuAkses ||
                 {
-                    dashboard: true,
-                    master: false,
-                    ticket: false,
-                    riwayat: false
+                    dashboard: {
+                        read: true,
+                        edit: false
+                    },
+            
+                    master: {
+                        read: false,
+                        edit: false
+                    },
+            
+                    ticket: {
+                        read: false,
+                        edit: false
+                    },
+            
+                    riwayat: {
+                        read: false,
+                        edit: false
+                    }
                 };
         
             // Simpan data user untuk kebutuhan aplikasi lama
