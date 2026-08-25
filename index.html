@@ -2554,10 +2554,390 @@
         
         function lihatDetailEquipment(id) {
 
+            const equipment = dataEquipment.find(
+                item => item.id === id
+            );
+        
+            if (!equipment) {
+                showToast(
+                    "Data equipment tidak ditemukan.",
+                    "error"
+                );
+                return;
+            }
+        
+            const formatTanggal = (value) => {
+        
+                if (!value) return "-";
+        
+                if (
+                    value &&
+                    typeof value.toDate === "function"
+                ) {
+                    return value.toDate().toLocaleDateString(
+                        "id-ID"
+                    );
+                }
+        
+                const date = new Date(value);
+        
+                if (isNaN(date.getTime())) {
+                    return value;
+                }
+        
+                return date.toLocaleDateString(
+                    "id-ID"
+                );
+            };
+        
+        
+            const formatRupiah = (value) => {
+        
+                if (
+                    value === null ||
+                    value === undefined ||
+                    value === ""
+                ) {
+                    return "-";
+                }
+        
+                return new Intl.NumberFormat(
+                    "id-ID",
+                    {
+                        style: "currency",
+                        currency: "IDR",
+                        maximumFractionDigits: 0
+                    }
+                ).format(value);
+        
+            };
+        
+        
+            const detailHtml = `
+        
+                <div class="space-y-5">
+        
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Kode Alat
+                            </div>
+                            <div class="font-semibold">
+                                ${escapeHtmlEquipment(
+                                    equipment.kodeAlat || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Nama Alat
+                            </div>
+                            <div class="font-semibold">
+                                ${escapeHtmlEquipment(
+                                    equipment.namaAlat || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Kategori
+                            </div>
+                            <div>
+                                ${escapeHtmlEquipment(
+                                    equipment.kategori || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Merk
+                            </div>
+                            <div>
+                                ${escapeHtmlEquipment(
+                                    equipment.merk || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Tipe / Model
+                            </div>
+                            <div>
+                                ${escapeHtmlEquipment(
+                                    equipment.tipe || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Serial Number
+                            </div>
+                            <div>
+                                ${escapeHtmlEquipment(
+                                    equipment.serialNumber || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Tahun Pengadaan
+                            </div>
+                            <div>
+                                ${equipment.tahunPengadaan || "-"}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Tanggal Pengadaan
+                            </div>
+                            <div>
+                                ${formatTanggal(
+                                    equipment.tanggalPengadaan
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Vendor / Supplier
+                            </div>
+                            <div>
+                                ${escapeHtmlEquipment(
+                                    equipment.vendor || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Nilai Perolehan
+                            </div>
+                            <div>
+                                ${formatRupiah(
+                                    equipment.nilaiPerolehan
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Unit
+                            </div>
+                            <div>
+                                ${escapeHtmlEquipment(
+                                    equipment.unitId || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Lokasi
+                            </div>
+                            <div>
+                                ${escapeHtmlEquipment(
+                                    equipment.lokasi || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Kondisi
+                            </div>
+                            <div>
+                                ${badgeEquipment(
+                                    equipment.kondisi || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Status
+                            </div>
+                            <div>
+                                ${badgeEquipment(
+                                    equipment.status || "-"
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Garansi Mulai
+                            </div>
+                            <div>
+                                ${formatTanggal(
+                                    equipment.tanggalGaransiMulai
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Garansi Berakhir
+                            </div>
+                            <div>
+                                ${formatTanggal(
+                                    equipment.tanggalGaransiBerakhir
+                                )}
+                            </div>
+                        </div>
+        
+        
+                        <div>
+                            <div class="text-xs text-slate-400">
+                                Maintenance Berikutnya
+                            </div>
+                            <div>
+                                ${formatTanggal(
+                                    equipment.jadwalMaintenanceBerikutnya
+                                )}
+                            </div>
+                        </div>
+        
+                    </div>
+        
+        
+                    <div>
+        
+                        <div class="text-xs text-slate-400 mb-1">
+                            Keterangan
+                        </div>
+        
+                        <div class="bg-slate-50 rounded-xl p-3">
+                            ${escapeHtmlEquipment(
+                                equipment.keterangan || "-"
+                            )}
+                        </div>
+        
+                    </div>
+        
+                </div>
+            `;
+        
+        
+            // Gunakan modal detail yang sudah ada jika tersedia.
+            let modal =
+                document.getElementById(
+                    "modal-detail-equipment"
+                );
+        
+        
+            // Jika belum ada, buat otomatis.
+            if (!modal) {
+        
+                modal =
+                    document.createElement("div");
+        
+                modal.id =
+                    "modal-detail-equipment";
+        
+                modal.className =
+                    "fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4";
+        
+                modal.innerHTML = `
+        
+                    <div class="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
+        
+                        <div class="flex items-center justify-between px-6 py-4 border-b">
+        
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800">
+                                    Detail Equipment
+                                </h3>
+        
+                                <p class="text-sm text-slate-500">
+                                    Informasi lengkap alat kesehatan
+                                </p>
+                            </div>
+        
+                            <button
+                                type="button"
+                                onclick="tutupDetailEquipment()"
+                                class="w-9 h-9 rounded-lg hover:bg-slate-100"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+        
+                        </div>
+        
+                        <div
+                            id="isi-detail-equipment"
+                            class="p-6"
+                        ></div>
+        
+                        <div class="flex justify-end gap-3 px-6 py-4 border-t">
+        
+                            <button
+                                type="button"
+                                onclick="tutupDetailEquipment()"
+                                class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"
+                            >
+                                Tutup
+                            </button>
+        
+                        </div>
+        
+                    </div>
+                `;
+        
+                document.body.appendChild(modal);
+            }
+        
+        
+            document.getElementById(
+                "isi-detail-equipment"
+            ).innerHTML = detailHtml;
+        
+            modal.classList.remove("hidden");
+        }
+        
+        function editEquipment(id) {
+
+            const permission =
+                userAksesMenuArray?.equipment;
+        
+            if (permission?.edit !== true) {
+        
+                showToast(
+                    "Anda tidak memiliki izin untuk mengubah equipment.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+        
             const equipment =
                 dataEquipment.find(
                     item => item.id === id
                 );
+        
         
             if (!equipment) {
         
@@ -2569,40 +2949,145 @@
                 return;
             }
         
-            console.log(
-                "Detail Equipment:",
-                equipment
-            );
         
-            showToast(
-                `Equipment: ${equipment.namaAlat || "-"}`,
-                "info"
-            );
-        }
-
-        function editEquipment(id) {
-
-            const bolehEdit =
-                userAksesMenuArray?.equipment?.edit === true;
+            const modal =
+                document.getElementById(
+                    "modal-equipment"
+                );
         
-            if (!bolehEdit) {
         
-                showToast(
-                    "Anda tidak memiliki izin untuk mengubah equipment.",
-                    "error"
+            if (!modal) {
+        
+                console.error(
+                    "Modal equipment tidak ditemukan."
                 );
         
                 return;
             }
         
-            console.log(
-                "Edit equipment:",
-                id
-            );
         
-            showToast(
-                "Form edit akan kita aktifkan pada STEP 4.3.",
-                "info"
+            document.getElementById(
+                "judul-modal-equipment"
+            ).textContent =
+                "Edit Equipment";
+        
+        
+            document.getElementById(
+                "equipment-id"
+            ).value =
+                equipment.id || "";
+        
+        
+            document.getElementById(
+                "equipment-kode"
+            ).value =
+                equipment.kodeAlat || "";
+        
+        
+            document.getElementById(
+                "equipment-nama"
+            ).value =
+                equipment.namaAlat || "";
+        
+        
+            document.getElementById(
+                "equipment-kategori"
+            ).value =
+                equipment.kategori || "";
+        
+        
+            document.getElementById(
+                "equipment-merk"
+            ).value =
+                equipment.merk || "";
+        
+        
+            document.getElementById(
+                "equipment-tipe"
+            ).value =
+                equipment.tipe || "";
+        
+        
+            document.getElementById(
+                "equipment-serial"
+            ).value =
+                equipment.serialNumber || "";
+        
+        
+            document.getElementById(
+                "equipment-tahun"
+            ).value =
+                equipment.tahunPengadaan || "";
+        
+        
+            document.getElementById(
+                "equipment-tanggal-pengadaan"
+            ).value =
+                equipment.tanggalPengadaan || "";
+        
+        
+            document.getElementById(
+                "equipment-vendor"
+            ).value =
+                equipment.vendor || "";
+        
+        
+            document.getElementById(
+                "equipment-nilai"
+            ).value =
+                equipment.nilaiPerolehan || "";
+        
+        
+            document.getElementById(
+                "equipment-unit"
+            ).value =
+                equipment.unitId || "";
+        
+        
+            document.getElementById(
+                "equipment-lokasi"
+            ).value =
+                equipment.lokasi || "";
+        
+        
+            document.getElementById(
+                "equipment-kondisi"
+            ).value =
+                equipment.kondisi || "Baik";
+        
+        
+            document.getElementById(
+                "equipment-status"
+            ).value =
+                equipment.status || "Aktif";
+        
+        
+            document.getElementById(
+                "equipment-garansi-mulai"
+            ).value =
+                equipment.tanggalGaransiMulai || "";
+        
+        
+            document.getElementById(
+                "equipment-garansi-akhir"
+            ).value =
+                equipment.tanggalGaransiBerakhir || "";
+        
+        
+            document.getElementById(
+                "equipment-maintenance"
+            ).value =
+                equipment.jadwalMaintenanceBerikutnya || "";
+        
+        
+            document.getElementById(
+                "equipment-keterangan"
+            ).value =
+                equipment.keterangan || "";
+        
+        
+            modal.classList.remove(
+                "hidden"
             );
         }
         
