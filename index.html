@@ -714,6 +714,148 @@
                         </div>
                         <button id="btn-tambah-equipment" type="button" onclick="bukaFormEquipment()"> <i class="fa-solid fa-plus"></i> Tambah Equipment </button>
                     </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4">
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    
+                            <!-- SEARCH -->
+                            <div class="md:col-span-2">
+                    
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                    Cari Equipment
+                                </label>
+                    
+                                <div class="relative">
+                    
+                                    <i class="fa-solid fa-magnifying-glass
+                                              absolute left-3 top-1/2
+                                              -translate-y-1/2
+                                              text-slate-400"></i>
+                    
+                                    <input
+                                        id="search-equipment"
+                                        type="text"
+                                        placeholder="Kode, nama, merk, serial number, lokasi..."
+                                        class="w-full pl-10 pr-4 py-2.5
+                                               border border-slate-200
+                                               rounded-xl
+                                               focus:outline-none
+                                               focus:ring-2
+                                               focus:ring-blue-500"
+                                        oninput="filterEquipment()"
+                                    >
+                    
+                                </div>
+                    
+                            </div>
+                    
+                    
+                            <!-- STATUS -->
+                            <div>
+                    
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                    Status
+                                </label>
+                    
+                                <select
+                                    id="filter-status-equipment"
+                                    class="w-full px-3 py-2.5
+                                           border border-slate-200
+                                           rounded-xl
+                                           focus:outline-none
+                                           focus:ring-2
+                                           focus:ring-blue-500"
+                                    onchange="filterEquipment()"
+                                >
+                    
+                                    <option value="">
+                                        Semua Status
+                                    </option>
+                    
+                                    <option value="Aktif">
+                                        Aktif
+                                    </option>
+                    
+                                    <option value="Tidak Aktif">
+                                        Tidak Aktif
+                                    </option>
+                    
+                                    <option value="Maintenance">
+                                        Maintenance
+                                    </option>
+                    
+                                    <option value="Dipinjamkan">
+                                        Dipinjamkan
+                                    </option>
+                    
+                                </select>
+                    
+                            </div>
+                    
+                    
+                            <!-- KONDISI -->
+                            <div>
+                    
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                    Kondisi
+                                </label>
+                    
+                                <select
+                                    id="filter-kondisi-equipment"
+                                    class="w-full px-3 py-2.5
+                                           border border-slate-200
+                                           rounded-xl
+                                           focus:outline-none
+                                           focus:ring-2
+                                           focus:ring-blue-500"
+                                    onchange="filterEquipment()"
+                                >
+                    
+                                    <option value="">
+                                        Semua Kondisi
+                                    </option>
+                    
+                                    <option value="Baik">
+                                        Baik
+                                    </option>
+                    
+                                    <option value="Rusak Ringan">
+                                        Rusak Ringan
+                                    </option>
+                    
+                                    <option value="Rusak Berat">
+                                        Rusak Berat
+                                    </option>
+                    
+                                </select>
+                    
+                            </div>
+                    
+                        </div>
+                    
+                    
+                        <div class="flex justify-end mt-3">
+                    
+                            <button
+                                type="button"
+                                onclick="resetFilterEquipment()"
+                                class="px-4 py-2
+                                       rounded-xl
+                                       border border-slate-200
+                                       text-sm font-semibold
+                                       hover:bg-slate-50"
+                            >
+                    
+                                <i class="fa-solid fa-rotate-left mr-1"></i>
+                    
+                                Reset Filter
+                    
+                            </button>
+                    
+                        </div>
+                    
+                    </div>
                 
                     <div class="bg-white rounded-2xl shadow-sm border">
                         <div class="p-4 border-b">
@@ -1540,6 +1682,7 @@
         let userAksesMenuArray = {};
         let currentUser = null;
         let dataEquipment = [];
+        let filteredEquipment = [];
         
         let firestoreListenerSudahDimulai = false;
 
@@ -1897,6 +2040,11 @@
                         ...doc.data()
                     });
                 });
+                
+                filteredEquipment = [
+                    ...dataEquipment
+                ];
+                
                 console.log(
                     "Equipment berhasil dimuat:",
                     dataEquipment.length
@@ -2998,6 +3146,155 @@
                 toast.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => { toast.remove(); }, 300);
             }, 3000);
+        }
+
+        function filterEquipment() {
+
+            const searchInput =
+                document.getElementById(
+                    "search-equipment"
+                );
+        
+            const statusInput =
+                document.getElementById(
+                    "filter-status-equipment"
+                );
+        
+            const kondisiInput =
+                document.getElementById(
+                    "filter-kondisi-equipment"
+                );
+        
+        
+            const search =
+                (searchInput?.value || "")
+                    .trim()
+                    .toLowerCase();
+        
+            const status =
+                statusInput?.value || "";
+        
+            const kondisi =
+                kondisiInput?.value || "";
+        
+        
+            filteredEquipment =
+                dataEquipment.filter(
+                    equipment => {
+        
+                        const searchableText = [
+        
+                            equipment.kodeAlat,
+        
+                            equipment.namaAlat,
+        
+                            equipment.kategori,
+        
+                            equipment.merk,
+        
+                            equipment.tipe,
+        
+                            equipment.serialNumber,
+        
+                            equipment.vendor,
+        
+                            equipment.lokasi,
+        
+                            equipment.unitId
+        
+                        ]
+                            .filter(Boolean)
+                            .join(" ")
+                            .toLowerCase();
+        
+        
+                        const cocokSearch =
+                            !search ||
+                            searchableText.includes(
+                                search
+                            );
+        
+        
+                        const cocokStatus =
+                            !status ||
+                            equipment.status === status;
+        
+        
+                        const cocokKondisi =
+                            !kondisi ||
+                            equipment.kondisi === kondisi;
+        
+        
+                        return (
+                            cocokSearch &&
+                            cocokStatus &&
+                            cocokKondisi
+                        );
+        
+                    }
+                );
+        
+        
+            renderFilteredEquipmentTable();
+        
+        }
+
+        function resetFilterEquipment() {
+
+            const searchInput =
+                document.getElementById(
+                    "search-equipment"
+                );
+        
+            const statusInput =
+                document.getElementById(
+                    "filter-status-equipment"
+                );
+        
+            const kondisiInput =
+                document.getElementById(
+                    "filter-kondisi-equipment"
+                );
+        
+        
+            if (searchInput) {
+                searchInput.value = "";
+            }
+        
+            if (statusInput) {
+                statusInput.value = "";
+            }
+        
+            if (kondisiInput) {
+                kondisiInput.value = "";
+            }
+        
+        
+            filteredEquipment = [
+                ...dataEquipment
+            ];
+        
+        
+            renderFilteredEquipmentTable();
+        
+        }
+
+        function renderFilteredEquipmentTable() {
+
+            const dataSebelumnya =
+                dataEquipment;
+        
+        
+            dataEquipment =
+                filteredEquipment;
+        
+        
+            renderEquipmentTable();
+        
+        
+            dataEquipment =
+                dataSebelumnya;
+        
         }
 
         async function logoutFirebase() {
