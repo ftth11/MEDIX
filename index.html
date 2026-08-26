@@ -353,63 +353,25 @@
                 </button>
             </div>
             
-            <form id="form-login-kredensial"
-                  onsubmit="validasiKredensialUser(event)"
-                  class="hidden space-y-3 pt-2 text-left relative z-20">
+            <form id="form-login-kredensial" onsubmit="validasiKredensialUser(event)"class="hidden space-y-3 pt-2 text-left relative z-20">
             
                 <div>
-                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1">
-                        Email
-                    </label>
-            
-                    <input
-                        type="email"
-                        id="login-email"
-                        required
-                        autocomplete="username"
-                        class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 rounded-xl outline-none focus:border-cyan-500"
-                    >
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1"> Email </label>
+                    <input type="email" id="login-email" required autocomplete="username" class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 rounded-xl outline-none focus:border-cyan-500">
                 </div>
-            
                 <div>
-                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1">
-                        Password
-                    </label>
-            
+                    <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1"> Password </label>
                     <div class="relative">
-                        <input
-                            type="password"
-                            id="login-password"
-                            required
-                            autocomplete="current-password"
-                            class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 pr-10 rounded-xl outline-none focus:border-cyan-500"
-                        >
-            
-                        <button
-                            type="button"
-                            onclick="toggleLihatPassword('login-password', this)"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
-                        >
+                        <input type="password" id="login-password" required autocomplete="current-password" class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 pr-10 rounded-xl outline-none focus:border-cyan-500">
+                        <button type="button" onclick="toggleLihatPassword('login-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
                             <i class="fa-solid fa-eye text-xs"></i>
                         </button>
                     </div>
                 </div>
             
                 <div class="flex space-x-2 pt-1">
-                    <button
-                        type="button"
-                        onclick="kembaliKePilihRole()"
-                        class="flex-1 bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-medium cursor-pointer"
-                    >
-                        Kembali
-                    </button>
-            
-                    <button
-                        type="submit"
-                        class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs py-2 rounded-xl font-bold transition cursor-pointer"
-                    >
-                        Masuk
-                    </button>
+                    <button type="button" onclick="kembaliKePilihRole()" class="flex-1 bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-medium cursor-pointer"> Kembali </button>
+                    <button type="submit" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs py-2 rounded-xl font-bold transition cursor-pointer"> Masuk </button>
                 </div>
             </form>
     
@@ -472,10 +434,7 @@
                 </div>
                 <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-[10px] text-slate-500 font-mono">
                     <span>© 2026 - MEDIX RSUD PONDOKGEDE</span>
-                    <button
-                        onclick="logoutFirebase()"
-                        class="hover:text-rose-600"
-                        title="Keluar">
+                    <button onclick="logoutFirebase()" class="hover:text-rose-600" title="Keluar">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
@@ -748,49 +707,20 @@
                 </div>
                 
                 <div id="tab-equipment" class="hidden">
-
                     <div class="flex items-center justify-between mb-6">
-                
                         <div>
-                            <h2 class="text-2xl font-bold">
-                                Equipment Management
-                            </h2>
-                
-                            <p class="text-sm text-slate-500">
-                                Pengelolaan alat kesehatan
-                            </p>
+                            <h2 class="text-2xl font-bold"> Equipment Management </h2>
+                            <p class="text-sm text-slate-500"> Pengelolaan alat kesehatan </p>
                         </div>
-                
-                        <button
-                            id="btn-tambah-equipment"
-                            type="button"
-                            onclick="bukaFormEquipment()"
-                        >
-                            <i class="fa-solid fa-plus"></i>
-                            Tambah Equipment
-                        </button>
-                
+                        <button id="btn-tambah-equipment" type="button" onclick="bukaFormEquipment()"> <i class="fa-solid fa-plus"></i> Tambah Equipment </button>
                     </div>
                 
-                
                     <div class="bg-white rounded-2xl shadow-sm border">
-                
                         <div class="p-4 border-b">
-                
-                            <input
-                                id="search-equipment"
-                                type="text"
-                                placeholder="Cari kode, nama, merk, atau serial number..."
-                                class="..."
-                            >
-                
+                            <input id="search-equipment" type="text" placeholder="Cari kode, nama, merk, atau serial number..." class="...">
                         </div>
-                
-                
                         <div class="overflow-x-auto">
-                
                             <table class="w-full">
-                
                                 <thead>
                                     <tr>
                                         <th>Kode</th>
@@ -802,18 +732,11 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                
-                                <tbody id="table-equipment-body">
-                                </tbody>
-                
+                                <tbody id="table-equipment-body"></tbody>
                             </table>
-                
                         </div>
-                
                     </div>
-                
                 </div>
-
             </main>
         </div>
     </div>
@@ -2613,16 +2536,11 @@
             };
         
         
-            const detailHtml = `
-        
+            const detailHtml = `     
                 <div class="space-y-5">
-        
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Kode Alat
-                            </div>
+                            <div class="text-xs text-slate-400"> Kode Alat </div>
                             <div class="font-semibold">
                                 ${escapeHtmlEquipment(
                                     equipment.kodeAlat || "-"
@@ -2630,11 +2548,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Nama Alat
-                            </div>
+                            <div class="text-xs text-slate-400"> Nama Alat </div>
                             <div class="font-semibold">
                                 ${escapeHtmlEquipment(
                                     equipment.namaAlat || "-"
@@ -2642,11 +2557,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Kategori
-                            </div>
+                            <div class="text-xs text-slate-400"> Kategori </div>
                             <div>
                                 ${escapeHtmlEquipment(
                                     equipment.kategori || "-"
@@ -2654,11 +2566,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Merk
-                            </div>
+                            <div class="text-xs text-slate-400"> Merk </div>
                             <div>
                                 ${escapeHtmlEquipment(
                                     equipment.merk || "-"
@@ -2666,11 +2575,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Tipe / Model
-                            </div>
+                            <div class="text-xs text-slate-400"> Tipe / Model </div>
                             <div>
                                 ${escapeHtmlEquipment(
                                     equipment.tipe || "-"
@@ -2678,11 +2584,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Serial Number
-                            </div>
+                            <div class="text-xs text-slate-400"> Serial Number </div>
                             <div>
                                 ${escapeHtmlEquipment(
                                     equipment.serialNumber || "-"
@@ -2690,21 +2593,15 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Tahun Pengadaan
-                            </div>
+                            <div class="text-xs text-slate-400"> Tahun Pengadaan </div>
                             <div>
                                 ${equipment.tahunPengadaan || "-"}
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Tanggal Pengadaan
-                            </div>
+                            <div class="text-xs text-slate-400"> Tanggal Pengadaan </div>
                             <div>
                                 ${formatTanggal(
                                     equipment.tanggalPengadaan
@@ -2712,11 +2609,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Vendor / Supplier
-                            </div>
+                            <div class="text-xs text-slate-400"> Vendor / Supplier </div>
                             <div>
                                 ${escapeHtmlEquipment(
                                     equipment.vendor || "-"
@@ -2724,11 +2618,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Nilai Perolehan
-                            </div>
+                            <div class="text-xs text-slate-400"> Nilai Perolehan </div>
                             <div>
                                 ${formatRupiah(
                                     equipment.nilaiPerolehan
@@ -2736,23 +2627,17 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Unit
-                            </div>
+                            <div class="text-xs text-slate-400"> Unit </div>
                             <div>
                                 ${escapeHtmlEquipment(
                                     equipment.unitId || "-"
                                 )}
                             </div>
                         </div>
-        
-        
+                        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Lokasi
-                            </div>
+                            <div class="text-xs text-slate-400"> Lokasi </div>
                             <div>
                                 ${escapeHtmlEquipment(
                                     equipment.lokasi || "-"
@@ -2760,11 +2645,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Kondisi
-                            </div>
+                            <div class="text-xs text-slate-400"> Kondisi </div>
                             <div>
                                 ${badgeEquipment(
                                     equipment.kondisi || "-"
@@ -2772,23 +2654,17 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Status
-                            </div>
+                            <div class="text-xs text-slate-400"> Status </div>
                             <div>
                                 ${badgeEquipment(
                                     equipment.status || "-"
                                 )}
                             </div>
                         </div>
-        
-        
+
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Garansi Mulai
-                            </div>
+                            <div class="text-xs text-slate-400"> Garansi Mulai </div>
                             <div>
                                 ${formatTanggal(
                                     equipment.tanggalGaransiMulai
@@ -2796,11 +2672,8 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Garansi Berakhir
-                            </div>
+                            <div class="text-xs text-slate-400"> Garansi Berakhir </div>
                             <div>
                                 ${formatTanggal(
                                     equipment.tanggalGaransiBerakhir
@@ -2808,38 +2681,26 @@
                             </div>
                         </div>
         
-        
                         <div>
-                            <div class="text-xs text-slate-400">
-                                Maintenance Berikutnya
-                            </div>
+                            <div class="text-xs text-slate-400"> Maintenance Berikutnya </div>
                             <div>
                                 ${formatTanggal(
                                     equipment.jadwalMaintenanceBerikutnya
                                 )}
                             </div>
                         </div>
-        
                     </div>
         
-        
                     <div>
-        
-                        <div class="text-xs text-slate-400 mb-1">
-                            Keterangan
-                        </div>
-        
+                        <div class="text-xs text-slate-400 mb-1"> Keterangan </div>
                         <div class="bg-slate-50 rounded-xl p-3">
                             ${escapeHtmlEquipment(
                                 equipment.keterangan || "-"
                             )}
                         </div>
-        
                     </div>
-        
                 </div>
             `;
-        
         
             // Gunakan modal detail yang sudah ada jika tersedia.
             let modal =
@@ -2847,73 +2708,36 @@
                     "modal-detail-equipment"
                 );
         
-        
             // Jika belum ada, buat otomatis.
             if (!modal) {
-        
                 modal =
                     document.createElement("div");
-        
                 modal.id =
                     "modal-detail-equipment";
-        
                 modal.className =
                     "hidden fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4";
-        
                 modal.innerHTML = `
-        
                     <div class="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
-        
                         <div class="flex items-center justify-between px-6 py-4 border-b">
-        
                             <div>
-                                <h3 class="text-xl font-bold text-slate-800">
-                                    Detail Equipment
-                                </h3>
-        
-                                <p class="text-sm text-slate-500">
-                                    Informasi lengkap alat kesehatan
-                                </p>
+                                <h3 class="text-xl font-bold text-slate-800"> Detail Equipment </h3>
+                                <p class="text-sm text-slate-500"> Informasi lengkap alat kesehatan </p>
                             </div>
-        
-                            <button
-                                type="button"
-                                onclick="tutupDetailEquipment()"
-                                class="w-9 h-9 rounded-lg hover:bg-slate-100"
-                            >
+                            <button type="button" onclick="tutupDetailEquipment()" class="w-9 h-9 rounded-lg hover:bg-slate-100">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
-        
                         </div>
-        
-                        <div
-                            id="isi-detail-equipment"
-                            class="p-6"
-                        ></div>
-        
+                        <div id="isi-detail-equipment" class="p-6"></div>
                         <div class="flex justify-end gap-3 px-6 py-4 border-t">
-        
-                            <button
-                                type="button"
-                                onclick="tutupDetailEquipment()"
-                                class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"
-                            >
-                                Tutup
-                            </button>
-        
+                            <button type="button" onclick="tutupDetailEquipment()" class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"> Tutup </button>
                         </div>
-        
                     </div>
                 `;
-        
                 document.body.appendChild(modal);
             }
-        
-        
             document.getElementById(
                 "isi-detail-equipment"
             ).innerHTML = detailHtml;
-        
             modal.classList.remove("hidden");
         }
         
@@ -3092,21 +2916,64 @@
         }
 
         function tutupDetailEquipment() {
-
             const modal =
                 document.getElementById(
                     "modal-detail-equipment"
                 );
-        
             if (!modal) {
                 console.warn(
                     "Modal detail equipment tidak ditemukan."
                 );
                 return;
             }
-        
             modal.classList.add("hidden");
+        }
+
+        async function nonaktifkanEquipment(id) {
+            const permission =
+                userAksesMenuArray?.equipment;
+            if (permission?.edit !== true) {
+                showToast("Anda tidak memiliki izin untuk mengubah status equipment.", "error");
+                return;
+            }
         
+            const equipment =
+                dataEquipment.find( item => item.id === id );
+            if (!equipment) {
+                showToast("Data equipment tidak ditemukan.", "error");
+                return;
+            }
+        
+            const namaAlat =
+                equipment.namaAlat ||
+                equipment.kodeAlat ||
+                "Equipment ini";
+        
+            const konfirmasi =
+                confirm(`Apakah Anda yakin ingin menonaktifkan ${namaAlat}?`);
+            if (!konfirmasi) {
+                return;
+            }
+        
+            try {
+                await db
+                    .collection("equipment")
+                    .doc(id)
+                    .update({
+                        status: "Tidak Aktif",
+                        updatedAt:
+                            firebase.firestore
+                                .FieldValue
+                                .serverTimestamp(),
+                        updatedBy:
+                            currentUser?.uid || null
+                    });
+        
+                showToast("Equipment berhasil dinonaktifkan.","success");
+            } catch (error) {
+                console.error("Gagal menonaktifkan equipment:",error);
+                showToast("Gagal menonaktifkan equipment: " +error.message,"error");
+            }
         }
         
         function showToast(message, type = 'success') {
