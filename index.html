@@ -1890,17 +1890,33 @@
             );
 
             db.collection("equipment").onSnapshot((snapshot) => {
-                    dataEquipment = [];
-                    snapshot.forEach((doc) => {
-                        dataEquipment.push({id: doc.id,...doc.data()});
+                dataEquipment = [];
+                snapshot.forEach((doc) => {
+                    dataEquipment.push({
+                        id: doc.id,
+                        ...doc.data()
                     });
-                    console.log("Equipment berhasil dimuat:",dataEquipment.length);
-                    renderEquipmentTable();            
-                },
-                (error) => {
-                    console.error("Listener equipment gagal:",error);
-                }
-            );
+                });
+                console.log(
+                    "Equipment berhasil dimuat:",
+                    dataEquipment.length
+                );
+                console.log(
+                    "DATA EQUIPMENT TERBARU:",
+                    JSON.stringify(
+                        dataEquipment,
+                        null,
+                        2
+                    )
+                );
+                renderEquipmentTable();
+            },
+            (error) => {
+                console.error(
+                    "Listener equipment gagal:",
+                    error
+                );
+            });
         }
 
         function getDefaultEquipmentPermission(role) {
