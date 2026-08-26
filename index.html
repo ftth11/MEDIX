@@ -1889,35 +1889,16 @@
                 }
             );
 
-            db.collection("equipment").onSnapshot(
-                (snapshot) => {
-            
+            db.collection("equipment").onSnapshot((snapshot) => {
                     dataEquipment = [];
-            
                     snapshot.forEach((doc) => {
-            
-                        dataEquipment.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-            
+                        dataEquipment.push({id: doc.id,...doc.data()});
                     });
-            
-                    console.log(
-                        "Equipment berhasil dimuat:",
-                        dataEquipment.length
-                    );
-            
-                    renderEquipmentTable();
-            
+                    console.log("Equipment berhasil dimuat:",dataEquipment.length);
+                    renderEquipmentTable();            
                 },
                 (error) => {
-            
-                    console.error(
-                        "Listener equipment gagal:",
-                        error
-                    );
-            
+                    console.error("Listener equipment gagal:",error);
                 }
             );
         }
