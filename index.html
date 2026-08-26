@@ -2073,7 +2073,8 @@
         
                 return {
                     read: true,
-                    edit: true
+                    edit: true,
+                    delete: true
                 };
         
             }
@@ -2082,7 +2083,8 @@
         
                 return {
                     read: true,
-                    edit: true
+                    edit: true,
+                    delete: false
                 };
         
             }
@@ -2091,7 +2093,8 @@
         
                 return {
                     read: true,
-                    edit: false
+                    edit: false,
+                    delete: false
                 };
         
             }
@@ -3118,6 +3121,78 @@
             } catch (error) {
                 console.error("Gagal menonaktifkan equipment:",error);
                 showToast("Gagal menonaktifkan equipment: " +error.message,"error");
+            }
+        }
+
+        async function hapusEquipmentPermanen(id) {
+
+            if (currentActiveRole !== "Admin") {
+        
+                showToast(
+                    "Hanya Admin yang dapat menghapus equipment.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            const equipment =
+                dataEquipment.find(
+                    item => item.id === id
+                );
+        
+            if (!equipment) {
+        
+                showToast(
+                    "Data equipment tidak ditemukan.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            const namaAlat =
+                equipment.namaAlat ||
+                equipment.kodeAlat ||
+                "Equipment ini";
+        
+            const konfirmasi =
+                confirm(
+                    `PERINGATAN!\n\n` +
+                    `Anda akan menghapus permanen:\n` +
+                    `${namaAlat}\n\n` +
+                    `Data yang dihapus tidak dapat dikembalikan.\n\n` +
+                    `Lanjutkan?`
+                );
+        
+            if (!konfirmasi) {
+                return;
+            }
+        
+            try {
+        
+                await db
+                    .collection("equipment")
+                    .doc(id)
+                    .delete();
+        
+                showToast(
+                    "Equipment berhasil dihapus permanen.",
+                    "success"
+                );
+        
+            } catch (error) {
+        
+                console.error(
+                    "Gagal menghapus equipment:",
+                    error
+                );
+        
+                showToast(
+                    "Gagal menghapus equipment: " +
+                    error.message,
+                    "error"
+                );
             }
         }
         
