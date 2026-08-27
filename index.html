@@ -2284,6 +2284,20 @@
                                         `
                                         : ""
                                     }
+
+                                    ${userAksesMenuArray?.equipment?.delete === true
+                                        ? `
+                                            <button
+                                                type="button"
+                                                onclick="hapusEquipmentPermanen('${equipment.id}')"
+                                                title="Hapus Equipment"
+                                                class="..."
+                                            >
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                          `
+                                        : ""
+                                    }
         
                                 </td>
         
