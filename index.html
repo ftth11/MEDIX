@@ -2262,7 +2262,7 @@
                                 </td>
         
                                 <td class="px-4 py-3 text-center">
-        
+
                                     <button
                                         type="button"
                                         onclick="lihatDetailEquipment('${item.id}')"
@@ -2270,7 +2270,7 @@
                                     >
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
-        
+                                
                                     ${
                                         bolehEdit
                                         ? `
@@ -2284,23 +2284,23 @@
                                         `
                                         : ""
                                     }
-
-                                    ${userAksesMenuArray?.equipment?.delete === true
+                                
+                                    ${
+                                        userAksesMenuArray?.equipment?.delete === true
                                         ? `
                                             <button
                                                 type="button"
-                                                onclick="hapusEquipmentPermanen('${equipment.id}')"
+                                                onclick="hapusEquipmentPermanen('${item.id}')"
                                                 title="Hapus Equipment"
-                                                class="..."
+                                                class="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-700 text-xs font-semibold hover:bg-red-100"
                                             >
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
-                                          `
+                                        `
                                         : ""
                                     }
-        
+                                
                                 </td>
-        
                             </tr>
         
                         `;
