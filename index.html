@@ -4089,6 +4089,275 @@
         
             }
         }
+
+        async function simpanMaintenance() {
+
+            // ============================================
+            // CEK PERMISSION
+            // ============================================
+        
+            if (
+                userAksesMenuArray?.equipment?.maintenance !== true
+            ) {
+        
+                showToast(
+                    "Anda tidak memiliki izin untuk menambahkan maintenance.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+        
+            // ============================================
+            // AMBIL DATA FORM
+            // ============================================
+        
+            const equipmentId =
+                document.getElementById(
+                    "maintenance-equipment-id"
+                )?.value.trim();
+        
+            const kodeAlat =
+                document.getElementById(
+                    "maintenance-kode-alat"
+                )?.value.trim();
+        
+            const namaAlat =
+                document.getElementById(
+                    "maintenance-nama-alat"
+                )?.value.trim();
+        
+            const tanggal =
+                document.getElementById(
+                    "maintenance-tanggal"
+                )?.value;
+        
+            const jenis =
+                document.getElementById(
+                    "maintenance-jenis"
+                )?.value;
+        
+            const keluhan =
+                document.getElementById(
+                    "maintenance-keluhan"
+                )?.value.trim();
+        
+            const tindakan =
+                document.getElementById(
+                    "maintenance-tindakan"
+                )?.value.trim();
+        
+            const hasil =
+                document.getElementById(
+                    "maintenance-hasil"
+                )?.value;
+        
+            const teknisi =
+                document.getElementById(
+                    "maintenance-teknisi"
+                )?.value.trim();
+        
+            const biayaValue =
+                document.getElementById(
+                    "maintenance-biaya"
+                )?.value;
+        
+            const vendor =
+                document.getElementById(
+                    "maintenance-vendor"
+                )?.value.trim();
+        
+            const keterangan =
+                document.getElementById(
+                    "maintenance-keterangan"
+                )?.value.trim();
+        
+        
+            // ============================================
+            // VALIDASI
+            // ============================================
+        
+            if (!equipmentId) {
+        
+                showToast(
+                    "Equipment belum dipilih.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            if (!tanggal) {
+        
+                showToast(
+                    "Tanggal maintenance wajib diisi.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            if (!jenis) {
+        
+                showToast(
+                    "Jenis maintenance wajib dipilih.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            if (!tindakan) {
+        
+                showToast(
+                    "Tindakan maintenance wajib diisi.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            if (!hasil) {
+        
+                showToast(
+                    "Hasil maintenance wajib dipilih.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            if (!teknisi) {
+        
+                showToast(
+                    "Nama teknisi wajib diisi.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+        
+            // ============================================
+            // KONVERSI BIAYA
+            // ============================================
+        
+            const biaya =
+                biayaValue
+                    ? Number(biayaValue)
+                    : 0;
+        
+            if (
+                Number.isNaN(biaya) ||
+                biaya < 0
+            ) {
+        
+                showToast(
+                    "Biaya maintenance tidak valid.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+        
+            // ============================================
+            // SIMPAN KE FIRESTORE
+            // ============================================
+        
+            try {
+        
+                const maintenanceData = {
+        
+                    equipmentId:
+                        equipmentId,
+        
+                    kodeAlat:
+                        kodeAlat || "",
+        
+                    namaAlat:
+                        namaAlat || "",
+        
+                    tanggal:
+                        tanggal,
+        
+                    jenis:
+                        jenis,
+        
+                    keluhan:
+                        keluhan || "",
+        
+                    tindakan:
+                        tindakan,
+        
+                    hasil:
+                        hasil,
+        
+                    teknisi:
+                        teknisi,
+        
+                    biaya:
+                        biaya,
+        
+                    vendor:
+                        vendor || "",
+        
+                    keterangan:
+                        keterangan || "",
+        
+                    createdAt:
+                        firebase.firestore.FieldValue
+                            .serverTimestamp(),
+        
+                    createdBy:
+                        currentUser?.uid ||
+                        null
+                };
+        
+        
+                await db
+                    .collection("maintenance")
+                    .add(
+                        maintenanceData
+                    );
+        
+        
+                // ========================================
+                // BERHASIL
+                // ========================================
+        
+                showToast(
+                    "Maintenance berhasil disimpan.",
+                    "success"
+                );
+        
+        
+                // Tutup modal
+        
+                tutupFormMaintenance();
+        
+        
+                console.log(
+                    "Maintenance berhasil disimpan:",
+                    maintenanceData
+                );
+        
+        
+            } catch (error) {
+        
+                console.error(
+                    "Gagal menyimpan maintenance:",
+                    error
+                );
+        
+                showToast(
+                    "Gagal menyimpan maintenance: " +
+                    error.message,
+                    "error"
+                );
+            }
+        }
         
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
