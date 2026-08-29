@@ -2862,6 +2862,363 @@
                         </div>
                     </div>
                 </div>
+                <div
+                    id="modal-maintenance"
+                    class="hidden fixed inset-0 z-[10000] bg-black/50
+                           flex items-center justify-center p-4"
+                >
+                
+                    <div
+                        class="bg-white rounded-2xl shadow-xl
+                               w-full max-w-3xl max-h-[90vh]
+                               overflow-y-auto"
+                    >
+                
+                        <!-- HEADER -->
+                        <div
+                            class="flex items-center justify-between
+                                   px-6 py-4
+                                   border-b border-slate-200"
+                        >
+                
+                            <div>
+                
+                                <h2 class="text-lg font-bold text-slate-800">
+                                    Tambah Maintenance
+                                </h2>
+                
+                                <p class="text-sm text-slate-500">
+                                    Catat aktivitas maintenance equipment
+                                </p>
+                
+                            </div>
+                
+                            <button
+                                type="button"
+                                onclick="tutupFormMaintenance()"
+                                class="w-9 h-9 rounded-lg
+                                       bg-slate-100 text-slate-600
+                                       hover:bg-slate-200"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                
+                        </div>
+                
+                
+                        <!-- FORM -->
+                        <div class="p-6">
+                
+                            <input
+                                type="hidden"
+                                id="maintenance-equipment-id"
+                            >
+                
+                
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                                <!-- KODE -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Kode Alat
+                                    </label>
+                
+                                    <input
+                                        id="maintenance-kode-alat"
+                                        type="text"
+                                        readonly
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200
+                                               bg-slate-50"
+                                    >
+                
+                                </div>
+                
+                
+                                <!-- NAMA -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Nama Equipment
+                                    </label>
+                
+                                    <input
+                                        id="maintenance-nama-alat"
+                                        type="text"
+                                        readonly
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200
+                                               bg-slate-50"
+                                    >
+                
+                                </div>
+                
+                
+                                <!-- TANGGAL -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Tanggal Maintenance
+                                    </label>
+                
+                                    <input
+                                        id="maintenance-tanggal"
+                                        type="date"
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    >
+                
+                                </div>
+                
+                
+                                <!-- JENIS -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Jenis Maintenance
+                                    </label>
+                
+                                    <select
+                                        id="maintenance-jenis"
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    >
+                
+                                        <option value="">
+                                            Pilih Jenis
+                                        </option>
+                
+                                        <option value="Preventive Maintenance">
+                                            Preventive Maintenance
+                                        </option>
+                
+                                        <option value="Corrective Maintenance">
+                                            Corrective Maintenance
+                                        </option>
+                
+                                        <option value="Inspection">
+                                            Inspection
+                                        </option>
+                
+                                        <option value="Cleaning">
+                                            Cleaning
+                                        </option>
+                
+                                        <option value="Replacement">
+                                            Replacement
+                                        </option>
+                
+                                        <option value="Lainnya">
+                                            Lainnya
+                                        </option>
+                
+                                    </select>
+                
+                                </div>
+                
+                
+                                <!-- KELUHAN -->
+                                <div class="md:col-span-2">
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Keluhan
+                                    </label>
+                
+                                    <textarea
+                                        id="maintenance-keluhan"
+                                        rows="3"
+                                        placeholder="Tuliskan keluhan atau masalah equipment..."
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    ></textarea>
+                
+                                </div>
+                
+                
+                                <!-- TINDAKAN -->
+                                <div class="md:col-span-2">
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Tindakan Maintenance
+                                    </label>
+                
+                                    <textarea
+                                        id="maintenance-tindakan"
+                                        rows="3"
+                                        placeholder="Tuliskan tindakan yang dilakukan..."
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    ></textarea>
+                
+                                </div>
+                
+                
+                                <!-- HASIL -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Hasil
+                                    </label>
+                
+                                    <select
+                                        id="maintenance-hasil"
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    >
+                
+                                        <option value="">
+                                            Pilih Hasil
+                                        </option>
+                
+                                        <option value="Baik">
+                                            Baik
+                                        </option>
+                
+                                        <option value="Baik Setelah Perbaikan">
+                                            Baik Setelah Perbaikan
+                                        </option>
+                
+                                        <option value="Perlu Monitoring">
+                                            Perlu Monitoring
+                                        </option>
+                
+                                        <option value="Rusak">
+                                            Rusak
+                                        </option>
+                
+                                        <option value="Tidak Dapat Digunakan">
+                                            Tidak Dapat Digunakan
+                                        </option>
+                
+                                    </select>
+                
+                                </div>
+                
+                
+                                <!-- TEKNISI -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Teknisi
+                                    </label>
+                
+                                    <input
+                                        id="maintenance-teknisi"
+                                        type="text"
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    >
+                
+                                </div>
+                
+                
+                                <!-- BIAYA -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Biaya
+                                    </label>
+                
+                                    <input
+                                        id="maintenance-biaya"
+                                        type="number"
+                                        min="0"
+                                        placeholder="0"
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    >
+                
+                                </div>
+                
+                
+                                <!-- VENDOR -->
+                                <div>
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Vendor
+                                    </label>
+                
+                                    <input
+                                        id="maintenance-vendor"
+                                        type="text"
+                                        placeholder="Nama vendor jika ada"
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    >
+                
+                                </div>
+                
+                
+                                <!-- KETERANGAN -->
+                                <div class="md:col-span-2">
+                
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                                        Keterangan
+                                    </label>
+                
+                                    <textarea
+                                        id="maintenance-keterangan"
+                                        rows="3"
+                                        placeholder="Keterangan tambahan..."
+                                        class="w-full px-3 py-2.5
+                                               rounded-xl
+                                               border border-slate-200"
+                                    ></textarea>
+                
+                                </div>
+                
+                            </div>
+                
+                
+                            <!-- FOOTER -->
+                            <div
+                                class="flex justify-end gap-3
+                                       mt-6 pt-4
+                                       border-t border-slate-200"
+                            >
+                
+                                <button
+                                    type="button"
+                                    onclick="tutupFormMaintenance()"
+                                    class="px-5 py-2.5 rounded-xl
+                                           border border-slate-200
+                                           text-slate-700 font-semibold
+                                           hover:bg-slate-50"
+                                >
+                                    Batal
+                                </button>
+                
+                
+                                <button
+                                    type="button"
+                                    onclick="simpanMaintenance()"
+                                    class="px-5 py-2.5 rounded-xl
+                                           bg-blue-600 text-white
+                                           font-semibold
+                                           hover:bg-blue-700"
+                                >
+                                    <i class="fa-solid fa-floppy-disk mr-1"></i>
+                                    Simpan Maintenance
+                                </button>
+                
+                            </div>
+                
+                        </div>
+                
+                    </div>
+                
+                </div>
             `;
         
             // Gunakan modal detail yang sudah ada jika tersedia.
