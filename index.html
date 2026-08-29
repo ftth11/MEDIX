@@ -1307,5 +1307,21 @@
             });
         }
     </script>
+    // Pastikan fungsi ini berada di scope global (window)
+    window.pilihRoleSebelumLogin = function(role) {
+        console.log("Role dipilih:", role);
+        
+        // Tampilkan/sembunyikan form login atau atur input role
+        const roleInput = document.getElementById('selected_role'); // sesuaikan ID input Anda
+        if (roleInput) {
+            roleInput.value = role;
+        }
+        
+        // Logika menampilkan modal / form login
+        const loginModal = document.getElementById('loginModal'); // sesuaikan ID modal Anda
+        if (loginModal) {
+            loginModal.classList.remove('hidden');
+        }
+    };
 </body>
 </html>
