@@ -1683,6 +1683,7 @@
         let currentUser = null;
         let dataEquipment = [];
         let filteredEquipment = [];
+        let dataMaintenance = [];
         
         let firestoreListenerSudahDimulai = false;
 
@@ -3263,6 +3264,7 @@
                             </button>
                         </div>
                         <div id="isi-detail-equipment" class="p-6"></div>
+                        <div id="maintenance-history" class="mt-6 pt-6 border-t border-slate-200"></div>
                         <div class="flex justify-end gap-3 px-6 py-4 border-t">
                             <button type="button" onclick="tutupmodalEquipment()" class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"> Tutup </button>
                         </div>
@@ -3273,6 +3275,9 @@
             document.getElementById(
                 "isi-detail-equipment"
             ).innerHTML = detailHtml;
+            loadMaintenanceByEquipment(
+                equipment.id
+            );
             modal.classList.remove("hidden");
         }
         
@@ -4357,6 +4362,253 @@
                     "error"
                 );
             }
+        }
+
+        function loadMaintenanceByEquipment(equipmentId) {
+
+            if (!equipmentId) {
+                console.warn("Equipment ID tidak tersedia.");
+                return;
+            }
+        
+            db.collection("maintenance")
+                .where("equipmentId", "==", equipmentId)
+                .onSnapshot(
+                    (snapshot) => {
+        
+                        dataMaintenance = [];
+        
+                        snapshot.forEach((doc) => {
+        
+                            dataMaintenance.push({
+                                id: doc.id,
+                                ...doc.data()
+                            });
+        
+                        });
+        
+                        // Urutkan berdasarkan tanggal terbaru
+                        dataMaintenance.sort(
+                            (a, b) =>
+                                (b.tanggal || "").localeCompare(
+                                    a.tanggal || ""
+                                )
+                        );
+        
+                        console.log(
+                            "Maintenance berhasil dimuat:",
+                            dataMaintenance.length
+                        );
+        
+                        renderMaintenanceHistory();
+        
+                    },
+                    (error) => {
+        
+                        console.error(
+                            "Listener maintenance gagal:",
+                            error
+                        );
+        
+                    }
+                );
+        }
+
+        function renderMaintenanceHistory() {
+
+            const container =
+                document.getElementById(
+                    "maintenance-history"
+                );
+        
+            if (!container) {
+                return;
+            }
+        
+            if (dataMaintenance.length === 0) {
+        
+                container.innerHTML = `
+                    <div class="py-8 text-center text-slate-400">
+                        <i class="fa-solid fa-screwdriver-wrench text-2xl mb-2"></i>
+                        <p class="text-sm">
+                            Belum ada histori maintenance.
+                        </p>
+                    </div>
+                `;
+        
+                return;
+            }
+        
+            container.innerHTML =
+                dataMaintenance.map((item) => {
+        
+                    const biaya =
+                        Number(item.biaya || 0)
+                            .toLocaleString(
+                                "id-ID"
+                            );
+        
+                    return `
+                        <div
+                            class="border border-slate-200
+                                   rounded-xl p-4
+                                   bg-white"
+                        >
+        
+                            <div
+                                class="flex flex-col md:flex-row
+                                       md:items-start
+                                       md:justify-between
+                                       gap-3"
+                            >
+        
+                                <div>
+        
+                                    <div
+                                        class="font-semibold
+                                               text-slate-800"
+                                    >
+                                        ${escapeHtmlEquipment(
+                                            item.jenis || "-"
+                                        )}
+                                    </div>
+        
+                                    <div
+                                        class="text-sm
+                                               text-slate-500 mt-1"
+                                    >
+                                        <i class="fa-regular fa-calendar mr-1"></i>
+                                        ${escapeHtmlEquipment(
+                                            item.tanggal || "-"
+                                        )}
+                                    </div>
+        
+                                </div>
+        
+                                <div
+                                    class="text-sm
+                                           font-semibold
+                                           text-slate-700"
+                                >
+                                    Rp ${biaya}
+                                </div>
+        
+                            </div>
+        
+                            <div
+                                class="grid grid-cols-1
+                                       md:grid-cols-2
+                                       gap-3 mt-4"
+                            >
+        
+                                <div>
+        
+                                    <div
+                                        class="text-xs
+                                               text-slate-400"
+                                    >
+                                        Keluhan
+                                    </div>
+        
+                                    <div
+                                        class="text-sm
+                                               text-slate-700 mt-1"
+                                    >
+                                        ${escapeHtmlEquipment(
+                                            item.keluhan || "-"
+                                        )}
+                                    </div>
+        
+                                </div>
+        
+                                <div>
+        
+                                    <div
+                                        class="text-xs
+                                               text-slate-400"
+                                    >
+                                        Teknisi
+                                    </div>
+        
+                                    <div
+                                        class="text-sm
+                                               text-slate-700 mt-1"
+                                    >
+                                        ${escapeHtmlEquipment(
+                                            item.teknisi || "-"
+                                        )}
+                                    </div>
+        
+                                </div>
+        
+                                <div
+                                    class="md:col-span-2"
+                                >
+        
+                                    <div
+                                        class="text-xs
+                                               text-slate-400"
+                                    >
+                                        Tindakan
+                                    </div>
+        
+                                    <div
+                                        class="text-sm
+                                               text-slate-700 mt-1"
+                                    >
+                                        ${escapeHtmlEquipment(
+                                            item.tindakan || "-"
+                                        )}
+                                    </div>
+        
+                                </div>
+        
+                                <div>
+        
+                                    <div
+                                        class="text-xs
+                                               text-slate-400"
+                                    >
+                                        Hasil
+                                    </div>
+        
+                                    <div
+                                        class="text-sm
+                                               text-slate-700 mt-1"
+                                    >
+                                        ${escapeHtmlEquipment(
+                                            item.hasil || "-"
+                                        )}
+                                    </div>
+        
+                                </div>
+        
+                                <div>
+        
+                                    <div
+                                        class="text-xs
+                                               text-slate-400"
+                                    >
+                                        Vendor
+                                    </div>
+        
+                                    <div
+                                        class="text-sm
+                                               text-slate-700 mt-1"
+                                    >
+                                        ${escapeHtmlEquipment(
+                                            item.vendor || "-"
+                                        )}
+                                    </div>
+        
+                                </div>
+        
+                            </div>
+        
+                        </div>
+                    `;
+        
+                }).join("");
         }
         
         function toggleLightDarkMode() {
