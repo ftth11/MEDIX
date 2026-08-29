@@ -1684,7 +1684,7 @@
         let dataEquipment = [];
         let filteredEquipment = [];
         let dataMaintenance = [];
-        
+        let maintenanceUnsubscribe = null;
         let firestoreListenerSudahDimulai = false;
 
         function mulaiListenerFirestore() {
@@ -4366,52 +4366,83 @@
 
         function loadMaintenanceByEquipment(equipmentId) {
 
+            // Hentikan listener sebelumnya
+            if (maintenanceUnsubscribe) {
+        
+                maintenanceUnsubscribe();
+        
+                maintenanceUnsubscribe = null;
+            }
+        
+        
             if (!equipmentId) {
-                console.warn("Equipment ID tidak tersedia.");
+        
+                console.warn(
+                    "Equipment ID tidak tersedia."
+                );
+        
+                dataMaintenance = [];
+        
+                renderMaintenanceHistory();
+        
                 return;
             }
         
-            db.collection("maintenance")
-                .where("equipmentId", "==", equipmentId)
-                .onSnapshot(
-                    (snapshot) => {
         
-                        dataMaintenance = [];
+            maintenanceUnsubscribe =
+                db.collection("maintenance")
+                    .where(
+                        "equipmentId",
+                        "==",
+                        equipmentId
+                    )
+                    .onSnapshot(
         
-                        snapshot.forEach((doc) => {
+                        (snapshot) => {
         
-                            dataMaintenance.push({
-                                id: doc.id,
-                                ...doc.data()
-                            });
+                            dataMaintenance = [];
         
-                        });
+                            snapshot.forEach(
+                                (doc) => {
         
-                        // Urutkan berdasarkan tanggal terbaru
-                        dataMaintenance.sort(
-                            (a, b) =>
-                                (b.tanggal || "").localeCompare(
-                                    a.tanggal || ""
-                                )
-                        );
+                                    dataMaintenance.push({
+                                        id: doc.id,
+                                        ...doc.data()
+                                    });
         
-                        console.log(
-                            "Maintenance berhasil dimuat:",
-                            dataMaintenance.length
-                        );
+                                }
+                            );
         
-                        renderMaintenanceHistory();
         
-                    },
-                    (error) => {
+                            // Urutkan terbaru
+                            dataMaintenance.sort(
+                                (a, b) =>
+                                    (b.tanggal || "")
+                                        .localeCompare(
+                                            a.tanggal || ""
+                                        )
+                            );
         
-                        console.error(
-                            "Listener maintenance gagal:",
-                            error
-                        );
         
-                    }
-                );
+                            console.log(
+                                "Maintenance berhasil dimuat:",
+                                dataMaintenance.length
+                            );
+        
+        
+                            renderMaintenanceHistory();
+        
+                        },
+        
+                        (error) => {
+        
+                            console.error(
+                                "Listener maintenance gagal:",
+                                error
+                            );
+        
+                        }
+                    );
         }
 
         function renderMaintenanceHistory() {
