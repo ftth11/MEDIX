@@ -1066,12 +1066,14 @@
             
             const targetTab = document.getElementById(tabId);
             if (targetTab) targetTab.classList.remove('hidden');
-
+        
             const activeBtn = document.getElementById('nav-' + tabId.replace('tab-', ''));
-            if (activeBtn) activeBtn.classList.add('active');
-
-            if (window.innerWidth < 768) {
-                document.getElementById('sidebar').classList.add('-translate-x-full');
+            // PERBAIKAN: Gunakan Optional Chaining (?.) agar tidak crash jika elemen tidak ditemukan
+            activeBtn?.classList.add('active');
+        
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth < 768 && sidebar) {
+                sidebar.classList.add('-translate-x-full');
             }
         }
 
