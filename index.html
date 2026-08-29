@@ -4073,6 +4073,22 @@
         
             modal.classList.remove("hidden");
         }
+
+        function tutupFormMaintenance() {
+
+            const modal =
+                document.getElementById(
+                    "modal-maintenance"
+                );
+        
+            if (modal) {
+        
+                modal.classList.add(
+                    "hidden"
+                );
+        
+            }
+        }
         
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
