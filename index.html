@@ -69,7 +69,6 @@
             color: #0f172a !important;
         }
 
-        /* Border pembatas di dalam sidebar disesuaikan jadi nuansa tosca */
         #app-sidebar .border-t, 
         #app-sidebar .border-b {
             border-color: #99f6e4 !important;
@@ -80,7 +79,6 @@
             font-weight: 600;
         }
 
-        /* Efek hover dan menu aktif diselaraskan dengan gradasi hijau tosca */
         .sidebar-item:hover, 
         .sidebar-item.active {
             background: linear-gradient(90deg, rgba(13, 148, 136, 0.15) 0%, rgba(20, 184, 166, 0.05) 100%) !important;
@@ -135,19 +133,19 @@
             color: #1e293b !important;
             font-weight: 600;
         }
-        /* 2. Menyesuaikan header atau bagian dalam modal agar ikut menyatu */
+
         #modal-kartu .bg-slate-100,
         #modal-kalibrasi .bg-slate-50,
         #modal-alat .bg-slate-50 {
             background-color: #ccfbf1 !important;
             border-bottom: 1px solid #5eead4 !important;
         }
-        /* Mengubah overlay background login gate menjadi nuansa hijau tosca transparan */
+
         #auth-gate-screen {
-            background-color: rgba(13, 148, 136, 0.45) !important; /* Tosca transparan */
+            background-color: rgba(13, 148, 136, 0.45) !important;
             backdrop-filter: blur(8px);
         }
-        /* Mengubah kotak putih login agar senada dengan panel (menjadi tosca sangat muda) */
+
         #auth-gate-screen > div {
             background-color: #f0fdf4 !important;
             border: 1px solid #5eead4 !important;
@@ -280,9 +278,6 @@
             color: #38bdf8 !important;
         }
 
-        /* ==========================================================
-           PERBAIKAN EFEK HOVER TABEL (TRANSPARAN / TIDAK PUTIH)
-           ========================================================== */
         tr {
             transition: background-color 0.15s ease-in-out;
         }
@@ -354,7 +349,6 @@
             </div>
             
             <form id="form-login-kredensial" onsubmit="validasiKredensialUser(event)" class="hidden space-y-3 pt-2 text-left relative z-20">
-            
                 <div>
                     <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-1"> Email </label>
                     <input type="email" id="login-email" required autocomplete="username" class="w-full bg-white text-slate-900 text-xs border border-slate-300 p-2.5 rounded-xl outline-none focus:border-cyan-500">
@@ -374,7 +368,6 @@
                     <button type="submit" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs py-2 rounded-xl font-bold transition cursor-pointer"> Masuk </button>
                 </div>
             </form>
-    
         </div>
     </div>
 
@@ -384,7 +377,6 @@
     </div>
 
     <div class="flex h-screen w-full relative no-scrollbar bg-transparent">
-                
         <!-- SIDEBAR MENU UTAMA MEDIX -->
         <div id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white text-slate-800 flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-200 transform -translate-x-full transition-transform duration-300 ease-in-out no-scrollbar">
             <div class="flex flex-col h-full justify-between overflow-y-auto no-scrollbar">
@@ -443,7 +435,6 @@
 
         <!-- AREA UTAMA APLIKASI -->
         <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
-            
             <header class="bg-white backdrop-blur-md shadow-sm px-6 py-4 flex items-center justify-between no-print border-b border-slate-200">
                 <div class="flex items-center space-x-4">
                     <button onclick="toggleSidebarMenu(true)" class="text-slate-600 hover:text-blue-600 focus:outline-none p-1.5 rounded-xl hover:bg-slate-100 transition">
@@ -461,14 +452,12 @@
             </header>
 
             <main class="w-full px-6 py-6 space-y-6 bg-transparent no-scrollbar">
-
                 <div id="box-peringatan-kalibrasi" class="hidden bg-amber-50 border border-amber-200 p-4 rounded-2xl shadow-sm text-slate-700 text-xs no-print space-y-2 backdrop-blur-xl">
                     <div class="flex items-center space-x-2 text-amber-600 font-bold"><i class="fa-solid fa-triangle-exclamation text-base animate-pulse"></i><span>Pemberitahuan Kelaikan Alat: Kalibrasi Kedaluwarsa</span></div>
                     <ul id="list-warning-kalibrasi" class="list-disc pl-5 space-y-1 max-h-24 overflow-y-auto text-slate-700 no-scrollbar"></ul>
                 </div>
 
                 <div id="tab-dashboard" class="tab-content space-y-4 no-print">
-                    <!-- 4 Kartu Statistik Atas -->
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:scale-[1.01] transition">
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Aset Medis</p><h3 id="stat-total" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">0</h3></div>
@@ -488,7 +477,6 @@
                         </div>
                     </div>
                 
-                    <!-- Bagian Grafik Bawah -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div class="glass-panel p-4 rounded-2xl shadow-sm flex flex-col justify-between lg:col-span-1 h-[380px]">
                             <h4 class="text-[11px] font-bold text-slate-800 uppercase tracking-wider mb-2 border-b border-slate-100 pb-2 flex items-center">
@@ -513,7 +501,6 @@
                         </div>
                     </div>
 
-                    <!-- FITUR TAMBAHAN: Grafik Tren Kerusakan & Perbaikan (Predictive Maintenance) -->
                     <div class="glass-panel p-4 rounded-2xl shadow-sm flex flex-col justify-between lg:col-span-3 h-[320px] mt-4">
                         <h4 class="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center">
                             <i class="fa-solid fa-chart-line mr-2 text-rose-500"></i> Tren Frekuensi Kerusakan & Perbaikan (Predictive Maintenance)
@@ -597,7 +584,6 @@
                     <div class="flex justify-between items-center no-print flex-wrap gap-2">
                         <h2 class="text-lg font-bold text-slate-900 bg-white px-4 py-1.5 rounded-xl border border-slate-200 shadow-sm">Riwayat & Dokumen Aset</h2>
                         <div class="flex items-center space-x-2">
-                            <!-- FITUR TAMBAHAN: Tombol Ekspor Laporan Bulanan PDF -->
                             <button onclick="exportLaporanBulananPDF()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center">
                                 <i class="fa-solid fa-file-pdf mr-1.5"></i> Download Laporan Bulanan PDF
                             </button>
@@ -607,7 +593,6 @@
                         </div>
                     </div>
                     
-                    <!-- Sub-Tab Navigasi Dokumen -->
                     <div class="flex bg-slate-200 p-1 rounded-xl border border-slate-300 w-full text-[11px] font-bold text-slate-600 space-x-1 no-print shadow-sm">
                         <button onclick="gantiSubTabDokumen('all')" id="doc-tab-all" class="px-3 py-2 rounded-lg flex-1 text-center bg-blue-600 text-white transition">Semua</button>
                         <button onclick="gantiSubTabDokumen('kalibrasi')" id="doc-tab-kalibrasi" class="px-3 py-2 rounded-lg flex-1 text-center transition">Kalibrasi</button>
@@ -716,165 +701,56 @@
                     </div>
 
                     <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4">
-
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
-                    
-                            <!-- SEARCH -->
                             <div class="md:col-span-2">
-                    
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">
-                                    Cari Equipment
-                                </label>
-                    
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Cari Equipment</label>
                                 <div class="relative">
-                    
-                                    <i class="fa-solid fa-magnifying-glass
-                                              absolute left-3 top-1/2
-                                              -translate-y-1/2
-                                              text-slate-400"></i>
-                    
-                                    <input
-                                        id="search-equipment"
-                                        type="text"
-                                        placeholder="Kode, nama, merk, serial number, lokasi..."
-                                        class="w-full pl-10 pr-4 py-2.5
-                                               border border-slate-200
-                                               rounded-xl
-                                               focus:outline-none
-                                               focus:ring-2
-                                               focus:ring-blue-500"
-                                        oninput="filterEquipment()"
-                                    >
-                    
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                    <input id="search-equipment" type="text" placeholder="Kode, nama, merk, serial number, lokasi..." class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="filterEquipment()">
                                 </div>
-                    
                             </div>
-                    
-                    
-                            <!-- STATUS -->
                             <div>
-                    
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">
-                                    Status
-                                </label>
-                    
-                                <select
-                                    id="filter-status-equipment"
-                                    class="w-full px-3 py-2.5
-                                           border border-slate-200
-                                           rounded-xl
-                                           focus:outline-none
-                                           focus:ring-2
-                                           focus:ring-blue-500"
-                                    onchange="filterEquipment()"
-                                >
-                    
-                                    <option value="">
-                                        Semua Status
-                                    </option>
-                    
-                                    <option value="Aktif">
-                                        Aktif
-                                    </option>
-                    
-                                    <option value="Tidak Aktif">
-                                        Tidak Aktif
-                                    </option>
-                    
-                                    <option value="Maintenance">
-                                        Maintenance
-                                    </option>
-                    
-                                    <option value="Dipinjamkan">
-                                        Dipinjamkan
-                                    </option>
-                    
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Status</label>
+                                <select id="filter-status-equipment" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="filterEquipment()">
+                                    <option value="">Semua Status</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Tidak Aktif">Tidak Aktif</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Dipinjamkan">Dipinjamkan</option>
                                 </select>
-                    
                             </div>
-                    
-                    
-                            <!-- KONDISI -->
                             <div>
-                    
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">
-                                    Kondisi
-                                </label>
-                    
-                                <select
-                                    id="filter-kondisi-equipment"
-                                    class="w-full px-3 py-2.5
-                                           border border-slate-200
-                                           rounded-xl
-                                           focus:outline-none
-                                           focus:ring-2
-                                           focus:ring-blue-500"
-                                    onchange="filterEquipment()"
-                                >
-                    
-                                    <option value="">
-                                        Semua Kondisi
-                                    </option>
-                    
-                                    <option value="Baik">
-                                        Baik
-                                    </option>
-                    
-                                    <option value="Rusak Ringan">
-                                        Rusak Ringan
-                                    </option>
-                    
-                                    <option value="Rusak Berat">
-                                        Rusak Berat
-                                    </option>
-                    
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Kondisi</label>
+                                <select id="filter-kondisi-equipment" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="filterEquipment()">
+                                    <option value="">Semua Kondisi</option>
+                                    <option value="Baik">Baik</option>
+                                    <option value="Rusak Ringan">Rusak Ringan</option>
+                                    <option value="Rusak Berat">Rusak Berat</option>
                                 </select>
-                    
                             </div>
-                    
                         </div>
-                    
-                    
                         <div class="flex justify-end mt-3">
-                    
-                            <button
-                                type="button"
-                                onclick="resetFilterEquipment()"
-                                class="px-4 py-2
-                                       rounded-xl
-                                       border border-slate-200
-                                       text-sm font-semibold
-                                       hover:bg-slate-50"
-                            >
-                    
-                                <i class="fa-solid fa-rotate-left mr-1"></i>
-                    
-                                Reset Filter
-                    
+                            <button type="button" onclick="resetFilterEquipment()" class="px-4 py-2 rounded-xl border border-slate-200 text-sm font-semibold hover:bg-slate-50">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Reset Filter
                             </button>
-                    
                         </div>
-                    
                     </div>
                 
                     <div class="bg-white rounded-2xl shadow-sm border">
-                        <div class="p-4 border-b">
-                            <input id="search-equipment-alt" type="text" placeholder="Cari kode, nama, merk, atau serial number..." class="w-full border border-slate-200 p-2.5 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-xs font-semibold">
-                        </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
+                            <table class="w-full">
                                 <thead>
                                     <tr>
-                                        <th class="p-4">Kode</th>
-                                        <th class="p-4">Nama Alat</th>
-                                        <th class="p-4">Merk / Tipe</th>
-                                        <th class="p-4">Lokasi</th>
-                                        <th class="p-4">Kondisi</th>
-                                        <th class="p-4">Status</th>
-                                        <th class="p-4 text-center">Aksi</th>
+                                        <th>Kode</th>
+                                        <th>Nama Alat</th>
+                                        <th>Merk / Tipe</th>
+                                        <th>Lokasi</th>
+                                        <th>Kondisi</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table-equipment-body" class="divide-y divide-slate-100"></tbody>
+                                <tbody id="table-equipment-body"></tbody>
                             </table>
                         </div>
                     </div>
@@ -886,7 +762,6 @@
     <!-- AREA WORKSPACE PEMELIHARAAN -->
     <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[99999] flex items-center justify-center p-2 hidden no-print overflow-y-auto no-scrollbar">
         <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border border-slate-200 max-w-4xl w-full mx-auto text-slate-900 space-y-3 print:space-y-1 relative max-h-[96vh] print:max-h-none overflow-y-auto no-scrollbar print:overflow-visible my-auto">
-            
             <div class="absolute top-4 right-4 flex items-center space-x-2 z-20 no-print">
                 <button onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" type="button" class="bg-slate-500 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow flex items-center space-x-1"><i class="fa-solid fa-xmark"></i> <span>Tutup</span></button>
                 <button onclick="pemicuCetakDokumen()" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded font-bold text-xs shadow flex items-center space-x-1"><i class="fa-solid fa-print"></i> <span>Cetak Dokumen</span></button>
@@ -1323,22 +1198,15 @@
             }
         
             try {
-                const userRef = db
-                    .collection("users")
-                    .doc(firebaseUser.uid);
-        
+                const userRef = db.collection("users").doc(firebaseUser.uid);
                 const snap = await userRef.get();
         
                 if (!snap.exists) {
-                    console.error(
-                        "Profil Firestore tidak ditemukan untuk UID:",
-                        firebaseUser.uid
-                    );
+                    console.error("Profil Firestore tidak ditemukan untuk UID:", firebaseUser.uid);
                     return null;
                 }
         
                 const data = snap.data();
-        
                 if (data.aktif === false) {
                     console.warn("Akun user tidak aktif.");
                     return null;
@@ -1349,12 +1217,8 @@
                     email: firebaseUser.email || data.email || "",
                     ...data
                 };
-        
             } catch (error) {
-                console.error(
-                    "Gagal mengambil profil user:",
-                    error
-                );
+                console.error("Gagal mengambil profil user:", error);
                 return null;
             }
         }
@@ -1365,70 +1229,81 @@
             }
         
             // Identitas user
-            currentUserNama =
-                userData.nama ||
-                userData.username ||
-                userData.email ||
-                "User";
+            currentUserNama = userData.nama || userData.username || userData.email || "User";
+            currentActiveRole = userData.role || "User";
         
-            // Role
-            currentActiveRole =
-                userData.role || "User";
-        
-            // Permission
-            userAksesMenuArray =
-                userData.menuAkses ||
-                {
-                    dashboard: { read: true, edit: false },
-                    master: { read: false, edit: false },
-                    ticket: { read: false, edit: false },
-                    riwayat: { read: false, edit: false },
-                    equipment: { read: true, edit: true }
-                };
-            
-            if (!userAksesMenuArray.equipment) {
-                userAksesMenuArray.equipment = {
-                    read: false,
-                    edit: false
-                };
-            }
+            // Permission Context
+            userAksesMenuArray = userData.menuAkses || {
+                dashboard: { read: true, edit: false },
+                master: { read: true, edit: false, hapus: false },
+                ticket: { read: true, edit: true, hapus: false },
+                riwayat: { read: true, upload: false, download: true, hapus: false }
+            };
 
             const roleBadge = document.getElementById("sidebar-role-badge");
             if (roleBadge) {
-                roleBadge.textContent = currentActiveRole;
+                roleBadge.innerText = currentActiveRole;
             }
 
+            console.log(`Berhasil login sebagai ${currentUserNama} (${currentActiveRole})`);
             return true;
         }
 
-        // Placeholder UI Helper Functions
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById(`tab-${tabId}`);
-            if (target) target.classList.remove('hidden');
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+
+            const items = document.querySelectorAll('.sidebar-item');
+            items.forEach(item => item.classList.remove('active'));
+
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
         }
 
         function toggleModal(modalId, show) {
-            const el = document.getElementById(modalId);
-            if (!el) return;
-            if (show) el.classList.remove('hidden');
-            else el.classList.add('hidden');
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
         }
 
         function toggleSidebarMenu(show) {
             const sidebar = document.getElementById('app-sidebar');
             if (!sidebar) return;
-            if (show) sidebar.classList.remove('-translate-x-full');
-            else sidebar.classList.add('-translate-x-full');
+            if (show) {
+                sidebar.classList.toggle('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
         }
 
         function toggleLightDarkMode() {
             document.body.classList.toggle('dark-mode');
+            const themeIcon = document.getElementById('theme-icon');
+            if (themeIcon) {
+                if (document.body.classList.contains('dark-mode')) {
+                    themeIcon.className = 'fa-solid fa-sun text-lg text-amber-400';
+                } else {
+                    themeIcon.className = 'fa-solid fa-moon text-lg text-slate-700';
+                }
+            }
         }
 
         function logoutFirebase() {
             auth.signOut().then(() => {
                 location.reload();
+            }).catch(err => {
+                console.error("Gagal logout:", err);
             });
         }
     </script>
