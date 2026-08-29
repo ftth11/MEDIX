@@ -3219,6 +3219,22 @@
                     </div>
                 
                 </div>
+                ${
+                    userAksesMenuArray?.equipment?.maintenance === true
+                    ? `
+                        <div class="mt-6 pt-5 border-t border-slate-200 flex justify-end">
+                            <button
+                                type="button"
+                                onclick="bukaFormMaintenance('${equipment.id}')"
+                                class="px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 shadow-sm"
+                            >
+                                <i class="fa-solid fa-screwdriver-wrench mr-2"></i>
+                                Tambah Maintenance
+                            </button>
+                        </div>
+                    `
+                    : ""
+                }
             `;
         
             // Gunakan modal detail yang sudah ada jika tersedia.
