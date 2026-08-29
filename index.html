@@ -1306,6 +1306,39 @@
                 console.error("Gagal logout:", err);
             });
         }
+
+        // Fungsi ini wajib ada untuk merespons klik tombol role
+          function pilihRoleSebelumLogin(role) {
+          console.log("Role terpilih:", role);
+    
+          // 1. Simpan role yang dipilih ke dalam input hidden/form login jika ada
+          const roleInput = document.getElementById('input-role'); // Sesuaikan ID input di form Anda
+          if (roleInput) {
+              roleInput.value = role;
+          }
+    
+          // 2. Sembunyikan box pilihan role
+          const boxRole = document.getElementById('box-pilih-role');
+          if (boxRole) {
+              boxRole.classList.add('hidden');
+          }
+    
+          // 3. Tampilkan form login
+          const formLogin = document.getElementById('form-login'); // Sesuaikan ID form login Anda
+          if (formLogin) {
+              formLogin.classList.remove('hidden');
+          }
+      }
+    
+      // Jika Anda juga memakai tombol Scan QR, pastikan fungsi ini ada
+      function bukaModalScanQrPublik() {
+          console.log("Membuka scan QR...");
+          const modalQR = document.getElementById('modal-qr'); // Sesuaikan ID modal QR Anda
+          if (modalQR) {
+              modalQR.classList.remove('hidden');
+          }
+      }
+        
     </script>
     // Pastikan fungsi ini berada di scope global (window)
     window.pilihRoleSebelumLogin = function(role) {
