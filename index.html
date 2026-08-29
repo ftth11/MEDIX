@@ -2265,7 +2265,7 @@
 
                                     <button
                                         type="button"
-                                        onclick="lihatDetailEquipment('${item.id}')"
+                                        onclick="lihatmodalEquipment('${item.id}')"
                                         class="px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200"
                                     >
                                         <i class="fa-solid fa-eye"></i>
@@ -2637,7 +2637,7 @@
         
         }
         
-        function lihatDetailEquipment(id) {
+        function lihatmodalEquipment(id) {
 
             const equipment = dataEquipment.find(
                 item => item.id === id
@@ -2885,13 +2885,13 @@
                                 <h3 class="text-xl font-bold text-slate-800"> Detail Equipment </h3>
                                 <p class="text-sm text-slate-500"> Informasi lengkap alat kesehatan </p>
                             </div>
-                            <button type="button" onclick="tutupDetailEquipment()" class="w-9 h-9 rounded-lg hover:bg-slate-100">
+                            <button type="button" onclick="tutupmodalEquipment()" class="w-9 h-9 rounded-lg hover:bg-slate-100">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
                         </div>
                         <div id="isi-detail-equipment" class="p-6"></div>
                         <div class="flex justify-end gap-3 px-6 py-4 border-t">
-                            <button type="button" onclick="tutupDetailEquipment()" class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"> Tutup </button>
+                            <button type="button" onclick="tutupmodalEquipment()" class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"> Tutup </button>
                         </div>
                     </div>
                 `;
@@ -3077,7 +3077,7 @@
             );
         }
 
-        function tutupDetailEquipment() {
+        function tutupmodalEquipment() {
             const modal =
                 document.getElementById(
                     "modal-detail-equipment"
@@ -3597,6 +3597,109 @@
                 }
             }
         });
+
+        function bukaFormMaintenance(equipmentId) {
+
+            const permission =
+                userAksesMenuArray?.equipment?.maintenance;
+        
+            if (permission !== true) {
+        
+                showToast(
+                    "Anda tidak memiliki izin untuk menambahkan maintenance.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            const equipment =
+                dataEquipment.find(
+                    item => item.id === equipmentId
+                );
+        
+            if (!equipment) {
+        
+                showToast(
+                    "Data equipment tidak ditemukan.",
+                    "error"
+                );
+        
+                return;
+            }
+        
+            const modal =
+                document.getElementById(
+                    "modal-maintenance"
+                );
+        
+            if (!modal) {
+        
+                console.error(
+                    "Modal maintenance tidak ditemukan."
+                );
+        
+                return;
+            }
+        
+            document.getElementById(
+                "maintenance-equipment-id"
+            ).value = equipment.id;
+        
+            document.getElementById(
+                "maintenance-kode-alat"
+            ).value =
+                equipment.kodeAlat || "";
+        
+            document.getElementById(
+                "maintenance-nama-alat"
+            ).value =
+                equipment.namaAlat || "";
+        
+            document.getElementById(
+                "maintenance-tanggal"
+            ).value =
+                new Date()
+                    .toISOString()
+                    .split("T")[0];
+        
+            document.getElementById(
+                "maintenance-jenis"
+            ).value = "";
+        
+            document.getElementById(
+                "maintenance-keluhan"
+            ).value = "";
+        
+            document.getElementById(
+                "maintenance-tindakan"
+            ).value = "";
+        
+            document.getElementById(
+                "maintenance-hasil"
+            ).value = "";
+        
+            document.getElementById(
+                "maintenance-teknisi"
+            ).value =
+                currentUser?.nama ||
+                currentUserNama ||
+                "";
+        
+            document.getElementById(
+                "maintenance-biaya"
+            ).value = "";
+        
+            document.getElementById(
+                "maintenance-vendor"
+            ).value = "";
+        
+            document.getElementById(
+                "maintenance-keterangan"
+            ).value = "";
+        
+            modal.classList.remove("hidden");
+        }
         
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
