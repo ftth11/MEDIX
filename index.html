@@ -4599,6 +4599,147 @@ function renderMaintenanceHistory() {
         
                 }).join("");
         }
+
+        async function editMaintenance(maintenanceId) {
+
+            if (!maintenanceId) {
+                showToast(
+                    "ID maintenance tidak ditemukan.",
+                    "error"
+                );
+                return;
+            }
+        
+            if (
+                userAksesMenuArray?.equipment?.maintenance !== true
+            ) {
+                showToast(
+                    "Anda tidak memiliki izin mengedit maintenance.",
+                    "error"
+                );
+                return;
+            }
+        
+            try {
+        
+                const doc =
+                    await db
+                        .collection("maintenance")
+                        .doc(maintenanceId)
+                        .get();
+        
+                if (!doc.exists) {
+        
+                    showToast(
+                        "Data maintenance tidak ditemukan.",
+                        "error"
+                    );
+        
+                    return;
+                }
+        
+                const data = doc.data();
+        
+                console.log(
+                    "DATA MAINTENANCE UNTUK EDIT =",
+                    data
+                );
+        
+                // Buka form Maintenance
+                bukaFormMaintenance(
+                    data.equipmentId
+                );
+        
+                // Isi form
+                document.getElementById(
+                    "maintenance-equipment-id"
+                ).value =
+                    data.equipmentId || "";
+        
+                document.getElementById(
+                    "maintenance-kode-alat"
+                ).value =
+                    data.kodeAlat || "";
+        
+                document.getElementById(
+                    "maintenance-nama-alat"
+                ).value =
+                    data.namaAlat || "";
+        
+                document.getElementById(
+                    "maintenance-tanggal"
+                ).value =
+                    data.tanggal || "";
+        
+                document.getElementById(
+                    "maintenance-jenis"
+                ).value =
+                    data.jenis || "";
+        
+                document.getElementById(
+                    "maintenance-keluhan"
+                ).value =
+                    data.keluhan || "";
+        
+                document.getElementById(
+                    "maintenance-tindakan"
+                ).value =
+                    data.tindakan || "";
+        
+                document.getElementById(
+                    "maintenance-hasil"
+                ).value =
+                    data.hasil || "";
+        
+                document.getElementById(
+                    "maintenance-teknisi"
+                ).value =
+                    data.teknisi || "";
+        
+                document.getElementById(
+                    "maintenance-biaya"
+                ).value =
+                    data.biaya || 0;
+        
+                document.getElementById(
+                    "maintenance-vendor"
+                ).value =
+                    data.vendor || "";
+        
+                document.getElementById(
+                    "maintenance-keterangan"
+                ).value =
+                    data.keterangan || "";
+        
+                // Simpan ID untuk mode EDIT
+                const form =
+                    document.getElementById(
+                        "form-maintenance"
+                    );
+        
+                if (form) {
+                    form.dataset.editId =
+                        maintenanceId;
+                }
+        
+                console.log(
+                    "Mode EDIT Maintenance:",
+                    maintenanceId
+                );
+        
+            } catch (error) {
+        
+                console.error(
+                    "Gagal mengambil maintenance:",
+                    error
+                );
+        
+                showToast(
+                    "Gagal membuka data maintenance.",
+                    "error"
+                );
+            }
+        }
         
         function toggleLightDarkMode() {
             const body = document.getElementById('main-app-body');
