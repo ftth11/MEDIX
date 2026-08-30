@@ -4098,26 +4098,21 @@ let maintenanceUnsubscribe = null;
 
         async function simpanMaintenance() {
 
-            // ============================================
-            // CEK PERMISSION
-            // ============================================
-        
             if (
                 userAksesMenuArray?.equipment?.maintenance !== true
             ) {
-        
                 showToast(
-                    "Anda tidak memiliki izin untuk menambahkan maintenance.",
+                    "Anda tidak memiliki izin untuk menyimpan maintenance.",
                     "error"
                 );
-        
                 return;
             }
         
+            const form =
+                document.getElementById("form-maintenance");
         
-            // ============================================
-            // AMBIL DATA FORM
-            // ============================================
+            const editId =
+                form?.dataset?.editId || "";
         
             const equipmentId =
                 document.getElementById(
@@ -4185,69 +4180,53 @@ let maintenanceUnsubscribe = null;
             // ============================================
         
             if (!equipmentId) {
-        
                 showToast(
                     "Equipment belum dipilih.",
                     "error"
                 );
-        
                 return;
             }
         
             if (!tanggal) {
-        
                 showToast(
                     "Tanggal maintenance wajib diisi.",
                     "error"
                 );
-        
                 return;
             }
         
             if (!jenis) {
-        
                 showToast(
                     "Jenis maintenance wajib dipilih.",
                     "error"
                 );
-        
                 return;
             }
         
             if (!tindakan) {
-        
                 showToast(
                     "Tindakan maintenance wajib diisi.",
                     "error"
                 );
-        
                 return;
             }
         
             if (!hasil) {
-        
                 showToast(
                     "Hasil maintenance wajib dipilih.",
                     "error"
                 );
-        
                 return;
             }
         
             if (!teknisi) {
-        
                 showToast(
                     "Nama teknisi wajib diisi.",
                     "error"
                 );
-        
                 return;
             }
         
-        
-            // ============================================
-            // KONVERSI BIAYA
-            // ============================================
         
             const biaya =
                 biayaValue
@@ -4258,95 +4237,131 @@ let maintenanceUnsubscribe = null;
                 Number.isNaN(biaya) ||
                 biaya < 0
             ) {
-        
                 showToast(
                     "Biaya maintenance tidak valid.",
                     "error"
                 );
-        
                 return;
             }
         
         
             // ============================================
-            // SIMPAN KE FIRESTORE
+            // DATA MAINTENANCE
             // ============================================
+        
+            const maintenanceData = {
+        
+                equipmentId:
+                    equipmentId,
+        
+                kodeAlat:
+                    kodeAlat || "",
+        
+                namaAlat:
+                    namaAlat || "",
+        
+                tanggal:
+                    tanggal,
+        
+                jenis:
+                    jenis,
+        
+                keluhan:
+                    keluhan || "",
+        
+                tindakan:
+                    tindakan,
+        
+                hasil:
+                    hasil,
+        
+                teknisi:
+                    teknisi,
+        
+                biaya:
+                    biaya,
+        
+                vendor:
+                    vendor || "",
+        
+                keterangan:
+                    keterangan || "",
+        
+                updatedAt:
+                    firebase.firestore.FieldValue
+                        .serverTimestamp(),
+        
+                updatedBy:
+                    currentUser?.uid || null
+            };
+        
         
             try {
         
-                const maintenanceData = {
+                // ========================================
+                // MODE EDIT
+                // ========================================
         
-                    equipmentId:
-                        equipmentId,
+                if (editId) {
         
-                    kodeAlat:
-                        kodeAlat || "",
+                    await db
+                        .collection("maintenance")
+                        .doc(editId)
+                        .update(
+                            maintenanceData
+                        );
         
-                    namaAlat:
-                        namaAlat || "",
-        
-                    tanggal:
-                        tanggal,
-        
-                    jenis:
-                        jenis,
-        
-                    keluhan:
-                        keluhan || "",
-        
-                    tindakan:
-                        tindakan,
-        
-                    hasil:
-                        hasil,
-        
-                    teknisi:
-                        teknisi,
-        
-                    biaya:
-                        biaya,
-        
-                    vendor:
-                        vendor || "",
-        
-                    keterangan:
-                        keterangan || "",
-        
-                    createdAt:
-                        firebase.firestore.FieldValue
-                            .serverTimestamp(),
-        
-                    createdBy:
-                        currentUser?.uid ||
-                        null
-                };
-        
-        
-                await db
-                    .collection("maintenance")
-                    .add(
-                        maintenanceData
+                    showToast(
+                        "Maintenance berhasil diperbarui.",
+                        "success"
                     );
         
+                }
         
                 // ========================================
-                // BERHASIL
+                // MODE TAMBAH
                 // ========================================
         
-                showToast(
-                    "Maintenance berhasil disimpan.",
-                    "success"
-                );
+                else {
+        
+                    maintenanceData.createdAt =
+                        firebase.firestore.FieldValue
+                            .serverTimestamp();
+        
+                    maintenanceData.createdBy =
+                        currentUser?.uid || null;
+        
+                    await db
+                        .collection("maintenance")
+                        .add(
+                            maintenanceData
+                        );
+        
+                    showToast(
+                        "Maintenance berhasil disimpan.",
+                        "success"
+                    );
+                }
+        
+        
+                // ========================================
+                // RESET MODE EDIT
+                // ========================================
+        
+                if (form) {
+                    delete form.dataset.editId;
+                }
         
         
                 // Tutup modal
-        
                 tutupFormMaintenance();
         
         
                 console.log(
-                    "Maintenance berhasil disimpan:",
-                    maintenanceData
+                    editId
+                        ? "Maintenance berhasil diperbarui:"
+                        : "Maintenance berhasil ditambahkan:",
+                    editId || maintenanceData
                 );
         
         
@@ -4358,52 +4373,55 @@ let maintenanceUnsubscribe = null;
                 );
         
                 showToast(
-                    "Gagal menyimpan maintenance: " +
-                    error.message,
+                    editId
+                        ? "Gagal memperbarui maintenance: " +
+                          error.message
+                        : "Gagal menyimpan maintenance: " +
+                          error.message,
                     "error"
                 );
             }
         }
-
+        
         function loadMaintenanceByEquipment(equipmentId) {
-    if (maintenanceUnsubscribe) {
-        maintenanceUnsubscribe();
-        maintenanceUnsubscribe = null;
-    }
-
-    if (!equipmentId) {
-        dataMaintenance = [];
-        renderMaintenanceHistory();
-        return;
-    }
-
-    maintenanceUnsubscribe = db.collection("maintenance")
-        .where("equipmentId", "==", equipmentId)
-        .onSnapshot(
-            (snapshot) => {
-                dataMaintenance = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-
-                dataMaintenance.sort((a, b) =>
-                    (b.tanggal || "").localeCompare(a.tanggal || "")
-                );
-
-                console.log(
-                    "Maintenance berhasil dimuat:",
-                    dataMaintenance.length
-                );
-
-                renderMaintenanceHistory();
-            },
-            (error) => {
-                console.error("Listener maintenance gagal:", error);
+            if (maintenanceUnsubscribe) {
+                maintenanceUnsubscribe();
+                maintenanceUnsubscribe = null;
             }
-        );
-}
+        
+            if (!equipmentId) {
+                dataMaintenance = [];
+                renderMaintenanceHistory();
+                return;
+            }
+        
+            maintenanceUnsubscribe = db.collection("maintenance")
+                .where("equipmentId", "==", equipmentId)
+                .onSnapshot(
+                    (snapshot) => {
+                        dataMaintenance = snapshot.docs.map((doc) => ({
+                            id: doc.id,
+                            ...doc.data()
+                        }));
+        
+                        dataMaintenance.sort((a, b) =>
+                            (b.tanggal || "").localeCompare(a.tanggal || "")
+                        );
+        
+                        console.log(
+                            "Maintenance berhasil dimuat:",
+                            dataMaintenance.length
+                        );
+        
+                        renderMaintenanceHistory();
+                    },
+                    (error) => {
+                        console.error("Listener maintenance gagal:", error);
+                    }
+                );
+        }
 
-function renderMaintenanceHistory() {
+        function renderMaintenanceHistory() {
 
             const container =
                 document.getElementById(
