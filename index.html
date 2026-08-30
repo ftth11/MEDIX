@@ -1684,7 +1684,8 @@
         let dataEquipment = [];
         let filteredEquipment = [];
         let dataMaintenance = [];
-        let maintenanceUnsubscribe = null;
+let maintenanceUnsubscribe = null;
+        
         let firestoreListenerSudahDimulai = false;
 
         function mulaiListenerFirestore() {
@@ -4365,87 +4366,44 @@
         }
 
         function loadMaintenanceByEquipment(equipmentId) {
+    if (maintenanceUnsubscribe) {
+        maintenanceUnsubscribe();
+        maintenanceUnsubscribe = null;
+    }
 
-            // Hentikan listener sebelumnya
-            if (maintenanceUnsubscribe) {
-        
-                maintenanceUnsubscribe();
-        
-                maintenanceUnsubscribe = null;
-            }
-        
-        
-            if (!equipmentId) {
-        
-                console.warn(
-                    "Equipment ID tidak tersedia."
+    if (!equipmentId) {
+        dataMaintenance = [];
+        renderMaintenanceHistory();
+        return;
+    }
+
+    maintenanceUnsubscribe = db.collection("maintenance")
+        .where("equipmentId", "==", equipmentId)
+        .onSnapshot(
+            (snapshot) => {
+                dataMaintenance = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                dataMaintenance.sort((a, b) =>
+                    (b.tanggal || "").localeCompare(a.tanggal || "")
                 );
-        
-                dataMaintenance = [];
-        
-                renderMaintenanceHistory();
-        
-                return;
-            }
-        
-        
-            maintenanceUnsubscribe =
-                db.collection("maintenance")
-                    .where(
-                        "equipmentId",
-                        "==",
-                        equipmentId
-                    )
-                    .onSnapshot(
-        
-                        (snapshot) => {
-        
-                            dataMaintenance = [];
-        
-                            snapshot.forEach(
-                                (doc) => {
-        
-                                    dataMaintenance.push({
-                                        id: doc.id,
-                                        ...doc.data()
-                                    });
-        
-                                }
-                            );
-        
-        
-                            // Urutkan terbaru
-                            dataMaintenance.sort(
-                                (a, b) =>
-                                    (b.tanggal || "")
-                                        .localeCompare(
-                                            a.tanggal || ""
-                                        )
-                            );
-        
-        
-                            console.log(
-                                "Maintenance berhasil dimuat:",
-                                dataMaintenance.length
-                            );
-        
-        
-                            renderMaintenanceHistory();
-        
-                        },
-        
-                        (error) => {
-        
-                            console.error(
-                                "Listener maintenance gagal:",
-                                error
-                            );
-        
-                        }
-                    );
-        }
 
-        function renderMaintenanceHistory() {
+                console.log(
+                    "Maintenance berhasil dimuat:",
+                    dataMaintenance.length
+                );
+
+                renderMaintenanceHistory();
+            },
+            (error) => {
+                console.error("Listener maintenance gagal:", error);
+            }
+        );
+}
+
+function renderMaintenanceHistory() {
 
             const container =
                 document.getElementById(
