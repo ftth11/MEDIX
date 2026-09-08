@@ -2374,7 +2374,10 @@
         
                     showToast(`Berhasil mengimpor ${count} alkes dengan ${totalSavedEntries} jadwal PM otomatis!`, "success");
                     event.target.value = ''; // Reset input file
-                    renderEquipmentManagementTable();
+                    if (typeof renderEquipmentManagementTable === 'function') {
+                        renderEquipmentManagementTable();
+                    } else if (typeof loadEquipmentData === 'function') {
+                        loadEquipmentData();
                 } catch (error) {
                     console.error("Gagal impor Excel:", error);
                     showToast("Gagal memproses file Excel: " + error.message, "error");
