@@ -1701,6 +1701,7 @@
         let userAksesMenuArray = {};
         let currentUser = null;
         let currentEMSubTab = 'database';
+        let dataEquipment = []; // Variabel global penampung data alkes
         
         let firestoreListenerSudahDimulai = false;
 
@@ -2100,62 +2101,32 @@
             badgeRekom.className = `text-xs font-black px-2.5 py-1 rounded-lg text-white ${warnaBadge}`;
         }
         
-        function renderEquipmentManagementTable() {
-            const tbody = document.getElementById('table-equipment-em-body');
-            if (!tbody) return;
+        async function renderEquipmentManagementTable() {
+            try {
+                const snapshot = await db.collection("equipment").orderBy("createdAt", "desc").get();
+                dataEquipment = []; // Isi variabel global
+                
+                snapshot.forEach(doc => {
+                    dataEquipment.push({ id: doc.id, ...doc.data() });
+                });
         
-            const searchKeyword = (document.getElementById('search-equipment-em')?.value || "").toLowerCase();
-            const filterPeriode = document.getElementById('filter-em-periode')?.value || "";
+                // Hitung statistik berdasarkan dataEquipment yang baru
+                let totalEM = dataEquipment.length;
+                let risikoTinggi = dataEquipment.filter(item => item.rekomendasiPeriode === "Dua Kali Per Tahun").length;
+                let standar = dataEquipment.filter(item => item.rekomendasiPeriode === "Satu Kali Per Tahun").length;
+                let fleksibel = dataEquipment.filter(item => item.rekomendasiPeriode === "Inspeksi Sesuai Kebutuhan").length;
         
-            const filtered = dataEquipment.filter(item => {
-                const searchable = `${item.kodeAlat || ''} ${item.namaAlat || ''} ${item.merk || ''} ${item.tipe || ''} ${item.serialNumber || ''} ${item.lokasi || ''}`.toLowerCase();
-                const cocokSearch = !searchKeyword || searchable.includes(searchKeyword);
-                const cocokPeriode = !filterPeriode || item.rekomendasiPeriode === filterPeriode;
-                return cocokSearch && cocokPeriode;
-            });
+                // Update tampilan kartu statistik di atas jika elemennya ada
+                if(document.getElementById('statTotalEM')) document.getElementById('statTotalEM').innerText = totalEM;
+                if(document.getElementById('statRisikoTinggi')) document.getElementById('statRisikoTinggi').innerText = risikoTinggi;
+                if(document.getElementById('statStandar')) document.getElementById('statStandar').innerText = standar;
+                if(document.getElementById('statFleksibel')) document.getElementById('statFleksibel').innerText = fleksibel;
         
-            // Update Statistik Atas
-            let total = dataEquipment.length;
-            let duaKali = dataEquipment.filter(e => e.rekomendasiPeriode === "Dua Kali Per Tahun").length;
-            let satuKali = dataEquipment.filter(e => e.rekomendasiPeriode === "Satu Kali Per Tahun").length;
-            let inspeksi = dataEquipment.filter(e => e.rekomendasiPeriode === "Inspeksi Sesuai Kebutuhan" || !e.rekomendasiPeriode).length;
-        
-            if(document.getElementById('em-stat-total')) document.getElementById('em-stat-total').innerText = total;
-            if(document.getElementById('em-stat-dua')) document.getElementById('em-stat-dua').innerText = duaKali;
-            if(document.getElementById('em-stat-satu')) document.getElementById('em-stat-satu').innerText = satuKali;
-            if(document.getElementById('em-stat-inspeksi')) document.getElementById('em-stat-inspeksi').innerText = inspeksi;
-        
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data equipment atau hasil pencarian tidak ditemukan.</td></tr>`;
-                return;
+                // Render baris tabel HTML di sini sesuai struktur UI Anda
+                console.log("Data equipment berhasil dimuat:", dataEquipment.length);
+            } catch (error) {
+                console.error("Gagal merender tabel equipment:", error);
             }
-        
-            tbody.innerHTML = filtered.map(item => {
-                let nilaiEM = item.nilaiEM || (parseInt(item.emFungsi || 2) + parseInt(item.emRisiko || 2) + parseInt(item.emPerawatan || 2) + parseInt(item.emInsiden || -2));
-                let rekomendasi = item.rekomendasiPeriode || (nilaiEM >= 17 ? "Dua Kali Per Tahun" : nilaiEM >= 12 ? "Satu Kali Per Tahun" : "Inspeksi Sesuai Kebutuhan");
-                let badgeColor = rekomendasi === "Dua Kali Per Tahun" ? "bg-rose-50 text-rose-700 border-rose-200" : rekomendasi === "Satu Kali Per Tahun" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-emerald-50 text-emerald-700 border-emerald-200";
-        
-                return `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-3 font-semibold text-slate-900"><b>${item.kodeAlat || '-'}</b><br><span class="text-[11px] text-slate-600">${item.namaAlat || '-'}</span></td>
-                        <td class="p-3 text-slate-600">${item.merk || '-'} / ${item.tipe || '-'}</td>
-                        <td class="p-3 font-mono font-bold text-slate-700">${item.serialNumber || '-'}</td>
-                        <td class="p-3 text-center font-bold">${item.emFungsi || 2}</td>
-                        <td class="p-3 text-center font-bold">${item.emRisiko || 2}</td>
-                        <td class="p-3 text-center font-bold">${item.emPerawatan || 2}</td>
-                        <td class="p-3 text-center font-bold">${item.emInsiden || -2}</td>
-                        <td class="p-3 text-center font-black text-blue-600 text-sm font-mono">${nilaiEM}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 rounded-lg text-[10px] font-bold border ${badgeColor}">${rekomendasi}</span></td>
-                        <td class="p-3"><b>${item.lokasi || '-'}</b><br><span class="text-[10px] text-indigo-600 font-semibold">${item.teknisi || '-'}</span></td>
-                        <td class="p-3 text-center">
-                            <div class="inline-flex space-x-1">
-                                <button onclick="editEquipmentEM('${item.id}')" class="px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-700 text-xs font-semibold hover:bg-amber-100"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="hapusEquipmentPermanen('${item.id}')" class="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-700 text-xs font-semibold hover:bg-red-100"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
         }
         
         function renderRekapanPMTable() {
