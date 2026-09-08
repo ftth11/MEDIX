@@ -754,8 +754,8 @@
                 
                     <!-- Sub-Tab Navigasi Equipment -->
                     <div class="flex bg-slate-200 p-1 rounded-xl border border-slate-300 w-full text-xs font-bold text-slate-600 space-x-1 no-print shadow-sm">
-                        <button onclick="gantiSubTabEM('database')" id="em-subtab-db" class="px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm">📋 Master Data & Analisis EM</button>
-                        <button onclick="gantiSubTabEM('rekapan')" id="em-subtab-rek" class="px-4 py-2.5 rounded-lg flex-1 text-center transition">📅 Rekapan Harian & Jadwal PM</button>
+                        <button onclick="gantiSubTabEM('database')" id="em-subtab-db" class="px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm">📋 Master Dat EM</button>
+                        <button onclick="gantiSubTabEM('rekapan')" id="em-subtab-rek" class="px-4 py-2.5 rounded-lg flex-1 text-center transition">📅 Jadwal PM</button>
                     </div>
                 
                     <!-- Konten Sub-Tab 1: Database & Analisis EM -->
@@ -774,8 +774,6 @@
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
                                         <th class="p-3">Kode / Nama Alat</th>
-                                        <th class="p-3">Merk & Tipe</th>
-                                        <th class="p-3">No. Seri (SN)</th>
                                         <th class="p-3 text-center">Fungsi</th>
                                         <th class="p-3 text-center">Risiko</th>
                                         <th class="p-3 text-center">Perawatan</th>
@@ -793,10 +791,6 @@
                 
                     <!-- Konten Sub-Tab 2: Rekapan Harian & Jadwal PM -->
                     <div id="em-content-rekapan" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
-                        <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
-                            <input type="text" id="search-rekapan-pm" oninput="renderRekapanPMTable()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari berdasarkan Bulan, Hari, Ruangan, atau Teknisi...">
-                            <span class="text-xs font-mono text-cyan-600 font-bold">Jadwal Preventif Maintenance Terintegrasi</span>
-                        </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[900px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
@@ -804,10 +798,7 @@
                                         <th class="p-3 text-center">Hari ke-</th>
                                         <th class="p-3 text-center">Bulan ke-</th>
                                         <th class="p-3">Nama Alat Medis</th>
-                                        <th class="p-3">Merk / Tipe</th>
-                                        <th class="p-3 font-mono">No. Seri (SN)</th>
                                         <th class="p-3">Ruangan / Instalasi</th>
-                                        <th class="p-3">Teknisi Penanggung Jawab</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-rekapan-pm-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
