@@ -2145,8 +2145,6 @@
                                     <div class="font-bold text-slate-900">${item.namaAlat || '-'}</div>
                                     <div class="text-[10px] font-mono text-cyan-600">${item.kodeAlat || '-'}</div>
                                 </td>
-                                <td class="p-3 text-slate-600">${item.merk || '-'} / ${item.tipe || '-'}</td>
-                                <td class="p-3 font-mono text-slate-700">${item.serialNumber || '-'}</td>
                                 <td class="p-3 text-center font-bold text-slate-700">${item.emFungsi ?? '-'}</td>
                                 <td class="p-3 text-center font-bold text-slate-700">${item.emRisiko ?? '-'}</td>
                                 <td class="p-3 text-center font-bold text-slate-700">${item.emPerawatan ?? '-'}</td>
@@ -2208,9 +2206,6 @@
                     <td class="p-3 text-center font-bold font-mono text-cyan-700">${item.hari || 1}</td>
                     <td class="p-3 text-center font-bold font-mono text-blue-700">Bulan ${item.bulan || 1}</td>
                     <td class="p-3 font-semibold text-slate-900">${item.namaAlat || '-'}</td>
-                    <td class="p-3 text-slate-600">${item.merk || '-'} / ${item.tipe || '-'}</td>
-                    <td class="p-3 font-mono text-slate-700">${item.serialNumber || '-'}</td>
-                    <td class="p-3 font-medium text-slate-800">${item.lokasi || '-'}</td>
                 </tr>
             `).join('');
         }
@@ -2404,6 +2399,18 @@
                 }
             };
             reader.readAsArrayBuffer(file);
+        }
+
+        async function hapusEquipmentEM(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus data equipment & penilaian EM ini?")) {
+                try {
+                    await db.collection("equipment").doc(id).delete();
+                    showToast("Equipment berhasil dihapus!", "success");
+                    renderEquipmentManagementTable(); // Refresh tabel setelah hapus
+                } catch (error) {
+                    showToast("Gagal menghapus equipment: " + error.message, "error");
+                }
+            }
         }
         
         function showToast(message, type = 'success') {
@@ -4597,24 +4604,51 @@
             if(!alatIdRaw) return showToast("Belum ada alat yang terpilih pada Lembar Kerja ini!", "error");
             const tekNama = document.getElementById('dlk-select-nama-teknisi').value;
             if(!tekNama) return showToast("Silakan pilih Nama Teknisi!", "error");
-
+        
             const existingFirebaseId = document.getElementById('dlk-firebase-id').value;
             const tglKalibrasiInput = document.getElementById('dlk-tglcal').value;
             const tglExpKalibrasiInput = document.getElementById('dlk-nokal').value;
-
+        
+            // Ambil tanggal hari ini atau tanggal LK untuk menentukan hari & bulan otomatis pada rekapan PM
+            const tglLek = document.getElementById('dlk-tgl').value ? new Date(document.getElementById('dlk-tgl').value) : new Date();
+            const hariVal = tglLek.getDate();
+            const bulanVal = tglLek.getMonth() + 1;
+        
             const payload = {
-                alatId: alatIdRaw, noLk: document.getElementById('dlk-no').value, textTgl: document.getElementById('dlk-tgl').value,
-                desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal').innerText, jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
-                hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
-                ttdUser: document.getElementById('sig-user').toDataURL(), ttdPJ: document.getElementById('sig-pj').toDataURL(), 
-                teknisiTtd: tekNama, saksiTtd: document.getElementById('dlk-select-nama-saksi').value, pjTtd: "PJ Alkes", 
-                fotoAlat: stringFotoBase64, fotoBefore: stringFotoBeforeBase64,  
-                paramAlatKerja: JSON.stringify(terpakaiAlatKerja), paramFisik: JSON.stringify(terpakaiFisik), paramFungsi: JSON.stringify(terpakaiFungsi),
-                tglKalibrasi: tglKalibrasiInput, tglExpKalibrasi: tglExpKalibrasiInput, isLocked: true,
+                alatId: alatIdRaw, 
+                noLk: document.getElementById('dlk-no').value, 
+                textTgl: document.getElementById('dlk-tgl').value,
+                desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal').innerText, 
+                jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
+                hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, 
+                ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
+                ttdUser: document.getElementById('sig-user').toDataURL(), 
+                ttdPJ: document.getElementById('sig-pj').toDataURL(), 
+                teknisiTtd: tekNama, 
+                saksiTtd: document.getElementById('dlk-select-nama-saksi').value, 
+                pjTtd: "PJ Alkes", 
+                fotoAlat: stringFotoBase64, 
+                fotoBefore: stringFotoBeforeBase64,  
+                paramAlatKerja: JSON.stringify(terpakaiAlatKerja), 
+                paramFisik: JSON.stringify(terpakaiFisik), 
+                paramFungsi: JSON.stringify(terpakaiFungsi),
+                tglKalibrasi: tglKalibrasiInput, 
+                tglExpKalibrasi: tglExpKalibrasiInput, 
+                isLocked: true,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-
+        
             const newStatus = payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan";
+            
+            // Data tambahan untuk memperbarui jadwal di Rekapan Harian secara otomatis
+            const updateRekapanData = {
+                status: newStatus,
+                hari: hariVal,
+                bulan: bulanVal,
+                teknisi: tekNama,
+                kondisi: payload.hasilTunggal.includes("Rusak") ? "Kurang Baik" : "Baik"
+            };
+        
             let promiseKalibrasi = Promise.resolve();
             if (tglKalibrasiInput && tglExpKalibrasiInput) {
                 promiseKalibrasi = db.collection("dataKalibrasi").add({
@@ -4622,32 +4656,46 @@
                     vendor: "Internal / UPTD RSUD Pondokgede (" + payload.noLk + ")", certPdf: "-", hasil: payload.hasilTunggal.includes("Rusak") ? "Tidak Layak" : "Layak"
                 });
             }
-
+        
             if (existingFirebaseId) {
-                db.collection("lembarKerja").doc(existingFirebaseId).update(payload).then(() => promiseKalibrasi).then(() => {
-                    return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
-                }).then(() => db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get()).then((qSnap) => {
+                db.collection("lembarKerja").doc(existingFirebaseId).update(payload)
+                .then(() => promiseKalibrasi)
+                .then(() => {
+                    // Otomatis sinkronkan status & tanggal pemeliharaan ke master / rekapan equipment
+                    return db.collection("equipment").doc(alatIdRaw).update(updateRekapanData);
+                })
+                .then(() => db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get())
+                .then((qSnap) => {
                     qSnap.forEach(docT => db.collection("troubleTickets").doc(docT.id).update({ statusTiket: "Selesai" }));
                     document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                    showToast(`Lembar Kerja #${payload.noLk} Berhasil Diperbarui & Disimpan!`, "success");
+                    showToast(`Lembar Kerja #${payload.noLk} Berhasil Diperbarui & Masuk Rekapan Harian!`, "success");
+                    if(typeof renderRekapanPMTable === 'function') renderRekapanPMTable();
                 });
             } else {
                 db.collection("lembarKerja").get().then((snap) => {
                     let currentNoLk = "RSUDPG/IPSRS/LK-" + String(snap.size + 1).padStart(3, '0');
-                    payload.noLk = currentNoLk; payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    db.collection("lembarKerja").add(payload).then(() => promiseKalibrasi).then(() => {
+                    payload.noLk = currentNoLk; 
+                    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    
+                    db.collection("lembarKerja").add(payload)
+                    .then(() => promiseKalibrasi)
+                    .then(() => {
+                        // Otomatis sinkronkan data ke rekapan harian & jadwal PM
+                        return db.collection("equipment").doc(alatIdRaw).update(updateRekapanData);
+                    })
+                    .then(() => {
                         return db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get();
-                    }).then((qSnap) => {
+                    })
+                    .then((qSnap) => {
                         qSnap.forEach(docT => db.collection("troubleTickets").doc(docT.id).update({ statusTiket: "Selesai" }));
-                        return db.collection("dataAlat").doc(alatIdRaw).update({ status: newStatus });
-                    }).then(() => {
                         document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                        showToast(`Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan!`, "success");
+                        showToast(`Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan & Masuk Rekapan!`, "success");
+                        if(typeof renderRekapanPMTable === 'function') renderRekapanPMTable();
                     });
                 });
             }
         }
-
+        
         function bukaLembarKerjaBaruKosong() { 
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); if(!areaLK) return;
             document.getElementById('dlk-firebase-id').value = ""; stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
