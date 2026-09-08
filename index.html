@@ -2378,6 +2378,7 @@
                         renderEquipmentManagementTable();
                     } else if (typeof loadEquipmentData === 'function') {
                         loadEquipmentData();
+                    }
                 } catch (error) {
                     console.error("Gagal impor Excel:", error);
                     showToast("Gagal memproses file Excel: " + error.message, "error");
