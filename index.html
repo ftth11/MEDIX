@@ -1702,6 +1702,7 @@
         let currentUser = null;
         let currentEMSubTab = 'database';
         let dataEquipment = []; // Variabel global penampung data alkes
+        let activeSubTabEM = 'database';
         
         let firestoreListenerSudahDimulai = false;
 
@@ -2110,19 +2111,66 @@
                     dataEquipment.push({ id: doc.id, ...doc.data() });
                 });
         
-                // Hitung statistik berdasarkan dataEquipment yang baru
+                // Ambil nilai filter dan keyword pencarian dari UI
+                const searchKeyword = (document.getElementById('search-equipment-em')?.value || "").toLowerCase();
+                const filterPeriode = document.getElementById('filter-em-periode')?.value || "";
+        
+                // Filter data berdasarkan pencarian teks & periode
+                const filteredData = dataEquipment.filter(item => {
+                    const matchText = (item.namaAlat || "").toLowerCase().includes(searchKeyword) ||
+                                      (item.merk || "").toLowerCase().includes(searchKeyword) ||
+                                      (item.serialNumber || "").toLowerCase().includes(searchKeyword) ||
+                                      (item.lokasi || "").toLowerCase().includes(searchKeyword);
+                    
+                    const matchPeriode = filterPeriode === "" || item.rekomendasiPeriode === filterPeriode;
+        
+                    return matchText && matchPeriode;
+                });
+        
+                // Hitung statistik berdasarkan keseluruhan dataEquipment
                 let totalEM = dataEquipment.length;
                 let risikoTinggi = dataEquipment.filter(item => item.rekomendasiPeriode === "Dua Kali Per Tahun").length;
                 let standar = dataEquipment.filter(item => item.rekomendasiPeriode === "Satu Kali Per Tahun").length;
                 let fleksibel = dataEquipment.filter(item => item.rekomendasiPeriode === "Inspeksi Sesuai Kebutuhan").length;
         
-                // Update tampilan kartu statistik di atas jika elemennya ada
+                // Update tampilan kartu statistik
                 if(document.getElementById('statTotalEM')) document.getElementById('statTotalEM').innerText = totalEM;
                 if(document.getElementById('statRisikoTinggi')) document.getElementById('statRisikoTinggi').innerText = risikoTinggi;
                 if(document.getElementById('statStandar')) document.getElementById('statStandar').innerText = standar;
                 if(document.getElementById('statFleksibel')) document.getElementById('statFleksibel').innerText = fleksibel;
         
-                // Render baris tabel HTML di sini sesuai struktur UI Anda
+                // Render baris tabel HTML ke tbody (pastikan ID tbody Anda sesuai)
+                const tbody = document.getElementById('table-equipment-em-body'); 
+                if (tbody) {
+                    tbody.innerHTML = '';
+                    if (filteredData.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-6 text-slate-400 text-xs">Tidak ada data equipment yang ditemukan.</td></tr>`;
+                    } else {
+                        filteredData.forEach((item, index) => {
+                            tbody.innerHTML += `
+                                <tr class="border-b border-slate-100 hover:bg-slate-50/50">
+                                    <td class="p-3 text-slate-700">${index + 1}</td>
+                                    <td class="p-3 font-bold text-slate-900">${item.namaAlat || '-'}</td>
+                                    <td class="p-3 text-slate-600">${item.merk || '-'} / ${item.tipe || '-'}</td>
+                                    <td class="p-3 text-slate-600">${item.serialNumber || '-'}</td>
+                                    <td class="p-3 text-slate-600">${item.lokasi || '-'}</td>
+                                    <td class="p-3 text-center font-bold text-blue-600">${item.nilaiEM || 0}</td>
+                                    <td class="p-3">
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                            item.rekomendasiPeriode === 'Dua Kali Per Tahun' ? 'bg-rose-100 text-rose-700' :
+                                            item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                                        }">${item.rekomendasiPeriode || '-'}</span>
+                                    </td>
+                                    <td class="p-3 text-center">
+                                        <button onclick="editEquipment('${item.id}')" class="text-blue-600 hover:text-blue-800 mr-2"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button onclick="hapusEquipment('${item.id}')" class="text-rose-600 hover:text-rose-800"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
+        
                 console.log("Data equipment berhasil dimuat:", dataEquipment.length);
             } catch (error) {
                 console.error("Gagal merender tabel equipment:", error);
