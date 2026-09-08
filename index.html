@@ -888,7 +888,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                                 <div><label class="block font-bold text-slate-600 mb-1">Hari Jadwal (1-31)</label><input id="equipment-hari" type="number" min="1" max="31" value="1" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold"></div>
                                 <div><label class="block font-bold text-slate-600 mb-1">Bulan Jadwal (1-12)</label><input id="equipment-bulan" type="number" min="1" max="12" value="1" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Teknisi Penanggung Jawab</label><input id="equipment-teknisi" type="text" placeholder="Nabilah & Baits" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-semibold"></div>
+                                <div><label class="block font-bold text-slate-600 mb-1">Teknisi Penanggung Jawab</label><input id="equipment-teknisi" type="text" placeholder="Teknisi" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-semibold"></div>
                             </div>
                 
                             <div class="flex justify-end space-x-2 pt-3 border-t border-slate-200">
@@ -2295,7 +2295,7 @@
             document.getElementById('em-insiden').value = item.emInsiden || -2;
             document.getElementById('equipment-hari').value = item.hari || 1;
             document.getElementById('equipment-bulan').value = item.bulan || 1;
-            document.getElementById('equipment-teknisi').value = item.teknisi || "Nabilah & Baits";
+            document.getElementById('equipment-teknisi').value = item.teknisi || "Teknisi";
             hitungSkorEM();
             toggleModal('modal-equipment', true);
         }        
@@ -2342,7 +2342,7 @@
                         const tipe = row['Tipe'] || row['TIPE'] || '-';
                         const serialNumber = row['No Seri'] || row['SN'] || row['No. Seri'] || 'SN N/A';
                         const lokasi = row['Ruangan'] || row['RUANGAN'] || 'Instalasi Rawat Inap';
-                        const teknisi = row['Teknisi'] || row['TEKNISI'] || 'Nabilah & Baits';
+                        const teknisi = row['Teknisi'] || row['TEKNISI'] || 'Teknisi';
                         
                         const fungsi = parseInt(row['KATEGORIFUNGSI'] || row['KATEGORI FUNGSI'] || 10);
                         const risiko = parseInt(row['TINGKATRISIKO'] || row['TINGKAT RISIKO'] || 2);
