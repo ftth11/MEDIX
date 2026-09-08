@@ -720,6 +720,16 @@
                                 <i class="fa-solid fa-plus"></i> <span>Tambah Equipment & EM</span>
                             </button>
                         </div>
+                        <!-- Tombol Impor Excel & Template -->
+                        <div class="flex space-x-2">
+                            <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow flex items-center space-x-1.5 cursor-pointer">
+                                <input type="file" id="excel-file-input" accept=".xlsx, .xls" class="hidden" onchange="imporExcelEquipment(event)">
+                                <i class="fa-solid fa-file-excel"></i> <span>Impor dari Excel</span>
+                            </label>
+                            <button onclick="bukaFormEquipment()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:from-blue-700 transition shadow flex items-center space-x-1.5 cursor-pointer">
+                                <i class="fa-solid fa-plus"></i> <span>Tambah Manual</span>
+                            </button>
+                        </div>
                     </div>
                 
                     <!-- Statistik Ringkasan EM -->
@@ -2261,6 +2271,96 @@
             hitungSkorEM();
             toggleModal('modal-equipment', true);
         }        
+
+        async function imporExcelEquipment(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+        
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                try {
+                    showToast("Membaca file Excel...", "info");
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Pilih sheet 'DATABASE ALKES' atau sheet pertama jika tidak ditemukan
+                    let sheetName = workbook.SheetNames.includes('DATABASE ALKES') ? 'DATABASE ALKES' : workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsonRows = XLSX.utils.sheet_to_json(worksheet);
+        
+                    if (jsonRows.length === 0) {
+                        showToast("File Excel kosong atau format tidak sesuai!", "error");
+                        return;
+                    }
+        
+                    showToast(`Memproses ${jsonRows.length} data alkes ke database...`, "info");
+                    let batch = db.batch();
+                    let count = 0;
+        
+                    for (let row of jsonRows) {
+                        // Sesuaikan pemetaan kolom dengan header Excel Anda
+                        const namaAlkes = row['Nama Alkes'] || row['Nama'] || row['NAMA ALKES'] || 'Alkes Medis';
+                        const merk = row['Merk'] || row['MERK'] || '-';
+                        const tipe = row['Tipe'] || row['TIPE'] || '-';
+                        const serialNumber = row['No Seri'] || row['SN'] || row['No. Seri'] || 'SN N/A';
+                        const lokasi = row['Ruangan'] || row['RUANGAN'] || 'Instalasi Rawat Inap';
+                        const teknisi = row['Teknisi'] || row['TEKNISI'] || 'Nabilah & Baits';
+                        const hari = parseInt(row['Hari'] || row['HARI'] || 1);
+                        const bulan = parseInt(row['Bulan'] || row['BULAN'] || 1);
+        
+                        // Perhitungan Default EM Scoring
+                        const fungsi = 10;
+                        const risiko = 2;
+                        const perawatan = 5;
+                        const insiden = -2;
+                        const nilaiEM = fungsi + risiko + perawatan + insiden;
+                        const rekomendasiPeriode = nilaiEM >= 17 ? "Dua Kali Per Tahun" : nilaiEM >= 12 ? "Satu Kali Per Tahun" : "Inspeksi Sesuai Kebutuhan";
+        
+                        const newDocRef = db.collection("equipment").doc();
+                        batch.set(newDocRef, {
+                            kodeAlat: `EQ-${Math.floor(100 + Math.random() * 900)}`,
+                            namaAlat: namaAlkes,
+                            merk: merk,
+                            tipe: tipe,
+                            serialNumber: serialNumber,
+                            lokasi: lokasi,
+                            teknisi: teknisi,
+                            hari: hari,
+                            bulan: bulan,
+                            emFungsi: fungsi,
+                            emRisiko: risiko,
+                            emPerawatan: perawatan,
+                            emInsiden: insiden,
+                            nilaiEM: nilaiEM,
+                            rekomendasiPeriode: rekomendasiPeriode,
+                            status: "Aktif",
+                            kondisi: "Baik",
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+        
+                        count++;
+                        // Firestore batch limit maximum 500 operations
+                        if (count % 400 === 0) {
+                            await batch.commit();
+                            batch = db.batch();
+                        }
+                    }
+        
+                    // Commit sisa batch
+                    if (count % 400 !== 0) {
+                        await batch.commit();
+                    }
+        
+                    showToast(`Berhasil mengimpor ${count} data equipment dari Excel!`, "success");
+                    event.target.value = ''; // Reset file input
+                    renderEquipmentManagementTable();
+                } catch (error) {
+                    console.error("Gagal impor Excel:", error);
+                    showToast("Gagal memproses file Excel: " + error.message, "error");
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
         
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
