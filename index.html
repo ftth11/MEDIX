@@ -2272,6 +2272,20 @@
             toggleModal('modal-equipment', true);
         }        
 
+        // Fungsi Generator Jadwal Otomatis Berdasarkan Rekomendasi Periode EM
+        function generateJadwalOtomatis(rekomendasiPeriode, indexAlat) {
+            if (rekomendasiPeriode === "Dua Kali Per Tahun") {
+                // Jika dua kali setahun, dijadwalkan pada bulan ke-6 dan ke-12
+                return [6, 12];
+            } else if (rekomendasiPeriode === "Satu Kali Per Tahun") {
+                // Jika satu kali setahun, disebar merata sepanjang tahun berdasarkan urutan alat (1-12)
+                return [(indexAlat % 12) + 1];
+            } else {
+                // Inspeksi sesuai kebutuhan dijadwalkan pada bulan pertama (1)
+                return [1];
+            }
+        }
+        
         async function imporExcelEquipment(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -2279,11 +2293,11 @@
             const reader = new FileReader();
             reader.onload = async function (e) {
                 try {
-                    showToast("Membaca file Excel...", "info");
+                    showToast("Membaca file Excel & memproses jadwal...", "info");
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
                     
-                    // Pilih sheet 'DATABASE ALKES' atau sheet pertama jika tidak ditemukan
+                    // Pilih sheet 'DATABASE ALKES' atau sheet pertama jika tidak ada
                     let sheetName = workbook.SheetNames.includes('DATABASE ALKES') ? 'DATABASE ALKES' : workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[sheetName];
                     const jsonRows = XLSX.utils.sheet_to_json(worksheet);
@@ -2293,66 +2307,73 @@
                         return;
                     }
         
-                    showToast(`Memproses ${jsonRows.length} data alkes ke database...`, "info");
+                    showToast(`Memproses ${jsonRows.length} data alkes dan jadwal otomatis...`, "info");
                     let batch = db.batch();
                     let count = 0;
+                    let totalSavedEntries = 0;
         
                     for (let row of jsonRows) {
-                        // Sesuaikan pemetaan kolom dengan header Excel Anda
+                        // Pemetaan kolom dari Excel Anda
                         const namaAlkes = row['Nama Alkes'] || row['Nama'] || row['NAMA ALKES'] || 'Alkes Medis';
                         const merk = row['Merk'] || row['MERK'] || '-';
                         const tipe = row['Tipe'] || row['TIPE'] || '-';
                         const serialNumber = row['No Seri'] || row['SN'] || row['No. Seri'] || 'SN N/A';
                         const lokasi = row['Ruangan'] || row['RUANGAN'] || 'Instalasi Rawat Inap';
                         const teknisi = row['Teknisi'] || row['TEKNISI'] || 'Nabilah & Baits';
-                        const hari = parseInt(row['Hari'] || row['HARI'] || 1);
-                        const bulan = parseInt(row['Bulan'] || row['BULAN'] || 1);
-        
-                        // Perhitungan Default EM Scoring
-                        const fungsi = 10;
-                        const risiko = 2;
-                        const perawatan = 5;
-                        const insiden = -2;
+                        
+                        // Ambil nilai dari Excel jika ada, atau gunakan default EM Scoring
+                        const fungsi = parseInt(row['KATEGORIFUNGSI'] || row['KATEGORI FUNGSI'] || 10);
+                        const risiko = parseInt(row['TINGKATRISIKO'] || row['TINGKAT RISIKO'] || 2);
+                        const perawatan = parseInt(row['LEVELPERAWATAN'] || row['LEVEL PERAWATAN'] || 5);
+                        const insiden = parseInt(row['RIWAYATINSIDEN'] || row['RIWAYAT INSIDEN'] || -2);
+                        
                         const nilaiEM = fungsi + risiko + perawatan + insiden;
                         const rekomendasiPeriode = nilaiEM >= 17 ? "Dua Kali Per Tahun" : nilaiEM >= 12 ? "Satu Kali Per Tahun" : "Inspeksi Sesuai Kebutuhan";
         
-                        const newDocRef = db.collection("equipment").doc();
-                        batch.set(newDocRef, {
-                            kodeAlat: `EQ-${Math.floor(100 + Math.random() * 900)}`,
-                            namaAlat: namaAlkes,
-                            merk: merk,
-                            tipe: tipe,
-                            serialNumber: serialNumber,
-                            lokasi: lokasi,
-                            teknisi: teknisi,
-                            hari: hari,
-                            bulan: bulan,
-                            emFungsi: fungsi,
-                            emRisiko: risiko,
-                            emPerawatan: perawatan,
-                            emInsiden: insiden,
-                            nilaiEM: nilaiEM,
-                            rekomendasiPeriode: rekomendasiPeriode,
-                            status: "Aktif",
-                            kondisi: "Baik",
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
+                        // Generate jadwal bulan otomatis berdasarkan aturan EM
+                        const bulanJadwalArray = generateJadwalOtomatis(rekomendasiPeriode, count);
         
-                        count++;
-                        // Firestore batch limit maximum 500 operations
-                        if (count % 400 === 0) {
-                            await batch.commit();
-                            batch = db.batch();
+                        // Lakukan looping untuk setiap bulan jadwal yang dihasilkan
+                        for (let bulanTarget of bulanJadwalArray) {
+                            const newDocRef = db.collection("equipment").doc();
+                            batch.set(newDocRef, {
+                                kodeAlat: `EQ-${Math.floor(100 + Math.random() * 900)}`,
+                                namaAlat: namaAlkes,
+                                merk: merk,
+                                tipe: tipe,
+                                serialNumber: serialNumber,
+                                lokasi: lokasi,
+                                teknisi: teknisi,
+                                hari: parseInt(row['Hari'] || Math.floor(Math.random() * 28) + 1),
+                                bulan: bulanTarget,
+                                emFungsi: fungsi,
+                                emRisiko: risiko,
+                                emPerawatan: perawatan,
+                                emInsiden: insiden,
+                                nilaiEM: nilaiEM,
+                                rekomendasiPeriode: rekomendasiPeriode,
+                                status: "Aktif",
+                                kondisi: "Baik",
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+        
+                            totalSavedEntries++;
+                            // Batas limit Firestore batch adalah 500 operasi sekaligus
+                            if (totalSavedEntries % 400 === 0) {
+                                await batch.commit();
+                                batch = db.batch();
+                            }
                         }
+                        count++;
                     }
         
-                    // Commit sisa batch
-                    if (count % 400 !== 0) {
+                    // Commit sisa batch yang belum tersimpan
+                    if (totalSavedEntries % 400 !== 0) {
                         await batch.commit();
                     }
         
-                    showToast(`Berhasil mengimpor ${count} data equipment dari Excel!`, "success");
-                    event.target.value = ''; // Reset file input
+                    showToast(`Berhasil mengimpor ${count} alkes dengan ${totalSavedEntries} jadwal PM otomatis!`, "success");
+                    event.target.value = ''; // Reset input file
                     renderEquipmentManagementTable();
                 } catch (error) {
                     console.error("Gagal impor Excel:", error);
