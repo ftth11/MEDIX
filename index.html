@@ -2102,6 +2102,7 @@
             badgeRekom.className = `text-xs font-black px-2.5 py-1 rounded-lg text-white ${warnaBadge}`;
         }
         
+        // Variabel global penampung data equipment & EM
         async function renderEquipmentManagementTable() {
             try {
                 const snapshot = await db.collection("equipment").orderBy("createdAt", "desc").get();
@@ -2111,63 +2112,62 @@
                     dataEquipment.push({ id: doc.id, ...doc.data() });
                 });
         
-                // Ambil nilai filter dan keyword pencarian dari UI
-                const searchKeyword = (document.getElementById('search-equipment-em')?.value || "").toLowerCase();
-                const filterPeriode = document.getElementById('filter-em-periode')?.value || "";
-        
-                // Filter data berdasarkan pencarian teks & periode
-                const filteredData = dataEquipment.filter(item => {
-                    const matchText = (item.namaAlat || "").toLowerCase().includes(searchKeyword) ||
-                                      (item.merk || "").toLowerCase().includes(searchKeyword) ||
-                                      (item.serialNumber || "").toLowerCase().includes(searchKeyword) ||
-                                      (item.lokasi || "").toLowerCase().includes(searchKeyword);
-                    
-                    const matchPeriode = filterPeriode === "" || item.rekomendasiPeriode === filterPeriode;
-        
-                    return matchText && matchPeriode;
-                });
-        
-                // Hitung statistik berdasarkan keseluruhan dataEquipment
+                // Hitung statistik keseluruhan
                 let totalEM = dataEquipment.length;
                 let risikoTinggi = dataEquipment.filter(item => item.rekomendasiPeriode === "Dua Kali Per Tahun").length;
                 let standar = dataEquipment.filter(item => item.rekomendasiPeriode === "Satu Kali Per Tahun").length;
                 let fleksibel = dataEquipment.filter(item => item.rekomendasiPeriode === "Inspeksi Sesuai Kebutuhan").length;
         
-                // Update tampilan kartu statistik
-                if(document.getElementById('statTotalEM')) document.getElementById('statTotalEM').innerText = totalEM;
-                if(document.getElementById('statRisikoTinggi')) document.getElementById('statRisikoTinggi').innerText = risikoTinggi;
-                if(document.getElementById('statStandar')) document.getElementById('statStandar').innerText = standar;
-                if(document.getElementById('statFleksibel')) document.getElementById('statFleksibel').innerText = fleksibel;
+                // Update tampilan kartu statistik di atas
+                if(document.getElementById('em-stat-total')) document.getElementById('em-stat-total').innerText = totalEM;
+                if(document.getElementById('em-stat-dua')) document.getElementById('em-stat-dua').innerText = risikoTinggi;
+                if(document.getElementById('em-stat-satu')) document.getElementById('em-stat-satu').innerText = standar;
+                if(document.getElementById('em-stat-inspeksi')) document.getElementById('em-stat-inspeksi').innerText = fleksibel;
         
-                // Render baris tabel HTML ke tbody (pastikan ID tbody Anda sesuai)
-                const tbody = document.getElementById('table-equipment-em-body'); 
+                // Ambil nilai pencarian & filter periode
+                const searchKeyword = (document.getElementById('search-equipment-em')?.value || "").toLowerCase();
+                const filterPeriode = document.getElementById('filter-em-periode')?.value || "";
+        
+                const filtered = dataEquipment.filter(item => {
+                    const matchText = `${item.kodeAlat || ''} ${item.namaAlat || ''} ${item.merk || ''} ${item.serialNumber || ''} ${item.lokasi || ''}`.toLowerCase().includes(searchKeyword);
+                    const matchPeriode = !filterPeriode || item.rekomendasiPeriode === filterPeriode;
+                    return matchText && matchPeriode;
+                });
+        
+                const tbody = document.getElementById('table-equipment-em-body');
                 if (tbody) {
-                    tbody.innerHTML = '';
-                    if (filteredData.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-6 text-slate-400 text-xs">Tidak ada data equipment yang ditemukan.</td></tr>`;
+                    if (filtered.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data equipment atau pencarian tidak ditemukan.</td></tr>`;
                     } else {
-                        filteredData.forEach((item, index) => {
-                            tbody.innerHTML += `
-                                <tr class="border-b border-slate-100 hover:bg-slate-50/50">
-                                    <td class="p-3 text-slate-700">${index + 1}</td>
-                                    <td class="p-3 font-bold text-slate-900">${item.namaAlat || '-'}</td>
-                                    <td class="p-3 text-slate-600">${item.merk || '-'} / ${item.tipe || '-'}</td>
-                                    <td class="p-3 text-slate-600">${item.serialNumber || '-'}</td>
-                                    <td class="p-3 text-slate-600">${item.lokasi || '-'}</td>
-                                    <td class="p-3 text-center font-bold text-blue-600">${item.nilaiEM || 0}</td>
-                                    <td class="p-3">
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                                            item.rekomendasiPeriode === 'Dua Kali Per Tahun' ? 'bg-rose-100 text-rose-700' :
-                                            item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
-                                        }">${item.rekomendasiPeriode || '-'}</span>
-                                    </td>
-                                    <td class="p-3 text-center">
-                                        <button onclick="editEquipment('${item.id}')" class="text-blue-600 hover:text-blue-800 mr-2"><i class="fa-solid fa-pen-to-square"></i></button>
-                                        <button onclick="hapusEquipment('${item.id}')" class="text-rose-600 hover:text-rose-800"><i class="fa-solid fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            `;
-                        });
+                        tbody.innerHTML = filtered.map((item, idx) => `
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">${item.namaAlat || '-'}</div>
+                                    <div class="text-[10px] font-mono text-cyan-600">${item.kodeAlat || '-'}</div>
+                                </td>
+                                <td class="p-3 text-slate-600">${item.merk || '-'} / ${item.tipe || '-'}</td>
+                                <td class="p-3 font-mono text-slate-700">${item.serialNumber || '-'}</td>
+                                <td class="p-3 text-center font-bold text-slate-700">${item.emFungsi ?? '-'}</td>
+                                <td class="p-3 text-center font-bold text-slate-700">${item.emRisiko ?? '-'}</td>
+                                <td class="p-3 text-center font-bold text-slate-700">${item.emPerawatan ?? '-'}</td>
+                                <td class="p-3 text-center font-bold text-slate-700">${item.emInsiden ?? '-'}</td>
+                                <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
+                                <td class="p-3">
+                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                        item.rekomendasiPeriode === 'Dua Kali Per Tahun' ? 'bg-rose-100 text-rose-700' :
+                                        item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                                    }">${item.rekomendasiPeriode || '-'}</span>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-semibold text-slate-800">${item.lokasi || '-'}</div>
+                                    <div class="text-[10px] text-slate-400">${item.teknisi || '-'}</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="editEquipmentEM('${item.id}')" class="text-blue-600 hover:text-blue-800 mr-2 p-1" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button onclick="hapusEquipmentEM('${item.id}')" class="text-rose-600 hover:text-rose-800 p-1" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        `).join('');
                     }
                 }
         
@@ -2183,25 +2183,34 @@
         
             const searchKeyword = (document.getElementById('search-rekapan-pm')?.value || "").toLowerCase();
         
-            const filtered = dataEquipment.filter(item => {
-                const searchable = `${item.hari || ''} ${item.bulan || ''} ${item.namaAlat || ''} ${item.serialNumber || ''} ${item.lokasi || ''} ${item.teknisi || ''}`.toLowerCase();
+            // Salin dan urutkan berdasarkan Bulan (ascending), lalu Hari (ascending)
+            let sortedData = [...dataEquipment].sort((a, b) => {
+                let bulanA = parseInt(a.bulan) || 1;
+                let bulanB = parseInt(b.bulan) || 1;
+                if (bulanA !== bulanB) return bulanA - bulanB;
+                let hariA = parseInt(a.hari) || 1;
+                let hariB = parseInt(b.hari) || 1;
+                return hariA - hariB;
+            });
+        
+            const filtered = sortedData.filter(item => {
+                const searchable = `${item.hari || ''} ${item.bulan || ''} ${item.namaAlat || ''} ${item.serialNumber || ''} ${item.lokasi || ''}`.toLowerCase();
                 return !searchKeyword || searchable.includes(searchKeyword);
             });
         
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal rekapan PM.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal rekapan PM.</td></tr>`;
                 return;
             }
         
             tbody.innerHTML = filtered.map((item, idx) => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-3 text-center font-bold font-mono text-cyan-700">${item.hari || (idx + 1)}</td>
-                    <td class="p-3 text-center font-bold font-mono text-blue-700">${item.bulan || 1}</td>
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-3 text-center font-bold font-mono text-cyan-700">${item.hari || 1}</td>
+                    <td class="p-3 text-center font-bold font-mono text-blue-700">Bulan ${item.bulan || 1}</td>
                     <td class="p-3 font-semibold text-slate-900">${item.namaAlat || '-'}</td>
                     <td class="p-3 text-slate-600">${item.merk || '-'} / ${item.tipe || '-'}</td>
                     <td class="p-3 font-mono text-slate-700">${item.serialNumber || '-'}</td>
                     <td class="p-3 font-medium text-slate-800">${item.lokasi || '-'}</td>
-                    <td class="p-3 font-semibold text-indigo-600">${item.teknisi || 'Nabilah & Baits'}</td>
                 </tr>
             `).join('');
         }
@@ -2247,7 +2256,7 @@
                 rekomendasiPeriode: rekomendasiPeriode,
                 hari: parseInt(document.getElementById('equipment-hari').value) || 1,
                 bulan: parseInt(document.getElementById('equipment-bulan').value) || 1,
-                teknisi: document.getElementById('equipment-teknisi').value.trim() || "Nabilah & Baits",
+                teknisi: document.getElementById('equipment-teknisi').value.trim() || "Teknisi",
                 status: "Aktif",
                 kondisi: "Baik",
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
