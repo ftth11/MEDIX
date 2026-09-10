@@ -1320,27 +1320,20 @@
         async function loadFirebaseUserProfile(firebaseUser) {
             if (!firebaseUser) return null;
             try {
-                const uidSnap = await db.collection('users').doc(firebaseUser.uid).get();
-                if (uidSnap.exists) {
-                    const data = uidSnap.data();
-                    if (data.aktif === false) return null;
-                    return { uid: firebaseUser.uid, email: firebaseUser.email || data.email || '', ...data };
-                }
+                // Struktur akun MEDIX sekarang konsisten: users/{Firebase Auth UID}.
+                // Tidak lagi melakukan query fallback email/username sehingga login
+                // cukup satu pembacaan profil Firestore.
+                const snap = await db.collection('users').doc(firebaseUser.uid).get();
+                if (!snap.exists) return null;
 
-                // Kompatibilitas akun lama yang dahulu tersimpan dengan document ID acak.
-                const candidates = [];
-                for (const field of ['email', 'username']) {
-                    try {
-                        const snap = await db.collection('users').where(field, '==', firebaseUser.email || '').limit(1).get();
-                        snap.forEach(doc => candidates.push({ id: doc.id, ...doc.data() }));
-                        if (candidates.length) break;
-                    } catch (queryError) {
-                        console.warn(`Fallback profil ${field} gagal:`, queryError);
-                    }
-                }
-                const legacy = candidates[0];
-                if (!legacy || legacy.aktif === false) return null;
-                return { uid: firebaseUser.uid, email: firebaseUser.email || legacy.email || '', ...legacy };
+                const data = snap.data() || {};
+                if (data.aktif === false) return null;
+
+                return {
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email || data.email || '',
+                    ...data
+                };
             } catch (error) {
                 console.error('Gagal mengambil profil user:', error);
                 return null;
@@ -1622,46 +1615,17 @@
         }
 
         async function loginWithFirebaseAuth(email, password) {
-
+            // Auth saja di sini. Profil Firestore dimuat SATU kali oleh
+            // auth.onAuthStateChanged(), sehingga proses login tidak melakukan
+            // pembacaan users dua kali.
             try {
-        
-                const credential =
-                    await auth.signInWithEmailAndPassword(
-                        email,
-                        password
-                    );
-        
-                const firebaseUser =
-                    credential.user;
-        
-                const userData =
-                    await loadFirebaseUserProfile(
-                        firebaseUser
-                    );
-        
-                if (!userData) {
-        
-                    await auth.signOut();
-        
-                    throw new Error(
-                        "Profil user tidak ditemukan atau akun tidak aktif."
-                    );
-                }
-        
-                userData.uid =
-                    firebaseUser.uid;
-        
-                applyUserContext(userData);
-        
-                return true;
-        
-            } catch (error) {
-        
-                console.error(
-                    "Firebase Authentication Error:",
-                    error
+                const credential = await auth.signInWithEmailAndPassword(
+                    email,
+                    password
                 );
-        
+                return credential.user;
+            } catch (error) {
+                console.error("Firebase Authentication Error:", error);
                 throw error;
             }
         }
@@ -1678,6 +1642,8 @@
         let activeSubTabEM = 'database';
         
         let firestoreListenerSudahDimulai = false;
+        let firestoreUnsubscribers = [];
+        let activeListenerUid = "";
         let dataAlatInitialSnapshotSudahDiproses = false;
         let equipmentSyncTimer = null;
         let equipmentSyncQueue = new Map();
@@ -1691,46 +1657,50 @@
             }, delay);
         }
 
+        function hentikanListenerFirestore() {
+            firestoreUnsubscribers.forEach((unsubscribe) => {
+                try { if (typeof unsubscribe === 'function') unsubscribe(); } catch (error) {}
+            });
+            firestoreUnsubscribers = [];
+            firestoreListenerSudahDimulai = false;
+            activeListenerUid = "";
+            dataAlatInitialSnapshotSudahDiproses = false;
+            dataTiket = [];
+            dataKeluhanLog = [];
+            dataUserSistem = [];
+        }
+
         function mulaiListenerFirestore() {
-            if (firestoreListenerSudahDimulai) {
-                console.log(
-                    "Listener Firestore sudah aktif."
-                );
+            const uidSaatIni = auth.currentUser ? auth.currentUser.uid : "";
+
+            // Jika user/role berubah dalam tab yang sama, listener lama wajib
+            // dilepas. Ini mencegah listener User tetap aktif ketika kemudian
+            // login sebagai Teknisi/Admin dan merupakan sumber data yang tidak sinkron.
+            if (firestoreListenerSudahDimulai && activeListenerUid === uidSaatIni) {
                 return;
             }
-            
+
+            if (firestoreListenerSudahDimulai) {
+                hentikanListenerFirestore();
+            }
+
             firestoreListenerSudahDimulai = true;
-            
-            console.log(
-                "Memulai listener Firestore..."
-            );
-        
-            // Koleksi users berisi data profil sensitif. Hanya Admin/Teknisi
-            // yang membutuhkan daftar user untuk dropdown teknisi/saksi dan Kelola Akun.
-            // User biasa cukup menggunakan currentUser yang sudah dimuat berdasarkan UID.
+            activeListenerUid = uidSaatIni;
+            console.log("Memulai listener Firestore untuk UID:", uidSaatIni, "role:", currentActiveRole);
+
             if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
-                db.collection("users").onSnapshot(
+                firestoreUnsubscribers.push(db.collection("users").onSnapshot(
                     (querySnapshot) => {
-            
                         dataUserSistem = [];
-            
                         querySnapshot.forEach((doc) => {
-                            dataUserSistem.push({
-                                id: doc.id,
-                                ...doc.data()
-                            });
+                            dataUserSistem.push({ id: doc.id, ...doc.data() });
                         });
-            
-                        listNamaTeknisi =
-                            dataUserSistem
-                                .filter(u => u.role === 'Teknisi' && u.aktif !== false)
-                                .map(u => u.nama);
-            
-                        listNamaSaksi =
-                            dataUserSistem
-                                .filter(u => u.role === 'User' && u.aktif !== false)
-                                .map(u => u.nama);
-            
+                        listNamaTeknisi = dataUserSistem
+                            .filter(u => u.role === 'Teknisi' && u.aktif !== false)
+                            .map(u => u.nama);
+                        listNamaSaksi = dataUserSistem
+                            .filter(u => u.role === 'User' && u.aktif !== false)
+                            .map(u => u.nama);
                         populasikanDropdownNamaTandaTangan();
                         renderDaftarUser();
                     },
@@ -1738,350 +1708,125 @@
                         console.error("Listener users gagal:", error);
                         showToast("Daftar akun tidak dapat dimuat. Periksa Firestore Rules users.", "error");
                     }
-                );
+                ));
             } else {
                 dataUserSistem = currentUser ? [{ id: currentUser.uid, ...currentUser }] : [];
                 listNamaTeknisi = [];
                 listNamaSaksi = currentUser && currentUser.role === 'User' ? [currentUser.nama] : [];
                 populasikanDropdownNamaTandaTangan();
             }
-        
-        
-            db.collection("dataAlat").onSnapshot(
-                async (querySnapshot) => {
-        
+
+            firestoreUnsubscribers.push(db.collection("dataAlat").onSnapshot(
+                (querySnapshot) => {
                     dataAlat = [];
-        
-                    querySnapshot.forEach((doc) => {
-        
-                        dataAlat.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-        
-                    });
-        
-                    dataAlat.sort((a, b) => {
-        
-                        let namaA =
-                            (a.nama || "").toUpperCase();
-        
-                        let namaB =
-                            (b.nama || "").toUpperCase();
-        
-                        return namaA < namaB
-                            ? -1
-                            : namaA > namaB
-                                ? 1
-                                : 0;
-                    });
-        
+                    querySnapshot.forEach((doc) => dataAlat.push({ id: doc.id, ...doc.data() }));
+                    dataAlat.sort((a, b) => String(a.nama || '').localeCompare(String(b.nama || ''), 'id', { sensitivity: 'base' }));
                     aktualisasikanDotKoneksiHijau();
-        
                     evaluasiJatuhTempoKalibrasiMassal();
-        
-                    // Master Data Aset adalah sumber utama. Tidak ada full sync
-                    // equipment saat startup. Projection hanya diperbarui jika
-                    // ada dokumen aset yang benar-benar berubah.
                     renderEquipmentManagementTable();
                     renderRekapanPMTable();
                     renderRekapanEMTable();
                     jadwalkanRenderAll();
-
                     if (dataAlatInitialSnapshotSudahDiproses) {
                         jadwalkanSinkronisasiEquipment(querySnapshot.docChanges());
                     } else {
                         dataAlatInitialSnapshotSudahDiproses = true;
                         updateBadgeEquipmentSync(`${dataAlat.length} aset siap`, 'ready');
                     }
-        
                     populasikanDropdownAlatDiKalibrasi();
-        
                     populasikanDropdownAlatDiWorksheet();
-        
                     populasikanDropdownEtiketAlat();
-        
                 },
-                (error) => {
-        
-                    console.error(
-                        "Listener dataAlat gagal:",
-                        error
-                    );
-        
-                }
-            );
-        
-        
-            db.collection("dataKalibrasi").onSnapshot(
+                (error) => console.error("Listener dataAlat gagal:", error)
+            ));
+
+            firestoreUnsubscribers.push(db.collection("dataKalibrasi").onSnapshot(
                 (querySnapshot) => {
-        
                     dataKalibrasi = [];
-        
-                    querySnapshot.forEach((doc) => {
-        
-                        dataKalibrasi.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-        
-                    });
-        
+                    querySnapshot.forEach((doc) => dataKalibrasi.push({ id: doc.id, ...doc.data() }));
                     evaluasiJatuhTempoKalibrasiMassal();
-        
                     jadwalkanRenderAll();
-        
                 },
-                (error) => {
-        
-                    console.error(
-                        "Listener dataKalibrasi gagal:",
-                        error
-                    );
-        
-                }
-            );
-        
+                (error) => console.error("Listener dataKalibrasi gagal:", error)
+            ));
+
             let isFirstLoadTickets = true;
-            
             const ticketQuery = currentActiveRole === 'User' && auth.currentUser
                 ? db.collection("troubleTickets").where("pelaporUid", "==", auth.currentUser.uid)
                 : db.collection("troubleTickets");
 
-            ticketQuery.onSnapshot(
+            firestoreUnsubscribers.push(ticketQuery.onSnapshot(
                 (querySnapshot) => {
-            
                     dataTiket = [];
-            
-                    querySnapshot.forEach((doc) => {
-            
-                        dataTiket.push({
-                            id: doc.id,
-                            ...doc.data()
+                    querySnapshot.forEach((doc) => dataTiket.push({ id: doc.id, ...doc.data() }));
+
+                    if (!isFirstLoadTickets) {
+                        querySnapshot.docChanges().forEach((change) => {
+                            if (change.type === "added" && (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi')) {
+                                const audioAlert = document.getElementById('alarm-notifikasi-tiket');
+                                if (audioAlert) audioAlert.play().catch(() => {});
+                                const ticketData = change.doc.data();
+                                showToast(`Laporan Kerusakan Baru: ${ticketData.keluhan || '-'}`, 'error');
+                            }
                         });
-            
-                    });
-            
-            
-                    // =========================================
-                    // DETEKSI TICKET BARU
-                    // =========================================
-            
-                    if (isFirstLoadTickets) {
-            
-                        isFirstLoadTickets = false;
-            
-                    } else {
-            
-                        querySnapshot.docChanges()
-                            .forEach((change) => {
-            
-                                if (change.type === "added") {
-            
-                                    const ticketData =
-                                        change.doc.data();
-            
-            
-                                    if (
-                                        currentActiveRole === 'Admin' ||
-                                        currentActiveRole === 'Teknisi'
-                                    ) {
-            
-                                        const audioAlert =
-                                            document.getElementById(
-                                                'alarm-notifikasi-tiket'
-                                            );
-            
-                                        if (audioAlert) {
-            
-                                            audioAlert
-                                                .play()
-                                                .catch(
-                                                    err => {}
-                                                );
-                                        }
-            
-            
-                                        showToast(
-                                            `Laporan Kerusakan Baru: ${ticketData.keluhan}`,
-                                            'error'
-                                        );
-                                    }
-                                }
-            
-                            });
                     }
-            
-            
-                    // =========================================
-                    // RENDER DAFTAR TICKET
-                    // =========================================
-            
+                    isFirstLoadTickets = false;
                     renderDaftarTiketMasuk();
-            
                 },
-            
                 (error) => {
-            
-                    console.error(
-                        "Listener troubleTickets gagal:",
-                        error
-                    );
-            
-                }
-            );
-                
-            db.collection("bukuPetunjukAlat").onSnapshot(
-                (querySnapshot) => {
-        
-                    dataBukuPetunjuk = [];
-        
-                    querySnapshot.forEach((doc) => {
-        
-                        dataBukuPetunjuk.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-        
-                    });
-        
-                    if (globalSelectedAlatIdForLog) {
-        
-                        bukaKartuPemeliharaan(
-                            globalSelectedAlatIdForLog
-                        );
-        
+                    console.error("Listener troubleTickets gagal:", error);
+                    if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
+                        showToast("Antrean laporan teknisi tidak dapat dimuat. Periksa Rules troubleTickets.", "error");
                     }
-        
-                },
-                (error) => {
-        
-                    console.error(
-                        "Listener bukuPetunjukAlat gagal:",
-                        error
-                    );
-        
                 }
-            );
-        
-        
+            ));
+
+            firestoreUnsubscribers.push(db.collection("bukuPetunjukAlat").onSnapshot(
+                (querySnapshot) => {
+                    dataBukuPetunjuk = [];
+                    querySnapshot.forEach((doc) => dataBukuPetunjuk.push({ id: doc.id, ...doc.data() }));
+                    if (globalSelectedAlatIdForLog) bukaKartuPemeliharaan(globalSelectedAlatIdForLog);
+                },
+                (error) => console.error("Listener bukuPetunjukAlat gagal:", error)
+            ));
+
             const complaintLogQuery = currentActiveRole === 'User' && auth.currentUser
                 ? db.collection("laporanKeluhanLog").where("pelaporUid", "==", auth.currentUser.uid)
                 : db.collection("laporanKeluhanLog");
 
-            complaintLogQuery.onSnapshot(
+            firestoreUnsubscribers.push(complaintLogQuery.onSnapshot(
                 (querySnapshot) => {
-        
                     dataKeluhanLog = [];
-        
-                    querySnapshot.forEach((doc) => {
-        
-                        dataKeluhanLog.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-        
-                    });
-        
+                    querySnapshot.forEach((doc) => dataKeluhanLog.push({ id: doc.id, ...doc.data() }));
                     jadwalkanRenderAll();
-        
                 },
-                (error) => {
-        
-                    console.error(
-                        "Listener laporanKeluhanLog gagal:",
-                        error
-                    );
-        
-                }
-            );
-        
-        
-            // Histori maintenance manual menjadi sumber pelaksanaan Rekapan EM.
-            db.collection("maintenance").onSnapshot(
+                (error) => console.error("Listener laporanKeluhanLog gagal:", error)
+            ));
+
+            firestoreUnsubscribers.push(db.collection("maintenance").onSnapshot(
                 (querySnapshot) => {
                     dataMaintenance = [];
-                    querySnapshot.forEach((doc) => {
-                        dataMaintenance.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-                    });
+                    querySnapshot.forEach((doc) => dataMaintenance.push({ id: doc.id, ...doc.data() }));
                     renderRekapanEMTable();
                     renderMaintenanceHistory();
                 },
-                (error) => {
-                    console.error("Listener maintenance gagal:", error);
-                }
-            );
+                (error) => console.error("Listener maintenance gagal:", error)
+            ));
 
-            db.collection("lembarKerja").onSnapshot(
+            firestoreUnsubscribers.push(db.collection("lembarKerja").onSnapshot(
                 (querySnapshot) => {
-        
                     const dataLk = [];
-        
-                    querySnapshot.forEach((doc) => {
-        
-                        dataLk.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-        
-                    });
-
+                    querySnapshot.forEach((doc) => dataLk.push({ id: doc.id, ...doc.data() }));
                     dataLembarKerja = dataLk;
-        
-                    dataPerbaikan =
-                        dataLk
-                            .filter(
-                                d =>
-                                    d.jenisKerja ===
-                                    'Corrective Maintenance'
-                            )
-                            .map(d => ({
-                                ...d,
-                                desc: d.desc_kerja
-                            }));
-        
-                    dataPM =
-                        dataLk
-                            .filter(
-                                d =>
-                                    d.jenisKerja ===
-                                    'Preventive Maintenance'
-                            )
-                            .map(d => ({
-                                ...d,
-                                desc: d.desc_kerja
-                            }));
-        
-                    dataInspeksi =
-                        dataLk
-                            .filter(
-                                d =>
-                                    d.jenisKerja ===
-                                    'Inspection'
-                            )
-                            .map(d => ({
-                                ...d,
-                                desc: d.desc_kerja
-                            }));
-        
+                    dataPerbaikan = dataLk.filter(d => d.jenisKerja === 'Corrective Maintenance').map(d => ({ ...d, desc: d.desc_kerja }));
+                    dataPM = dataLk.filter(d => d.jenisKerja === 'Preventive Maintenance').map(d => ({ ...d, desc: d.desc_kerja }));
+                    dataInspeksi = dataLk.filter(d => d.jenisKerja === 'Inspection').map(d => ({ ...d, desc: d.desc_kerja }));
                     jadwalkanRenderAll();
-        
                     renderGrafikTrenKerusakan();
                     renderRekapanEMTable();
-        
                 },
-                (error) => {
-        
-                    console.error(
-                        "Listener lembarKerja gagal:",
-                        error
-                    );
-        
-                }
-            );
+                (error) => console.error("Listener lembarKerja gagal:", error)
+            ));
         }
 
         function gantiSubTabEM(tab) {
@@ -3146,7 +2891,7 @@ async function logoutFirebase() {
             // ========================================
         
             if (!firebaseUser) {
-        
+                hentikanListenerFirestore();
                 currentUser = null;
                 currentUserNama = "";
                 currentActiveRole = "";
@@ -4877,10 +4622,13 @@ function renderMaintenanceHistory() {
             const keluhanEl = document.getElementById('ticket-form-keluhan');
             const searchAlatEl = document.getElementById('input-search-alat-ticket');
             const submitBtn = e && e.submitter ? e.submitter : e.currentTarget?.querySelector('button[type="submit"]');
-
             const alatId = alatIdEl ? alatIdEl.value.trim() : '';
             const keluhan = keluhanEl ? keluhanEl.value.trim() : '';
 
+            if (!auth.currentUser) {
+                showToast("Sesi login sudah berakhir. Silakan login kembali.", "error");
+                return;
+            }
             if (!alatId) {
                 showToast("Pilih alat terlebih dahulu dari dropdown pencarian!", "error");
                 if (searchAlatEl) searchAlatEl.focus();
@@ -4908,81 +4656,83 @@ function renderMaintenanceHistory() {
                 submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Mengirim...</span>';
             }
 
+            const now = new Date();
+            const tglLaporStr = now.getFullYear() + '-' +
+                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                String(now.getDate()).padStart(2, '0') + ' ' +
+                String(now.getHours()).padStart(2, '0') + ':' +
+                String(now.getMinutes()).padStart(2, '0');
+            const fotoBefore = stringFotoBeforeBase64 || '-';
+            const pelaporUid = auth.currentUser.uid;
+            const payloadTicket = {
+                alatId: selectedAlatObj.id,
+                keluhan,
+                fotoBefore,
+                statusTiket: "Menunggu Tindakan",
+                tglLapor: tglLaporStr,
+                pelaporUid,
+                pelaporNama: currentUserNama || auth.currentUser.email || '',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
             try {
-                const now = new Date();
-                const tglLaporStr = now.getFullYear() + '-' +
-                    String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                    String(now.getDate()).padStart(2, '0') + ' ' +
-                    String(now.getHours()).padStart(2, '0') + ':' +
-                    String(now.getMinutes()).padStart(2, '0');
-
-                const fotoBefore = stringFotoBeforeBase64 || '-';
-                const payloadTicket = {
-                    alatId: selectedAlatObj.id,
-                    keluhan: keluhan,
-                    fotoBefore: fotoBefore,
-                    statusTiket: "Menunggu Tindakan",
-                    tglLapor: tglLaporStr,
-                    pelaporUid: (auth.currentUser && auth.currentUser.uid) ? auth.currentUser.uid : '',
-                    pelaporNama: currentUserNama || '',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
-                // TICKET adalah transaksi utama. Jika berhasil, laporan kerusakan sudah tercatat.
-                // Log dan perubahan status aset dibuat best-effort agar permission rule pada User
-                // tidak membuat tombol terlihat gagal walaupun ticket sebenarnya sudah tersimpan.
+                // Hanya operasi ticket yang ditunggu. Begitu ini berhasil,
+                // tombol selesai loading dan ticket langsung terlihat oleh listener teknisi.
                 const ticketRef = await db.collection("troubleTickets").add(payloadTicket);
 
-                try {
-                    await db.collection("laporanKeluhanLog").add({
+                // Sinkronisasi tambahan tidak boleh menahan tombol.
+                const secondaryTasks = [];
+
+                secondaryTasks.push(
+                    db.collection("laporanKeluhanLog").add({
                         alatId: selectedAlatObj.id,
                         noLk: "TICKET-LOG",
                         jenisKerja: "Laporan Kerusakan",
                         textTgl: tglLaporStr,
                         desc_kerja: "Keluhan: " + keluhan,
-                        fotoBefore: fotoBefore,
+                        fotoBefore,
                         hasilTunggal: "Menunggu Penanganan",
                         teknisiTtd: "-",
                         ticketId: ticketRef.id,
-                        pelaporUid: (auth.currentUser && auth.currentUser.uid) ? auth.currentUser.uid : '',
-                        pelaporNama: currentUserNama || '',
+                        pelaporUid,
+                        pelaporNama: currentUserNama || auth.currentUser.email || '',
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } catch (logError) {
-                    console.warn("Log tiket tidak dapat dibuat oleh role saat ini:", logError);
-                }
+                    }).catch(err => console.warn("Log tiket gagal:", err))
+                );
 
-                try {
-                    await db.collection("dataAlat").doc(selectedAlatObj.id).update({
+                // User hanya boleh melakukan transisi status ke Dalam Perbaikan
+                // sesuai Rules. Ini membuat dashboard desktop/mobile ikut berubah.
+                secondaryTasks.push(
+                    db.collection("dataAlat").doc(selectedAlatObj.id).update({
                         status: "Dalam Perbaikan",
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } catch (assetError) {
-                    // Jangan menggagalkan pelaporan. Teknisi/Admin tetap dapat mengambil ticket.
-                    console.warn("Status aset belum dapat diperbarui oleh role saat ini:", assetError);
-                }
+                    }).catch(err => console.warn("Status aset gagal disinkronkan:", err))
+                );
 
-                try {
+                // Telegram dijalankan tanpa menunggu response API.
+                secondaryTasks.push(
                     kirimNotifikasiTelegramOtomatis(
                         selectedAlatObj.nama,
                         selectedAlatObj.ruangan || selectedAlatObj.lokasi || 'Unit',
-                        keluhan
-                    );
-                } catch (notifyError) {
-                    console.warn("Notifikasi Telegram gagal:", notifyError);
-                }
+                        keluhan,
+                        ticketRef.id
+                    )
+                );
+
+                Promise.allSettled(secondaryTasks).then(() => {
+                    // Listener Firestore tetap menjadi sumber tampilan utama.
+                });
 
                 if (keluhanEl) keluhanEl.value = "";
                 if (alatIdEl) alatIdEl.value = "";
                 if (searchAlatEl) searchAlatEl.value = "";
                 resetFotoTicketBefore();
-                showToast("Tiket keluhan berhasil dikirim dan masuk ke antrean teknisi.", "success");
-
+                showToast("Tiket berhasil dikirim. Antrean teknisi dan status aset sedang disinkronkan.", "success");
             } catch (error) {
                 console.error("Gagal mengirim tiket keluhan:", error);
                 let pesan = "Tiket gagal dikirim.";
                 if (error && error.code === 'permission-denied') {
-                    pesan = "Tiket ditolak oleh aturan keamanan Firebase. Periksa Firestore Rules untuk collection troubleTickets.";
+                    pesan = "Tiket ditolak oleh Firestore Rules. Pastikan User boleh membuat troubleTickets miliknya sendiri.";
                 } else if (error && error.message) {
                     pesan += " " + error.message;
                 }
@@ -4996,13 +4746,44 @@ function renderMaintenanceHistory() {
                 }
             }
         }
-        
-        function kirimNotifikasiTelegramOtomatis(namaAlat, ruangan, keluhan) {
+
+        function kirimNotifikasiTelegramOtomatis(namaAlat, ruangan, keluhan, ticketId = '') {
             const tokenBot = "8639957817:AAGVfrGvDMubnl9xEP0fDVGVcwTjw6ARTro";
             const chatId = "-1004495239180";
-            const pesan = `🚨 *LAPORAN KERUSAKAN ALAT MEDIS* 🚨\n\n` + `📌 *Alat:* ${namaAlat}\n` + `🏥 *Ruangan:* ${ruangan}\n` + `⚠️ *Keluhan:* ${keluhan}\n\n` + `_Segera buka aplikasi MEDIX untuk mengambil tindakan._`;
+            const pesan = `🚨 *LAPORAN KERUSAKAN ALAT MEDIS* 🚨\n\n` +
+                `📌 *Alat:* ${namaAlat}\n` +
+                `🏥 *Ruangan:* ${ruangan}\n` +
+                `⚠️ *Keluhan:* ${keluhan}\n` +
+                (ticketId ? `🎫 *Tiket:* ${ticketId}\n` : '') +
+                `🔴 *Status:* Dalam Perbaikan\n\n` +
+                `_Segera buka aplikasi MEDIX untuk mengambil tindakan._`;
             const url = `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(pesan)}&parse_mode=Markdown`;
-            fetch(url).catch(error => {});
+
+            // Fire-and-forget dengan timeout. Tidak pernah menahan UI.
+            try {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 5000);
+                return fetch(url, { method: 'GET', mode: 'cors', cache: 'no-store', signal: controller.signal })
+                    .then(response => {
+                        clearTimeout(timer);
+                        if (!response.ok) throw new Error(`Telegram HTTP ${response.status}`);
+                        return true;
+                    })
+                    .catch(error => {
+                        clearTimeout(timer);
+                        console.warn("Telegram fetch gagal:", error);
+                        // Fallback GET tanpa membaca response; berguna bila CORS response diblokir browser.
+                        try {
+                            const img = new Image();
+                            img.referrerPolicy = 'no-referrer';
+                            img.src = url;
+                        } catch (fallbackError) {}
+                        return false;
+                    });
+            } catch (error) {
+                console.warn("Telegram notification error:", error);
+                return Promise.resolve(false);
+            }
         }
 
         function renderDaftarTiketMasuk() {
