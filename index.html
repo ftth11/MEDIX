@@ -756,7 +756,8 @@
                     <!-- Sub-Tab Navigasi Equipment -->
                     <div class="flex bg-slate-200 p-1 rounded-xl border border-slate-300 w-full text-xs font-bold text-slate-600 space-x-1 no-print shadow-sm">
                         <button onclick="gantiSubTabEM('database')" id="em-subtab-db" class="px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm">📋 Master Data EM</button>
-                        <button onclick="gantiSubTabEM('rekapan')" id="em-subtab-rek" class="px-4 py-2.5 rounded-lg flex-1 text-center transition">📅 Jadwal PM</button>
+                        <button onclick="gantiSubTabEM('jadwal')" id="em-subtab-jadwal" class="px-4 py-2.5 rounded-lg flex-1 text-center transition text-slate-600">📅 Jadwal EM/PM</button>
+                        <button onclick="gantiSubTabEM('rekapan')" id="em-subtab-rekapan" class="px-4 py-2.5 rounded-lg flex-1 text-center transition text-slate-600">📊 Rekapan EM</button>
                     </div>
 
                     <!-- Konten Sub-Tab 1: Database & Analisis EM -->
@@ -793,8 +794,8 @@
                         </div>
                     </div>
 
-                    <!-- Konten Sub-Tab 2: Jadwal PM -->
-                    <div id="em-content-rekapan" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
+                    <!-- Konten Sub-Tab 2: Jadwal EM/PM -->
+                    <div id="em-content-jadwal" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             <input type="text" id="search-rekapan-pm" oninput="renderRekapanPMTable()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari nama alat, SN, ruangan, bulan...">
                             <span class="text-[10px] text-slate-500 font-semibold">Jadwal dibuat otomatis dari rekomendasi EM</span>
@@ -815,8 +816,59 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                
+
+                    <!-- Konten Sub-Tab 3: Rekapan EM -->
+                    <div id="em-content-rekapan" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
+                        <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <select id="filter-rekapan-em-tahun" onchange="renderRekapanEMTable()" class="px-3 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none font-bold"></select>
+                                <input type="text" id="search-rekapan-em" oninput="renderRekapanEMTable()" class="w-full sm:w-72 px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari nama alat...">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="exportRekapanEMExcel()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm no-print">
+                                    <i class="fa-solid fa-file-excel mr-1"></i> Export Excel
+                                </button>
+                                <button type="button" onclick="window.print()" class="px-3 py-2 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold shadow-sm no-print">
+                                    <i class="fa-solid fa-print mr-1"></i> Cetak
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="px-4 pt-1 text-[10px] text-slate-500">
+                            Target dihitung dari jadwal EM/PM otomatis per unit. Selesai dihitung dari LK dan histori maintenance yang terhubung ke alat pada tahun terpilih.
+                        </div>
+
+                        <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
+                            <table id="table-rekapan-em" class="w-full text-left text-xs border-collapse min-w-[1500px]">
+                                <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
+                                    <tr>
+                                        <th class="p-3 text-center">No</th>
+                                        <th class="p-3">Nama Alkes</th>
+                                        <th class="p-3 text-center">Populasi</th>
+                                        <th class="p-3 text-center">Target</th>
+                                        <th class="p-3 text-center">Selesai</th>
+                                        <th class="p-3 text-center">Sisa</th>
+                                        <th class="p-3 text-center">Jan</th>
+                                        <th class="p-3 text-center">Feb</th>
+                                        <th class="p-3 text-center">Mar</th>
+                                        <th class="p-3 text-center">Apr</th>
+                                        <th class="p-3 text-center">Mei</th>
+                                        <th class="p-3 text-center">Jun</th>
+                                        <th class="p-3 text-center">Jul</th>
+                                        <th class="p-3 text-center">Agu</th>
+                                        <th class="p-3 text-center">Sep</th>
+                                        <th class="p-3 text-center">Okt</th>
+                                        <th class="p-3 text-center">Nov</th>
+                                        <th class="p-3 text-center">Des</th>
+                                        <th class="p-3">Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-rekapan-em-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                                <tfoot id="table-rekapan-em-foot" class="bg-slate-50 font-black text-slate-800"></tfoot>
+                            </table>
+                        </div>
+                    </div>
+
                 <!-- FORM EQUIPMENT MANUAL DIHAPUS:
                      Equipment Management sekarang otomatis mengikuti dataAlat. -->
                 <div class="hidden" aria-hidden="true"></div>
@@ -1245,6 +1297,12 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // Cache Firestore di perangkat agar pembukaan berikutnya lebih cepat.
+        let firestorePersistenceReady = false;
+        db.enablePersistence({ synchronizeTabs: true })
+            .then(() => { firestorePersistenceReady = true; console.info('Firestore offline persistence aktif.'); })
+            .catch((error) => { console.warn('Firestore persistence tidak tersedia:', error.code || error.message); });
+
         // PWA SERVICE WORKER REGISTRATION
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1623,10 +1681,24 @@
         let userAksesMenuArray = {};
         let currentUser = null;
         let currentEMSubTab = 'database';
-        let dataEquipment = []; // Variabel global penampung data alkes
+        let dataEquipment = []; // Projection per unit dari Master Data Aset
+        let dataLembarKerja = []; // Seluruh LK untuk Rekapan EM
+        let dataMaintenance = []; // Seluruh histori maintenance untuk Rekapan EM
         let activeSubTabEM = 'database';
         
         let firestoreListenerSudahDimulai = false;
+        let dataAlatInitialSnapshotSudahDiproses = false;
+        let equipmentSyncTimer = null;
+        let equipmentSyncQueue = new Map();
+        let renderAllTimer = null;
+
+        function jadwalkanRenderAll(delay = 60) {
+            if (renderAllTimer) clearTimeout(renderAllTimer);
+            renderAllTimer = setTimeout(() => {
+                renderAllTimer = null;
+                try { renderAll(); } catch (error) { console.error('Render UI gagal:', error); }
+            }, delay);
+        }
 
         function mulaiListenerFirestore() {
             if (firestoreListenerSudahDimulai) {
@@ -1713,12 +1785,20 @@
         
                     evaluasiJatuhTempoKalibrasiMassal();
         
-                    // Master Data Aset -> Equipment Management (otomatis)
-                    await sinkronisasiEquipmentDariMasterAset(dataAlat);
-                    await renderEquipmentManagementTable();
+                    // Master Data Aset adalah sumber utama. Tidak ada full sync
+                    // equipment saat startup. Projection hanya diperbarui jika
+                    // ada dokumen aset yang benar-benar berubah.
+                    renderEquipmentManagementTable();
                     renderRekapanPMTable();
-        
-                    renderAll();
+                    renderRekapanEMTable();
+                    jadwalkanRenderAll();
+
+                    if (dataAlatInitialSnapshotSudahDiproses) {
+                        jadwalkanSinkronisasiEquipment(querySnapshot.docChanges());
+                    } else {
+                        dataAlatInitialSnapshotSudahDiproses = true;
+                        updateBadgeEquipmentSync(`${dataAlat.length} aset siap`, 'ready');
+                    }
         
                     populasikanDropdownAlatDiKalibrasi();
         
@@ -1754,7 +1834,7 @@
         
                     evaluasiJatuhTempoKalibrasiMassal();
         
-                    renderAll();
+                    jadwalkanRenderAll();
         
                 },
                 (error) => {
@@ -1900,7 +1980,7 @@
         
                     });
         
-                    renderAll();
+                    jadwalkanRenderAll();
         
                 },
                 (error) => {
@@ -1914,6 +1994,24 @@
             );
         
         
+            // Histori maintenance manual menjadi sumber pelaksanaan Rekapan EM.
+            db.collection("maintenance").onSnapshot(
+                (querySnapshot) => {
+                    dataMaintenance = [];
+                    querySnapshot.forEach((doc) => {
+                        dataMaintenance.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+                    renderRekapanEMTable();
+                    renderMaintenanceHistory();
+                },
+                (error) => {
+                    console.error("Listener maintenance gagal:", error);
+                }
+            );
+
             db.collection("lembarKerja").onSnapshot(
                 (querySnapshot) => {
         
@@ -1927,6 +2025,8 @@
                         });
         
                     });
+
+                    dataLembarKerja = dataLk;
         
                     dataPerbaikan =
                         dataLk
@@ -1964,9 +2064,10 @@
                                 desc: d.desc_kerja
                             }));
         
-                    renderAll();
+                    jadwalkanRenderAll();
         
                     renderGrafikTrenKerusakan();
+                    renderRekapanEMTable();
         
                 },
                 (error) => {
@@ -1982,27 +2083,36 @@
 
         function gantiSubTabEM(tab) {
             currentEMSubTab = tab;
+
             const btnDb = document.getElementById('em-subtab-db');
-            const btnRek = document.getElementById('em-subtab-rek');
+            const btnJadwal = document.getElementById('em-subtab-jadwal');
+            const btnRekapan = document.getElementById('em-subtab-rekapan');
             const contentDb = document.getElementById('em-content-database');
-            const contentRek = document.getElementById('em-content-rekapan');
-            if (!btnDb || !btnRek || !contentDb || !contentRek) return;
+            const contentJadwal = document.getElementById('em-content-jadwal');
+            const contentRekapan = document.getElementById('em-content-rekapan');
+
+            if (!btnDb || !btnJadwal || !btnRekapan || !contentDb || !contentJadwal || !contentRekapan) return;
+
+            [btnDb, btnJadwal, btnRekapan].forEach(btn => {
+                btn.className = "px-4 py-2.5 rounded-lg flex-1 text-center transition text-slate-600";
+            });
+            [contentDb, contentJadwal, contentRekapan].forEach(content => content.classList.add('hidden'));
+
+            const activeButton = tab === 'database' ? btnDb : tab === 'jadwal' ? btnJadwal : btnRekapan;
+            const activeContent = tab === 'database' ? contentDb : tab === 'jadwal' ? contentJadwal : contentRekapan;
+
+            activeButton.className = "px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm";
+            activeContent.classList.remove('hidden');
 
             if (tab === 'database') {
-                btnDb.className = "px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm";
-                btnRek.className = "px-4 py-2.5 rounded-lg flex-1 text-center transition text-slate-600";
-                contentDb.classList.remove('hidden');
-                contentRek.classList.add('hidden');
                 renderEquipmentManagementTable();
-            } else {
-                btnRek.className = "px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm";
-                btnDb.className = "px-4 py-2.5 rounded-lg flex-1 text-center transition text-slate-600";
-                contentRek.classList.remove('hidden');
-                contentDb.classList.add('hidden');
+            } else if (tab === 'jadwal') {
                 renderRekapanPMTable();
+            } else {
+                renderRekapanEMTable();
             }
         }
-        
+
         // ============================================================
         // EQUIPMENT MANAGEMENT - OTOMATIS DARI MASTER DATA ASET
         // ============================================================
@@ -2375,168 +2485,121 @@
         }
 
 
-async function sinkronisasiEquipmentDariMasterAset(assets = dataAlat) {
-            if (!db || !Array.isArray(assets)) return;
-
+function updateBadgeEquipmentSync(text, mode = 'ready') {
             const badge = document.getElementById('equipment-sync-badge');
-            if (badge) {
-                badge.innerHTML = '<i class="fa-solid fa-arrows-rotate fa-spin"></i> Menyinkronkan...';
-                badge.className = 'inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-200 px-3 py-2 rounded-xl text-[10px] font-bold';
-            }
+            if (!badge) return;
+            const styles = {
+                ready: 'inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold',
+                sync: 'inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-200 px-3 py-2 rounded-xl text-[10px] font-bold',
+                error: 'inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 px-3 py-2 rounded-xl text-[10px] font-bold'
+            };
+            const icon = mode === 'sync' ? '<i class="fa-solid fa-arrows-rotate fa-spin"></i>' : mode === 'error' ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-circle-check"></i>';
+            badge.innerHTML = `${icon} ${escapeHtmlEquipment(text)}`;
+            badge.className = styles[mode] || styles.ready;
+        }
 
+        function jadwalkanSinkronisasiEquipment(changes = []) {
+            if (!Array.isArray(changes) || changes.length === 0) return;
+            changes.forEach(change => {
+                if (change?.doc?.id) equipmentSyncQueue.set(change.doc.id, change);
+            });
+            if (equipmentSyncTimer) return;
+            equipmentSyncTimer = setTimeout(async () => {
+                equipmentSyncTimer = null;
+                const queued = Array.from(equipmentSyncQueue.values());
+                equipmentSyncQueue.clear();
+                await sinkronisasiEquipmentPerubahan(queued);
+            }, 250);
+        }
+
+        async function sinkronisasiEquipmentPerubahan(changes = []) {
+            if (!db || !Array.isArray(changes) || changes.length === 0) return;
+            const relevant = changes.filter(change => ['added', 'modified', 'removed'].includes(change.type));
+            if (relevant.length === 0) return;
+            updateBadgeEquipmentSync(`Menyinkronkan ${relevant.length} perubahan...`, 'sync');
             try {
-                const existingSnapshot = await db.collection('equipment').get();
-                const existingByAssetId = {};
-                const existingBySerial = {};
-                const existingByIdentity = {};
-
-                existingSnapshot.forEach(doc => {
-                    const item = { id: doc.id, ...doc.data() };
-                    if (item.assetId) existingByAssetId[item.assetId] = item;
-                    if (item.serialNumber) existingBySerial[String(item.serialNumber).trim().toLowerCase()] = item;
-                    const identity = [item.namaAlat || '', item.merk || '', item.tipe || '', item.lokasi || ''].join('|').trim().toLowerCase();
-                    if (identity.replace(/\|/g, '')) existingByIdentity[identity] = item;
-                });
-
-                let batch = db.batch();
-                let batchCount = 0;
-
-                for (let index = 0; index < assets.length; index++) {
-                    const asset = assets[index];
-                    if (!asset || !asset.id) continue;
-
-                    const serialKey = String(asset.seri || asset.serialNumber || asset.sn || '').trim().toLowerCase();
-                    const identityKey = [asset.nama || asset.namaAlat || '', asset.merk || '', asset.tipe || asset.model || '', asset.ruangan || asset.lokasi || ''].join('|').trim().toLowerCase();
-                    const existing = existingByAssetId[asset.id] || (serialKey ? existingBySerial[serialKey] : null) || existingByIdentity[identityKey] || {};
+                const batch = db.batch();
+                const collection = db.collection('equipment');
+                const upserts = relevant.filter(change => change.type !== 'removed');
+                const existingPairs = await Promise.all(upserts.map(async change => {
+                    const ref = collection.doc(change.doc.id);
+                    try {
+                        const snap = await ref.get();
+                        return [change.doc.id, snap.exists ? { id: snap.id, ...snap.data() } : {}];
+                    } catch (error) {
+                        return [change.doc.id, {}];
+                    }
+                }));
+                const existingMap = Object.fromEntries(existingPairs);
+                upserts.forEach((change, index) => {
+                    const asset = { id: change.doc.id, ...change.doc.data() };
+                    const existing = existingMap[change.doc.id] || {};
                     const payload = normalisasiAssetUntukEquipment(asset, index, existing);
-                    const equipmentRef = db.collection('equipment').doc(asset.id);
-
-                    batch.set(equipmentRef, {
+                    batch.set(collection.doc(change.doc.id), {
                         ...payload,
                         createdAt: existing.createdAt || firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
-
-                    batchCount++;
-                    if (batchCount >= 450) {
-                        await batch.commit();
-                        batch = db.batch();
-                        batchCount = 0;
-                    }
-                }
-
-                if (batchCount > 0) await batch.commit();
-
-                if (badge) {
-                    badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${assets.length} aset tersinkron`;
-                    badge.className = 'inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold';
-                }
+                });
+                relevant.filter(change => change.type === 'removed').forEach(change => batch.delete(collection.doc(change.doc.id)));
+                await batch.commit();
+                updateBadgeEquipmentSync(`${dataAlat.length} aset siap`, 'ready');
             } catch (error) {
-                console.error('Sinkronisasi equipment dari dataAlat gagal:', error);
-                if (badge) {
-                    badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Mode tampilan otomatis';
-                    badge.className = 'inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 px-3 py-2 rounded-xl text-[10px] font-bold';
-                }
-                // Tabel tetap dapat bekerja langsung dari dataAlat walaupun role
-                // pengguna tidak mempunyai hak tulis ke collection equipment.
-                console.warn('Projection equipment tidak dapat diperbarui; UI tetap memakai dataAlat.');
+                console.error('Sinkronisasi perubahan equipment gagal:', error);
+                updateBadgeEquipmentSync(`${dataAlat.length} aset siap • cache`, 'error');
             }
         }
 
-
-async function ambilExistingEquipmentMap() {
-            const map = {};
-            if (!db) return map;
-            try {
-                const snapshot = await db.collection('equipment').get();
-                snapshot.forEach(doc => map[doc.id] = { id: doc.id, ...doc.data() });
-            } catch (e) {
-                console.warn('Collection equipment tidak dapat dibaca:', e);
-            }
-            return map;
-        }
-
-        async function renderEquipmentManagementTable() {
+        function renderEquipmentManagementTable() {
             try {
                 if (!Array.isArray(dataAlat)) dataAlat = [];
-                const existingMap = await ambilExistingEquipmentMap();
-                dataEquipment = dataAlat.map((asset, index) => ({
-                    id: asset.id,
-                    ...normalisasiAssetUntukEquipment(asset, index, existingMap[asset.id] || {})
-                }));
-
-                const groups = kelompokkanDataEquipmentUntukEM(dataAlat, existingMap);
+                dataEquipment = dataAlat.map((asset, index) => ({ id: asset.id, ...normalisasiAssetUntukEquipment(asset, index, {}) }));
+                const groups = kelompokkanDataEquipmentUntukEM(dataAlat, {});
                 window.dataEMGroups = groups;
-
                 const totalJenis = groups.length;
                 const totalPopulasi = groups.reduce((sum, g) => sum + g.populasi, 0);
                 const empatBulan = groups.filter(g => g.rekomendasiPeriode === 'Setiap 4 Bulan').length;
                 const enamBulan = groups.filter(g => g.rekomendasiPeriode === 'Setiap 6 Bulan').length;
                 const tahunan = groups.filter(g => g.rekomendasiPeriode === 'Satu Kali Per Tahun').length;
                 const inspeksi = groups.filter(g => g.rekomendasiPeriode === 'Inspeksi Sesuai Kebutuhan').length;
-
                 document.getElementById('em-stat-total')?.replaceChildren(document.createTextNode(totalJenis));
                 document.getElementById('em-stat-populasi')?.replaceChildren(document.createTextNode(totalPopulasi));
                 document.getElementById('em-stat-empat')?.replaceChildren(document.createTextNode(empatBulan));
                 document.getElementById('em-stat-enam')?.replaceChildren(document.createTextNode(enamBulan));
                 document.getElementById('em-stat-satu')?.replaceChildren(document.createTextNode(tahunan));
                 document.getElementById('em-stat-inspeksi')?.replaceChildren(document.createTextNode(inspeksi));
-
                 const searchKeyword = (document.getElementById('search-equipment-em')?.value || '').trim().toLowerCase();
                 const filterPeriode = document.getElementById('filter-em-periode')?.value || '';
                 const filtered = groups.filter(item => {
-                    const searchable = [
-                        item.namaAlat, item.merk, item.tipe, item.lokasi, item.teknisi,
-                        ...item.serialNumbers
-                    ].filter(Boolean).join(' ').toLowerCase();
-                    return (!searchKeyword || searchable.includes(searchKeyword)) &&
-                           (!filterPeriode || item.rekomendasiPeriode === filterPeriode);
+                    const searchable = [item.namaAlat, item.merk, item.tipe, item.lokasi, item.teknisi, ...item.serialNumbers].filter(Boolean).join(' ').toLowerCase();
+                    return (!searchKeyword || searchable.includes(searchKeyword)) && (!filterPeriode || item.rekomendasiPeriode === filterPeriode);
                 });
-
                 const tbody = document.getElementById('table-equipment-em-body');
                 if (!tbody) return;
-
                 if (filtered.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
                     return;
                 }
-
                 tbody.innerHTML = filtered.map(item => `
                     <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3">
-                            <div class="font-bold text-slate-900">${escapeHtmlEquipment(item.namaAlat || '-')}</div>
-                            <div class="text-[10px] font-mono text-cyan-600">${item.populasi} unit terdaftar</div>
-                            <div class="text-[9px] text-slate-400">${escapeHtmlEquipment(item.merk || '-')}${item.tipe && item.tipe !== '-' ? ' • ' + escapeHtmlEquipment(item.tipe) : ''}</div>
-                        </td>
-                        <td class="p-3 text-center">
-                            <span class="inline-flex min-w-[42px] justify-center px-2 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100 font-black">${item.populasi}</span>
-                        </td>
+                        <td class="p-3"><div class="font-bold text-slate-900">${escapeHtmlEquipment(item.namaAlat || '-')}</div><div class="text-[10px] font-mono text-cyan-600">${item.populasi} unit terdaftar</div><div class="text-[9px] text-slate-400">${escapeHtmlEquipment(item.merk || '-')}${item.tipe && item.tipe !== '-' ? ' • ' + escapeHtmlEquipment(item.tipe) : ''}</div></td>
+                        <td class="p-3 text-center"><span class="inline-flex min-w-[42px] justify-center px-2 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100 font-black">${item.populasi}</span></td>
                         <td class="p-3 text-center font-bold text-slate-700">${item.satuan}</td>
                         <td class="p-3 text-center font-bold text-slate-700">${item.emFungsi ?? '-'}</td>
                         <td class="p-3 text-center font-bold text-slate-700">${item.emRisiko ?? '-'}</td>
                         <td class="p-3 text-center font-bold text-slate-700">${item.emPerawatan ?? '-'}</td>
                         <td class="p-3 text-center font-bold text-slate-700">${item.emInsiden ?? '-'}</td>
                         <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
-                        <td class="p-3">
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${kelasBadgePeriodeEM(item.rekomendasiPeriode)}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span>
-                        </td>
-                        <td class="p-3">
-                            <div class="font-semibold text-slate-800">${escapeHtmlEquipment(item.lokasi || '-')}</div>
-                            <div class="text-[10px] text-slate-400">${escapeHtmlEquipment(item.teknisi || '-')}</div>
-                        </td>
-                        <td class="p-3 text-center">
-                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold" title="Data sumber: Master Data Aset">
-                                <i class="fa-solid fa-database"></i> Master Aset
-                            </span>
-                        </td>
-                    </tr>
-                `).join('');
+                        <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${kelasBadgePeriodeEM(item.rekomendasiPeriode)}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span></td>
+                        <td class="p-3"><div class="font-semibold text-slate-800">${escapeHtmlEquipment(item.lokasi || '-')}</div><div class="text-[10px] text-slate-400">${escapeHtmlEquipment(item.teknisi || '-')}</div></td>
+                        <td class="p-3 text-center"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold"><i class="fa-solid fa-database"></i> Master Aset</span></td>
+                    </tr>`).join('');
             } catch (error) {
                 console.error('Gagal merender tabel equipment:', error);
                 showToast('Gagal menampilkan Equipment Management: ' + error.message, 'error');
             }
         }
 
-        function escapeHtmlEquipment(value) {
+                function escapeHtmlEquipment(value) {
             return String(value ?? '')
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
@@ -2604,6 +2667,379 @@ async function ambilExistingEquipmentMap() {
             `).join('');
         }
 
+
+
+        // ============================================================
+        // REKAPAN EM - TARGET VS REALISASI PEMELIHARAAN
+        // ============================================================
+        // Rekapan dibuat dari dua sumber aktivitas:
+        // 1) lembarKerja = LK yang benar-benar dibuat melalui Lembar Kerja.
+        // 2) maintenance = histori pemeliharaan manual.
+        //
+        // Target berasal dari jadwal EM/PM per unit:
+        // 4 bulan = 3 target/tahun, 6 bulan = 2, 12 bulan = 1,
+        // inspeksi sesuai kebutuhan = 0.
+        //
+        // Jika LK dan maintenance tercatat untuk alat yang sama pada tanggal
+        // yang sama, aktivitas dihitung satu kali agar tidak menggandakan
+        // realisasi.
+
+        function inisialisasiFilterTahunRekapanEM() {
+            const select = document.getElementById('filter-rekapan-em-tahun');
+            if (!select) return;
+
+            const tahunSekarang = new Date().getFullYear();
+            const tahunData = new Set([tahunSekarang]);
+
+            [...dataLembarKerja, ...dataMaintenance].forEach(item => {
+                const d = tanggalRekapanEM(item);
+                if (d) tahunData.add(d.getFullYear());
+            });
+
+            const tahunTerpilih = parseInt(select.value, 10);
+            const years = [...tahunData].filter(Number.isFinite).sort((a, b) => b - a);
+
+            select.innerHTML = years.map(tahun =>
+                `<option value="${tahun}">${tahun}</option>`
+            ).join('');
+
+            if (years.includes(tahunTerpilih)) {
+                select.value = String(tahunTerpilih);
+            } else {
+                select.value = String(tahunSekarang);
+            }
+        }
+
+        function tanggalRekapanEM(item) {
+            const raw = item?.textTgl || item?.tanggal || item?.tgl || item?.date || item?.createdAt;
+            if (!raw) return null;
+
+            if (raw?.toDate && typeof raw.toDate === 'function') {
+                const d = raw.toDate();
+                return isNaN(d.getTime()) ? null : d;
+            }
+
+            if (raw instanceof Date) {
+                return isNaN(raw.getTime()) ? null : raw;
+            }
+
+            const d = new Date(raw);
+            return isNaN(d.getTime()) ? null : d;
+        }
+
+        function idAlatRekapanEM(item) {
+            return String(
+                item?.alatId ||
+                item?.equipmentId ||
+                item?.idAlat ||
+                item?.assetId ||
+                ''
+            ).trim();
+        }
+
+        function namaAlatRekapanEM(item) {
+            return String(
+                item?.namaAlat ||
+                item?.nama ||
+                item?.alatNama ||
+                ''
+            ).trim();
+        }
+
+        function normalisasiTanggalRekapanEM(item) {
+            const d = tanggalRekapanEM(item);
+            if (!d) return '';
+            return [
+                d.getFullYear(),
+                String(d.getMonth() + 1).padStart(2, '0'),
+                String(d.getDate()).padStart(2, '0')
+            ].join('-');
+        }
+
+        function ambilAktivitasRekapanEM(tahun) {
+            const sumber = [];
+
+            dataLembarKerja.forEach(item => {
+                const tanggal = tanggalRekapanEM(item);
+                if (!tanggal || tanggal.getFullYear() !== tahun) return;
+
+                sumber.push({
+                    source: 'LK',
+                    id: item.id,
+                    alatId: idAlatRekapanEM(item),
+                    namaAlat: namaAlatRekapanEM(item),
+                    tanggal,
+                    jenis: item.jenisKerja || 'LK',
+                    noLk: item.noLk || ''
+                });
+            });
+
+            dataMaintenance.forEach(item => {
+                const tanggal = tanggalRekapanEM(item);
+                if (!tanggal || tanggal.getFullYear() !== tahun) return;
+
+                sumber.push({
+                    source: 'Maintenance',
+                    id: item.id,
+                    alatId: idAlatRekapanEM(item),
+                    namaAlat: namaAlatRekapanEM(item),
+                    tanggal,
+                    jenis: item.jenis || 'Maintenance',
+                    noLk: ''
+                });
+            });
+
+            // Jika alatId tersedia, deduplikasi LK + maintenance pada alat/tanggal
+            // yang sama. LK diprioritaskan sebagai catatan resmi.
+            const byKey = new Map();
+            const tanpaId = [];
+
+            sumber.forEach(item => {
+                const tanggalKey = normalisasiTanggalRekapanEM(item);
+                const alatKey = item.alatId || normalisasiNamaEM(item.namaAlat || 'tanpa-nama');
+
+                if (!alatKey || alatKey === 'tanpa-nama') {
+                    tanpaId.push(item);
+                    return;
+                }
+
+                const key = `${alatKey}|${tanggalKey}`;
+                const existing = byKey.get(key);
+
+                if (!existing || (item.source === 'LK' && existing.source !== 'LK')) {
+                    byKey.set(key, item);
+                }
+            });
+
+            return [...byKey.values(), ...tanpaId];
+        }
+
+        function cariAssetUntukRekapanEM(aktivitas) {
+            if (aktivitas.alatId) {
+                const byId = dataEquipment.find(item => String(item.id) === String(aktivitas.alatId));
+                if (byId) return byId;
+
+                const byAssetId = dataEquipment.find(item =>
+                    String(item.assetId || item.alatId || '') === String(aktivitas.alatId)
+                );
+                if (byAssetId) return byAssetId;
+            }
+
+            const namaNormal = normalisasiNamaEM(aktivitas.namaAlat || '');
+            if (!namaNormal) return null;
+
+            return dataEquipment.find(item =>
+                normalisasiNamaEM(item.namaAlat || '') === namaNormal
+            ) || null;
+        }
+
+        function buatDataRekapanEM(tahun) {
+            const groups = new Map();
+
+            // Semua alat dari Master Data Aset harus tetap muncul meskipun
+            // belum pernah dilakukan pemeliharaan.
+            dataEquipment.forEach((asset, index) => {
+                const key = normalisasiNamaEM(asset.namaAlat || `tanpa-nama-${index}`);
+                if (!key) return;
+
+                if (!groups.has(key)) {
+                    groups.set(key, {
+                        namaAlat: asset.namaAlat || '-',
+                        populasi: 0,
+                        target: 0,
+                        selesai: 0,
+                        bulan: Array(12).fill(0),
+                        periode: asset.rekomendasiPeriode || 'Inspeksi Sesuai Kebutuhan',
+                        assets: []
+                    });
+                }
+
+                const group = groups.get(key);
+                group.populasi += 1;
+                group.assets.push(asset);
+
+                const jadwal = getJadwalPMUntukAsset(asset, index);
+                group.target += Array.isArray(jadwal)
+                    ? jadwal.filter(j => j && Number(j.bulan) >= 1 && Number(j.bulan) <= 12).length
+                    : 0;
+            });
+
+            // Realisasi: LK + maintenance pada tahun terpilih.
+            ambilAktivitasRekapanEM(tahun).forEach(aktivitas => {
+                let asset = cariAssetUntukRekapanEM(aktivitas);
+                const nama = asset?.namaAlat || aktivitas.namaAlat || '-';
+                const key = normalisasiNamaEM(nama);
+
+                if (!key) return;
+
+                if (!groups.has(key)) {
+                    groups.set(key, {
+                        namaAlat: nama,
+                        populasi: 0,
+                        target: 0,
+                        selesai: 0,
+                        bulan: Array(12).fill(0),
+                        periode: asset?.rekomendasiPeriode || 'Inspeksi Sesuai Kebutuhan',
+                        assets: []
+                    });
+                }
+
+                const group = groups.get(key);
+                group.selesai += 1;
+                const bulan = aktivitas.tanggal.getMonth();
+                if (bulan >= 0 && bulan < 12) group.bulan[bulan] += 1;
+
+                if (asset && !group.assets.some(a => a.id === asset.id)) {
+                    group.assets.push(asset);
+                }
+            });
+
+            return [...groups.values()].sort((a, b) =>
+                a.namaAlat.localeCompare(b.namaAlat, 'id')
+            );
+        }
+
+        function statusRekapanEM(target, selesai) {
+            if (target === 0 && selesai === 0) {
+                return {
+                    text: 'Belum ada pelaksanaan terjadwal',
+                    cls: 'bg-slate-100 text-slate-500'
+                };
+            }
+            if (selesai === 0) {
+                return {
+                    text: 'Belum ada pelaksanaan',
+                    cls: 'bg-rose-50 text-rose-700'
+                };
+            }
+            if (selesai >= target && target > 0) {
+                return {
+                    text: selesai > target ? 'Melebihi target' : 'Target tercapai',
+                    cls: selesai > target ? 'bg-blue-50 text-blue-700' : 'bg-emerald-50 text-emerald-700'
+                };
+            }
+            return {
+                text: 'Masih ada target',
+                cls: 'bg-amber-50 text-amber-700'
+            };
+        }
+
+        function renderRekapanEMTable() {
+            const tbody = document.getElementById('table-rekapan-em-body');
+            const tfoot = document.getElementById('table-rekapan-em-foot');
+            if (!tbody) return;
+
+            inisialisasiFilterTahunRekapanEM();
+
+            const tahun = parseInt(document.getElementById('filter-rekapan-em-tahun')?.value, 10) || new Date().getFullYear();
+            const search = (document.getElementById('search-rekapan-em')?.value || '').trim().toLowerCase();
+
+            const allRows = buatDataRekapanEM(tahun);
+            const rows = allRows.filter(row =>
+                !search || row.namaAlat.toLowerCase().includes(search)
+            );
+
+            if (rows.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="19" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data Rekapan EM.</td></tr>`;
+                if (tfoot) tfoot.innerHTML = '';
+                return;
+            }
+
+            let totalPopulasi = 0;
+            let totalTarget = 0;
+            let totalSelesai = 0;
+            const totalBulan = Array(12).fill(0);
+
+            tbody.innerHTML = rows.map((row, index) => {
+                const sisa = row.target - row.selesai;
+                const status = statusRekapanEM(row.target, row.selesai);
+
+                totalPopulasi += row.populasi;
+                totalTarget += row.target;
+                totalSelesai += row.selesai;
+                row.bulan.forEach((value, i) => totalBulan[i] += value);
+
+                const bulanCells = row.bulan.map(value =>
+                    `<td class="p-2 text-center font-bold ${value > 0 ? 'text-blue-700' : 'text-slate-300'}">${value}</td>`
+                ).join('');
+
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2 text-center font-bold text-slate-500">${index + 1}</td>
+                        <td class="p-2 font-semibold text-slate-900">${escapeHtmlEquipment(row.namaAlat)}</td>
+                        <td class="p-2 text-center font-bold">${row.populasi}</td>
+                        <td class="p-2 text-center font-bold text-blue-700">${row.target}</td>
+                        <td class="p-2 text-center font-bold text-emerald-700">${row.selesai}</td>
+                        <td class="p-2 text-center font-bold ${sisa < 0 ? 'text-blue-700' : sisa === 0 ? 'text-emerald-700' : 'text-rose-700'}">${sisa}</td>
+                        ${bulanCells}
+                        <td class="p-2">
+                            <span class="inline-flex px-2 py-1 rounded-lg text-[9px] font-bold ${status.cls}">
+                                ${escapeHtmlEquipment(status.text)}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            if (tfoot) {
+                const totalSisa = totalTarget - totalSelesai;
+                tfoot.innerHTML = `
+                    <tr>
+                        <td colspan="2" class="p-3 text-right">TOTAL</td>
+                        <td class="p-3 text-center">${totalPopulasi}</td>
+                        <td class="p-3 text-center text-blue-700">${totalTarget}</td>
+                        <td class="p-3 text-center text-emerald-700">${totalSelesai}</td>
+                        <td class="p-3 text-center ${totalSisa < 0 ? 'text-blue-700' : totalSisa === 0 ? 'text-emerald-700' : 'text-rose-700'}">${totalSisa}</td>
+                        ${totalBulan.map(value => `<td class="p-3 text-center">${value}</td>`).join('')}
+                        <td class="p-3 text-center">${totalSelesai >= totalTarget && totalTarget > 0 ? 'Target tercapai' : 'Monitoring'}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        function exportRekapanEMExcel() {
+            if (typeof XLSX === 'undefined') {
+                showToast('Library Excel belum tersedia.', 'error');
+                return;
+            }
+
+            const tahun = parseInt(document.getElementById('filter-rekapan-em-tahun')?.value, 10) || new Date().getFullYear();
+            const rows = buatDataRekapanEM(tahun);
+
+            const exportRows = rows.map((row, index) => {
+                const sisa = row.target - row.selesai;
+                const status = statusRekapanEM(row.target, row.selesai);
+
+                return {
+                    "No": index + 1,
+                    "Nama Alkes": row.namaAlat,
+                    "Populasi": row.populasi,
+                    "Target": row.target,
+                    "Selesai": row.selesai,
+                    "Sisa": sisa,
+                    "Januari": row.bulan[0],
+                    "Februari": row.bulan[1],
+                    "Maret": row.bulan[2],
+                    "April": row.bulan[3],
+                    "Mei": row.bulan[4],
+                    "Juni": row.bulan[5],
+                    "Juli": row.bulan[6],
+                    "Agustus": row.bulan[7],
+                    "September": row.bulan[8],
+                    "Oktober": row.bulan[9],
+                    "November": row.bulan[10],
+                    "Desember": row.bulan[11],
+                    "Keterangan": status.text
+                };
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(exportRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Rekapan EM');
+
+            XLSX.writeFile(workbook, `Rekapan_EM_${tahun}.xlsx`);
+            showToast(`Rekapan EM ${tahun} berhasil diekspor.`, 'success');
+        }
 
 function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -4566,10 +5002,18 @@ function renderMaintenanceHistory() {
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
             let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
             
+            const kalibrasiTerakhirByAlat = new Map();
+            (Array.isArray(dataKalibrasi) ? dataKalibrasi : []).forEach(c => {
+                const key = String(c.alatId || '');
+                if (!key) return;
+                const current = kalibrasiTerakhirByAlat.get(key);
+                if (!current || String(c.exp || '') > String(current.exp || '')) kalibrasiTerakhirByAlat.set(key, c);
+            });
+
             tbody.innerHTML = filteredAlat.map(a => {
-                const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
+                const lastCal = kalibrasiTerakhirByAlat.get(String(a.id));
                 let infoCal = `<br><span class="text-[9px] text-slate-400 italic">Belum Kalibrasi</span>`;
-                if(listCal.length > 0) { listCal.sort((x, y) => String(y.exp).localeCompare(String(x.exp))); infoCal = `<br><span class="text-[9px] text-indigo-600 font-bold font-mono">Cal Exp: ${listCal[0].exp}</span>`; }
+                if(lastCal) { infoCal = `<br><span class="text-[9px] text-indigo-600 font-bold font-mono">Cal Exp: ${lastCal.exp}</span>`; }
                 
                 let dNama = a.nama || '-', dMerk = a.merk || '-', dTipe = a.tipe || '-', dSeri = a.seri || '-', dIzin = a.izinEdar || a.edar || '-', dLokasi = a.ruangan || a.lokasi || '-';
                 let aksiManajemenHTML = "";
@@ -4677,6 +5121,7 @@ function renderMaintenanceHistory() {
                     document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
                     showToast(`Lembar Kerja #${payload.noLk} Berhasil Diperbarui & Masuk Rekapan Harian!`, "success");
                     if(typeof renderRekapanPMTable === 'function') renderRekapanPMTable();
+                    if(typeof renderRekapanEMTable === 'function') renderRekapanEMTable();
                 });
             } else {
                 db.collection("lembarKerja").get().then((snap) => {
@@ -4698,6 +5143,7 @@ function renderMaintenanceHistory() {
                         document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
                         showToast(`Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan & Masuk Rekapan!`, "success");
                         if(typeof renderRekapanPMTable === 'function') renderRekapanPMTable();
+                    if(typeof renderRekapanEMTable === 'function') renderRekapanEMTable();
                     });
                 });
             }
