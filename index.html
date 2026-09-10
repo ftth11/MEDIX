@@ -707,37 +707,44 @@
                 </div>
                 
                 <div id="tab-equipment" class="tab-content hidden space-y-6">
-                    <!-- Header & Action Buttons -->
+                    <!-- EQUIPMENT MANAGEMENT SEKARANG MENJADI PROYEKSI OTOMATIS DARI MASTER DATA ASET -->
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <div>
                             <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">
                                 Equipment Management & Rekapan PM Alkes
                             </h2>
+                            <p class="text-[10px] text-slate-500 mt-1 font-semibold">
+                                Seluruh data mengikuti <b>Master Data Aset Medis</b>. Populasi dikelompokkan per nama alkes dan penilaian mengikuti <b>EM WHO Rules</b>. Tidak perlu impor Excel atau input equipment manual.
+                            </p>
                         </div>
-                        <!-- Tombol Impor Excel & Template -->
-                        <div class="flex space-x-2">
-                            <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow flex items-center space-x-1.5 cursor-pointer">
-                                <input type="file" id="excel-file-input" accept=".xlsx, .xls" class="hidden" onchange="imporExcelEquipment(event)">
-                                <i class="fa-solid fa-file-excel"></i> <span>Impor dari Excel</span>
-                            </label>
-                            <button onclick="bukaFormEquipment()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:from-blue-700 transition shadow flex items-center space-x-1.5 cursor-pointer">
-                                <i class="fa-solid fa-plus"></i> <span>Tambah Manual</span>
-                            </button>
+                        <div class="flex items-center gap-2">
+                            <span id="equipment-sync-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                                Otomatis tersinkron
+                            </span>
                         </div>
                     </div>
-                
+
                     <!-- Statistik Ringkasan EM -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
                         <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Total Equipment EM</p><h3 id="em-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3></div>
-                            <div class="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-calculator text-lg"></i></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Jenis Alkes EM</p><h3 id="em-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3></div>
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-layer-group text-lg"></i></div>
                         </div>
                         <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">2x Per Tahun (Risiko Tinggi)</p><h3 id="em-stat-dua" class="text-2xl font-black text-rose-600 mt-1">0</h3></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Total Populasi</p><h3 id="em-stat-populasi" class="text-2xl font-black text-cyan-600 mt-1">0</h3></div>
+                            <div class="p-3 bg-cyan-50 text-cyan-600 rounded-xl border border-cyan-100"><i class="fa-solid fa-boxes-stacked text-lg"></i></div>
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 4 Bulan</p><h3 id="em-stat-empat" class="text-2xl font-black text-rose-600 mt-1">0</h3></div>
                             <div class="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div>
                         </div>
                         <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">1x Per Tahun (Standar)</p><h3 id="em-stat-satu" class="text-2xl font-black text-amber-600 mt-1">0</h3></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 6 Bulan</p><h3 id="em-stat-enam" class="text-2xl font-black text-orange-600 mt-1">0</h3></div>
+                            <div class="p-3 bg-orange-50 text-orange-600 rounded-xl border border-orange-100"><i class="fa-solid fa-calendar-days text-lg"></i></div>
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 12 Bulan</p><h3 id="em-stat-satu" class="text-2xl font-black text-amber-600 mt-1">0</h3></div>
                             <div class="p-3 bg-amber-50 text-amber-600 rounded-xl border border-amber-100"><i class="fa-solid fa-calendar-check text-lg"></i></div>
                         </div>
                         <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
@@ -745,29 +752,32 @@
                             <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100"><i class="fa-solid fa-clipboard-check text-lg"></i></div>
                         </div>
                     </div>
-                
+
                     <!-- Sub-Tab Navigasi Equipment -->
                     <div class="flex bg-slate-200 p-1 rounded-xl border border-slate-300 w-full text-xs font-bold text-slate-600 space-x-1 no-print shadow-sm">
-                        <button onclick="gantiSubTabEM('database')" id="em-subtab-db" class="px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm">📋 Master Dat EM</button>
+                        <button onclick="gantiSubTabEM('database')" id="em-subtab-db" class="px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm">📋 Master Data EM</button>
                         <button onclick="gantiSubTabEM('rekapan')" id="em-subtab-rek" class="px-4 py-2.5 rounded-lg flex-1 text-center transition">📅 Jadwal PM</button>
                     </div>
-                
+
                     <!-- Konten Sub-Tab 1: Database & Analisis EM -->
                     <div id="em-content-database" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             <input type="text" id="search-equipment-em" oninput="renderEquipmentManagementTable()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, serial number, atau ruangan...">
                             <select id="filter-em-periode" onchange="renderEquipmentManagementTable()" class="px-3 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none font-bold">
                                 <option value="">Semua Rekomendasi Periode</option>
-                                <option value="Dua Kali Per Tahun">Dua Kali Per Tahun</option>
+                                <option value="Setiap 4 Bulan">Setiap 4 Bulan</option>
+                                <option value="Setiap 6 Bulan">Setiap 6 Bulan</option>
                                 <option value="Satu Kali Per Tahun">Satu Kali Per Tahun</option>
                                 <option value="Inspeksi Sesuai Kebutuhan">Inspeksi Sesuai Kebutuhan</option>
                             </select>
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
-                            <table class="w-full text-left text-xs border-collapse min-w-[1000px]">
+                            <table class="w-full text-left text-xs border-collapse min-w-[1250px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
-                                        <th class="p-3">Kode / Nama Alat</th>
+                                        <th class="p-3">Nama Alkes</th>
+                                        <th class="p-3 text-center">Populasi</th>
+                                        <th class="p-3 text-center">Satuan</th>
                                         <th class="p-3 text-center">Fungsi</th>
                                         <th class="p-3 text-center">Risiko</th>
                                         <th class="p-3 text-center">Perawatan</th>
@@ -775,16 +785,20 @@
                                         <th class="p-3 text-center font-black text-blue-600">Nilai EM</th>
                                         <th class="p-3">Rekomendasi Periode PM</th>
                                         <th class="p-3">Ruangan / Teknisi</th>
-                                        <th class="p-3 text-center">Aksi</th>
+                                        <th class="p-3 text-center">Sumber</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-equipment-em-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
                             </table>
                         </div>
                     </div>
-                
-                    <!-- Konten Sub-Tab 2: Rekapan Harian & Jadwal PM -->
+
+                    <!-- Konten Sub-Tab 2: Jadwal PM -->
                     <div id="em-content-rekapan" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
+                        <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
+                            <input type="text" id="search-rekapan-pm" oninput="renderRekapanPMTable()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari nama alat, SN, ruangan, bulan...">
+                            <span class="text-[10px] text-slate-500 font-semibold">Jadwal dibuat otomatis dari rekomendasi EM</span>
+                        </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[900px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
@@ -792,6 +806,9 @@
                                         <th class="p-3 text-center">Hari ke-</th>
                                         <th class="p-3 text-center">Bulan ke-</th>
                                         <th class="p-3">Nama Alat Medis</th>
+                                        <th class="p-3">SN</th>
+                                        <th class="p-3">Ruangan</th>
+                                        <th class="p-3">Periode PM</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-rekapan-pm-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -800,88 +817,9 @@
                     </div>
                 </div>
                 
-                <!-- MODAL FORM TAMBAH / EDIT EQUIPMENT DENGAN KALKULATOR EM -->
-                <div id="modal-equipment" class="hidden fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-                    <div class="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl text-xs">
-                        <div class="flex items-center justify-between px-6 py-4 bg-slate-50 border-b border-slate-200">
-                            <h3 id="judul-modal-equipment" class="text-sm font-bold text-slate-800">Formulir Equipment & Penilaian EM</h3>
-                            <button type="button" onclick="tutupFormEquipment()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        </div>
-                        <form id="form-equipment" onsubmit="simpanEquipmentEM(event)" class="p-6 space-y-4">
-                            <input type="hidden" id="equipment-id">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div><label class="block font-bold text-slate-600 mb-1">Kode Alat *</label><input id="equipment-kode" type="text" required placeholder="EQ-001" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-mono"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Nama Alat Kesehatan *</label><input id="equipment-nama" type="text" required placeholder="Syringe Pump" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-semibold"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Merk</label><input id="equipment-merk" type="text" placeholder="Terumo" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Tipe / Model</label><input id="equipment-tipe" type="text" placeholder="TE-171" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Nomor Seri (SN)</label><input id="equipment-serial" type="text" placeholder="SN12345" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-mono"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Ruangan / Instalasi</label><input id="equipment-lokasi" type="text" placeholder="Instalasi ICU HCU" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-semibold"></div>
-                            </div>
-                
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                                <h4 class="font-bold text-blue-600 border-b border-slate-200 pb-1 text-[11px] uppercase tracking-wider">Kalkulator Tingkat Risiko Dasar (Equipment Management Score)</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block font-bold text-slate-700 mb-1">1. Kategori Fungsi (1 - 10)</label>
-                                        <select id="em-fungsi" onchange="hitungSkorEM()" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold">
-                                            <option value="2">2 - Pendukung / Ringan (Contoh: Bed, Centrifuge)</option>
-                                            <option value="4">4 - Diagnostik / Laboratorium</option>
-                                            <option value="5">5 - Terapi / Blood Gas Analyzer</option>
-                                            <option value="6">6 - Monitoring / CTG / Central Monitor</option>
-                                            <option value="7">7 - Terapi Sedang / Blanket Warmer</option>
-                                            <option value="8">8 - Elektro Stimulator</option>
-                                            <option value="9">9 - Bedah / ESU / Laser</option>
-                                            <option value="10" selected>10 - Kritis / Life Support (Ventilator, Defibrilator, AED)</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block font-bold text-slate-700 mb-1">2. Tingkat Risiko (1 - 5)</label>
-                                        <select id="em-risiko" onchange="hitungSkorEM()" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold">
-                                            <option value="1">1 - Sangat Rendah</option>
-                                            <option value="2" selected>2 - Rendah / Standar</option>
-                                            <option value="3">3 - Sedang</option>
-                                            <option value="4">4 - Tinggi</option>
-                                            <option value="5">5 - Sangat Tinggi / Kritis</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block font-bold text-slate-700 mb-1">3. Level Perawatan (1 - 5)</label>
-                                        <select id="em-perawatan" onchange="hitungSkorEM()" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold">
-                                            <option value="1">1 - Sangat Mudah</option>
-                                            <option value="2">2 - Mudah</option>
-                                            <option value="3">3 - Sedang</option>
-                                            <option value="4">4 - Kompleks</option>
-                                            <option value="5" selected>5 - Sangat Kompleks / Spesifik</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block font-bold text-slate-700 mb-1">4. Riwayat Insiden (-2 hingga 0)</label>
-                                        <select id="em-insiden" onchange="hitungSkorEM()" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold">
-                                            <option value="-2" selected>-2 - Tidak Ada Insiden / Aman</option>
-                                            <option value="-1">-1 - Insiden Ringan</option>
-                                            <option value="0">0 - Sering / Pernah Insiden</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between bg-blue-50 border border-blue-200 p-3 rounded-xl">
-                                    <div><span class="text-slate-600 font-bold">Hasil Nilai EM:</span> <span id="em-hasil-nilai" class="text-lg font-black text-blue-700 font-mono">17</span></div>
-                                    <div><span class="text-slate-600 font-bold">Rekomendasi Periode PM:</span> <span id="em-hasil-rekom" class="text-xs font-black px-2.5 py-1 rounded-lg bg-rose-600 text-white">Dua Kali Per Tahun</span></div>
-                                </div>
-                            </div>
-                
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <div><label class="block font-bold text-slate-600 mb-1">Hari Jadwal (1-31)</label><input id="equipment-hari" type="number" min="1" max="31" value="1" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Bulan Jadwal (1-12)</label><input id="equipment-bulan" type="number" min="1" max="12" value="1" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-bold"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Teknisi Penanggung Jawab</label><input id="equipment-teknisi" type="text" placeholder="Teknisi" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white outline-none font-semibold"></div>
-                            </div>
-                
-                            <div class="flex justify-end space-x-2 pt-3 border-t border-slate-200">
-                                <button type="button" onclick="tutupFormEquipment()" class="px-4 py-2 border border-slate-300 rounded-xl text-slate-700">Batal</button>
-                                <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 font-bold rounded-xl text-white shadow">Simpan Data Equipment & EM</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>            
+                <!-- FORM EQUIPMENT MANUAL DIHAPUS:
+                     Equipment Management sekarang otomatis mengikuti dataAlat. -->
+                <div class="hidden" aria-hidden="true"></div>
             </main>
         </div>
     </div>
@@ -1743,7 +1681,7 @@
         
         
             db.collection("dataAlat").onSnapshot(
-                (querySnapshot) => {
+                async (querySnapshot) => {
         
                     dataAlat = [];
         
@@ -1774,6 +1712,11 @@
                     aktualisasikanDotKoneksiHijau();
         
                     evaluasiJatuhTempoKalibrasiMassal();
+        
+                    // Master Data Aset -> Equipment Management (otomatis)
+                    await sinkronisasiEquipmentDariMasterAset(dataAlat);
+                    await renderEquipmentManagementTable();
+                    renderRekapanPMTable();
         
                     renderAll();
         
@@ -2043,8 +1986,9 @@
             const btnRek = document.getElementById('em-subtab-rek');
             const contentDb = document.getElementById('em-content-database');
             const contentRek = document.getElementById('em-content-rekapan');
-        
-            if(tab === 'database') {
+            if (!btnDb || !btnRek || !contentDb || !contentRek) return;
+
+            if (tab === 'database') {
                 btnDb.className = "px-4 py-2.5 rounded-lg flex-1 text-center bg-blue-600 text-white transition shadow-sm";
                 btnRek.className = "px-4 py-2.5 rounded-lg flex-1 text-center transition text-slate-600";
                 contentDb.classList.remove('hidden');
@@ -2059,369 +2003,638 @@
             }
         }
         
-        function hitungSkorEM() {
-            const fungsi = parseInt(document.getElementById('em-fungsi').value) || 0;
-            const risiko = parseInt(document.getElementById('em-risiko').value) || 0;
-            const perawatan = parseInt(document.getElementById('em-perawatan').value) || 0;
-            const insiden = parseInt(document.getElementById('em-insiden').value) || 0;
-        
-            const totalNilai = fungsi + risiko + perawatan + insiden;
-            let rekomendasi = "Inspeksi Sesuai Kebutuhan";
-            let warnaBadge = "bg-emerald-600";
-        
-            if (totalNilai >= 17) {
-                rekomendasi = "Dua Kali Per Tahun";
-                warnaBadge = "bg-rose-600";
-            } else if (totalNilai >= 12) {
-                rekomendasi = "Satu Kali Per Tahun";
-                warnaBadge = "bg-amber-600";
-            } else {
-                rekomendasi = "Inspeksi Sesuai Kebutuhan";
-                warnaBadge = "bg-emerald-600";
+        // ============================================================
+        // EQUIPMENT MANAGEMENT - OTOMATIS DARI MASTER DATA ASET
+        // ============================================================
+        // Master Data EM = agregasi otomatis dari collection dataAlat.
+        // Setiap nama alat yang sama menjadi 1 baris EM dan jumlah unitnya
+        // dihitung sebagai POPULASI. Jadwal PM tetap dibuat per unit agar
+        // setiap serial number tetap dapat ditelusuri pada lembar kerja.
+
+        // Profil EM di bawah ini mengikuti tabel EM WHO Rules / contoh Excel
+        // yang diberikan. POPULASI bukan komponen penjumlahan EM karena rumus
+        // sumber yang diberikan adalah: Fungsi + Risiko Fisik + Perawatan + Insiden.
+        const EM_WHO_PROFIL_ALAT = {
+            "AED": { fungsi: 10, risiko: 2, perawatan: 5, insiden: -2 },
+            "Anesthesi Ventilator": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Auto Washer Desinfektor": { fungsi: 2, risiko: 4, perawatan: 5, insiden: -2 },
+            "Baby CPAP": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Bed Elektrik": { fungsi: 2, risiko: 2, perawatan: 2, insiden: -2 },
+            "Bio Safety Cabinet": { fungsi: 4, risiko: 4, perawatan: 3, insiden: -2 },
+            "Blanket Warmer": { fungsi: 7, risiko: 4, perawatan: 5, insiden: -2 },
+            "Blood Gas Analyzer": { fungsi: 5, risiko: 3, perawatan: 3, insiden: -2 },
+            "Central Monitor": { fungsi: 6, risiko: 5, perawatan: 3, insiden: -2 },
+            "Centrifuge": { fungsi: 4, risiko: 2, perawatan: 3, insiden: -2 },
+            "CTG": { fungsi: 6, risiko: 3, perawatan: 5, insiden: -2 },
+            "Defibrilator": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Diode Laser": { fungsi: 9, risiko: 5, perawatan: 5, insiden: -2 },
+            "EEG": { fungsi: 7, risiko: 3, perawatan: 5, insiden: -2 },
+            "EKG": { fungsi: 6, risiko: 3, perawatan: 5, insiden: -2 },
+            "Electro Stimulator": { fungsi: 8, risiko: 4, perawatan: 5, insiden: 0 },
+            "ENT Treatment Chair": { fungsi: 2, risiko: 2, perawatan: 2, insiden: -2 },
+            "ENT Treatment Unit": { fungsi: 2, risiko: 2, perawatan: 2, insiden: -2 },
+            "ESU": { fungsi: 9, risiko: 4, perawatan: 4, insiden: -1 },
+            "Fetal Doppler": { fungsi: 6, risiko: 3, perawatan: 3, insiden: -2 },
+            "Flat Panel Detector": { fungsi: 6, risiko: 2, perawatan: 3, insiden: -2 },
+            "Freezer - Blood Plasma": { fungsi: 2, risiko: 2, perawatan: 2, insiden: -2 },
+            "Glucometer": { fungsi: 3, risiko: 3, perawatan: 3, insiden: -1 },
+            "Hematology Analyzer": { fungsi: 5, risiko: 3, perawatan: 5, insiden: 0 },
+            "High Flow Nasal Canula": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "High Intensity Laser": { fungsi: 8, risiko: 4, perawatan: 5, insiden: -2 },
+            "Immunology Analyzer": { fungsi: 6, risiko: 3, perawatan: 3, insiden: -2 },
+            "Infant Incubator": { fungsi: 8, risiko: 5, perawatan: 5, insiden: -2 },
+            "Infant Incubator Transport": { fungsi: 8, risiko: 5, perawatan: 5, insiden: -2 },
+            "Infant Warmer": { fungsi: 8, risiko: 5, perawatan: 5, insiden: -2 },
+            "Infusion Pump": { fungsi: 8, risiko: 5, perawatan: 5, insiden: -2 },
+            "Infusion Warmer": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Kimia Analyzer": { fungsi: 5, risiko: 3, perawatan: 5, insiden: -2 },
+            "Laminar Air Flow": { fungsi: 4, risiko: 2, perawatan: 3, insiden: -2 },
+            "Micropipet Fix": { fungsi: 4, risiko: 2, perawatan: 1, insiden: -2 },
+            "Micropipet Variable": { fungsi: 4, risiko: 2, perawatan: 1, insiden: -2 },
+            "Mikroskop Binocular": { fungsi: 4, risiko: 2, perawatan: 2, insiden: -2 },
+            "Nebulizer Compressor": { fungsi: 8, risiko: 4, perawatan: 5, insiden: -2 },
+            "Nebulizer Ultrasonic": { fungsi: 8, risiko: 4, perawatan: 5, insiden: -2 },
+            "Neo Resuscitator Transport": { fungsi: 8, risiko: 3, perawatan: 4, insiden: -2 },
+            "NPWT": { fungsi: 8, risiko: 4, perawatan: 5, insiden: -2 },
+            "Operating Lamp - Dual Arm": { fungsi: 2, risiko: 4, perawatan: 3, insiden: -2 },
+            "Operating Lamp - Single Arm": { fungsi: 2, risiko: 4, perawatan: 3, insiden: -2 },
+            "Orbital Shaker": { fungsi: 4, risiko: 2, perawatan: 2, insiden: -2 },
+            "Oxygen Concentrator": { fungsi: 8, risiko: 5, perawatan: 5, insiden: -2 },
+            "Patient Monitor": { fungsi: 7, risiko: 3, perawatan: 5, insiden: -2 },
+            "Phototeraphy LED": { fungsi: 8, risiko: 4, perawatan: 4, insiden: -2 },
+            "Phototeraphy TL": { fungsi: 7, risiko: 4, perawatan: 5, insiden: -2 },
+            "Pulse Oxymeter": { fungsi: 6, risiko: 3, perawatan: 5, insiden: -2 },
+            "Refrigerator Blood": { fungsi: 4, risiko: 2, perawatan: 2, insiden: -2 },
+            "Refrigerator Farmasi": { fungsi: 4, risiko: 2, perawatan: 2, insiden: -2 },
+            "Refrigerator Lab": { fungsi: 4, risiko: 2, perawatan: 2, insiden: -2 },
+            "Roller Mixer": { fungsi: 4, risiko: 2, perawatan: 2, insiden: -2 },
+            "Shock Wave Teraphy": { fungsi: 8, risiko: 4, perawatan: 5, insiden: -2 },
+            "Shortwave Diathermy": { fungsi: 8, risiko: 4, perawatan: 3, insiden: -2 },
+            "Spirometer": { fungsi: 6, risiko: 3, perawatan: 3, insiden: -2 },
+            "Sterilizer - Plasma": { fungsi: 2, risiko: 4, perawatan: 5, insiden: -2 },
+            "Sterilizer - Steam": { fungsi: 2, risiko: 4, perawatan: 5, insiden: 0 },
+            "Sterilizer - UV & Ozone": { fungsi: 2, risiko: 2, perawatan: 2, insiden: -2 },
+            "Suction Pump - high Vacuum": { fungsi: 7, risiko: 4, perawatan: 5, insiden: -2 },
+            "Syringe Pump": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Tensimeter Manual": { fungsi: 6, risiko: 3, perawatan: 3, insiden: -1 },
+            "Tensimeter Otomatis": { fungsi: 6, risiko: 3, perawatan: 5, insiden: -2 },
+            "Thermohygrometer": { fungsi: 2, risiko: 1, perawatan: 1, insiden: -2 },
+            "Timbangan Bayi": { fungsi: 2, risiko: 2, perawatan: 2, insiden: -2 },
+            "Timbangan Dewasa": { fungsi: 2, risiko: 2, perawatan: 1, insiden: -2 },
+            "Timbangan Obat": { fungsi: 4, risiko: 2, perawatan: 2, insiden: -2 },
+            "Treadmill": { fungsi: 8, risiko: 5, perawatan: 5, insiden: -2 },
+            "Ultrasound therapy": { fungsi: 8, risiko: 4, perawatan: 5, insiden: -2 },
+            "Urine Analyzer": { fungsi: 5, risiko: 3, perawatan: 3, insiden: -2 },
+            "USG - Echo": { fungsi: 6, risiko: 3, perawatan: 5, insiden: -2 },
+            "USG - General": { fungsi: 6, risiko: 3, perawatan: 5, insiden: -2 },
+            "USG - Obgyn": { fungsi: 6, risiko: 3, perawatan: 5, insiden: -2 },
+            "Vein Finder": { fungsi: 2, risiko: 2, perawatan: 2, insiden: -2 },
+            "Ventilator Adult / Pediatrik": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Ventilator Bayi": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Ventilator Transport Adult / Pediatrik": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Ventilator Transport Bayi": { fungsi: 10, risiko: 5, perawatan: 5, insiden: -2 },
+            "Video Laryngoskop Adult": { fungsi: 2, risiko: 5, perawatan: 3, insiden: -2 },
+            "Video Laryngoskop Adult+Pediatric": { fungsi: 2, risiko: 5, perawatan: 3, insiden: -2 },
+            "Video Laryngoskop Pediatric": { fungsi: 2, risiko: 5, perawatan: 3, insiden: -2 },
+            "Vital Sign Monitor": { fungsi: 7, risiko: 3, perawatan: 5, insiden: -2 },
+            "Water Seal Drainage": { fungsi: 9, risiko: 5, perawatan: 5, insiden: -2 },
+            "X-ray Dental Unit": { fungsi: 6, risiko: 4, perawatan: 5, insiden: -2 },
+            "X-Ray Mobile": { fungsi: 6, risiko: 4, perawatan: 5, insiden: -2 },
+            "X-ray Panoramic": { fungsi: 6, risiko: 4, perawatan: 5, insiden: -2 },
+            "X-Ray Stationery": { fungsi: 6, risiko: 4, perawatan: 5, insiden: -2 },
+            "Endoscopy - Bronchoscopy": { fungsi: 9, risiko: 4, perawatan: 5, insiden: -2 },
+            "Infra Red Therapy": { fungsi: 8, risiko: 4, perawatan: 3, insiden: -2 },
+            "Suction Pump - Low Vacuum": { fungsi: 7, risiko: 4, perawatan: 5, insiden: -2 },
+            "Bed transfer": { fungsi: 2, risiko: 1, perawatan: 1, insiden: -2 },
+            "Bed Emergency": { fungsi: 2, risiko: 1, perawatan: 1, insiden: -2 },
+            "Audiometri Diagnostik": { fungsi: 6, risiko: 3, perawatan: 3, insiden: -2 },
+            "Tympanometri": { fungsi: 6, risiko: 3, perawatan: 3, insiden: -2 },
+            "Infusion Device Analyzer": { fungsi: 2, risiko: 2, perawatan: 3, insiden: -2 },
+            "Laundry Clean Trolley": { fungsi: 2, risiko: 2, perawatan: 1, insiden: -2 },
+        };
+
+        const EM_WHO_RULES = {
+            fungsi: {
+                10: 'Life Support',
+                9: 'Surgical & Intensive Care',
+                8: 'Terapi Fisik & Treatment',
+                7: 'Surgical & Intensive Care Monitoring',
+                6: 'Additional Physiological Monitoring & Diagnostic',
+                5: 'Analytical Laboratory',
+                4: 'Laboratory Accessories',
+                3: 'Computer & Related',
+                2: 'Patient Related & Other'
+            },
+            risiko: {
+                4: 'Potensi pasien atau petugas cedera',
+                3: 'Kesalahan terapi atau diagnosa',
+                2: 'Kerusakan peralatan',
+                1: 'Risiko teridentifikasi tidak signifikan'
+            },
+            perawatan: {
+                5: 'Intensive',
+                4: 'Di atas rata-rata',
+                3: 'Rata-rata',
+                2: 'Di bawah rata-rata',
+                1: 'Minimal'
+            },
+            insiden: {
+                2: 'Signifikan',
+                1: 'Di atas rata-rata',
+                0: 'Rata-rata',
+                '-1': 'Minimal',
+                '-2': 'Tidak signifikan'
             }
-        
-            document.getElementById('em-hasil-nilai').innerText = totalNilai;
-            const badgeRekom = document.getElementById('em-hasil-rekom');
-            badgeRekom.innerText = rekomendasi;
-            badgeRekom.className = `text-xs font-black px-2.5 py-1 rounded-lg text-white ${warnaBadge}`;
-        }
-        
-        // Variabel global penampung data equipment & EM
-        async function renderEquipmentManagementTable() {
-            try {
-                const snapshot = await db.collection("equipment").orderBy("createdAt", "desc").get();
-                dataEquipment = []; // Isi variabel global
-                
-                snapshot.forEach(doc => {
-                    dataEquipment.push({ id: doc.id, ...doc.data() });
-                });
-        
-                // Hitung statistik keseluruhan
-                let totalEM = dataEquipment.length;
-                let risikoTinggi = dataEquipment.filter(item => item.rekomendasiPeriode === "Dua Kali Per Tahun").length;
-                let standar = dataEquipment.filter(item => item.rekomendasiPeriode === "Satu Kali Per Tahun").length;
-                let fleksibel = dataEquipment.filter(item => item.rekomendasiPeriode === "Inspeksi Sesuai Kebutuhan").length;
-        
-                // Update tampilan kartu statistik di atas
-                if(document.getElementById('em-stat-total')) document.getElementById('em-stat-total').innerText = totalEM;
-                if(document.getElementById('em-stat-dua')) document.getElementById('em-stat-dua').innerText = risikoTinggi;
-                if(document.getElementById('em-stat-satu')) document.getElementById('em-stat-satu').innerText = standar;
-                if(document.getElementById('em-stat-inspeksi')) document.getElementById('em-stat-inspeksi').innerText = fleksibel;
-        
-                // Ambil nilai pencarian & filter periode
-                const searchKeyword = (document.getElementById('search-equipment-em')?.value || "").toLowerCase();
-                const filterPeriode = document.getElementById('filter-em-periode')?.value || "";
-        
-                const filtered = dataEquipment.filter(item => {
-                    const matchText = `${item.kodeAlat || ''} ${item.namaAlat || ''} ${item.merk || ''} ${item.serialNumber || ''} ${item.lokasi || ''}`.toLowerCase().includes(searchKeyword);
-                    const matchPeriode = !filterPeriode || item.rekomendasiPeriode === filterPeriode;
-                    return matchText && matchPeriode;
-                });
-        
-                const tbody = document.getElementById('table-equipment-em-body');
-                if (tbody) {
-                    if (filtered.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data equipment atau pencarian tidak ditemukan.</td></tr>`;
-                    } else {
-                        tbody.innerHTML = filtered.map((item, idx) => `
-                            <tr class="hover:bg-slate-50 transition">
-                                <td class="p-3">
-                                    <div class="font-bold text-slate-900">${item.namaAlat || '-'}</div>
-                                    <div class="text-[10px] font-mono text-cyan-600">${item.kodeAlat || '-'}</div>
-                                </td>
-                                <td class="p-3 text-center font-bold text-slate-700">${item.emFungsi ?? '-'}</td>
-                                <td class="p-3 text-center font-bold text-slate-700">${item.emRisiko ?? '-'}</td>
-                                <td class="p-3 text-center font-bold text-slate-700">${item.emPerawatan ?? '-'}</td>
-                                <td class="p-3 text-center font-bold text-slate-700">${item.emInsiden ?? '-'}</td>
-                                <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
-                                <td class="p-3">
-                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                                        item.rekomendasiPeriode === 'Dua Kali Per Tahun' ? 'bg-rose-100 text-rose-700' :
-                                        item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
-                                    }">${item.rekomendasiPeriode || '-'}</span>
-                                </td>
-                                <td class="p-3">
-                                    <div class="font-semibold text-slate-800">${item.lokasi || '-'}</div>
-                                    <div class="text-[10px] text-slate-400">${item.teknisi || '-'}</div>
-                                </td>
-                                <td class="p-3 text-center">
-                                    <button onclick="editEquipmentEM('${item.id}')" class="text-blue-600 hover:text-blue-800 mr-2 p-1" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button onclick="hapusEquipmentEM('${item.id}')" class="text-rose-600 hover:text-rose-800 p-1" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        `).join('');
-                    }
+        };
+
+        const NILAI_EM_FALLBACK = {
+            fungsi: 10,
+            risiko: 2,
+            perawatan: 5,
+            insiden: -2
+        };
+
+        function angkaAtauNull(...values) {
+            for (const value of values) {
+                if (value !== undefined && value !== null && value !== '' && !Number.isNaN(Number(value))) {
+                    return Number(value);
                 }
-        
-                console.log("Data equipment berhasil dimuat:", dataEquipment.length);
-            } catch (error) {
-                console.error("Gagal merender tabel equipment:", error);
             }
+            return null;
         }
-        
-        function renderRekapanPMTable() {
-            const tbody = document.getElementById('table-rekapan-pm-body');
-            if (!tbody) return;
-        
-            const searchKeyword = (document.getElementById('search-rekapan-pm')?.value || "").toLowerCase();
-        
-            // Salin dan urutkan berdasarkan Bulan (ascending), lalu Hari (ascending)
-            let sortedData = [...dataEquipment].sort((a, b) => {
-                let bulanA = parseInt(a.bulan) || 1;
-                let bulanB = parseInt(b.bulan) || 1;
-                if (bulanA !== bulanB) return bulanA - bulanB;
-                let hariA = parseInt(a.hari) || 1;
-                let hariB = parseInt(b.hari) || 1;
-                return hariA - hariB;
-            });
-        
-            const filtered = sortedData.filter(item => {
-                const searchable = `${item.hari || ''} ${item.bulan || ''} ${item.namaAlat || ''} ${item.serialNumber || ''} ${item.lokasi || ''}`.toLowerCase();
-                return !searchKeyword || searchable.includes(searchKeyword);
-            });
-        
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal rekapan PM.</td></tr>`;
-                return;
+
+        function normalisasiNamaEM(value) {
+            return String(value ?? '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, ' ')
+                .trim()
+                .replace(/\s+/g, ' ');
+        }
+
+        const EM_WHO_PROFIL_NORMALIZED = Object.fromEntries(
+            Object.entries(EM_WHO_PROFIL_ALAT).map(([nama, nilai]) => [normalisasiNamaEM(nama), nilai])
+        );
+
+        function cariProfilEM(namaAlat) {
+            const key = normalisasiNamaEM(namaAlat);
+            if (EM_WHO_PROFIL_NORMALIZED[key]) return EM_WHO_PROFIL_NORMALIZED[key];
+
+            // Beberapa nama pada master aset bisa mempunyai tambahan kata.
+            // Pencocokan sebagian hanya dipakai jika nama WHO benar-benar menjadi
+            // bagian dari nama aset agar tidak mengubah penilaian secara agresif.
+            const kandidat = Object.keys(EM_WHO_PROFIL_NORMALIZED)
+                .filter(k => k.length >= 4 && (key.includes(k) || k.includes(key)))
+                .sort((a, b) => b.length - a.length);
+
+            return kandidat.length ? EM_WHO_PROFIL_NORMALIZED[kandidat[0]] : null;
+        }
+
+        function hitungRekomendasiPeriodeWHO(nilaiEM) {
+            if (nilaiEM === null || nilaiEM === undefined || Number.isNaN(Number(nilaiEM))) {
+                return 'Belum Ditentukan';
             }
-        
-            tbody.innerHTML = filtered.map((item, idx) => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="p-3 text-center font-bold font-mono text-cyan-700">${item.hari || 1}</td>
-                    <td class="p-3 text-center font-bold font-mono text-blue-700">Bulan ${item.bulan || 1}</td>
-                    <td class="p-3 font-semibold text-slate-900">${item.namaAlat || '-'}</td>
-                </tr>
-            `).join('');
+
+            const nilai = Number(nilaiEM);
+
+            // Contoh Excel yang diberikan menetapkan nilai 12 sebagai
+            // Satu Kali Per Tahun, sehingga batas operasional dipakai:
+            // <=11 inspeksi, 12-14 tahunan, 15-19 6 bulanan, >=20 4 bulanan.
+            if (nilai >= 20) return 'Setiap 4 Bulan';
+            if (nilai >= 15) return 'Setiap 6 Bulan';
+            if (nilai >= 12) return 'Satu Kali Per Tahun';
+            return 'Inspeksi Sesuai Kebutuhan';
         }
-        
-        function bukaFormEquipment() {
-            document.getElementById('judul-modal-equipment').textContent = "Tambah Equipment & Penilaian EM";
-            document.getElementById('form-equipment').reset();
-            document.getElementById('equipment-id').value = "";
-            document.getElementById('em-fungsi').value = "10";
-            document.getElementById('em-risiko').value = "2";
-            document.getElementById('em-perawatan').value = "5";
-            document.getElementById('em-insiden').value = "-2";
-            hitungSkorEM();
-            toggleModal('modal-equipment', true);
+
+        function kelasBadgePeriodeEM(periode) {
+            if (periode === 'Setiap 4 Bulan') return 'bg-rose-100 text-rose-700';
+            if (periode === 'Setiap 6 Bulan') return 'bg-orange-100 text-orange-700';
+            if (periode === 'Satu Kali Per Tahun') return 'bg-amber-100 text-amber-700';
+            if (periode === 'Inspeksi Sesuai Kebutuhan') return 'bg-emerald-100 text-emerald-700';
+            return 'bg-slate-100 text-slate-600';
         }
-        
-        function tutupFormEquipment() {
-            toggleModal('modal-equipment', false);
+
+        function kelasBadgePeriodeEMGelap(periode) {
+            if (periode === 'Setiap 4 Bulan') return 'bg-rose-600';
+            if (periode === 'Setiap 6 Bulan') return 'bg-orange-600';
+            if (periode === 'Satu Kali Per Tahun') return 'bg-amber-600';
+            if (periode === 'Inspeksi Sesuai Kebutuhan') return 'bg-emerald-600';
+            return 'bg-slate-600';
         }
-        
-        async function simpanEquipmentEM(event) {
-            event.preventDefault();
-            const id = document.getElementById('equipment-id').value.trim();
-            const fungsi = parseInt(document.getElementById('em-fungsi').value) || 0;
-            const risiko = parseInt(document.getElementById('em-risiko').value) || 0;
-            const perawatan = parseInt(document.getElementById('em-perawatan').value) || 0;
-            const insiden = parseInt(document.getElementById('em-insiden').value) || 0;
-            const nilaiEM = fungsi + risiko + perawatan + insiden;
-            const rekomendasiPeriode = nilaiEM >= 17 ? "Dua Kali Per Tahun" : nilaiEM >= 12 ? "Satu Kali Per Tahun" : "Inspeksi Sesuai Kebutuhan";
-        
-            const payload = {
-                kodeAlat: document.getElementById('equipment-kode').value.trim(),
-                namaAlat: document.getElementById('equipment-nama').value.trim(),
-                merk: document.getElementById('equipment-merk').value.trim(),
-                tipe: document.getElementById('equipment-tipe').value.trim(),
-                serialNumber: document.getElementById('equipment-serial').value.trim(),
-                lokasi: document.getElementById('equipment-lokasi').value.trim(),
+
+        function jadwalOtomatisDariPeriode(periode, assetIndex = 0, asset = {}) {
+            // Jika master aset memiliki bulan awal PM, gunakan itu; jika tidak,
+            // gunakan Januari sebagai titik awal yang konsisten.
+            const bulanAwal = Math.min(12, Math.max(1, parseInt(asset.bulanAwalPM || asset.bulanPM || 1) || 1));
+
+            if (periode === 'Setiap 4 Bulan') {
+                return [0, 4, 8].map(offset => ({
+                    hari: 1,
+                    bulan: ((bulanAwal - 1 + offset) % 12) + 1
+                }));
+            }
+
+            if (periode === 'Setiap 6 Bulan') {
+                return [0, 6].map(offset => ({
+                    hari: 1,
+                    bulan: ((bulanAwal - 1 + offset) % 12) + 1
+                }));
+            }
+
+            if (periode === 'Satu Kali Per Tahun') {
+                return [{ hari: 1, bulan: bulanAwal }];
+            }
+
+            return [];
+        }
+
+        function normalisasiAssetUntukEquipment(asset, index = 0, existing = {}) {
+            const kodeAlat =
+                asset.kodeAlat || asset.kodeAset || asset.kode || asset.assetCode || asset.nomorAset || asset.id;
+            const namaAlat = asset.nama || asset.namaAlat || 'Alat Medis';
+            const merk = asset.merk || asset.brand || '-';
+            const tipe = asset.tipe || asset.model || asset.modelTipe || '-';
+            const serialNumber = asset.seri || asset.serialNumber || asset.sn || '-';
+            const lokasi = asset.ruangan || asset.lokasi || asset.unit || 'Unit';
+            const status = asset.status || existing.status || 'Siap Digunakan';
+            const profilWHO = cariProfilEM(namaAlat);
+
+            // Prioritas sumber nilai: field EM di Master Aset -> profil WHO berdasarkan
+            // nama alat -> penilaian lama di equipment -> fallback lama.
+            const fungsi = angkaAtauNull(asset.emFungsi, asset.kategoriFungsi, asset.KATEGORIFUNGSI, profilWHO?.fungsi, existing.emFungsi, NILAI_EM_FALLBACK.fungsi);
+            const risiko = angkaAtauNull(asset.emRisiko, asset.tingkatRisiko, asset.TINGKATRISIKO, profilWHO?.risiko, existing.emRisiko, NILAI_EM_FALLBACK.risiko);
+            const perawatan = angkaAtauNull(asset.emPerawatan, asset.levelPerawatan, asset.LEVELPERAWATAN, profilWHO?.perawatan, existing.emPerawatan, NILAI_EM_FALLBACK.perawatan);
+            const insiden = angkaAtauNull(asset.emInsiden, asset.riwayatInsiden, asset.RIWAYATINSIDEN, profilWHO?.insiden, existing.emInsiden, NILAI_EM_FALLBACK.insiden);
+
+            const komponenLengkap = [fungsi, risiko, perawatan, insiden].every(v => v !== null);
+            const nilaiEM = komponenLengkap ? fungsi + risiko + perawatan + insiden : null;
+            const rekomendasiPeriode = hitungRekomendasiPeriodeWHO(nilaiEM);
+            const jadwalPM = jadwalOtomatisDariPeriode(rekomendasiPeriode, index, asset);
+            const jadwalPertama = jadwalPM[0] || {};
+            const teknisi = asset.teknisi || asset.penanggungJawab || existing.teknisi || 'Teknisi';
+
+            return {
+                assetId: asset.id,
+                sumberData: 'dataAlat',
+                sumberEM: profilWHO ? 'EM WHO Rules' : 'Master Aset / data lama',
+                kodeAlat,
+                namaAlat,
+                merk,
+                tipe,
+                serialNumber,
+                lokasi,
+                kategori: asset.kategori || asset.jenis || existing.kategori || '',
+                unit: asset.unit || asset.ruangan || existing.unit || '',
+                izinEdar: asset.izinEdar || asset.edar || existing.izinEdar || '',
+                teknisi,
+                status,
+                kondisi: status === 'Dalam Perbaikan' ? 'Kurang Baik' : (existing.kondisi || 'Baik'),
                 emFungsi: fungsi,
                 emRisiko: risiko,
                 emPerawatan: perawatan,
                 emInsiden: insiden,
-                nilaiEM: nilaiEM,
-                rekomendasiPeriode: rekomendasiPeriode,
-                hari: parseInt(document.getElementById('equipment-hari').value) || 1,
-                bulan: parseInt(document.getElementById('equipment-bulan').value) || 1,
-                teknisi: document.getElementById('equipment-teknisi').value.trim() || "Teknisi",
-                status: "Aktif",
-                kondisi: "Baik",
+                nilaiEM,
+                rekomendasiPeriode,
+                jadwalPM,
+                hari: jadwalPertama.hari || null,
+                bulan: jadwalPertama.bulan || null,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-        
-            try {
-                if (id) {
-                    await db.collection("equipment").doc(id).update(payload);
-                    showToast("Equipment & EM berhasil diperbarui!", "success");
-                } else {
-                    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection("equipment").add(payload);
-                    showToast("Equipment & EM baru berhasil ditambahkan!", "success");
+        }
+
+        function kelompokkanDataEquipmentUntukEM(assets, existingMap = {}) {
+            const groups = new Map();
+
+            (assets || []).forEach((asset, index) => {
+                if (!asset || !asset.id) return;
+                const existing = existingMap[asset.id] || {};
+                const item = { id: asset.id, ...normalisasiAssetUntukEquipment(asset, index, existing) };
+                const key = normalisasiNamaEM(item.namaAlat);
+
+                if (!groups.has(key)) {
+                    groups.set(key, {
+                        id: 'em-' + key.replace(/\s+/g, '-'),
+                        namaAlat: item.namaAlat,
+                        merkSet: new Set(),
+                        tipeSet: new Set(),
+                        lokasiSet: new Set(),
+                        teknisiSet: new Set(),
+                        serialSet: new Set(),
+                        assets: [],
+                        emFungsi: item.emFungsi,
+                        emRisiko: item.emRisiko,
+                        emPerawatan: item.emPerawatan,
+                        emInsiden: item.emInsiden,
+                        nilaiEM: item.nilaiEM,
+                        rekomendasiPeriode: item.rekomendasiPeriode,
+                        sumberEM: item.sumberEM
+                    });
                 }
-                tutupFormEquipment();
-                renderEquipmentManagementTable();
-            } catch (error) {
-                showToast("Gagal menyimpan equipment: " + error.message, "error");
-            }
-        }
-        
-        function editEquipmentEM(id) {
-            const item = dataEquipment.find(e => e.id === id);
-            if (!item) return;
-            document.getElementById('judul-modal-equipment').textContent = "Edit Equipment & Penilaian EM";
-            document.getElementById('equipment-id').value = item.id;
-            document.getElementById('equipment-kode').value = item.kodeAlat || "";
-            document.getElementById('equipment-nama').value = item.namaAlat || "";
-            document.getElementById('equipment-merk').value = item.merk || "";
-            document.getElementById('equipment-tipe').value = item.tipe || "";
-            document.getElementById('equipment-serial').value = item.serialNumber || "";
-            document.getElementById('equipment-lokasi').value = item.lokasi || "";
-            document.getElementById('em-fungsi').value = item.emFungsi || 10;
-            document.getElementById('em-risiko').value = item.emRisiko || 2;
-            document.getElementById('em-perawatan').value = item.emPerawatan || 5;
-            document.getElementById('em-insiden').value = item.emInsiden || -2;
-            document.getElementById('equipment-hari').value = item.hari || 1;
-            document.getElementById('equipment-bulan').value = item.bulan || 1;
-            document.getElementById('equipment-teknisi').value = item.teknisi || "Teknisi";
-            hitungSkorEM();
-            toggleModal('modal-equipment', true);
-        }        
 
-        // Fungsi Generator Jadwal Otomatis Berdasarkan Rekomendasi Periode EM
-        function generateJadwalOtomatis(rekomendasiPeriode, indexAlat) {
-            if (rekomendasiPeriode === "Dua Kali Per Tahun") {
-                return [6, 12];
-            } else if (rekomendasiPeriode === "Satu Kali Per Tahun") {
-                return [(indexAlat % 12) + 1];
-            } else {
-                return [1];
-            }
-        }
-
-        async function hapusEquipmentEM(id) {
-            if (confirm("Apakah Anda yakin ingin menghapus data equipment & penilaian EM ini?")) {
-                try {
-                    await db.collection("equipment").doc(id).delete();
-                    showToast("Equipment berhasil dihapus!", "success");
-                    renderEquipmentManagementTable(); // Refresh tabel setelah hapus
-                } catch (error) {
-                    showToast("Gagal menghapus equipment: " + error.message, "error");
-                }
-            }
-        }
-
-        /**
-         * Sinkronisasi otomatis Master Data Aset ke Equipment Management
-         * Fungsi ini membaca data dari database master aset dan memasukkannya ke tabel Equipment.
-         */
-        function sinkronkanEquipmentDariMaster() {
-            // Pastikan variabel global master aset (misal: 'allAlat' atau data dari Firestore) tersedia
-            if (typeof allAlat === 'undefined' || !allAlat.length) {
-                tampilkanToast("Master data aset kosong atau belum dimuat.", "error");
-                return;
-            }
-        
-            let equipmentList = [];
-        
-            allAlat.forEach((aset, index) => {
-                // Tentukan nilai default EM berdasarkan nama atau kategori alat secara otomatis
-                let skorFungsi = tentukanSkorFungsiOtomatis(aset.nama || aset.namaAlat);
-                let skorRisiko = 2; // Default risiko standar
-                let skorPerawatan = 3; // Default perawatan sedang
-                let skorInsiden = -2; // Aman
-        
-                // Hitung nilai EM total
-                let nilaiEM = skorFungsi + skorRisiko + skorPerawatan + skorInsiden;
-                let rekomendasiPeriode = tentukanRekomendasiPeriodeEM(nilaiEM);
-        
-                equipmentList.push({
-                    id: aset.id || `EQ-AUTO-${index + 1}`,
-                    kode: aset.kode || `EQ-${String(index + 1).padStart(3, '0')} `,
-                    nama: aset.nama || aset.namaAlat || '-',
-                    merk: aset.merk || '-',
-                    tipe: aset.tipe || aset.model || '-',
-                    serial: aset.serial || aset.noSeri || '-',
-                    lokasi: aset.lokasi || aset.ruangan || '-',
-                    fungsi: skorFungsi,
-                    risiko: skorRisiko,
-                    perawatan: skorPerawatan,
-                    insiden: skorInsiden,
-                    nilaiEM: nilaiEM,
-                    rekomendasiPeriode: rekomendasiPeriode,
-                    hari: (index % 28) + 1, // Penjadwalan otomatis tersebar
-                    bulan: (index % 12) + 1,
-                    teknisi: aset.teknisi || 'Tim IPSRS'
-                });
+                const group = groups.get(key);
+                group.assets.push(item);
+                if (item.merk && item.merk !== '-') group.merkSet.add(item.merk);
+                if (item.tipe && item.tipe !== '-') group.tipeSet.add(item.tipe);
+                if (item.lokasi) group.lokasiSet.add(item.lokasi);
+                if (item.teknisi) group.teknisiSet.add(item.teknisi);
+                if (item.serialNumber && item.serialNumber !== '-') group.serialSet.add(item.serialNumber);
             });
-        
-            // Simpan ke state atau langsung render ke tabel Equipment Management
-            window.equipmentDataDatabase = equipmentList;
-            renderEquipmentManagementTableOtomatis(equipmentList);
-            tampilkanToast("Equipment Management berhasil disinkronkan dengan Master Aset!", "success");
+
+            return Array.from(groups.values()).map(group => {
+                // Karena satu nama alat dapat memiliki lebih dari satu profil jika
+                // Master Aset sangat heterogen, gunakan profil mayoritas/pertama yang
+                // tersedia. Untuk kondisi normal semua unit nama yang sama memiliki skor sama.
+                const nilaiKomponen = group.assets.map(a => [a.emFungsi, a.emRisiko, a.emPerawatan, a.emInsiden]);
+                const konsisten = nilaiKomponen.every(v => JSON.stringify(v) === JSON.stringify(nilaiKomponen[0]));
+                const base = group.assets[0] || {};
+                const fungsi = konsisten ? base.emFungsi : angkaAtauNull(...group.assets.map(a => a.emFungsi));
+                const risiko = konsisten ? base.emRisiko : angkaAtauNull(...group.assets.map(a => a.emRisiko));
+                const perawatan = konsisten ? base.emPerawatan : angkaAtauNull(...group.assets.map(a => a.emPerawatan));
+                const insiden = konsisten ? base.emInsiden : angkaAtauNull(...group.assets.map(a => a.emInsiden));
+                const nilaiEM = [fungsi, risiko, perawatan, insiden].every(v => v !== null) ? fungsi + risiko + perawatan + insiden : null;
+
+                return {
+                    ...group,
+                    populasi: group.assets.length,
+                    satuan: 'Unit',
+                    merk: Array.from(group.merkSet).join(', ') || '-',
+                    tipe: Array.from(group.tipeSet).join(', ') || '-',
+                    lokasi: Array.from(group.lokasiSet).join(', ') || '-',
+                    teknisi: Array.from(group.teknisiSet).join(', ') || '-',
+                    serialNumbers: Array.from(group.serialSet),
+                    emFungsi: fungsi,
+                    emRisiko: risiko,
+                    emPerawatan: perawatan,
+                    emInsiden: insiden,
+                    nilaiEM,
+                    rekomendasiPeriode: hitungRekomendasiPeriodeWHO(nilaiEM),
+                    sumberEM: konsisten ? (base.sumberEM || 'EM WHO Rules') : 'Profil campuran - perlu verifikasi'
+                };
+            }).sort((a, b) => a.namaAlat.localeCompare(b.namaAlat, 'id'));
         }
-        
-        /**
-         * Menentukan skor fungsi otomatis berdasarkan kata kunci nama alat
-         */
-        function tentukanSkorFungsiOtomatis(namaAlat) {
-            let nama = namaAlat.toLowerCase();
-            if (nama.includes('ventilator') || nama.includes('defibrillator') || nama.includes('aed') || nama.includes('icu')) {
-                return 10; // Kritis / Life Support
-            } else if (nama.includes('esu') || nama.includes('bedah') || nama.includes('laser')) {
-                return 9; // Bedah
-            } else if (nama.includes('monitor') || nama.includes('ctg')) {
-                return 6; // Monitoring
-            } else if (nama.includes('syringe') || nama.includes('infusion') || nama.includes('terapi')) {
-                return 5; // Terapi
-            }
-            return 2; // Pendukung / Umum
+
+        function getAssetByEquipmentId(id) {
+            return (dataAlat || []).find(a => a.id === id);
         }
-        
-        /**
-         * Menentukan rekomendasi periode berdasarkan nilai EM
-         */
-        function tentukanRekomendasiPeriodeEM(nilaiEM) {
-            if (nilaiEM >= 15) {
-                return "Dua Kali Per Tahun";
-            } else if (nilaiEM >= 10) {
-                return "Satu Kali Per Tahun";
+
+        async function sinkronisasiEquipmentDariMasterAset(assets = dataAlat) {
+            if (!db || !Array.isArray(assets)) return;
+
+            const badge = document.getElementById('equipment-sync-badge');
+            if (badge) {
+                badge.innerHTML = '<i class="fa-solid fa-arrows-rotate fa-spin"></i> Menyinkronkan...';
+                badge.className = 'inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-200 px-3 py-2 rounded-xl text-[10px] font-bold';
             }
-            return "Inspeksi Sesuai Kebutuhan";
+
+            try {
+                const existingSnapshot = await db.collection('equipment').get();
+                const existingByAssetId = {};
+                const existingBySerial = {};
+                const existingByIdentity = {};
+
+                existingSnapshot.forEach(doc => {
+                    const item = { id: doc.id, ...doc.data() };
+                    if (item.assetId) existingByAssetId[item.assetId] = item;
+                    if (item.serialNumber) existingBySerial[String(item.serialNumber).trim().toLowerCase()] = item;
+                    const identity = [item.namaAlat || '', item.merk || '', item.tipe || '', item.lokasi || ''].join('|').trim().toLowerCase();
+                    if (identity.replace(/\|/g, '')) existingByIdentity[identity] = item;
+                });
+
+                let batch = db.batch();
+                let batchCount = 0;
+
+                for (let index = 0; index < assets.length; index++) {
+                    const asset = assets[index];
+                    if (!asset || !asset.id) continue;
+
+                    const serialKey = String(asset.seri || asset.serialNumber || asset.sn || '').trim().toLowerCase();
+                    const identityKey = [asset.nama || asset.namaAlat || '', asset.merk || '', asset.tipe || asset.model || '', asset.ruangan || asset.lokasi || ''].join('|').trim().toLowerCase();
+                    const existing = existingByAssetId[asset.id] || (serialKey ? existingBySerial[serialKey] : null) || existingByIdentity[identityKey] || {};
+                    const payload = normalisasiAssetUntukEquipment(asset, index, existing);
+                    const equipmentRef = db.collection('equipment').doc(asset.id);
+
+                    batch.set(equipmentRef, {
+                        ...payload,
+                        createdAt: existing.createdAt || firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+
+                    batchCount++;
+                    if (batchCount >= 450) {
+                        await batch.commit();
+                        batch = db.batch();
+                        batchCount = 0;
+                    }
+                }
+
+                if (batchCount > 0) await batch.commit();
+
+                if (badge) {
+                    badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${assets.length} aset tersinkron`;
+                    badge.className = 'inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold';
+                }
+            } catch (error) {
+                console.error('Sinkronisasi equipment dari dataAlat gagal:', error);
+                if (badge) {
+                    badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Mode tampilan otomatis';
+                    badge.className = 'inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 px-3 py-2 rounded-xl text-[10px] font-bold';
+                }
+                // Tabel tetap dapat bekerja langsung dari dataAlat walaupun role
+                // pengguna tidak mempunyai hak tulis ke collection equipment.
+                console.warn('Projection equipment tidak dapat diperbarui; UI tetap memakai dataAlat.');
+            }
         }
-        
-        /**
-         * Render tabel Equipment Management secara otomatis
-         */
-        function renderEquipmentManagementTableOtomatis(data) {
-            const tbody = document.getElementById('table-equipment-em-body');
-            if (!tbody) return;
-        
-            tbody.innerHTML = '';
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="text-center p-4 text-slate-400">Tidak ada data equipment terintegrasi.</td></tr>`;
-                return;
+
+        function hitungSkorEM() {
+            const fungsi = parseInt(document.getElementById('em-fungsi')?.value) || 0;
+            const risiko = parseInt(document.getElementById('em-risiko')?.value) || 0;
+            const perawatan = parseInt(document.getElementById('em-perawatan')?.value) || 0;
+            const insiden = parseInt(document.getElementById('em-insiden')?.value) || 0;
+            const totalNilai = fungsi + risiko + perawatan + insiden;
+            const rekomendasi = hitungRekomendasiPeriodeWHO(totalNilai);
+
+            const hasilNilai = document.getElementById('em-hasil-nilai');
+            const badgeRekom = document.getElementById('em-hasil-rekom');
+            if (hasilNilai) hasilNilai.innerText = totalNilai;
+            if (badgeRekom) {
+                badgeRekom.innerText = rekomendasi;
+                badgeRekom.className = `text-xs font-black px-2.5 py-1 rounded-lg text-white ${kelasBadgePeriodeEMGelap(rekomendasi)}`;
             }
-        
-            data.forEach((eq, idx) => {
-                let badgeColor = eq.rekomendasiPeriode === "Dua Kali Per Tahun" ? "bg-rose-50 text-rose-600 border-rose-200" :
-                                 eq.rekomendasiPeriode === "Satu Kali Per Tahun" ? "bg-amber-50 text-amber-600 border-amber-200" : "bg-emerald-50 text-emerald-600 border-emerald-200";
-        
-                tbody.innerHTML += `
-                    <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
-                        <td class="p-3 font-bold">${eq.nama} <br><span class="text-[10px] text-slate-400 font-mono">${eq.kode} | S/N: ${eq.serial}</span></td>
-                        <td class="p-3 text-center font-mono">${eq.fungsi}</td>
-                        <td class="p-3 text-center font-mono">${eq.risiko}</td>
-                        <td class="p-3 text-center font-mono">${eq.perawatan}</td>
-                        <td class="p-3 text-center font-mono">${eq.insiden}</td>
-                        <td class="p-3 text-center font-black text-blue-600 font-mono text-sm">${eq.nilaiEM}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 rounded-lg text-[10px] font-bold border ${badgeColor}">${eq.rekomendasiPeriode}</span></td>
-                        <td class="p-3 font-semibold">${eq.lokasi} <br><span class="text-[10px] text-slate-400">Teknisi: ${eq.teknisi}</span></td>
+            return { fungsi, risiko, perawatan, insiden, totalNilai, rekomendasi };
+        }
+
+        async function ambilExistingEquipmentMap() {
+            const map = {};
+            if (!db) return map;
+            try {
+                const snapshot = await db.collection('equipment').get();
+                snapshot.forEach(doc => map[doc.id] = { id: doc.id, ...doc.data() });
+            } catch (e) {
+                console.warn('Collection equipment tidak dapat dibaca:', e);
+            }
+            return map;
+        }
+
+        async function renderEquipmentManagementTable() {
+            try {
+                if (!Array.isArray(dataAlat)) dataAlat = [];
+                const existingMap = await ambilExistingEquipmentMap();
+                dataEquipment = dataAlat.map((asset, index) => ({
+                    id: asset.id,
+                    ...normalisasiAssetUntukEquipment(asset, index, existingMap[asset.id] || {})
+                }));
+
+                const groups = kelompokkanDataEquipmentUntukEM(dataAlat, existingMap);
+                window.dataEMGroups = groups;
+
+                const totalJenis = groups.length;
+                const totalPopulasi = groups.reduce((sum, g) => sum + g.populasi, 0);
+                const empatBulan = groups.filter(g => g.rekomendasiPeriode === 'Setiap 4 Bulan').length;
+                const enamBulan = groups.filter(g => g.rekomendasiPeriode === 'Setiap 6 Bulan').length;
+                const tahunan = groups.filter(g => g.rekomendasiPeriode === 'Satu Kali Per Tahun').length;
+                const inspeksi = groups.filter(g => g.rekomendasiPeriode === 'Inspeksi Sesuai Kebutuhan').length;
+
+                document.getElementById('em-stat-total')?.replaceChildren(document.createTextNode(totalJenis));
+                document.getElementById('em-stat-populasi')?.replaceChildren(document.createTextNode(totalPopulasi));
+                document.getElementById('em-stat-empat')?.replaceChildren(document.createTextNode(empatBulan));
+                document.getElementById('em-stat-enam')?.replaceChildren(document.createTextNode(enamBulan));
+                document.getElementById('em-stat-satu')?.replaceChildren(document.createTextNode(tahunan));
+                document.getElementById('em-stat-inspeksi')?.replaceChildren(document.createTextNode(inspeksi));
+
+                const searchKeyword = (document.getElementById('search-equipment-em')?.value || '').trim().toLowerCase();
+                const filterPeriode = document.getElementById('filter-em-periode')?.value || '';
+                const filtered = groups.filter(item => {
+                    const searchable = [
+                        item.namaAlat, item.merk, item.tipe, item.lokasi, item.teknisi,
+                        ...item.serialNumbers
+                    ].filter(Boolean).join(' ').toLowerCase();
+                    return (!searchKeyword || searchable.includes(searchKeyword)) &&
+                           (!filterPeriode || item.rekomendasiPeriode === filterPeriode);
+                });
+
+                const tbody = document.getElementById('table-equipment-em-body');
+                if (!tbody) return;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3">
+                            <div class="font-bold text-slate-900">${escapeHtmlEquipment(item.namaAlat || '-')}</div>
+                            <div class="text-[10px] font-mono text-cyan-600">${item.populasi} unit terdaftar</div>
+                            <div class="text-[9px] text-slate-400">${escapeHtmlEquipment(item.merk || '-')}${item.tipe && item.tipe !== '-' ? ' • ' + escapeHtmlEquipment(item.tipe) : ''}</div>
+                        </td>
                         <td class="p-3 text-center">
-                            <button onclick="editEquipmentManual('${eq.id}')" class="bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg font-bold hover:bg-blue-100 transition"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <span class="inline-flex min-w-[42px] justify-center px-2 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100 font-black">${item.populasi}</span>
+                        </td>
+                        <td class="p-3 text-center font-bold text-slate-700">${item.satuan}</td>
+                        <td class="p-3 text-center font-bold text-slate-700">${item.emFungsi ?? '-'}</td>
+                        <td class="p-3 text-center font-bold text-slate-700">${item.emRisiko ?? '-'}</td>
+                        <td class="p-3 text-center font-bold text-slate-700">${item.emPerawatan ?? '-'}</td>
+                        <td class="p-3 text-center font-bold text-slate-700">${item.emInsiden ?? '-'}</td>
+                        <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
+                        <td class="p-3">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${kelasBadgePeriodeEM(item.rekomendasiPeriode)}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span>
+                        </td>
+                        <td class="p-3">
+                            <div class="font-semibold text-slate-800">${escapeHtmlEquipment(item.lokasi || '-')}</div>
+                            <div class="text-[10px] text-slate-400">${escapeHtmlEquipment(item.teknisi || '-')}</div>
+                        </td>
+                        <td class="p-3 text-center">
+                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold" title="Data sumber: Master Data Aset">
+                                <i class="fa-solid fa-database"></i> Master Aset
+                            </span>
                         </td>
                     </tr>
-                `;
-            });
-        
-            // Perbarui statistik ringkasan EM
-            document.getElementById('em-stat-total').innerText = data.length;
-            document.getElementById('em-stat-dua').innerText = data.filter(item => item.rekomendasiPeriode === "Dua Kali Per Tahun").length;
-            document.getElementById('em-stat-satu').innerText = data.filter(item => item.rekomendasiPeriode === "Satu Kali Per Tahun").length;
-            document.getElementById('em-stat-inspeksi').innerText = data.filter(item => item.rekomendasiPeriode === "Inspeksi Sesuai Kebutuhan").length;
+                `).join('');
+            } catch (error) {
+                console.error('Gagal merender tabel equipment:', error);
+                showToast('Gagal menampilkan Equipment Management: ' + error.message, 'error');
+            }
         }
-        
+
+        function escapeHtmlEquipment(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getJadwalPMUntukAsset(item, index = 0) {
+            if (Array.isArray(item.jadwalPM)) return item.jadwalPM;
+            return jadwalOtomatisDariPeriode(item.rekomendasiPeriode, index, item);
+        }
+
+        function renderRekapanPMTable() {
+            const tbody = document.getElementById('table-rekapan-pm-body');
+            if (!tbody) return;
+
+            const searchKeyword = (document.getElementById('search-rekapan-pm')?.value || '').trim().toLowerCase();
+            const rows = [];
+
+            // Jadwal PM tetap per UNIT. Master EM boleh agregat, tetapi teknisi
+            // perlu melihat setiap serial number sebagai target pemeliharaan.
+            dataEquipment.forEach((item, index) => {
+                const jadwal = getJadwalPMUntukAsset(item, index);
+                if (jadwal.length === 0) {
+                    rows.push({ item, hari: '-', bulan: '-', periode: item.rekomendasiPeriode || 'Inspeksi Sesuai Kebutuhan' });
+                    return;
+                }
+                jadwal.forEach(j => rows.push({
+                    item,
+                    hari: j.hari || 1,
+                    bulan: j.bulan || 1,
+                    periode: item.rekomendasiPeriode || '-'
+                }));
+            });
+
+            rows.sort((a, b) => {
+                const bulanA = a.bulan === '-' ? 99 : parseInt(a.bulan) || 99;
+                const bulanB = b.bulan === '-' ? 99 : parseInt(b.bulan) || 99;
+                if (bulanA !== bulanB) return bulanA - bulanB;
+                return (a.item.namaAlat || '').localeCompare(b.item.namaAlat || '', 'id');
+            });
+
+            const filtered = rows.filter(row => {
+                const item = row.item;
+                const searchable = [row.hari, row.bulan, item.namaAlat, item.serialNumber, item.lokasi, row.periode]
+                    .filter(Boolean).join(' ').toLowerCase();
+                return !searchKeyword || searchable.includes(searchKeyword);
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada jadwal PM dari Master Data Aset.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(row => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-3 text-center font-bold font-mono text-cyan-700">${row.hari}</td>
+                    <td class="p-3 text-center font-bold font-mono text-blue-700">${row.bulan === '-' ? 'Sesuai kebutuhan' : 'Bulan ' + row.bulan}</td>
+                    <td class="p-3 font-semibold text-slate-900">${escapeHtmlEquipment(row.item.namaAlat || '-')}</td>
+                    <td class="p-3 font-mono text-[10px]">${escapeHtmlEquipment(row.item.serialNumber || '-')}</td>
+                    <td class="p-3">${escapeHtmlEquipment(row.item.lokasi || '-')}</td>
+                    <td class="p-3"><span class="px-2 py-1 rounded-full text-[9px] font-bold ${kelasBadgePeriodeEM(row.periode)}">${escapeHtmlEquipment(row.periode)}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Fungsi lama dipertahankan sebagai no-op agar cache/browser lama tidak
+        // menimbulkan error. Data EM hanya diubah melalui Master Data Aset.
+        function bukaFormEquipment() {
+            showToast('Equipment Management otomatis mengikuti Master Data Aset dan profil EM WHO Rules.', 'info');
+        }
+
+        function tutupFormEquipment() {
+            const modal = document.getElementById('modal-equipment');
+            if (modal) modal.classList.add('hidden');
+        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             if(!container) return;
@@ -5794,471 +6007,5 @@
         }
     </script>
 
-    <!-- =========================================================
-         MODAL EQUIPMENT
-    ========================================================= -->
-    
-    <div
-        id="modal-equipment"
-        class="hidden fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center p-4"
-    >
-    
-        <div
-            class="bg-white w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
-        >
-    
-            <!-- HEADER -->
-    
-            <div class="flex items-center justify-between px-6 py-4 border-b">
-    
-                <div>
-    
-                    <h3
-                        id="judul-modal-equipment"
-                        class="text-xl font-bold text-slate-800"
-                    >
-                        Tambah Equipment
-                    </h3>
-    
-                    <p class="text-sm text-slate-500">
-                        Data master alat kesehatan
-                    </p>
-    
-                </div>
-    
-                <button
-                    type="button"
-                    onclick="tutupFormEquipment()"
-                    class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500"
-                >
-    
-                    <i class="fa-solid fa-xmark"></i>
-    
-                </button>
-    
-            </div>
-    
-    
-            <!-- FORM -->
-    
-            <form
-                id="form-equipment"
-                onsubmit="simpanEquipment(event)"
-                class="p-6"
-            >
-    
-                <input
-                    type="hidden"
-                    id="equipment-id"
-                >
-    
-    
-                <!-- INFORMASI DASAR -->
-    
-                <div class="mb-6">
-    
-                    <h4 class="font-bold text-slate-800 mb-4">
-                        Informasi Dasar
-                    </h4>
-    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Kode Alat
-                            </label>
-    
-                            <input
-                                id="equipment-kode"
-                                type="text"
-                                required
-                                placeholder="EQ-00001"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Nama Alat
-                            </label>
-    
-                            <input
-                                id="equipment-nama"
-                                type="text"
-                                required
-                                placeholder="Patient Monitor"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Kategori
-                            </label>
-    
-                            <input
-                                id="equipment-kategori"
-                                type="text"
-                                placeholder="Patient Monitor"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Merk
-                            </label>
-    
-                            <input
-                                id="equipment-merk"
-                                type="text"
-                                placeholder="Mindray"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Tipe / Model
-                            </label>
-    
-                            <input
-                                id="equipment-tipe"
-                                type="text"
-                                placeholder="BeneView T5"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Serial Number
-                            </label>
-    
-                            <input
-                                id="equipment-serial"
-                                type="text"
-                                placeholder="SN123456"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-                    </div>
-    
-                </div>
-    
-    
-                <!-- PENGADAAN -->
-    
-                <div class="mb-6">
-    
-                    <h4 class="font-bold text-slate-800 mb-4">
-                        Informasi Pengadaan
-                    </h4>
-    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Tahun Pengadaan
-                            </label>
-    
-                            <input
-                                id="equipment-tahun"
-                                type="number"
-                                min="1900"
-                                max="2100"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Tanggal Pengadaan
-                            </label>
-    
-                            <input
-                                id="equipment-tanggal-pengadaan"
-                                type="date"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Vendor / Supplier
-                            </label>
-    
-                            <input
-                                id="equipment-vendor"
-                                type="text"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Nilai Perolehan
-                            </label>
-    
-                            <input
-                                id="equipment-nilai"
-                                type="number"
-                                min="0"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-                    </div>
-    
-                </div>
-    
-    
-                <!-- LOKASI -->
-    
-                <div class="mb-6">
-    
-                    <h4 class="font-bold text-slate-800 mb-4">
-                        Lokasi & Status
-                    </h4>
-    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Unit
-                            </label>
-    
-                            <input
-                                id="equipment-unit"
-                                type="text"
-                                placeholder="ICU"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Lokasi
-                            </label>
-    
-                            <input
-                                id="equipment-lokasi"
-                                type="text"
-                                placeholder="Ruang ICU"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Kondisi
-                            </label>
-    
-                            <select
-                                id="equipment-kondisi"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                                <option value="Baik">
-                                    Baik
-                                </option>
-    
-                                <option value="Rusak Ringan">
-                                    Rusak Ringan
-                                </option>
-    
-                                <option value="Rusak Berat">
-                                    Rusak Berat
-                                </option>
-    
-                                <option value="Tidak Layak">
-                                    Tidak Layak
-                                </option>
-    
-                            </select>
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Status
-                            </label>
-    
-                            <select
-                                id="equipment-status"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                                <option value="Aktif">
-                                    Aktif
-                                </option>
-    
-                                <option value="Maintenance">
-                                    Maintenance
-                                </option>
-    
-                                <option value="Tidak Aktif">
-                                    Tidak Aktif
-                                </option>
-    
-                                <option value="Dipinjamkan">
-                                    Dipinjamkan
-                                </option>
-    
-                                <option value="Dihapuskan">
-                                    Dihapuskan
-                                </option>
-    
-                            </select>
-    
-                        </div>
-    
-                    </div>
-    
-                </div>
-    
-    
-                <!-- GARANSI -->
-    
-                <div class="mb-6">
-    
-                    <h4 class="font-bold text-slate-800 mb-4">
-                        Garansi & Jadwal
-                    </h4>
-    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Garansi Mulai
-                            </label>
-    
-                            <input
-                                id="equipment-garansi-mulai"
-                                type="date"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Garansi Berakhir
-                            </label>
-    
-                            <input
-                                id="equipment-garansi-akhir"
-                                type="date"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-    
-                        <div>
-    
-                            <label class="block text-sm font-semibold mb-1">
-                                Maintenance Berikutnya
-                            </label>
-    
-                            <input
-                                id="equipment-maintenance"
-                                type="date"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                            >
-    
-                        </div>
-    
-                    </div>
-    
-                </div>
-    
-    
-                <!-- KETERANGAN -->
-    
-                <div class="mb-6">
-    
-                    <label class="block text-sm font-semibold mb-1">
-                        Keterangan
-                    </label>
-    
-                    <textarea
-                        id="equipment-keterangan"
-                        rows="4"
-                        class="w-full px-3 py-2.5 rounded-xl border border-slate-200"
-                    ></textarea>
-    
-                </div>
-    
-    
-                <!-- FOOTER -->
-    
-                <div class="flex justify-end gap-3 pt-4 border-t">
-    
-                    <button
-                        type="button"
-                        onclick="tutupFormEquipment()"
-                        class="px-4 py-2.5 rounded-xl border border-slate-200 font-semibold"
-                    >
-                        Batal
-                    </button>
-    
-                    <button
-                        type="submit"
-                        id="btn-simpan-equipment"
-                        class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-semibold"
-                    >
-                        <i class="fa-solid fa-floppy-disk mr-1"></i>
-                        Simpan Equipment
-                    </button>
-    
-                </div>
-    
-            </form>
-    
-        </div>
-    
-    </div>
 </body>
 </html>
