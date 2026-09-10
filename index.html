@@ -4888,11 +4888,49 @@ function renderMaintenanceHistory() {
             }
         }
 
-        function selesaikanTiketTroubleManual(tiketId, alatId) {
-            if(confirm("Apakah Anda ingin menyelesaikan trouble ticket ini dan mengubah status alat menjadi Siap Pakai?")) {
-                db.collection("troubleTickets").doc(tiketId).update({ statusTiket: "Selesai" }).then(() => {
-                    return db.collection("dataAlat").doc(alatId).update({ status: "Siap Digunakan" }).catch(err => console.warn('Status aset tidak dapat diperbarui:', err));
-                }).then(() => { showToast("Status tiket berhasil diselesaikan!", "success"); }).catch(err => showToast('Gagal menyelesaikan tiket: ' + (err.message || ''), 'error'));
+        async function selesaikanTiketTroubleManual(tiketId, alatId) {
+            if (!confirm("Apakah Anda ingin menyelesaikan trouble ticket ini dan mengubah status alat menjadi Siap Pakai?")) return;
+
+            try {
+                // Ticket + Master Aset harus berhasil bersama-sama.
+                // Ini mencegah ticket berstatus Selesai sementara dashboard
+                // masih menghitung alat sebagai Dalam Perbaikan.
+                const batch = db.batch();
+                const ticketRef = db.collection("troubleTickets").doc(tiketId);
+                const assetRef = db.collection("dataAlat").doc(alatId);
+
+                batch.update(ticketRef, {
+                    statusTiket: "Selesai",
+                    selesaiAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                batch.update(assetRef, {
+                    status: "Siap Digunakan",
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                await batch.commit();
+
+                // Optimistic UI: langsung hilangkan counter Trouble sambil
+                // menunggu snapshot realtime Firestore.
+                const assetIndex = dataAlat.findIndex(a => String(a.id) === String(alatId));
+                if (assetIndex >= 0) dataAlat[assetIndex].status = "Siap Digunakan";
+                const ticketIndex = dataTiket.findIndex(t => String(t.id) === String(tiketId));
+                if (ticketIndex >= 0) dataTiket[ticketIndex].statusTiket = "Selesai";
+
+                updateStats();
+                renderDaftarTiketMasuk();
+                jadwalkanRenderAll(0);
+                showToast("Tiket selesai. Status alat kembali menjadi Siap Digunakan.", "success");
+            } catch (error) {
+                console.error("Gagal menyelesaikan tiket dan mengembalikan status aset:", error);
+                let pesan = "Tiket belum diselesaikan karena status alat gagal diperbarui.";
+                if (error && error.code === 'permission-denied') {
+                    pesan += " Periksa Rules dataAlat dan pastikan akun Teknisi/Admin memiliki izin update.";
+                } else if (error && error.message) {
+                    pesan += " " + error.message;
+                }
+                showToast(pesan, "error");
             }
         }
 
@@ -5012,22 +5050,50 @@ function renderMaintenanceHistory() {
                     } catch (calError) { console.warn('Kalibrasi tidak tersimpan:', calError); }
                 }
 
-                // Master Aset adalah sumber utama. Projection equipment hanya cache/kompatibilitas.
-                try { await db.collection('dataAlat').doc(alatIdRaw).update({ status: newStatus, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
-                catch (assetError) { console.warn('Status Master Aset tidak dapat diperbarui:', assetError); }
-                try { await db.collection('equipment').doc(alatIdRaw).set({ status: newStatus, hari: hariVal, bulan: bulanVal, teknisi: tekNama, kondisi: payload.hasilTunggal.includes('Rusak') ? 'Kurang Baik' : 'Baik', updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); }
-                catch (equipmentError) { console.warn('Projection equipment tidak dapat diperbarui:', equipmentError); }
+                // Master Aset adalah sumber utama. Perubahan status tidak lagi
+                // best-effort: jika status aset gagal diperbarui, proses penyelesaian
+                // LK harus dianggap gagal agar dashboard tidak berbeda dengan LK/ticket.
+                const assetRef = db.collection('dataAlat').doc(alatIdRaw);
+                const statusBatch = db.batch();
+                statusBatch.update(assetRef, {
+                    status: newStatus,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
 
-                // Tutup tiket yang masih aktif untuk alat tersebut; jika Rules melarang, LK tetap sukses.
-                try {
-                    const qSnap = await db.collection('troubleTickets').where('alatId', '==', alatIdRaw).get();
-                    const ticketUpdates = [];
+                // Jika hasil LK menyatakan alat sudah baik, tutup ticket aktif
+                // dalam batch yang sama dengan perubahan status Master Aset.
+                if (newStatus === 'Siap Digunakan') {
+                    const qSnap = await db.collection('troubleTickets')
+                        .where('alatId', '==', alatIdRaw)
+                        .get();
                     qSnap.forEach(docT => {
-                        const d = docT.data();
-                        if (d.statusTiket !== 'Selesai') ticketUpdates.push(docT.ref.update({ statusTiket: 'Selesai', selesaiAt: firebase.firestore.FieldValue.serverTimestamp() }));
+                        const d = docT.data() || {};
+                        if (d.statusTiket !== 'Selesai') {
+                            statusBatch.update(docT.ref, {
+                                statusTiket: 'Selesai',
+                                selesaiAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
                     });
-                    await Promise.all(ticketUpdates);
-                } catch (ticketError) { console.warn('Status tiket tidak dapat ditutup otomatis:', ticketError); }
+                }
+
+                await statusBatch.commit();
+
+                // Projection equipment hanya cache/kompatibilitas. Kegagalannya
+                // tidak membatalkan Master Aset yang sudah menjadi sumber utama.
+                try {
+                    await db.collection('equipment').doc(alatIdRaw).set({
+                        status: newStatus,
+                        hari: hariVal,
+                        bulan: bulanVal,
+                        teknisi: tekNama,
+                        kondisi: payload.hasilTunggal.includes('Rusak') ? 'Kurang Baik' : 'Baik',
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                } catch (equipmentError) {
+                    console.warn('Projection equipment tidak dapat diperbarui:', equipmentError);
+                }
 
                 document.getElementById('area-lembar-kerja-resmi')?.classList.add('hidden');
                 showToast(`Lembar Kerja ${payload.noLk} berhasil disimpan dan masuk rekapan.`, 'success');
