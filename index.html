@@ -1648,6 +1648,7 @@
         let equipmentSyncTimer = null;
         let equipmentSyncQueue = new Map();
         let renderAllTimer = null;
+        let rekonsiliasiStatusTimer = null;
 
         function jadwalkanRenderAll(delay = 60) {
             if (renderAllTimer) clearTimeout(renderAllTimer);
@@ -1706,7 +1707,14 @@
                     },
                     (error) => {
                         console.error("Listener users gagal:", error);
-                        showToast("Daftar akun tidak dapat dimuat. Periksa Firestore Rules users.", "error");
+                        // Kegagalan daftar akun tidak boleh mematikan dashboard/ticket.
+                        // Admin memang membutuhkan collection users untuk Kelola Akun,
+                        // sedangkan Teknisi membutuhkannya untuk dropdown Teknisi/Saksi.
+                        // Detail error ditulis ke console agar mudah ditelusuri tanpa
+                        // membuat popup berulang pada setiap reconnect Firestore.
+                        console.warn("Daftar akun tidak dapat dimuat. Firestore Rules users menolak query.", error?.code || error?.message || error);
+                        // Jangan tampilkan popup berulang. Jika Kelola Akun dibuka
+                        // dan daftar memang kosong, error dapat dilihat di Console.
                     }
                 ));
             } else {
@@ -1727,6 +1735,7 @@
                     renderRekapanPMTable();
                     renderRekapanEMTable();
                     jadwalkanRenderAll();
+                    jadwalkanRekonsiliasiStatusAset();
                     if (dataAlatInitialSnapshotSudahDiproses) {
                         jadwalkanSinkronisasiEquipment(querySnapshot.docChanges());
                     } else {
@@ -1772,6 +1781,7 @@
                     }
                     isFirstLoadTickets = false;
                     renderDaftarTiketMasuk();
+                    jadwalkanRekonsiliasiStatusAset();
                 },
                 (error) => {
                     console.error("Listener troubleTickets gagal:", error);
@@ -1824,6 +1834,7 @@
                     jadwalkanRenderAll();
                     renderGrafikTrenKerusakan();
                     renderRekapanEMTable();
+                    jadwalkanRekonsiliasiStatusAset();
                 },
                 (error) => console.error("Listener lembarKerja gagal:", error)
             ));
@@ -4888,6 +4899,73 @@ function renderMaintenanceHistory() {
             }
         }
 
+        function jadwalkanRekonsiliasiStatusAset(delay = 350) {
+            if (rekonsiliasiStatusTimer) clearTimeout(rekonsiliasiStatusTimer);
+            rekonsiliasiStatusTimer = setTimeout(() => {
+                rekonsiliasiStatusTimer = null;
+                rekonsiliasiStatusAsetDariTicketDanLK().catch(error => {
+                    console.warn('Rekonsiliasi status aset gagal:', error);
+                });
+            }, delay);
+        }
+
+        async function rekonsiliasiStatusAsetDariTicketDanLK() {
+            // Hanya staff yang boleh melakukan pemulihan status otomatis.
+            if (currentActiveRole !== 'Admin' && currentActiveRole !== 'Teknisi') return;
+            if (!Array.isArray(dataAlat) || !Array.isArray(dataTiket) || !Array.isArray(dataLembarKerja)) return;
+            if (!dataAlat.length) return;
+
+            const selesaiTicketByAlat = new Set();
+            dataTiket.forEach(ticket => {
+                if (ticket.alatId && ticket.statusTiket === 'Selesai') {
+                    selesaiTicketByAlat.add(String(ticket.alatId));
+                }
+            });
+
+            const lkBaikByAlat = new Set();
+            dataLembarKerja.forEach(lk => {
+                const hasil = String(lk.hasilTunggal || '');
+                if (lk.alatId && hasil && !hasil.includes('Rusak')) {
+                    lkBaikByAlat.add(String(lk.alatId));
+                }
+            });
+
+            const batch = db.batch();
+            let changed = 0;
+
+            dataAlat.forEach(asset => {
+                const assetId = String(asset.id || '');
+                if (!assetId || asset.status !== 'Dalam Perbaikan') return;
+
+                // Jangan memulihkan aset jika masih ada ticket aktif.
+                const masihAdaTicketAktif = dataTiket.some(ticket =>
+                    String(ticket.alatId || '') === assetId &&
+                    ticket.statusTiket !== 'Selesai'
+                );
+                if (masihAdaTicketAktif) return;
+
+                // Kondisi stale yang aman dipulihkan:
+                // ticket sudah Selesai ATAU LK terakhir yang baik sudah ada.
+                if (!selesaiTicketByAlat.has(assetId) && !lkBaikByAlat.has(assetId)) return;
+
+                batch.update(db.collection('dataAlat').doc(asset.id), {
+                    status: 'Siap Digunakan',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                batch.set(db.collection('equipment').doc(asset.id), {
+                    status: 'Siap Digunakan',
+                    kondisi: 'Baik',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                changed++;
+            });
+
+            if (changed > 0) {
+                await batch.commit();
+                console.info(`Rekonsiliasi status aset: ${changed} aset dikembalikan ke Siap Digunakan.`);
+            }
+        }
+
         async function selesaikanTiketTroubleManual(tiketId, alatId) {
             if (!confirm("Apakah Anda ingin menyelesaikan trouble ticket ini dan mengubah status alat menjadi Siap Pakai?")) return;
 
@@ -4908,6 +4986,15 @@ function renderMaintenanceHistory() {
                     status: "Siap Digunakan",
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+
+                // Projection equipment ikut dipulihkan agar semua modul lama
+                // yang masih membaca equipment tidak tertinggal status Trouble.
+                const equipmentRef = db.collection('equipment').doc(alatId);
+                batch.set(equipmentRef, {
+                    status: 'Siap Digunakan',
+                    kondisi: 'Baik',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
 
                 await batch.commit();
 
