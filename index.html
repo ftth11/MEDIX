@@ -1965,7 +1965,11 @@
             );
         
         
-            db.collection("laporanKeluhanLog").onSnapshot(
+            const complaintLogQuery = currentActiveRole === 'User' && auth.currentUser
+                ? db.collection("laporanKeluhanLog").where("pelaporUid", "==", auth.currentUser.uid)
+                : db.collection("laporanKeluhanLog");
+
+            complaintLogQuery.onSnapshot(
                 (querySnapshot) => {
         
                     dataKeluhanLog = [];
@@ -4940,6 +4944,8 @@ function renderMaintenanceHistory() {
                         hasilTunggal: "Menunggu Penanganan",
                         teknisiTtd: "-",
                         ticketId: ticketRef.id,
+                        pelaporUid: (auth.currentUser && auth.currentUser.uid) ? auth.currentUser.uid : '',
+                        pelaporNama: currentUserNama || '',
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } catch (logError) {
@@ -5878,7 +5884,7 @@ function renderMaintenanceHistory() {
                     <td class="p-3 text-center whitespace-nowrap">
                         <button type="button" onclick="editAkunUserOlehAdmin('${uid}')" class="bg-amber-50 text-amber-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Edit</button>
                         <button type="button" onclick="kirimResetPasswordAkun('${uid}')" class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Reset Password</button>
-                        <button type="button" onclick="hapusAkunUserOlehAdmin('${uid}', '${nama.replace(/'/g, '&#39;')}')" class="bg-rose-50 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold">Hapus</button>
+                        <button type="button" onclick="hapusAkunUserOlehAdmin('${uid}', '${nama.replace(/'/g, '&#39;')}')" class="bg-rose-50 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold">Nonaktifkan</button>
                     </td>
                 </tr>`;
             }).join('');
