@@ -1011,8 +1011,8 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-2 text-[11px] items-stretch">
-                <div class="border border-slate-200 p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between">
+            <div class="grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-2 text-[11px] items-stretch">
+                <div class="md:col-span-3 print:col-span-3 border border-slate-200 p-2 rounded-lg bg-white shadow-sm flex flex-col justify-between h-[155px] print:h-[130px]">
                     <div>
                         <h4 class="font-bold border-b border-slate-100 pb-1 mb-1 text-slate-800 flex items-center justify-between text-[10px]">
                             <span class="flex items-center"><i class="fa-solid fa-camera text-indigo-600 mr-1"></i>Foto After</span>
@@ -1027,7 +1027,7 @@
                     </div>
                 </div>
 
-                <div class="uraian-pekerjaan-wrapper border border-slate-200 p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-2 print:col-span-2 flex flex-col">
+                <div class="uraian-pekerjaan-wrapper border border-slate-200 p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-9 print:col-span-9 flex flex-col">
                     <h4 class="font-bold border-b border-slate-100 pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
                     <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border border-slate-300 p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] text-slate-900 whitespace-pre-wrap break-words" style="min-height: 60px; height: auto;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
                 </div>
@@ -4880,7 +4880,7 @@ function renderMaintenanceHistory() {
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(r => { if(r.value === "Corrective Maintenance") r.checked = true; });
             stringFotoBeforeBase64 = (targetTiket && targetTiket.fotoBefore) ? targetTiket.fotoBefore : "-";
             const boxBefore = document.getElementById('box-preview-foto-before');
-            if(stringFotoBeforeBase64 !== '-') { boxBefore.innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`; }
+            if(stringFotoBeforeBase64 !== '-') { boxBefore.innerHTML = `<img src="${stringFotoBeforeBase64}" class="max-w-full max-h-full w-auto h-auto object-contain rounded" style="display:block;">`; }
             else { boxBefore.innerHTML = `[ Tidak Ada Foto Before ]`; }
 
             try {
@@ -5074,14 +5074,37 @@ function renderMaintenanceHistory() {
         }
 
         async function simpanPenuhIsianWorksheetDinamis() {
-            if (currentActiveRole === 'User') { showToast('Akses ditolak! Akun User hanya dapat melihat Lembar Kerja.', 'error'); return; }
+            if (currentActiveRole === 'User') {
+                showToast('Akses ditolak! Akun User hanya dapat melihat Lembar Kerja.', 'error');
+                return;
+            }
+
             const alatIdRaw = document.getElementById('dlk-selected-alat-id')?.value || '';
-            if (!alatIdRaw) return showToast('Belum ada alat yang terpilih pada Lembar Kerja ini!', 'error');
+            if (!alatIdRaw) {
+                showToast('Belum ada alat yang terpilih pada Lembar Kerja ini!', 'error');
+                return;
+            }
+
             const tekNama = document.getElementById('dlk-select-nama-teknisi')?.value || '';
-            if (!tekNama || tekNama === 'tambah-teknisi-baru') return showToast('Silakan pilih Nama Teknisi!', 'error');
+            if (!tekNama || tekNama === 'tambah-teknisi-baru') {
+                showToast('Silakan pilih Nama Teknisi!', 'error');
+                return;
+            }
+
             const jenisEl = document.querySelector('input[name="dlk-jenis"]:checked');
             const hasilEl = document.querySelector('input[name="dlk-hasil-tunggal"]:checked');
-            if (!jenisEl || !hasilEl) return showToast('Jenis pekerjaan dan hasil pemeriksaan wajib dipilih.', 'error');
+            if (!jenisEl || !hasilEl) {
+                showToast('Jenis pekerjaan dan hasil pemeriksaan wajib dipilih.', 'error');
+                return;
+            }
+
+            const btnSimpan = document.getElementById('btn-simpan-lk-aksi');
+            if (btnSimpan?.dataset.saving === '1') return;
+            if (btnSimpan) {
+                btnSimpan.dataset.saving = '1';
+                btnSimpan.disabled = true;
+                btnSimpan.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Menyimpan...';
+            }
 
             const existingFirebaseId = document.getElementById('dlk-firebase-id')?.value || '';
             const tglKalibrasiInput = document.getElementById('dlk-tglcal')?.value || '';
@@ -5103,18 +5126,28 @@ function renderMaintenanceHistory() {
                 ttdPJ: document.getElementById('sig-pj')?.toDataURL() || '',
                 teknisiTtd: tekNama,
                 saksiTtd: document.getElementById('dlk-select-nama-saksi')?.value || '',
-                pjTtd: 'PJ Alkes', fotoAlat: stringFotoBase64 || '-', fotoBefore: stringFotoBeforeBase64 || '-',
-                paramAlatKerja: JSON.stringify(terpakaiAlatKerja), paramFisik: JSON.stringify(terpakaiFisik), paramFungsi: JSON.stringify(terpakaiFungsi),
-                tglKalibrasi: tglKalibrasiInput, tglExpKalibrasi: tglExpKalibrasiInput, isLocked: true,
+                pjTtd: 'PJ Alkes',
+                fotoAlat: stringFotoBase64 || '-',
+                fotoBefore: stringFotoBeforeBase64 || '-',
+                paramAlatKerja: JSON.stringify(terpakaiAlatKerja),
+                paramFisik: JSON.stringify(terpakaiFisik),
+                paramFungsi: JSON.stringify(terpakaiFungsi),
+                tglKalibrasi: tglKalibrasiInput,
+                tglExpKalibrasi: tglExpKalibrasiInput,
+                isLocked: true,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-            const newStatus = payload.hasilTunggal === 'Alat Rusak Perlu Perbaikan' ? 'Dalam Perbaikan' : 'Siap Digunakan';
+
+            const newStatus = payload.hasilTunggal === 'Alat Rusak Perlu Perbaikan'
+                ? 'Dalam Perbaikan'
+                : 'Siap Digunakan';
 
             try {
+                // Siapkan seluruh perubahan utama terlebih dahulu agar LK + status aset
+                // + penutupan ticket berhasil sebagai satu commit Firestore.
                 let lkRef;
                 if (existingFirebaseId) {
                     lkRef = db.collection('lembarKerja').doc(existingFirebaseId);
-                    await lkRef.update(payload);
                 } else {
                     const nextNumber = dataLembarKerja.reduce((max, item) => {
                         const m = String(item.noLk || '').match(/LK-(\d+)$/i);
@@ -5123,40 +5156,33 @@ function renderMaintenanceHistory() {
                     payload.noLk = 'RSUDPG/IPSRS/LK-' + String(nextNumber).padStart(3, '0');
                     payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
                     lkRef = db.collection('lembarKerja').doc();
-                    await lkRef.set(payload);
                 }
 
-                // Kalibrasi adalah tambahan; kegagalannya tidak membatalkan LK yang sudah tersimpan.
-                if (tglKalibrasiInput && tglExpKalibrasiInput) {
-                    try {
-                        await db.collection('dataKalibrasi').add({
-                            alatId: alatIdRaw, tgl: tglKalibrasiInput, exp: tglExpKalibrasiInput,
-                            vendor: 'Internal / UPTD RSUD Pondokgede (' + payload.noLk + ')', certPdf: '-',
-                            hasil: payload.hasilTunggal.includes('Rusak') ? 'Tidak Layak' : 'Layak', createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    } catch (calError) { console.warn('Kalibrasi tidak tersimpan:', calError); }
+                let ticketSnap = null;
+                if (newStatus === 'Siap Digunakan') {
+                    ticketSnap = await db.collection('troubleTickets')
+                        .where('alatId', '==', alatIdRaw)
+                        .get();
                 }
 
-                // Master Aset adalah sumber utama. Perubahan status tidak lagi
-                // best-effort: jika status aset gagal diperbarui, proses penyelesaian
-                // LK harus dianggap gagal agar dashboard tidak berbeda dengan LK/ticket.
-                const assetRef = db.collection('dataAlat').doc(alatIdRaw);
-                const statusBatch = db.batch();
-                statusBatch.update(assetRef, {
+                const batch = db.batch();
+
+                if (existingFirebaseId) {
+                    batch.update(lkRef, payload);
+                } else {
+                    batch.set(lkRef, payload);
+                }
+
+                batch.update(db.collection('dataAlat').doc(alatIdRaw), {
                     status: newStatus,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                // Jika hasil LK menyatakan alat sudah baik, tutup ticket aktif
-                // dalam batch yang sama dengan perubahan status Master Aset.
-                if (newStatus === 'Siap Digunakan') {
-                    const qSnap = await db.collection('troubleTickets')
-                        .where('alatId', '==', alatIdRaw)
-                        .get();
-                    qSnap.forEach(docT => {
+                if (ticketSnap) {
+                    ticketSnap.forEach(docT => {
                         const d = docT.data() || {};
                         if (d.statusTiket !== 'Selesai') {
-                            statusBatch.update(docT.ref, {
+                            batch.update(docT.ref, {
                                 statusTiket: 'Selesai',
                                 selesaiAt: firebase.firestore.FieldValue.serverTimestamp(),
                                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -5165,10 +5191,26 @@ function renderMaintenanceHistory() {
                     });
                 }
 
-                await statusBatch.commit();
+                await batch.commit();
 
-                // Projection equipment hanya cache/kompatibilitas. Kegagalannya
-                // tidak membatalkan Master Aset yang sudah menjadi sumber utama.
+                // Kalibrasi adalah dokumen tambahan; jika gagal, LK utama tetap tersimpan.
+                if (tglKalibrasiInput && tglExpKalibrasiInput) {
+                    try {
+                        await db.collection('dataKalibrasi').add({
+                            alatId: alatIdRaw,
+                            tgl: tglKalibrasiInput,
+                            exp: tglExpKalibrasiInput,
+                            vendor: 'Internal / UPTD RSUD Pondokgede (' + payload.noLk + ')',
+                            certPdf: '-',
+                            hasil: payload.hasilTunggal.includes('Rusak') ? 'Tidak Layak' : 'Layak',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    } catch (calError) {
+                        console.warn('Kalibrasi tidak tersimpan:', calError);
+                    }
+                }
+
+                // Projection equipment hanya cache/kompatibilitas.
                 try {
                     await db.collection('equipment').doc(alatIdRaw).set({
                         status: newStatus,
@@ -5187,10 +5229,17 @@ function renderMaintenanceHistory() {
                 jadwalkanRenderAll();
             } catch (error) {
                 console.error('Gagal menyimpan LK:', error);
-                showToast('Lembar Kerja gagal disimpan: ' + (error.message || 'periksa koneksi dan Security Rules.'), 'error');
+                const code = error?.code ? ` [${error.code}]` : '';
+                showToast('Lembar Kerja gagal disimpan: ' + (error.message || 'periksa koneksi dan Security Rules.') + code, 'error');
+            } finally {
+                if (btnSimpan) {
+                    btnSimpan.dataset.saving = '0';
+                    btnSimpan.disabled = false;
+                    btnSimpan.innerHTML = 'Simpan Data';
+                }
             }
         }
-        
+
         function bukaLembarKerjaBaruKosong() { 
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); if(!areaLK) return;
             document.getElementById('dlk-firebase-id').value = ""; stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
@@ -5293,14 +5342,14 @@ function renderMaintenanceHistory() {
             
             if(record.fotoAlat && record.fotoAlat !== '-') { 
                 stringFotoBase64 = record.fotoAlat;
-                document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="w-full h-full object-contain rounded">`; 
+                document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="max-w-full max-h-full w-auto h-auto object-contain rounded" style="display:block;">`; 
                 document.getElementById('dlk-input-foto-container').style.display = 'none';
                 document.getElementById('btn-retake-after').style.display = 'none'; 
             } else { resetFotoAfterDisplay(); }
 
             stringFotoBeforeBase64 = record.fotoBefore || "-";
             if(stringFotoBeforeBase64 !== '-') {
-                document.getElementById('box-preview-foto-before').innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`;
+                document.getElementById('box-preview-foto-before').innerHTML = `<img src="${stringFotoBeforeBase64}" class="max-w-full max-h-full w-auto h-auto object-contain rounded" style="display:block;">`;
             } else { document.getElementById('box-preview-foto-before').innerHTML = `[ Tidak Ada Foto Before ]`; }
 
             populasikanDropdownNamaTandaTangan();
@@ -5933,7 +5982,7 @@ function renderMaintenanceHistory() {
                         if (w > h) { if (w > max_size) { h *= max_size / w; w = max_size; } } else { if (h > max_size) { w *= max_size / h; h = max_size; } }
                         canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h);
                         stringFotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
-                        document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="w-full h-full object-contain rounded">`;
+                        document.getElementById('box-preview-foto').innerHTML = `<img src="${stringFotoBase64}" class="max-w-full max-h-full w-auto h-auto object-contain rounded" style="display:block;">`;
                         document.getElementById('dlk-input-foto-container').style.display = 'none';
                         document.getElementById('btn-retake-after').style.display = 'inline-block';
                     };
@@ -6135,32 +6184,80 @@ function renderMaintenanceHistory() {
         function initSignatures() {
             try {
                 ['sig-teknisi', 'sig-user', 'sig-pj'].forEach(id => {
-                    const canvas = document.getElementById(id); if(!canvas) return; 
+                    const canvas = document.getElementById(id);
+                    if(!canvas) return;
+
                     const parentWidth = canvas.parentElement ? canvas.parentElement.clientWidth : 300;
-                    canvas.width = parentWidth > 50 ? parentWidth : 280; canvas.height = 70;
-                    const ctx = canvas.getContext('2d'); let isDrawing = false;
-                    ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0f172a';
-                    
-                    function getPos(e) { 
-                        const r = canvas.getBoundingClientRect(); 
-                        const cX = e.touches ? e.touches[0].clientX : e.clientX; 
-                        const cY = e.touches ? e.touches[0].clientY : e.clientY; 
-                        return { x: cX - r.left, y: cY - r.top }; 
+                    canvas.width = parentWidth > 50 ? parentWidth : 280;
+                    canvas.height = 70;
+
+                    const ctx = canvas.getContext('2d');
+                    let isDrawing = false;
+                    let activePointerId = null;
+
+                    ctx.lineWidth = 2.5;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    ctx.strokeStyle = '#0f172a';
+
+                    // Pointer Events menyatukan mouse + touch + stylus dan
+                    // mencegah garis terus tergambar setelah pointer dilepas.
+                    canvas.style.touchAction = 'none';
+
+                    function getPos(e) {
+                        const r = canvas.getBoundingClientRect();
+                        return {
+                            x: (e.clientX - r.left) * (canvas.width / r.width),
+                            y: (e.clientY - r.top) * (canvas.height / r.height)
+                        };
                     }
-                    function startDrawing(e) { 
-                        if(currentActiveRole === 'User') return; 
-                        isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); 
-                        if (e.cancelable) e.preventDefault(); 
+
+                    function stopDrawing(e) {
+                        if(activePointerId !== null && e && e.pointerId !== activePointerId) return;
+                        isDrawing = false;
+                        const oldPointerId = activePointerId;
+                        activePointerId = null;
+                        try {
+                            if(e && canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+                        } catch(_) {}
+                        ctx.beginPath();
                     }
-                    function draw(e) { 
-                        if(currentActiveRole === 'User' || !isDrawing) return; 
-                        const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); 
-                        if (e.cancelable) e.preventDefault(); 
+
+                    function startDrawing(e) {
+                        if(currentActiveRole === 'User') return;
+                        if(e.pointerType === 'mouse' && e.button !== 0) return;
+
+                        isDrawing = true;
+                        activePointerId = e.pointerId;
+                        try { canvas.setPointerCapture(e.pointerId); } catch(_) {}
+
+                        const p = getPos(e);
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        if(e.cancelable) e.preventDefault();
                     }
-                    canvas.onmousedown = startDrawing; canvas.onmousemove = draw; 
-                    canvas.ontouchstart = startDrawing; canvas.ontouchmove = draw; canvas.ontouchend = () => isDrawing = false;
+
+                    function draw(e) {
+                        if(currentActiveRole === 'User' || !isDrawing || e.pointerId !== activePointerId) return;
+
+                        const p = getPos(e);
+                        ctx.lineTo(p.x, p.y);
+                        ctx.stroke();
+                        if(e.cancelable) e.preventDefault();
+                    }
+
+                    // Satu set handler saja; initSignatures() dapat dipanggil
+                    // berkali-kali tanpa menumpuk listener.
+                    canvas.onpointerdown = startDrawing;
+                    canvas.onpointermove = draw;
+                    canvas.onpointerup = stopDrawing;
+                    canvas.onpointercancel = stopDrawing;
+                    canvas.onlostpointercapture = stopDrawing;
+                    canvas.onpointerleave = () => {};
                 });
-            } catch(e) {}
+            } catch(e) {
+                console.warn('Inisialisasi tanda tangan gagal:', e);
+            }
         }
 
         function hapusBukuPetunjuk(id) {
