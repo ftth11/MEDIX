@@ -55,7 +55,7 @@
         .glass-panel,
         div[id^="modal-"] > div,
         #area-lembar-kerja-resmi > div,
-        #modal-kartu > div
+        #modal-kartu > div,
         #auth-gate-screen > div {
             background: #f0fdf4 !important;
             border: 1px solid #5eead4 !important;
@@ -2374,11 +2374,8 @@
             }).sort((a, b) => a.namaAlat.localeCompare(b.namaAlat, 'id'));
         }
 
-        function getAssetByEquipmentId(id) {
-            return (dataAlat || []).find(a => a.id === id);
-        }
 
-        async function sinkronisasiEquipmentDariMasterAset(assets = dataAlat) {
+async function sinkronisasiEquipmentDariMasterAset(assets = dataAlat) {
             if (!db || !Array.isArray(assets)) return;
 
             const badge = document.getElementById('equipment-sync-badge');
@@ -2445,25 +2442,8 @@
             }
         }
 
-        function hitungSkorEM() {
-            const fungsi = parseInt(document.getElementById('em-fungsi')?.value) || 0;
-            const risiko = parseInt(document.getElementById('em-risiko')?.value) || 0;
-            const perawatan = parseInt(document.getElementById('em-perawatan')?.value) || 0;
-            const insiden = parseInt(document.getElementById('em-insiden')?.value) || 0;
-            const totalNilai = fungsi + risiko + perawatan + insiden;
-            const rekomendasi = hitungRekomendasiPeriodeWHO(totalNilai);
 
-            const hasilNilai = document.getElementById('em-hasil-nilai');
-            const badgeRekom = document.getElementById('em-hasil-rekom');
-            if (hasilNilai) hasilNilai.innerText = totalNilai;
-            if (badgeRekom) {
-                badgeRekom.innerText = rekomendasi;
-                badgeRekom.className = `text-xs font-black px-2.5 py-1 rounded-lg text-white ${kelasBadgePeriodeEMGelap(rekomendasi)}`;
-            }
-            return { fungsi, risiko, perawatan, insiden, totalNilai, rekomendasi };
-        }
-
-        async function ambilExistingEquipmentMap() {
+async function ambilExistingEquipmentMap() {
             const map = {};
             if (!db) return map;
             try {
@@ -2624,18 +2604,8 @@
             `).join('');
         }
 
-        // Fungsi lama dipertahankan sebagai no-op agar cache/browser lama tidak
-        // menimbulkan error. Data EM hanya diubah melalui Master Data Aset.
-        function bukaFormEquipment() {
-            showToast('Equipment Management otomatis mengikuti Master Data Aset dan profil EM WHO Rules.', 'info');
-        }
 
-        function tutupFormEquipment() {
-            const modal = document.getElementById('modal-equipment');
-            if (modal) modal.classList.add('hidden');
-        }
-
-        function showToast(message, type = 'success') {
+function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             if(!container) return;
             const toast = document.createElement('div');
@@ -2662,156 +2632,8 @@
             }, 3000);
         }
 
-        function filterEquipment() {
 
-            const searchInput =
-                document.getElementById(
-                    "search-equipment"
-                );
-        
-            const statusInput =
-                document.getElementById(
-                    "filter-status-equipment"
-                );
-        
-            const kondisiInput =
-                document.getElementById(
-                    "filter-kondisi-equipment"
-                );
-        
-        
-            const search =
-                (searchInput?.value || "")
-                    .trim()
-                    .toLowerCase();
-        
-            const status =
-                statusInput?.value || "";
-        
-            const kondisi =
-                kondisiInput?.value || "";
-        
-        
-            filteredEquipment =
-                dataEquipment.filter(
-                    equipment => {
-        
-                        const searchableText = [
-        
-                            equipment.kodeAlat,
-        
-                            equipment.namaAlat,
-        
-                            equipment.kategori,
-        
-                            equipment.merk,
-        
-                            equipment.tipe,
-        
-                            equipment.serialNumber,
-        
-                            equipment.vendor,
-        
-                            equipment.lokasi,
-        
-                            equipment.unitId
-        
-                        ]
-                            .filter(Boolean)
-                            .join(" ")
-                            .toLowerCase();
-        
-        
-                        const cocokSearch =
-                            !search ||
-                            searchableText.includes(
-                                search
-                            );
-        
-        
-                        const cocokStatus =
-                            !status ||
-                            equipment.status === status;
-        
-        
-                        const cocokKondisi =
-                            !kondisi ||
-                            equipment.kondisi === kondisi;
-        
-        
-                        return (
-                            cocokSearch &&
-                            cocokStatus &&
-                            cocokKondisi
-                        );
-        
-                    }
-                );
-        
-        
-            renderFilteredEquipmentTable();
-        
-        }
-
-        function resetFilterEquipment() {
-
-            const searchInput =
-                document.getElementById(
-                    "search-equipment"
-                );
-        
-            const statusInput =
-                document.getElementById(
-                    "filter-status-equipment"
-                );
-        
-            const kondisiInput =
-                document.getElementById(
-                    "filter-kondisi-equipment"
-                );
-        
-        
-            if (searchInput) {
-                searchInput.value = "";
-            }
-        
-            if (statusInput) {
-                statusInput.value = "";
-            }
-        
-            if (kondisiInput) {
-                kondisiInput.value = "";
-            }
-        
-        
-            filteredEquipment = [
-                ...dataEquipment
-            ];
-        
-        
-            renderFilteredEquipmentTable();
-        
-        }
-
-        function renderFilteredEquipmentTable() {
-
-            const dataSebelumnya =
-                dataEquipment;
-        
-        
-            dataEquipment =
-                filteredEquipment;
-        
-        
-            renderEquipmentTable();
-        
-        
-            dataEquipment =
-                dataSebelumnya;
-        
-        }
-
-        async function logoutFirebase() {
+async function logoutFirebase() {
 
             try {
         
@@ -3428,46 +3250,9 @@
                 );
             }
         }
-        
-        function loadMaintenanceByEquipment(equipmentId) {
-            if (maintenanceUnsubscribe) {
-                maintenanceUnsubscribe();
-                maintenanceUnsubscribe = null;
-            }
-        
-            if (!equipmentId) {
-                dataMaintenance = [];
-                renderMaintenanceHistory();
-                return;
-            }
-        
-            maintenanceUnsubscribe = db.collection("maintenance")
-                .where("equipmentId", "==", equipmentId)
-                .onSnapshot(
-                    (snapshot) => {
-                        dataMaintenance = snapshot.docs.map((doc) => ({
-                            id: doc.id,
-                            ...doc.data()
-                        }));
-        
-                        dataMaintenance.sort((a, b) =>
-                            (b.tanggal || "").localeCompare(a.tanggal || "")
-                        );
-        
-                        console.log(
-                            "Maintenance berhasil dimuat:",
-                            dataMaintenance.length
-                        );
-        
-                        renderMaintenanceHistory();
-                    },
-                    (error) => {
-                        console.error("Listener maintenance gagal:", error);
-                    }
-                );
-        }
 
-        function renderMaintenanceHistory() {
+
+function renderMaintenanceHistory() {
 
             const container =
                 document.getElementById(
