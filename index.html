@@ -629,11 +629,11 @@
                             <form onsubmit="submitFormUserAdmin(event)" class="space-y-3">
                                 <input type="hidden" id="user-form-id">
                                 <div><label class="block font-bold text-slate-600 mb-1">Nama Lengkap *</label><input type="text" id="user-form-nama" required class="w-full bg-white text-slate-900 p-2.5 rounded-xl border border-slate-300 outline-none"></div>
-                                <div><label class="block font-bold text-slate-600 mb-1">Username *</label><input type="text" id="user-form-username" required class="w-full bg-white text-slate-900 p-2.5 rounded-xl border border-slate-300 outline-none"></div>
+                                <div><label class="block font-bold text-slate-600 mb-1">Email Login *</label><input type="email" id="user-form-username" required autocomplete="username" class="w-full bg-white text-slate-900 p-2.5 rounded-xl border border-slate-300 outline-none" placeholder="nama@rumahsakit.go.id"></div>
                                 <div>
                                     <label class="block font-bold text-slate-600 mb-1">Password *</label>
                                     <div class="relative">
-                                        <input type="password" id="user-form-password" required class="w-full bg-white text-slate-900 p-2.5 pr-10 rounded-xl border border-slate-300 outline-none">
+                                        <input type="password" id="user-form-password" minlength="6" autocomplete="new-password" class="w-full bg-white text-slate-900 p-2.5 pr-10 rounded-xl border border-slate-300 outline-none" placeholder="Minimal 6 karakter (saat membuat akun)">
                                         <button type="button" onclick="toggleLihatPassword('user-form-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
                                             <i class="fa-solid fa-eye text-xs"></i>
                                         </button>
@@ -1297,6 +1297,11 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // Untuk komputer/HP bersama, gunakan SESSION: refresh tetap masuk,
+        // tetapi sesi tidak dipertahankan setelah tab/browser ditutup.
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .catch(error => console.warn('Persistence Auth gagal diatur:', error.code || error.message));
+
         // Cache Firestore di perangkat agar pembukaan berikutnya lebih cepat.
         let firestorePersistenceReady = false;
         db.enablePersistence({ synchronizeTabs: true })
@@ -1313,45 +1318,31 @@
         }
         
         async function loadFirebaseUserProfile(firebaseUser) {
-            if (!firebaseUser) {
-                return null;
-            }
-        
+            if (!firebaseUser) return null;
             try {
-                const userRef = db
-                    .collection("users")
-                    .doc(firebaseUser.uid);
-        
-                const snap = await userRef.get();
-        
-                if (!snap.exists) {
-                    console.error(
-                        "Profil Firestore tidak ditemukan untuk UID:",
-                        firebaseUser.uid
-                    );
-        
-                    return null;
+                const uidSnap = await db.collection('users').doc(firebaseUser.uid).get();
+                if (uidSnap.exists) {
+                    const data = uidSnap.data();
+                    if (data.aktif === false) return null;
+                    return { uid: firebaseUser.uid, email: firebaseUser.email || data.email || '', ...data };
                 }
-        
-                const data = snap.data();
-        
-                if (data.aktif === false) {
-                    console.warn("Akun user tidak aktif.");
-                    return null;
+
+                // Kompatibilitas akun lama yang dahulu tersimpan dengan document ID acak.
+                const candidates = [];
+                for (const field of ['email', 'username']) {
+                    try {
+                        const snap = await db.collection('users').where(field, '==', firebaseUser.email || '').limit(1).get();
+                        snap.forEach(doc => candidates.push({ id: doc.id, ...doc.data() }));
+                        if (candidates.length) break;
+                    } catch (queryError) {
+                        console.warn(`Fallback profil ${field} gagal:`, queryError);
+                    }
                 }
-        
-                return {
-                    uid: firebaseUser.uid,
-                    email: firebaseUser.email || data.email || "",
-                    ...data
-                };
-        
+                const legacy = candidates[0];
+                if (!legacy || legacy.aktif === false) return null;
+                return { uid: firebaseUser.uid, email: firebaseUser.email || legacy.email || '', ...legacy };
             } catch (error) {
-                console.error(
-                    "Gagal mengambil profil user:",
-                    error
-                );
-        
+                console.error('Gagal mengambil profil user:', error);
                 return null;
             }
         }
@@ -1714,42 +1705,46 @@
                 "Memulai listener Firestore..."
             );
         
-            db.collection("users").onSnapshot(
-                (querySnapshot) => {
-        
-                    dataUserSistem = [];
-        
-                    querySnapshot.forEach((doc) => {
-                        dataUserSistem.push({
-                            id: doc.id,
-                            ...doc.data()
+            // Koleksi users berisi data profil sensitif. Hanya Admin/Teknisi
+            // yang membutuhkan daftar user untuk dropdown teknisi/saksi dan Kelola Akun.
+            // User biasa cukup menggunakan currentUser yang sudah dimuat berdasarkan UID.
+            if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
+                db.collection("users").onSnapshot(
+                    (querySnapshot) => {
+            
+                        dataUserSistem = [];
+            
+                        querySnapshot.forEach((doc) => {
+                            dataUserSistem.push({
+                                id: doc.id,
+                                ...doc.data()
+                            });
                         });
-                    });
-        
-                    listNamaTeknisi =
-                        dataUserSistem
-                            .filter(u => u.role === 'Teknisi')
-                            .map(u => u.nama);
-        
-                    listNamaSaksi =
-                        dataUserSistem
-                            .filter(u => u.role === 'User')
-                            .map(u => u.nama);
-        
-                    populasikanDropdownNamaTandaTangan();
-        
-                    // bagian render user Anda yang sekarang
-                    // tetap diletakkan di sini
-                },
-                (error) => {
-        
-                    console.error(
-                        "Listener users gagal:",
-                        error
-                    );
-        
-                }
-            );
+            
+                        listNamaTeknisi =
+                            dataUserSistem
+                                .filter(u => u.role === 'Teknisi' && u.aktif !== false)
+                                .map(u => u.nama);
+            
+                        listNamaSaksi =
+                            dataUserSistem
+                                .filter(u => u.role === 'User' && u.aktif !== false)
+                                .map(u => u.nama);
+            
+                        populasikanDropdownNamaTandaTangan();
+                        renderDaftarUser();
+                    },
+                    (error) => {
+                        console.error("Listener users gagal:", error);
+                        showToast("Daftar akun tidak dapat dimuat. Periksa Firestore Rules users.", "error");
+                    }
+                );
+            } else {
+                dataUserSistem = currentUser ? [{ id: currentUser.uid, ...currentUser }] : [];
+                listNamaTeknisi = [];
+                listNamaSaksi = currentUser && currentUser.role === 'User' ? [currentUser.nama] : [];
+                populasikanDropdownNamaTandaTangan();
+            }
         
         
             db.collection("dataAlat").onSnapshot(
@@ -1849,7 +1844,11 @@
         
             let isFirstLoadTickets = true;
             
-            db.collection("troubleTickets").onSnapshot(
+            const ticketQuery = currentActiveRole === 'User' && auth.currentUser
+                ? db.collection("troubleTickets").where("pelaporUid", "==", auth.currentUser.uid)
+                : db.collection("troubleTickets");
+
+            ticketQuery.onSnapshot(
                 (querySnapshot) => {
             
                     dataTiket = [];
@@ -4080,8 +4079,8 @@ function renderMaintenanceHistory() {
                     const el = document.getElementById('dropdown-pilih-alat-etiket');
                     if(el) el.style.display = 'none';
                 }
-                if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#form-cal-alat')) {
-                    const el = document.getElementById('form-cal-alat');
+                if (!e.target.closest('#input-search-alat-kalibrasi') && !e.target.closest('#dropdown-pilih-alat-kalibrasi')) {
+                    const el = document.getElementById('dropdown-pilih-alat-kalibrasi');
                     if(el) el.style.display = 'none';
                 }
                 if (!e.target.closest('#input-search-alat-worksheet') && !e.target.closest('#dropdown-pilih-alat-worksheet')) {
@@ -4791,7 +4790,7 @@ function renderMaintenanceHistory() {
         }
 
         function populasikanDropdownAlatDiKalibrasi(keyword = "") {
-            const selectEl = document.getElementById('form-cal-alat'); if(!selectEl) return;
+            const selectEl = document.getElementById('form-cal-alat-id'); if(!selectEl) return;
             const kw = keyword.toLowerCase();
             const filtered = dataAlat.filter(a => (a.nama + " " + (a.ruangan || a.lokasi || '')).toLowerCase().includes(kw));
             selectEl.innerHTML = filtered.map(a => `<option value="${a.id}">${a.nama} - [${a.ruangan || a.lokasi || 'Unit'}]</option>`).join('');
@@ -4866,31 +4865,130 @@ function renderMaintenanceHistory() {
             if(btn) btn.remove();
         }
 
-        function kirimTiketKeluhanKerusakan(e) {
+        async function kirimTiketKeluhanKerusakan(e) {
             e.preventDefault();
-            const alatId = document.getElementById('ticket-form-alat').value;
-            const keluhan = document.getElementById('ticket-form-keluhan').value;
-            if(!alatId) return showToast("Pilih alat terlebih dahulu dari dropdown pencarian!", "error");
-            const now = new Date();
-            const tglLaporStr = now.toISOString().substring(0, 10) + ' ' + now.toTimeString().substring(0, 5);
-            const selectedAlatObj = dataAlat.find(a => a.id == alatId) || { nama: 'Alat Medis', ruangan: 'Unit' };
-            const payloadTicket = { alatId, keluhan, fotoBefore: stringFotoBeforeBase64, statusTiket: "Menunggu Tindakan", tglLapor: tglLaporStr };
-            
-            db.collection("troubleTickets").add(payloadTicket).then(() => {
-                return db.collection("laporanKeluhanLog").add({
-                    alatId: alatId, noLk: "TICKET-LOG", jenisKerja: "Laporan Kerusakan", textTgl: tglLaporStr,
-                    desc_kerja: "Keluhan: " + keluhan, fotoBefore: stringFotoBeforeBase64, hasilTunggal: "Menunggu Penanganan", teknisiTtd: "-"
-                });
-            }).then(() => {
-                return db.collection("dataAlat").doc(alatId).update({ status: "Dalam Perbaikan" });
-            }).then(() => {
-                kirimNotifikasiTelegramOtomatis(selectedAlatObj.nama, selectedAlatObj.ruangan || selectedAlatObj.lokasi || 'Unit', keluhan);
-                document.getElementById('ticket-form-keluhan').value = "";
-                document.getElementById('ticket-form-alat').value = "";
-                document.getElementById('input-search-alat-ticket').value = "";
+            if (window.__sedangKirimTiket) return;
+
+            const alatIdEl = document.getElementById('ticket-form-alat');
+            const keluhanEl = document.getElementById('ticket-form-keluhan');
+            const searchAlatEl = document.getElementById('input-search-alat-ticket');
+            const submitBtn = e && e.submitter ? e.submitter : e.currentTarget?.querySelector('button[type="submit"]');
+
+            const alatId = alatIdEl ? alatIdEl.value.trim() : '';
+            const keluhan = keluhanEl ? keluhanEl.value.trim() : '';
+
+            if (!alatId) {
+                showToast("Pilih alat terlebih dahulu dari dropdown pencarian!", "error");
+                if (searchAlatEl) searchAlatEl.focus();
+                return;
+            }
+            if (!keluhan) {
+                showToast("Uraian masalah/keluhan wajib diisi!", "error");
+                if (keluhanEl) keluhanEl.focus();
+                return;
+            }
+
+            const selectedAlatObj = dataAlat.find(a => String(a.id) === String(alatId));
+            if (!selectedAlatObj) {
+                showToast("Data alat tidak ditemukan. Silakan pilih ulang alat dari daftar!", "error");
+                if (alatIdEl) alatIdEl.value = '';
+                if (searchAlatEl) searchAlatEl.focus();
+                return;
+            }
+
+            window.__sedangKirimTiket = true;
+            const tombolAsli = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Mengirim...</span>';
+            }
+
+            try {
+                const now = new Date();
+                const tglLaporStr = now.getFullYear() + '-' +
+                    String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(now.getDate()).padStart(2, '0') + ' ' +
+                    String(now.getHours()).padStart(2, '0') + ':' +
+                    String(now.getMinutes()).padStart(2, '0');
+
+                const fotoBefore = stringFotoBeforeBase64 || '-';
+                const payloadTicket = {
+                    alatId: selectedAlatObj.id,
+                    keluhan: keluhan,
+                    fotoBefore: fotoBefore,
+                    statusTiket: "Menunggu Tindakan",
+                    tglLapor: tglLaporStr,
+                    pelaporUid: (auth.currentUser && auth.currentUser.uid) ? auth.currentUser.uid : '',
+                    pelaporNama: currentUserNama || '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                // TICKET adalah transaksi utama. Jika berhasil, laporan kerusakan sudah tercatat.
+                // Log dan perubahan status aset dibuat best-effort agar permission rule pada User
+                // tidak membuat tombol terlihat gagal walaupun ticket sebenarnya sudah tersimpan.
+                const ticketRef = await db.collection("troubleTickets").add(payloadTicket);
+
+                try {
+                    await db.collection("laporanKeluhanLog").add({
+                        alatId: selectedAlatObj.id,
+                        noLk: "TICKET-LOG",
+                        jenisKerja: "Laporan Kerusakan",
+                        textTgl: tglLaporStr,
+                        desc_kerja: "Keluhan: " + keluhan,
+                        fotoBefore: fotoBefore,
+                        hasilTunggal: "Menunggu Penanganan",
+                        teknisiTtd: "-",
+                        ticketId: ticketRef.id,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (logError) {
+                    console.warn("Log tiket tidak dapat dibuat oleh role saat ini:", logError);
+                }
+
+                try {
+                    await db.collection("dataAlat").doc(selectedAlatObj.id).update({
+                        status: "Dalam Perbaikan",
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (assetError) {
+                    // Jangan menggagalkan pelaporan. Teknisi/Admin tetap dapat mengambil ticket.
+                    console.warn("Status aset belum dapat diperbarui oleh role saat ini:", assetError);
+                }
+
+                try {
+                    kirimNotifikasiTelegramOtomatis(
+                        selectedAlatObj.nama,
+                        selectedAlatObj.ruangan || selectedAlatObj.lokasi || 'Unit',
+                        keluhan
+                    );
+                } catch (notifyError) {
+                    console.warn("Notifikasi Telegram gagal:", notifyError);
+                }
+
+                if (keluhanEl) keluhanEl.value = "";
+                if (alatIdEl) alatIdEl.value = "";
+                if (searchAlatEl) searchAlatEl.value = "";
                 resetFotoTicketBefore();
-                showToast("Tiket kerusakan beserta foto kondisi awal berhasil dikirim!", "success");
-            });
+                showToast("Tiket keluhan berhasil dikirim dan masuk ke antrean teknisi.", "success");
+
+            } catch (error) {
+                console.error("Gagal mengirim tiket keluhan:", error);
+                let pesan = "Tiket gagal dikirim.";
+                if (error && error.code === 'permission-denied') {
+                    pesan = "Tiket ditolak oleh aturan keamanan Firebase. Periksa Firestore Rules untuk collection troubleTickets.";
+                } else if (error && error.message) {
+                    pesan += " " + error.message;
+                }
+                showToast(pesan, "error");
+            } finally {
+                window.__sedangKirimTiket = false;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+                    submitBtn.innerHTML = tombolAsli || '<i class="fa-solid fa-paper-plane"></i><span>Kirim Tiket Keluhan</span>';
+                }
+            }
         }
         
         function kirimNotifikasiTelegramOtomatis(namaAlat, ruangan, keluhan) {
@@ -4971,12 +5069,12 @@ function renderMaintenanceHistory() {
         function hapusTiketUser(tiketId, alatId) {
             if(confirm("Batalkan atau hapus laporan kerusakan ini? Status alat akan dikembalikan menjadi Siap Pakai.")) {
                 db.collection("troubleTickets").doc(tiketId).delete().then(() => {
-                    return db.collection("dataAlat").doc(alatId).update({ status: "Siap Digunakan" });
-                }).then(() => { showToast("Laporan kerusakan dibatalkan.", "info"); });
+                    return db.collection("dataAlat").doc(alatId).update({ status: "Siap Digunakan" }).catch(err => console.warn('Status aset tidak dapat dipulihkan:', err));
+                }).then(() => { showToast("Laporan kerusakan dibatalkan.", "info"); }).catch(err => showToast('Gagal membatalkan tiket: ' + (err.message || ''), 'error'));
             }
         }
 
-        function eksekusiTiketLangsungKerjakan(tiketId, alatId) {
+        async function eksekusiTiketLangsungKerjakan(tiketId, alatId) {
             const targetTiket = dataTiket.find(t => t.id === tiketId);
             bukaLembarKerjaBaruKosong();
             document.getElementById('dlk-selected-alat-id').value = alatId;
@@ -4984,16 +5082,30 @@ function renderMaintenanceHistory() {
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(r => { if(r.value === "Corrective Maintenance") r.checked = true; });
             stringFotoBeforeBase64 = (targetTiket && targetTiket.fotoBefore) ? targetTiket.fotoBefore : "-";
             const boxBefore = document.getElementById('box-preview-foto-before');
-            if(stringFotoBeforeBase64 !== '-') { boxBefore.innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`; } 
+            if(stringFotoBeforeBase64 !== '-') { boxBefore.innerHTML = `<img src="${stringFotoBeforeBase64}" class="w-full h-full object-contain rounded">`; }
             else { boxBefore.innerHTML = `[ Tidak Ada Foto Before ]`; }
-            db.collection("troubleTickets").doc(tiketId).update({ statusTiket: "Sedang Dikerjakan" });
+
+            try {
+                await db.collection("troubleTickets").doc(tiketId).update({ statusTiket: "Sedang Dikerjakan" });
+                try {
+                    await db.collection("dataAlat").doc(alatId).update({
+                        status: "Dalam Perbaikan",
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (assetError) {
+                    console.warn("Status aset tidak dapat diperbarui saat tiket diambil:", assetError);
+                }
+            } catch (error) {
+                console.error("Gagal mengubah status tiket:", error);
+                showToast("LK dibuka, tetapi status tiket belum dapat diperbarui.", "warning");
+            }
         }
 
         function selesaikanTiketTroubleManual(tiketId, alatId) {
             if(confirm("Apakah Anda ingin menyelesaikan trouble ticket ini dan mengubah status alat menjadi Siap Pakai?")) {
                 db.collection("troubleTickets").doc(tiketId).update({ statusTiket: "Selesai" }).then(() => {
-                    return db.collection("dataAlat").doc(alatId).update({ status: "Siap Digunakan" });
-                }).then(() => { showToast("Status tiket berhasil diselesaikan!", "success"); });
+                    return db.collection("dataAlat").doc(alatId).update({ status: "Siap Digunakan" }).catch(err => console.warn('Status aset tidak dapat diperbarui:', err));
+                }).then(() => { showToast("Status tiket berhasil diselesaikan!", "success"); }).catch(err => showToast('Gagal menyelesaikan tiket: ' + (err.message || ''), 'error'));
             }
         }
 
@@ -5049,103 +5161,93 @@ function renderMaintenanceHistory() {
             renderTabelPusatDokumen();
         }
 
-        function simpanPenuhIsianWorksheetDinamis() {
-            if (currentActiveRole === 'User') { showToast("Akses ditolak! Akun User hanya dapat melihat Lembar Kerja.", "error"); return; }
-            const alatIdRaw = document.getElementById('dlk-selected-alat-id').value;
-            if(!alatIdRaw) return showToast("Belum ada alat yang terpilih pada Lembar Kerja ini!", "error");
-            const tekNama = document.getElementById('dlk-select-nama-teknisi').value;
-            if(!tekNama) return showToast("Silakan pilih Nama Teknisi!", "error");
-        
-            const existingFirebaseId = document.getElementById('dlk-firebase-id').value;
-            const tglKalibrasiInput = document.getElementById('dlk-tglcal').value;
-            const tglExpKalibrasiInput = document.getElementById('dlk-nokal').value;
-        
-            // Ambil tanggal hari ini atau tanggal LK untuk menentukan hari & bulan otomatis pada rekapan PM
-            const tglLek = document.getElementById('dlk-tgl').value ? new Date(document.getElementById('dlk-tgl').value) : new Date();
+        async function simpanPenuhIsianWorksheetDinamis() {
+            if (currentActiveRole === 'User') { showToast('Akses ditolak! Akun User hanya dapat melihat Lembar Kerja.', 'error'); return; }
+            const alatIdRaw = document.getElementById('dlk-selected-alat-id')?.value || '';
+            if (!alatIdRaw) return showToast('Belum ada alat yang terpilih pada Lembar Kerja ini!', 'error');
+            const tekNama = document.getElementById('dlk-select-nama-teknisi')?.value || '';
+            if (!tekNama || tekNama === 'tambah-teknisi-baru') return showToast('Silakan pilih Nama Teknisi!', 'error');
+            const jenisEl = document.querySelector('input[name="dlk-jenis"]:checked');
+            const hasilEl = document.querySelector('input[name="dlk-hasil-tunggal"]:checked');
+            if (!jenisEl || !hasilEl) return showToast('Jenis pekerjaan dan hasil pemeriksaan wajib dipilih.', 'error');
+
+            const existingFirebaseId = document.getElementById('dlk-firebase-id')?.value || '';
+            const tglKalibrasiInput = document.getElementById('dlk-tglcal')?.value || '';
+            const tglExpKalibrasiInput = document.getElementById('dlk-nokal')?.value || '';
+            const tglText = document.getElementById('dlk-tgl')?.value || new Date().toISOString().substring(0,10);
+            const tglLek = new Date(tglText + 'T00:00:00');
             const hariVal = tglLek.getDate();
             const bulanVal = tglLek.getMonth() + 1;
-        
+
             const payload = {
-                alatId: alatIdRaw, 
-                noLk: document.getElementById('dlk-no').value, 
-                textTgl: document.getElementById('dlk-tgl').value,
-                desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal').innerText, 
-                jenisKerja: document.querySelector('input[name="dlk-jenis"]:checked').value,
-                hasilTunggal: document.querySelector('input[name="dlk-hasil-tunggal"]:checked').value, 
-                ttdTeknisi: document.getElementById('sig-teknisi').toDataURL(),
-                ttdUser: document.getElementById('sig-user').toDataURL(), 
-                ttdPJ: document.getElementById('sig-pj').toDataURL(), 
-                teknisiTtd: tekNama, 
-                saksiTtd: document.getElementById('dlk-select-nama-saksi').value, 
-                pjTtd: "PJ Alkes", 
-                fotoAlat: stringFotoBase64, 
-                fotoBefore: stringFotoBeforeBase64,  
-                paramAlatKerja: JSON.stringify(terpakaiAlatKerja), 
-                paramFisik: JSON.stringify(terpakaiFisik), 
-                paramFungsi: JSON.stringify(terpakaiFungsi),
-                tglKalibrasi: tglKalibrasiInput, 
-                tglExpKalibrasi: tglExpKalibrasiInput, 
-                isLocked: true,
+                alatId: alatIdRaw,
+                noLk: document.getElementById('dlk-no')?.value || '',
+                textTgl: tglText,
+                desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal')?.innerText || '',
+                jenisKerja: jenisEl.value,
+                hasilTunggal: hasilEl.value,
+                ttdTeknisi: document.getElementById('sig-teknisi')?.toDataURL() || '',
+                ttdUser: document.getElementById('sig-user')?.toDataURL() || '',
+                ttdPJ: document.getElementById('sig-pj')?.toDataURL() || '',
+                teknisiTtd: tekNama,
+                saksiTtd: document.getElementById('dlk-select-nama-saksi')?.value || '',
+                pjTtd: 'PJ Alkes', fotoAlat: stringFotoBase64 || '-', fotoBefore: stringFotoBeforeBase64 || '-',
+                paramAlatKerja: JSON.stringify(terpakaiAlatKerja), paramFisik: JSON.stringify(terpakaiFisik), paramFungsi: JSON.stringify(terpakaiFungsi),
+                tglKalibrasi: tglKalibrasiInput, tglExpKalibrasi: tglExpKalibrasiInput, isLocked: true,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-        
-            const newStatus = payload.hasilTunggal === "Alat Rusak Perlu Perbaikan" ? "Dalam Perbaikan" : "Siap Digunakan";
-            
-            // Data tambahan untuk memperbarui jadwal di Rekapan Harian secara otomatis
-            const updateRekapanData = {
-                status: newStatus,
-                hari: hariVal,
-                bulan: bulanVal,
-                teknisi: tekNama,
-                kondisi: payload.hasilTunggal.includes("Rusak") ? "Kurang Baik" : "Baik"
-            };
-        
-            let promiseKalibrasi = Promise.resolve();
-            if (tglKalibrasiInput && tglExpKalibrasiInput) {
-                promiseKalibrasi = db.collection("dataKalibrasi").add({
-                    alatId: alatIdRaw, tgl: tglKalibrasiInput, exp: tglExpKalibrasiInput,
-                    vendor: "Internal / UPTD RSUD Pondokgede (" + payload.noLk + ")", certPdf: "-", hasil: payload.hasilTunggal.includes("Rusak") ? "Tidak Layak" : "Layak"
-                });
-            }
-        
-            if (existingFirebaseId) {
-                db.collection("lembarKerja").doc(existingFirebaseId).update(payload)
-                .then(() => promiseKalibrasi)
-                .then(() => {
-                    // Otomatis sinkronkan status & tanggal pemeliharaan ke master / rekapan equipment
-                    return db.collection("equipment").doc(alatIdRaw).update(updateRekapanData);
-                })
-                .then(() => db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get())
-                .then((qSnap) => {
-                    qSnap.forEach(docT => db.collection("troubleTickets").doc(docT.id).update({ statusTiket: "Selesai" }));
-                    document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                    showToast(`Lembar Kerja #${payload.noLk} Berhasil Diperbarui & Masuk Rekapan Harian!`, "success");
-                    if(typeof renderRekapanPMTable === 'function') renderRekapanPMTable();
-                    if(typeof renderRekapanEMTable === 'function') renderRekapanEMTable();
-                });
-            } else {
-                db.collection("lembarKerja").get().then((snap) => {
-                    let currentNoLk = "RSUDPG/IPSRS/LK-" + String(snap.size + 1).padStart(3, '0');
-                    payload.noLk = currentNoLk; 
+            const newStatus = payload.hasilTunggal === 'Alat Rusak Perlu Perbaikan' ? 'Dalam Perbaikan' : 'Siap Digunakan';
+
+            try {
+                let lkRef;
+                if (existingFirebaseId) {
+                    lkRef = db.collection('lembarKerja').doc(existingFirebaseId);
+                    await lkRef.update(payload);
+                } else {
+                    const nextNumber = dataLembarKerja.reduce((max, item) => {
+                        const m = String(item.noLk || '').match(/LK-(\d+)$/i);
+                        return m ? Math.max(max, Number(m[1])) : max;
+                    }, 0) + 1;
+                    payload.noLk = 'RSUDPG/IPSRS/LK-' + String(nextNumber).padStart(3, '0');
                     payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    
-                    db.collection("lembarKerja").add(payload)
-                    .then(() => promiseKalibrasi)
-                    .then(() => {
-                        // Otomatis sinkronkan data ke rekapan harian & jadwal PM
-                        return db.collection("equipment").doc(alatIdRaw).update(updateRekapanData);
-                    })
-                    .then(() => {
-                        return db.collection("troubleTickets").where("alatId", "==", alatIdRaw).get();
-                    })
-                    .then((qSnap) => {
-                        qSnap.forEach(docT => db.collection("troubleTickets").doc(docT.id).update({ statusTiket: "Selesai" }));
-                        document.getElementById('area-lembar-kerja-resmi').classList.add('hidden');
-                        showToast(`Lembar Kerja Resmi #${currentNoLk} Berhasil Disimpan & Masuk Rekapan!`, "success");
-                        if(typeof renderRekapanPMTable === 'function') renderRekapanPMTable();
-                    if(typeof renderRekapanEMTable === 'function') renderRekapanEMTable();
+                    lkRef = db.collection('lembarKerja').doc();
+                    await lkRef.set(payload);
+                }
+
+                // Kalibrasi adalah tambahan; kegagalannya tidak membatalkan LK yang sudah tersimpan.
+                if (tglKalibrasiInput && tglExpKalibrasiInput) {
+                    try {
+                        await db.collection('dataKalibrasi').add({
+                            alatId: alatIdRaw, tgl: tglKalibrasiInput, exp: tglExpKalibrasiInput,
+                            vendor: 'Internal / UPTD RSUD Pondokgede (' + payload.noLk + ')', certPdf: '-',
+                            hasil: payload.hasilTunggal.includes('Rusak') ? 'Tidak Layak' : 'Layak', createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    } catch (calError) { console.warn('Kalibrasi tidak tersimpan:', calError); }
+                }
+
+                // Master Aset adalah sumber utama. Projection equipment hanya cache/kompatibilitas.
+                try { await db.collection('dataAlat').doc(alatIdRaw).update({ status: newStatus, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
+                catch (assetError) { console.warn('Status Master Aset tidak dapat diperbarui:', assetError); }
+                try { await db.collection('equipment').doc(alatIdRaw).set({ status: newStatus, hari: hariVal, bulan: bulanVal, teknisi: tekNama, kondisi: payload.hasilTunggal.includes('Rusak') ? 'Kurang Baik' : 'Baik', updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); }
+                catch (equipmentError) { console.warn('Projection equipment tidak dapat diperbarui:', equipmentError); }
+
+                // Tutup tiket yang masih aktif untuk alat tersebut; jika Rules melarang, LK tetap sukses.
+                try {
+                    const qSnap = await db.collection('troubleTickets').where('alatId', '==', alatIdRaw).get();
+                    const ticketUpdates = [];
+                    qSnap.forEach(docT => {
+                        const d = docT.data();
+                        if (d.statusTiket !== 'Selesai') ticketUpdates.push(docT.ref.update({ statusTiket: 'Selesai', selesaiAt: firebase.firestore.FieldValue.serverTimestamp() }));
                     });
-                });
+                    await Promise.all(ticketUpdates);
+                } catch (ticketError) { console.warn('Status tiket tidak dapat ditutup otomatis:', ticketError); }
+
+                document.getElementById('area-lembar-kerja-resmi')?.classList.add('hidden');
+                showToast(`Lembar Kerja ${payload.noLk} berhasil disimpan dan masuk rekapan.`, 'success');
+                jadwalkanRenderAll();
+            } catch (error) {
+                console.error('Gagal menyimpan LK:', error);
+                showToast('Lembar Kerja gagal disimpan: ' + (error.message || 'periksa koneksi dan Security Rules.'), 'error');
             }
         }
         
@@ -5179,14 +5281,14 @@ function renderMaintenanceHistory() {
             aktualisasikanTampilanKotakTabel('fungsi'); 
             populasikanDropdownNamaTandaTangan();
             
-            db.collection("lembarKerja").get().then(s => {
-                let generatedNo = "RSUDPG/IPSRS/LK-" + String(s.size + 1).padStart(3, '0');
-                const elNo = document.getElementById('dlk-no');
-                if(elNo) elNo.value = generatedNo;
-            }).catch(err => {
-                const elNo = document.getElementById('dlk-no');
-                if(elNo) elNo.value = "RSUDPG/IPSRS/LK-001";
-            });
+            // Tidak perlu membaca seluruh koleksi LK hanya untuk nomor sementara.
+            // Nomor final ditentukan kembali saat penyimpanan berdasarkan cache LK yang sudah ada.
+            const nextNo = dataLembarKerja.reduce((max, item) => {
+                const m = String(item.noLk || '').match(/LK-(\d+)$/i);
+                return m ? Math.max(max, Number(m[1])) : max;
+            }, 0) + 1;
+            const elNo = document.getElementById('dlk-no');
+            if(elNo) elNo.value = "RSUDPG/IPSRS/LK-" + String(nextNo).padStart(3, '0');
             
             bukaKunciTotalFormWorksheetBaru();
             areaLK.classList.remove('hidden'); areaLK.scrollTop = 0;
@@ -5428,11 +5530,8 @@ function renderMaintenanceHistory() {
                 let namaBaru = prompt(`Masukkan Nama Lengkap ${targetRoleName} Baru:`);
                 if(namaBaru && namaBaru.trim() !== '') {
                     const cleanNama = namaBaru.trim();
-                    let payloadUser = {
-                        nama: cleanNama, username: cleanNama.toLowerCase().replace(/\s+/g, '_'),
-                        password: '123', role: targetRoleName, menuAkses: ['dashboard', 'master', 'ticket', 'riwayat']
-                    };
-                    db.collection("users").add(payloadUser).then(() => { showToast(`${targetRoleName} baru "${cleanNama}" berhasil disimpan!`, "success"); });
+                    showToast(`Untuk membuat akun login ${targetRoleName}, gunakan menu Kelola Akun agar email/password Firebase dibuat dengan aman.`, 'info');
+                    selectEl.selectedIndex = 0;
                 } else { selectEl.selectedIndex = 0; }
             }
         }
@@ -5592,23 +5691,210 @@ function renderMaintenanceHistory() {
             } 
         }
 
-        function submitFormUserAdmin(e) {
+        function resetFormUser() {
+            const ids = [
+                'user-form-id','user-form-nama','user-form-username','user-form-password'
+            ];
+            ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            const role = document.getElementById('user-form-role');
+            if (role) role.value = 'User';
+            const defaults = {
+                'akses-dash-read': true, 'akses-dash-edit': true,
+                'akses-master-read': false, 'akses-master-edit': false, 'akses-master-hapus': false,
+                'akses-ticket-read': true, 'akses-ticket-edit': false, 'akses-ticket-hapus': false,
+                'akses-riwayat-read': true, 'akses-riwayat-upload': false, 'akses-riwayat-download': true, 'akses-riwayat-hapus': false
+            };
+            Object.entries(defaults).forEach(([id, value]) => { const el = document.getElementById(id); if (el) el.checked = value; });
+            const title = document.getElementById('form-user-title');
+            if (title) title.innerHTML = '<i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun';
+            const btn = document.getElementById('btn-submit-user');
+            if (btn) btn.innerText = 'Daftarkan Akun';
+            const passwordEl = document.getElementById('user-form-password');
+            if (passwordEl) { passwordEl.required = true; passwordEl.placeholder = 'Minimal 6 karakter (saat membuat akun)'; }
+            const cancel = document.getElementById('btn-cancel-edit-user');
+            if (cancel) cancel.classList.add('hidden');
+        }
+
+        async function buatAkunAuthSekunder(email, password) {
+            if (!email || !password) throw new Error('Email dan password wajib diisi.');
+            if (password.length < 6) throw new Error('Password minimal 6 karakter.');
+            let secondaryApp = null;
+            try {
+                secondaryApp = firebase.app('medixUserProvisioning');
+            } catch (e) {
+                secondaryApp = firebase.initializeApp(firebaseConfig, 'medixUserProvisioning');
+            }
+            const secondaryAuth = secondaryApp.auth();
+            try {
+                const credential = await secondaryAuth.createUserWithEmailAndPassword(email, password);
+                return credential.user;
+            } finally {
+                try { await secondaryAuth.signOut(); } catch (e) {}
+            }
+        }
+
+        async function importDataDariExcel(event) {
+            const input = event?.target;
+            const file = input?.files?.[0];
+            if (!file) return;
+            if (currentActiveRole !== 'Admin') {
+                showToast('Hanya Admin yang dapat mengimpor Master Data Aset.', 'error');
+                if (input) input.value = '';
+                return;
+            }
+            if (typeof XLSX === 'undefined') {
+                showToast('Library Excel belum tersedia.', 'error');
+                return;
+            }
+            try {
+                showToast('Membaca file Excel...', 'info');
+                const buffer = await file.arrayBuffer();
+                const workbook = XLSX.read(buffer, { type: 'array', cellDates: true });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+                if (!rows.length) throw new Error('Sheet pertama tidak memiliki data.');
+
+                const norm = value => String(value ?? '').trim().toLowerCase().replace(/[\s_\-\/]+/g, ' ');
+                const pick = (row, names) => {
+                    const entries = Object.entries(row);
+                    for (const wanted of names) {
+                        const wn = norm(wanted);
+                        const found = entries.find(([k]) => norm(k) === wn || norm(k).includes(wn));
+                        if (found && String(found[1]).trim() !== '') return String(found[1]).trim();
+                    }
+                    return '';
+                };
+                const existingByKey = new Map();
+                dataAlat.forEach(a => {
+                    const seri = norm(a.seri || a.serialNumber || '');
+                    if (seri) existingByKey.set('seri|' + seri, a);
+                    const key = [a.nama,a.merk,a.tipe,a.ruangan || a.lokasi].map(norm).join('|');
+                    if (key.replace(/\|/g,'').trim()) existingByKey.set('key|' + key, a);
+                });
+
+                const operations = [];
+                let skipped = 0;
+                rows.forEach(row => {
+                    const nama = pick(row, ['NAMA ALAT','NAMA ALKES','NAMA ALAT KESEHATAN','NAMA']);
+                    if (!nama) { skipped++; return; }
+                    const merk = pick(row, ['MERK','BRAND']);
+                    const tipe = pick(row, ['MODEL/TIPE','TIPE','MODEL','TYPE']);
+                    const seri = pick(row, ['SERIAL NUMBER','SERIAL NO','NO SERI','SERI','SN']);
+                    const izinEdar = pick(row, ['IZIN EDAR','NOMOR IZIN EDAR','IZIN']);
+                    const ruangan = pick(row, ['UNIT/RUANGAN','RUANGAN','UNIT','LOKASI']);
+                    const status = pick(row, ['STATUS OPERASIONAL','STATUS']) || 'Siap Digunakan';
+                    const payload = { nama, merk, tipe, seri, izinEdar, ruangan, status, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                    const keySeri = norm(seri);
+                    const keyFull = [nama,merk,tipe,ruangan].map(norm).join('|');
+                    const existing = (keySeri && existingByKey.get('seri|' + keySeri)) || existingByKey.get('key|' + keyFull);
+                    if (existing) operations.push({ ref: db.collection('dataAlat').doc(existing.id), payload, mode: 'update' });
+                    else operations.push({ ref: db.collection('dataAlat').doc(), payload: {...payload, createdAt: firebase.firestore.FieldValue.serverTimestamp()}, mode: 'add' });
+                });
+                if (!operations.length) throw new Error('Tidak ada baris valid yang dapat diimpor.');
+                for (let i = 0; i < operations.length; i += 450) {
+                    const batch = db.batch();
+                    operations.slice(i, i + 450).forEach(op => batch.set(op.ref, op.payload, { merge: true }));
+                    await batch.commit();
+                }
+                showToast(`Import selesai: ${operations.length} aset diproses${skipped ? `, ${skipped} baris dilewati` : ''}.`, 'success');
+            } catch (error) {
+                console.error('Import Master Data Aset gagal:', error);
+                showToast('Import gagal: ' + (error.message || 'format file tidak valid.'), 'error');
+            } finally {
+                if (input) input.value = '';
+            }
+        }
+
+        async function submitFormUserAdmin(e) {
             e.preventDefault();
-            const id = document.getElementById('user-form-id').value;
+            if (currentActiveRole !== 'Admin') {
+                showToast('Hanya Admin yang dapat mengelola akun.', 'error');
+                return;
+            }
+            const id = document.getElementById('user-form-id').value.trim();
+            const nama = document.getElementById('user-form-nama').value.trim();
+            const email = document.getElementById('user-form-username').value.trim().toLowerCase();
+            const passwordEl = document.getElementById('user-form-password');
+            const password = passwordEl.value;
+            if (!nama || !email || !email.includes('@')) return showToast('Nama dan email login harus diisi dengan benar.', 'error');
             const menuAksesPayload = {
                 dashboard: { read: document.getElementById('akses-dash-read').checked, edit: document.getElementById('akses-dash-edit').checked },
                 master: { read: document.getElementById('akses-master-read').checked, edit: document.getElementById('akses-master-edit').checked, hapus: document.getElementById('akses-master-hapus').checked },
                 ticket: { read: document.getElementById('akses-ticket-read').checked, edit: document.getElementById('akses-ticket-edit').checked, hapus: document.getElementById('akses-ticket-hapus').checked },
                 riwayat: { read: document.getElementById('akses-riwayat-read').checked, upload: document.getElementById('akses-riwayat-upload').checked, download: document.getElementById('akses-riwayat-download').checked, hapus: document.getElementById('akses-riwayat-hapus').checked }
             };
-            const payload = {
-                nama: document.getElementById('user-form-nama').value.trim(), username: document.getElementById('user-form-username').value.trim(),
-                password: document.getElementById('user-form-password').value, role: document.getElementById('user-form-role').value, menuAkses: menuAksesPayload
-            };
-            if (id) {
-                db.collection("users").doc(id).update(payload).then(() => { showToast("Akun berhasil diperbarui!", "success"); resetFormUser(); });
-            } else {
-                db.collection("users").add(payload).then(() => { showToast("Akun baru berhasil didaftarkan!", "success"); resetFormUser(); });
+            try {
+                if (id) {
+                    const payload = { nama, email, username: email, role: document.getElementById('user-form-role').value, menuAkses: menuAksesPayload, aktif: true, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                    await db.collection('users').doc(id).set(payload, { merge: true });
+                    if (password) {
+                        try {
+                            const target = await auth.sendPasswordResetEmail(email);
+                            showToast('Profil diperbarui. Password diubah melalui email reset.', 'success');
+                        } catch (resetError) {
+                            console.warn('Password reset email gagal:', resetError);
+                            showToast('Profil diperbarui, tetapi email reset password gagal dikirim.', 'warning');
+                        }
+                    } else {
+                        showToast('Akun berhasil diperbarui!', 'success');
+                    }
+                    resetFormUser();
+                    return;
+                }
+
+                if (!password || password.length < 6) return showToast('Password akun baru minimal 6 karakter.', 'error');
+                const authUser = await buatAkunAuthSekunder(email, password);
+                const payload = { uid: authUser.uid, nama, email, username: email, role: document.getElementById('user-form-role').value, menuAkses: menuAksesPayload, aktif: true, createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                await db.collection('users').doc(authUser.uid).set(payload, { merge: true });
+                showToast(`Akun ${nama} berhasil dibuat dan siap digunakan untuk login.`, 'success');
+                resetFormUser();
+            } catch (error) {
+                console.error('Gagal mengelola akun:', error);
+                let msg = error.message || 'Operasi akun gagal.';
+                if (error.code === 'auth/email-already-in-use') msg = 'Email tersebut sudah terdaftar di Firebase Authentication.';
+                if (error.code === 'permission-denied') msg = 'Firestore menolak pembuatan profil akun. Periksa Security Rules users/{uid} untuk Admin.';
+                showToast(msg, 'error');
+            }
+        }
+
+        function renderDaftarUser() {
+            const tbody = document.getElementById('table-user-body');
+            if (!tbody) return;
+            if (currentActiveRole !== 'Admin') { tbody.innerHTML = ''; return; }
+            if (!Array.isArray(dataUserSistem) || dataUserSistem.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400 italic">Belum ada akun terdaftar.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = dataUserSistem.map(u => {
+                const uid = u.id || u.uid || '';
+                const nama = escapeHtmlEquipment(u.nama || '-');
+                const email = escapeHtmlEquipment(u.email || u.username || '-');
+                const role = escapeHtmlEquipment(u.role || 'User');
+                const aktif = u.aktif !== false;
+                return `<tr class="border-b border-slate-100">
+                    <td class="p-3 font-semibold">${nama}<div class="text-[9px] text-slate-400">${aktif ? 'Aktif' : 'Nonaktif'}</div></td>
+                    <td class="p-3 font-mono text-[10px]">${email}</td>
+                    <td class="p-3"><span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-bold">${role}</span></td>
+                    <td class="p-3 text-center whitespace-nowrap">
+                        <button type="button" onclick="editAkunUserOlehAdmin('${uid}')" class="bg-amber-50 text-amber-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Edit</button>
+                        <button type="button" onclick="kirimResetPasswordAkun('${uid}')" class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Reset Password</button>
+                        <button type="button" onclick="hapusAkunUserOlehAdmin('${uid}', '${nama.replace(/'/g, '&#39;')}')" class="bg-rose-50 text-rose-700 px-2 py-1 rounded-lg text-[10px] font-bold">Hapus</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        async function kirimResetPasswordAkun(userId) {
+            if (currentActiveRole !== 'Admin') return showToast('Akses ditolak.', 'error');
+            const userObj = dataUserSistem.find(u => u.id === userId || u.uid === userId);
+            const email = userObj?.email || userObj?.username || '';
+            if (!email || !email.includes('@')) return showToast('Email akun tidak valid.', 'error');
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showToast('Email reset password berhasil dikirim.', 'success');
+            } catch (error) {
+                console.error('Reset password gagal:', error);
+                showToast('Reset password gagal: ' + (error.message || ''), 'error');
             }
         }
 
@@ -5617,8 +5903,10 @@ function renderMaintenanceHistory() {
             if(!userObj) return;
             document.getElementById('user-form-id').value = userObj.id;
             document.getElementById('user-form-nama').value = userObj.nama || '';
-            document.getElementById('user-form-username').value = userObj.username || '';
-            document.getElementById('user-form-password').value = userObj.password || '';
+            document.getElementById('user-form-username').value = userObj.email || userObj.username || '';
+            document.getElementById('user-form-password').value = '';
+            document.getElementById('user-form-password').placeholder = 'Kosongkan jika password tidak diubah';
+            document.getElementById('user-form-password').required = false;
             document.getElementById('user-form-role').value = userObj.role || 'User';
             const m = userObj.menuAkses || {};
             if(document.getElementById('akses-dash-read')) document.getElementById('akses-dash-read').checked = m.dashboard ? m.dashboard.read : true;
@@ -5638,9 +5926,19 @@ function renderMaintenanceHistory() {
             document.getElementById('btn-cancel-edit-user').classList.remove('hidden');
         }
 
-        function hapusAkunUserOlehAdmin(userId, namaUser) {
-            if (confirm(`Apakah Anda yakin ingin menghapus akun "${namaUser}" secara permanen dari sistem?`)) {
-                db.collection("users").doc(userId).delete().then(() => { showToast(`Akun "${namaUser}" berhasil dihapus.`, "success"); });
+        async function hapusAkunUserOlehAdmin(userId, namaUser) {
+            if (currentActiveRole !== 'Admin') return showToast('Akses ditolak.', 'error');
+            if (!userId) return showToast('ID akun tidak valid.', 'error');
+            if (!confirm(`Nonaktifkan akun "${namaUser}"? Akun Auth tidak dapat dihapus dari browser admin, jadi profil akan dinonaktifkan agar tidak dapat login ke MEDIX.`)) return;
+            try {
+                await db.collection("users").doc(userId).set({
+                    aktif: false,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                showToast(`Akun "${namaUser}" berhasil dinonaktifkan.`, "success");
+            } catch (error) {
+                console.error('Gagal menonaktifkan akun:', error);
+                showToast('Gagal menonaktifkan akun: ' + (error.message || ''), 'error');
             }
         }
 
@@ -5925,20 +6223,6 @@ function renderMaintenanceHistory() {
             } catch(e) {}
         }
 
-        function unggahBukuPetunjukBaru() {
-            if(currentActiveRole === 'User') { showToast("Akses ditolak!", "error"); return; }
-            const fileInput = document.getElementById('input-buku-petunjuk-file');
-            const file = fileInput.files[0];
-            if(!file) return showToast("Pilih file dokumen terlebih dahulu!", "error");
-            if(!globalSelectedAlatIdForLog) return showToast("ID Alat tidak ditemukan!", "error");
-        
-            const reader = new FileReader(); reader.readAsDataURL(file);
-            reader.onload = function(e) {
-                const payload = { alatId: globalSelectedAlatIdForLog, namaFile: file.name, fileType: file.type, fileData: e.target.result, tglUpload: new Date().toISOString().substring(0, 10) };
-                db.collection("bukuPetunjukAlat").add(payload).then(() => { fileInput.value = ""; showToast("Dokumen Buku Petunjuk / SOP berhasil diunggah!", "success"); });
-            };
-        }
-        
         function hapusBukuPetunjuk(id) {
             if(currentActiveRole === 'User') return;
             if(confirm("Hapus dokumen buku petunjuk ini?")) { db.collection("bukuPetunjukAlat").doc(id).delete().then(() => { showToast("Dokumen berhasil dihapus!", "success"); }); }
