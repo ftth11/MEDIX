@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'medix-cache-v3';
+const CACHE_VERSION = 'medix-cache-v6';
 const APP_SHELL = ['./', './index.html', './logo.png'];
 
 self.addEventListener('install', (event) => {
