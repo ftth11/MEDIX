@@ -299,6 +299,32 @@
 
         .sidebar-translate { transition: transform 0.3s ease-in-out; }
         canvas { touch-action: none; }
+
+        /* Master Data: navigasi horizontal yang terlihat di mobile */
+        .master-table-scroll-wrap { position: relative; }
+        .master-table-scroll {
+            overflow-x: auto; overflow-y: auto; scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+        }
+        .master-table-nav {
+            display:flex; justify-content:flex-end; gap:6px; margin:0 10px 8px auto;
+            width:max-content; position:relative; z-index:30;
+        }
+        .master-table-nav button {
+            width:36px; height:30px; border:1px solid #5eead4; border-radius:10px;
+            background:#fff; color:#0f766e; box-shadow:0 4px 12px rgba(15,118,110,.12);
+            display:inline-flex; align-items:center; justify-content:center; cursor:pointer;
+        }
+        .master-table-nav button:disabled { opacity:.35; cursor:not-allowed; }
+        .master-table-nav button:not(:disabled):hover { background:#ecfdf5; transform:translateY(-1px); }
+
+        /* LK: area uraian memenuhi tinggi kartu dan tidak terpotong */
+        .uraian-pekerjaan-wrapper { min-width:0; min-height:155px; }
+        #dlk-txt-deskripsi-tunggal {
+            flex:1 1 auto !important; width:100% !important; min-width:0 !important;
+            min-height:60px !important; height:auto !important; box-sizing:border-box !important;
+            overflow-y:auto !important; overflow-x:hidden !important; resize:vertical;
+        }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         * { scrollbar-width: none; -ms-overflow-style: none; }
@@ -314,7 +340,7 @@
             .no-print, button, input[type="file"], .absolute.top-4.right-4 { display: none !important; }
             input, select { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
             .uraian-pekerjaan-wrapper { height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; display: block !important; }
-            #dlk-txt-deskripsi-tunggal { display: block !important; height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; white-space: pre-wrap !important; word-wrap: break-word !important; border: none !important; background: transparent !important; padding: 0 !important; }
+            #dlk-txt-deskripsi-tunggal { display:block !important; width:100% !important; box-sizing:border-box !important; height:auto !important; min-height:72px !important; max-height:none !important; overflow:visible !important; white-space:pre-wrap !important; word-wrap:break-word !important; overflow-wrap:anywhere !important; border:none !important; background:transparent !important; padding:0 !important; }
         }
 
 /* ==========================================================
@@ -581,7 +607,12 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
                     </div>
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50"><input type="text" id="search-alat" onkeyup="filterAlat()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 placeholder-slate-400 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, izin edar, ruangan..."></div>
-                        <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
+                        <div class="master-table-scroll-wrap">
+                            <div class="master-table-nav no-print" id="master-table-nav" aria-label="Navigasi tabel Master Data Aset">
+                                <button type="button" id="master-table-prev" onclick="geserMasterTable(-1)" aria-label="Geser tabel ke kiri" title="Geser ke kiri"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button type="button" id="master-table-next" onclick="geserMasterTable(1)" aria-label="Geser tabel ke kanan" title="Geser ke kanan"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                            <div id="master-table-scroll" class="master-table-scroll max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[850px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
@@ -597,6 +628,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
                                 </thead>
                                 <tbody id="table-alat-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1106,7 +1138,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
 
                 <div class="uraian-pekerjaan-wrapper border border-slate-200 p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-9 print:col-span-9 flex flex-col">
                     <h4 class="font-bold border-b border-slate-100 pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border border-slate-300 p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] text-slate-900 whitespace-pre-wrap break-words" style="min-height: 60px; height: auto;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
+                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border border-slate-300 p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] text-slate-900 whitespace-pre-wrap break-words" style="min-height:60px;height:auto;flex:1 1 auto;box-sizing:border-box;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
                 </div>
             </div>
 
@@ -3955,6 +3987,7 @@ function renderMaintenanceHistory() {
                 // ============================================
         
                 renderAll();
+                initMasterTableNavigation();
         
                 setTimeout(() => {
         
@@ -5929,7 +5962,40 @@ function renderMaintenanceHistory() {
         
         function toggleModal(id, s) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden', !s); }
 
+        function updateMasterTableNav() {
+            const scroller = document.getElementById('master-table-scroll');
+            const nav = document.getElementById('master-table-nav');
+            const prev = document.getElementById('master-table-prev');
+            const next = document.getElementById('master-table-next');
+            if (!scroller || !nav || !prev || !next) return;
+            const max = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+            const left = scroller.scrollLeft;
+            const need = max > 2;
+            nav.classList.toggle('hidden', !need);
+            prev.disabled = !need || left <= 2;
+            next.disabled = !need || left >= max - 2;
+        }
+
+        function geserMasterTable(direction) {
+            const scroller = document.getElementById('master-table-scroll');
+            if (!scroller) return;
+            const amount = Math.max(260, Math.round(scroller.clientWidth * 0.72));
+            scroller.scrollBy({ left: direction * amount, behavior: 'smooth' });
+            setTimeout(updateMasterTableNav, 350);
+        }
+
+        function initMasterTableNavigation() {
+            const scroller = document.getElementById('master-table-scroll');
+            if (!scroller || scroller.dataset.navReady === '1') { updateMasterTableNav(); return; }
+            scroller.dataset.navReady = '1';
+            scroller.addEventListener('scroll', updateMasterTableNav, { passive: true });
+            window.addEventListener('resize', updateMasterTableNav);
+            updateMasterTableNav();
+            setTimeout(updateMasterTableNav, 300);
+        }
+
         function filterAlat() { 
+            initMasterTableNavigation();
             const searchEl = document.getElementById('search-alat'); const tbodyEl = document.getElementById('table-alat-body');
             if(!searchEl || !tbodyEl) return;
             const q = searchEl.value.toLowerCase(); const trs = tbodyEl.getElementsByTagName('tr'); 
