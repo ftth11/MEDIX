@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="medix-version" content="v6-access-control">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -315,6 +316,30 @@
             .uraian-pekerjaan-wrapper { height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; display: block !important; }
             #dlk-txt-deskripsi-tunggal { display: block !important; height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; white-space: pre-wrap !important; word-wrap: break-word !important; border: none !important; background: transparent !important; padding: 0 !important; }
         }
+
+/* ==========================================================
+   MEDIX APP DIALOG - GANTI NATIVE BROWSER CONFIRM
+   ========================================================== */
+#medix-confirm-dialog { position:fixed; inset:0; z-index:1000000; display:flex; align-items:center; justify-content:center; padding:1rem; background:rgba(15,23,42,.52); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+#medix-confirm-dialog.hidden { display:none !important; }
+.medix-dialog-card { width:min(430px,calc(100vw - 32px)); border:1px solid rgba(94,234,212,.9); border-radius:22px; background:#f0fdf4; color:#0f172a; box-shadow:0 28px 70px rgba(15,23,42,.28); overflow:hidden; transform:translateY(8px) scale(.98); opacity:0; animation:medixDialogIn .18s ease-out forwards; }
+.medix-dialog-head { display:flex; align-items:center; gap:12px; padding:16px 18px 12px; }
+.medix-dialog-icon { width:42px; height:42px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex:0 0 auto; background:#fef2f2; color:#e11d48; border:1px solid #fecdd3; }
+.medix-dialog-title { font-size:13px; font-weight:900; letter-spacing:.01em; margin:0; }
+.medix-dialog-message { margin:0; padding:0 18px 16px 72px; font-size:12px; line-height:1.65; color:#475569; font-weight:600; white-space:pre-wrap; }
+.medix-dialog-actions { display:flex; justify-content:flex-end; gap:8px; padding:12px 18px 16px; border-top:1px solid #ccfbf1; background:rgba(236,253,245,.72); }
+.medix-dialog-btn { min-width:86px; border:0; border-radius:12px; padding:9px 14px; font-size:11px; font-weight:800; cursor:pointer; transition:transform .15s ease,box-shadow .15s ease,background .15s ease; }
+.medix-dialog-btn:hover { transform:translateY(-1px); }
+.medix-dialog-btn:active { transform:translateY(0); }
+.medix-dialog-cancel { background:#fff; color:#475569; border:1px solid #cbd5e1; }
+.medix-dialog-ok { color:#fff; background:linear-gradient(135deg,#e11d48,#be123c); box-shadow:0 8px 18px rgba(225,29,72,.22); }
+.medix-dialog-ok.is-safe { background:linear-gradient(135deg,#0d9488,#059669); box-shadow:0 8px 18px rgba(13,148,136,.22); }
+@keyframes medixDialogIn { to { transform:translateY(0) scale(1); opacity:1; } }
+body.dark-mode #medix-confirm-dialog { background:rgba(2,6,23,.70); }
+body.dark-mode .medix-dialog-card { background:#111827; border-color:rgba(94,234,212,.25); color:#f8fafc; }
+body.dark-mode .medix-dialog-message { color:#cbd5e1; }
+body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
+body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
     </style>
 </head>
     
@@ -322,6 +347,18 @@
 
     <!-- KUSTOM TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-5 right-5 z-[999999] space-y-2 pointer-events-none"></div>
+
+    <!-- MEDIX CONFIRM DIALOG -->
+    <div id="medix-confirm-dialog" class="hidden" role="dialog" aria-modal="true" aria-labelledby="medix-confirm-title" aria-describedby="medix-confirm-message">
+        <div class="medix-dialog-card" role="document">
+            <div class="medix-dialog-head">
+                <div id="medix-confirm-icon" class="medix-dialog-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div><p class="text-[9px] uppercase tracking-[.16em] text-teal-600 font-black mb-0.5">MEDIX • Konfirmasi</p><h3 id="medix-confirm-title" class="medix-dialog-title">Konfirmasi Tindakan</h3></div>
+            </div>
+            <p id="medix-confirm-message" class="medix-dialog-message"></p>
+            <div class="medix-dialog-actions"><button type="button" id="medix-confirm-cancel" class="medix-dialog-btn medix-dialog-cancel">Batal</button><button type="button" id="medix-confirm-ok" class="medix-dialog-btn medix-dialog-ok">Ya, Lanjutkan</button></div>
+        </div>
+    </div>
 
     <!-- GATEWAY 1: SISTEM MULTI-USER LOGIN -->
     <div id="auth-gate-screen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
@@ -641,46 +678,72 @@
                                 </div>
                                 <div>
                                     <label class="block font-bold text-slate-600 mb-1">Hak Akses *</label>
-                                    <select id="user-form-role" required class="w-full bg-white text-slate-900 p-2.5 rounded-xl border border-slate-300 outline-none font-semibold">
+                                    <select id="user-form-role" required onchange="terapkanPresetIzinRole(this.value)" class="w-full bg-white text-slate-900 p-2.5 rounded-xl border border-slate-300 outline-none font-semibold">
                                         <option value="Admin">Admin</option>
                                         <option value="Teknisi">Teknisi</option>
                                         <option value="User">User</option>
                                     </select>
                                 </div>
 
-                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-                                    <label class="block font-bold text-cyan-600 border-b border-slate-200 pb-1 text-[10px] uppercase tracking-wider">Tentukan Izin Akses & Level Detail :</label>
-                                    <div class="space-y-2.5 pt-1 text-[11px]">
-                                        <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
-                                            <span class="text-slate-700 font-medium">Dashboard Utama</span>
-                                            <div class="flex space-x-2">
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-dash-read" checked class="rounded border-slate-300 text-cyan-600"> <span>Read</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-dash-edit" checked class="rounded border-slate-300 text-cyan-600"> <span>Edit</span></label>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-3">
+                                    <div class="flex items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                                        <div>
+                                            <label class="block font-bold text-cyan-600 text-[10px] uppercase tracking-wider">Tentukan Izin Akses & Level Detail</label>
+                                            <p class="text-[9px] text-slate-400 mt-0.5">Centang sesuai kebutuhan akun. Preset role dapat diterapkan otomatis.</p>
+                                        </div>
+                                        <button type="button" onclick="terapkanPresetIzinRole(document.getElementById('user-form-role').value)" class="shrink-0 bg-cyan-50 text-cyan-700 border border-cyan-200 px-2.5 py-1.5 rounded-lg text-[9px] font-bold hover:bg-cyan-100">Preset Role</button>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-2 text-[10px]">
+                                        <div class="bg-white border border-slate-200 rounded-xl p-2.5">
+                                            <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-chart-pie w-4 text-cyan-600"></i> Dashboard Utama</span><span class="text-[8px] text-slate-400">Menu</span></div>
+                                            <div class="flex flex-wrap gap-x-4 gap-y-1.5">
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-dash-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
                                             </div>
                                         </div>
-                                        <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
-                                            <span class="text-slate-700 font-medium">Master Data Aset</span>
-                                            <div class="flex flex-wrap gap-2">
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-master-read" class="rounded border-slate-300 text-cyan-600"> <span>Read</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-master-edit" class="rounded border-slate-300 text-cyan-600"> <span>Edit</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-master-hapus" class="rounded border-slate-300 text-cyan-600"> <span>Hapus</span></label>
+                                        <div class="bg-white border border-slate-200 rounded-xl p-2.5">
+                                            <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-microscope w-4 text-blue-600"></i> Master Data Aset</span><span class="text-[8px] text-slate-400">Data aset</span></div>
+                                            <div class="flex flex-wrap gap-x-4 gap-y-1.5">
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-master-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-master-tambah" class="rounded border-slate-300 text-cyan-600"> <span>Tambah</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-master-edit" class="rounded border-slate-300 text-cyan-600"> <span>Edit</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-master-hapus" class="rounded border-slate-300 text-cyan-600"> <span>Hapus</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-master-import" class="rounded border-slate-300 text-cyan-600"> <span>Import Excel</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-master-export" class="rounded border-slate-300 text-cyan-600"> <span>Export Excel</span></label>
                                             </div>
                                         </div>
-                                        <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
-                                            <span class="text-slate-700 font-medium">Pelaporan & Tiket</span>
-                                            <div class="flex flex-wrap gap-2">
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-ticket-read" class="rounded border-slate-300 text-cyan-600"> <span>Read</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-ticket-edit" class="rounded border-slate-300 text-cyan-600"> <span>Kerjakan</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-ticket-hapus" class="rounded border-slate-300 text-cyan-600"> <span>Hapus</span></label>
+                                        <div class="bg-white border border-slate-200 rounded-xl p-2.5">
+                                            <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-headset w-4 text-amber-500"></i> Pelaporan & Tiket</span><span class="text-[8px] text-slate-400">Trouble ticket</span></div>
+                                            <div class="flex flex-wrap gap-x-4 gap-y-1.5">
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-ticket-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-ticket-lapor" class="rounded border-slate-300 text-cyan-600"> <span>Laporkan</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-ticket-kerjakan" class="rounded border-slate-300 text-cyan-600"> <span>Kerjakan</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-ticket-selesai" class="rounded border-slate-300 text-cyan-600"> <span>Selesaikan</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-ticket-hapus" class="rounded border-slate-300 text-cyan-600"> <span>Hapus</span></label>
                                             </div>
                                         </div>
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-slate-700 font-medium">Riwayat & SOP</span>
-                                            <div class="flex flex-wrap gap-2">
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-riwayat-read" class="rounded border-slate-300 text-cyan-600"> <span>Read</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-riwayat-upload" class="rounded border-slate-300 text-cyan-600"> <span>Upload</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-riwayat-download" class="rounded border-slate-300 text-cyan-600"> <span>Download</span></label>
-                                                <label class="flex items-center space-x-1 cursor-pointer text-slate-600"><input type="checkbox" id="akses-riwayat-hapus" class="rounded border-slate-300 text-cyan-600"> <span>Hapus</span></label>
+                                        <div class="bg-white border border-slate-200 rounded-xl p-2.5">
+                                            <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-hospital w-4 text-rose-500"></i> Equipment Management</span><span class="text-[8px] text-rose-500 font-bold">Admin / Teknisi</span></div>
+                                            <div class="flex flex-wrap gap-x-4 gap-y-1.5">
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-equipment-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-equipment-edit" class="rounded border-slate-300 text-cyan-600"> <span>Kelola</span></label>
+                                            </div>
+                                            <p id="akses-equipment-note" class="text-[8px] text-slate-400 mt-1.5">Equipment merupakan proyeksi dari Master Data Aset; identitas aset utama tetap dikelola dari Master.</p>
+                                        </div>
+                                        <div class="bg-white border border-slate-200 rounded-xl p-2.5">
+                                            <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-file-invoice-dollar w-4 text-indigo-600"></i> Riwayat & Dokumen</span><span class="text-[8px] text-slate-400">Sertifikat / LK / SOP</span></div>
+                                            <div class="flex flex-wrap gap-x-4 gap-y-1.5">
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-riwayat-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-riwayat-upload" class="rounded border-slate-300 text-cyan-600"> <span>Upload</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-riwayat-download" class="rounded border-slate-300 text-cyan-600"> <span>Download</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-riwayat-hapus" class="rounded border-slate-300 text-cyan-600"> <span>Hapus</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border border-slate-200 rounded-xl p-2.5">
+                                            <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-users-gear w-4 text-rose-500"></i> Kelola Akun</span><span class="text-[8px] text-rose-500 font-bold">Admin</span></div>
+                                            <div class="flex flex-wrap gap-x-4 gap-y-1.5">
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-akun-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-akun-edit" class="rounded border-slate-300 text-cyan-600"> <span>Edit / Buat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-akun-nonaktifkan" class="rounded border-slate-300 text-cyan-600"> <span>Nonaktifkan</span></label>
                                             </div>
                                         </div>
                                     </div>
@@ -697,7 +760,7 @@
                             <div class="overflow-x-auto w-full no-scrollbar">
                                 <table class="w-full text-left text-xs">
                                     <thead class="bg-slate-100 text-slate-700 font-bold">
-                                        <tr><th class="p-3">Nama Lengkap</th><th class="p-3">Username</th><th class="p-3">Hak Akses</th><th class="p-3 text-center">Aksi</th></tr>
+                                        <tr><th class="p-3">Nama Lengkap</th><th class="p-3">Username</th><th class="p-3">Role</th><th class="p-3">Izin Menu</th><th class="p-3 text-center">Aksi</th></tr>
                                     </thead>
                                     <tbody id="table-user-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
                                 </table>
@@ -1358,43 +1421,7 @@
                 userData.role || "User";
         
             // Permission
-            userAksesMenuArray =
-                userData.menuAkses ||
-                {
-                    dashboard: {
-                        read: true,
-                        edit: false
-                    },
-            
-                    master: {
-                        read: false,
-                        edit: false
-                    },
-            
-                    ticket: {
-                        read: false,
-                        edit: false
-                    },
-            
-                    riwayat: {
-                        read: false,
-                        edit: false
-                    },
-
-                    equipment: {
-                        read: true,
-                        edit: true
-                    }
-                };
-            
-            if (!userAksesMenuArray.equipment) {
-
-                userAksesMenuArray.equipment = {
-                    read: false,
-                    edit: false
-                };
-            
-            }
+            userAksesMenuArray = normalisasiMenuAkses(userData.menuAkses || {}, currentActiveRole);
         
             // Simpan data user untuk kebutuhan aplikasi lama
             currentUser = {
@@ -1403,7 +1430,7 @@
                 nama: userData.nama || "",
                 username: userData.username || "",
                 role: userData.role || "User",
-                menuAkses: userData.menuAkses || {},
+                menuAkses: userAksesMenuArray || {},
                 unitId: userData.unitId || null,
                 aktif: userData.aktif !== false
             };
@@ -1412,206 +1439,36 @@
         }
 
         function renderSidebarByPermission() {
+            const checks = {
+                dashboard: izinMenu('dashboard', 'read'),
+                master: izinMenu('master', 'read'),
+                ticket: izinMenu('ticket', 'read'),
+                riwayat: izinMenu('riwayat', 'read'),
+                equipment: izinMenu('equipment', 'read'),
+                akun: izinMenu('akun', 'read')
+            };
+            const ids = {
+                dashboard: 'btn-dashboard', master: 'btn-data-alat', ticket: 'btn-ticket-system',
+                riwayat: 'btn-kalibrasi', equipment: 'btn-equipment', akun: 'btn-kelola-akun'
+            };
+            Object.entries(ids).forEach(([menu, id]) => {
+                const el = document.getElementById(id);
+                if (el) el.classList.toggle('hidden', !checks[menu]);
+            });
 
-            console.log(
-                "Render sidebar:",
-                {
-                    role: currentActiveRole,
-                    permission: userAksesMenuArray
-                }
-            );
-        
-            const permission =
-                userAksesMenuArray || {};
-        
-            const izinDash =
-                permission.dashboard === true ||
-                (
-                    permission.dashboard &&
-                    (
-                        permission.dashboard.read === true ||
-                        permission.dashboard.edit === true
-                    )
-                );
-            
-            const izinMaster =
-                permission.master === true ||
-                (
-                    permission.master &&
-                    (
-                        permission.master.read === true ||
-                        permission.master.edit === true
-                    )
-                );
-            
-            const izinTicket =
-                permission.ticket === true ||
-                (
-                    permission.ticket &&
-                    (
-                        permission.ticket.read === true ||
-                        permission.ticket.edit === true
-                    )
-                );
-            
-            const izinRiwayat =
-                permission.riwayat === true ||
-                (
-                    permission.riwayat &&
-                    (
-                        permission.riwayat.read === true ||
-                        permission.riwayat.edit === true
-                    )
-                );
+            document.querySelectorAll('.menu-akses-admin-saja').forEach(el => {
+                el.classList.toggle('hidden', !checks.akun);
+            });
+            document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
+                el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
+            });
 
-            const izinEquipment =
-                permission.equipment === true ||
-                (
-                    permission.equipment &&
-                    (
-                        permission.equipment.read === true ||
-                        permission.equipment.edit === true
-                    )
-                );
-        
-            const btnDashboard =
-                document.getElementById(
-                    'btn-dashboard'
-                );
-        
-            const btnDataAlat =
-                document.getElementById(
-                    'btn-data-alat'
-                );
-        
-            const btnTicket =
-                document.getElementById(
-                    'btn-ticket-system'
-                );
-        
-            const btnKalibrasi =
-                document.getElementById(
-                    'btn-kalibrasi'
-                );
-
-            const btnEquipment =
-                document.getElementById(
-                    'btn-equipment'
-                );
-        
-        
-            if (btnDashboard) {
-                btnDashboard.classList.toggle(
-                    'hidden',
-                    !izinDash
-                );
-            }
-        
-            if (btnDataAlat) {
-                btnDataAlat.classList.toggle(
-                    'hidden',
-                    !izinMaster
-                );
-            }
-        
-            if (btnTicket) {
-                btnTicket.classList.toggle(
-                    'hidden',
-                    !izinTicket
-                );
-            }
-        
-            if (btnKalibrasi) {
-                btnKalibrasi.classList.toggle(
-                    'hidden',
-                    !izinRiwayat
-                );
-            }
-
-            if (btnEquipment) {
-                btnEquipment.classList.toggle(
-                    'hidden',
-                    !izinEquipment
-                );
-            }
-        
-        
-            // ============================================
-            // ADMIN
-            // ============================================
-        
-            if (currentActiveRole === 'Admin') {
-        
-                document
-                    .querySelectorAll(
-                        '.menu-akses-admin-saja'
-                    )
-                    .forEach(el => {
-                        el.classList.remove('hidden');
-                    });
-        
-                document
-                    .querySelectorAll(
-                        '.menu-akses-teknisi'
-                    )
-                    .forEach(el => {
-                        el.classList.remove('hidden');
-                    });
-        
-            } else {
-        
-                document
-                    .querySelectorAll(
-                        '.menu-akses-admin-saja'
-                    )
-                    .forEach(el => {
-                        el.classList.add('hidden');
-                    });
-        
-                if (currentActiveRole === 'Teknisi') {
-        
-                    document
-                        .querySelectorAll(
-                            '.menu-akses-teknisi'
-                        )
-                        .forEach(el => {
-                            el.classList.remove('hidden');
-                        });
-        
-                } else {
-        
-                    document
-                        .querySelectorAll(
-                            '.menu-akses-teknisi'
-                        )
-                        .forEach(el => {
-                            el.classList.add('hidden');
-                        });
-                }
-            }
-        
-        
-            // ============================================
-            // TENTUKAN TAB PERTAMA
-            // ============================================
-        
-            if (izinDash) {
-        
-                switchTab('dashboard');
-        
-            } else if (izinMaster) {
-        
-                switchTab('data-alat');
-        
-            } else if (izinTicket) {
-        
-                switchTab('ticket-system');
-        
-            } else if (izinRiwayat) {
-        
-                switchTab('kalibrasi');
-        
-            }
+            const activeTab = ['dashboard','data-alat','ticket-system','kalibrasi','equipment','kelola-akun']
+                .find(tab => {
+                    const menu = tab === 'data-alat' ? 'master' : tab === 'ticket-system' ? 'ticket' : tab === 'kalibrasi' ? 'riwayat' : tab === 'kelola-akun' ? 'akun' : tab;
+                    return izinMenu(menu, 'read');
+                });
+            if (activeTab) switchTab(activeTab);
         }
 
         async function loginWithFirebaseAuth(email, password) {
@@ -2258,6 +2115,8 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
         }
 
         function jadwalkanSinkronisasiEquipment(changes = []) {
+            // User tidak memiliki akses Equipment Management maupun koleksi equipment.
+            if (currentActiveRole !== 'Admin' && currentActiveRole !== 'Teknisi') return;
             if (!Array.isArray(changes) || changes.length === 0) return;
             changes.forEach(change => {
                 if (change?.doc?.id) equipmentSyncQueue.set(change.doc.id, change);
@@ -2826,6 +2685,57 @@ function showToast(message, type = 'success') {
                 setTimeout(() => { toast.remove(); }, 300);
             }, 3000);
         }
+
+
+// ============================================================
+// MEDIX CONFIRM DIALOG - SATU GAYA UNTUK SEMUA KONFIRMASI
+// ============================================================
+let medixConfirmResolver = null;
+let medixConfirmKeyHandler = null;
+
+function showConfirmDialog(message, options = {}) {
+    return new Promise(resolve => {
+        const modal = document.getElementById('medix-confirm-dialog');
+        const messageEl = document.getElementById('medix-confirm-message');
+        const titleEl = document.getElementById('medix-confirm-title');
+        const okBtn = document.getElementById('medix-confirm-ok');
+        const cancelBtn = document.getElementById('medix-confirm-cancel');
+        const iconEl = document.getElementById('medix-confirm-icon');
+        if (!modal || !messageEl || !titleEl || !okBtn || !cancelBtn) {
+            showToast('Komponen konfirmasi MEDIX tidak tersedia.', 'error');
+            resolve(false); return;
+        }
+        if (typeof medixConfirmResolver === 'function') medixConfirmResolver(false);
+        let settled = false;
+        const finish = value => {
+            if (settled) return;
+            settled = true;
+            if (medixConfirmKeyHandler) { document.removeEventListener('keydown', medixConfirmKeyHandler); medixConfirmKeyHandler = null; }
+            if (medixConfirmResolver === finish) medixConfirmResolver = null;
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            resolve(Boolean(value));
+        };
+        medixConfirmResolver = finish;
+        titleEl.textContent = options.title || 'Konfirmasi Tindakan';
+        messageEl.textContent = String(message || 'Apakah Anda yakin ingin melanjutkan tindakan ini?');
+        okBtn.textContent = options.okText || 'Ya, Lanjutkan';
+        cancelBtn.textContent = options.cancelText || 'Batal';
+        okBtn.classList.toggle('is-safe', options.variant === 'safe');
+        iconEl.innerHTML = `<i class="fa-solid ${options.icon || 'fa-triangle-exclamation'}"></i>`;
+        iconEl.style.background = options.variant === 'safe' ? '#ecfdf5' : '#fef2f2';
+        iconEl.style.color = options.variant === 'safe' ? '#059669' : '#e11d48';
+        iconEl.style.borderColor = options.variant === 'safe' ? '#a7f3d0' : '#fecdd3';
+        okBtn.onclick = () => finish(true);
+        cancelBtn.onclick = () => finish(false);
+        modal.onclick = e => { if (e.target === modal) finish(false); };
+        medixConfirmKeyHandler = e => { if (e.key === 'Escape') finish(false); else if (e.key === 'Enter') finish(true); };
+        document.addEventListener('keydown', medixConfirmKeyHandler);
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        setTimeout(() => okBtn.focus(), 30);
+    });
+}
 
 
 async function logoutFirebase() {
@@ -3985,237 +3895,40 @@ function renderMaintenanceHistory() {
                 }
         
                 // ============================================
-                // MASTER ACTION BUTTONS
+                // AKSES MENU & AKSI BERDASARKAN PERIZINAN AKUN
                 // ============================================
-        
-                const containerMasterAction =
-                    document.getElementById(
-                        'master-action-buttons-container'
-                    );
-        
+                renderSidebarByPermission();
+
+                const role = currentActiveRole || 'User';
+                const masterRead = izinMenu('master', 'read');
+                const masterTambah = izinMenu('master', 'tambah');
+                const masterEdit = izinMenu('master', 'edit');
+                const masterHapus = izinMenu('master', 'hapus');
+                const masterImport = izinMenu('master', 'import');
+                const masterExport = izinMenu('master', 'export');
+                const ticketLapor = izinMenu('ticket', 'lapor');
+                const riwayatUpload = izinMenu('riwayat', 'upload');
+
                 if (containerMasterAction) {
-        
-                    if (currentActiveRole === 'Admin') {
-        
-                        containerMasterAction.innerHTML = `
-        
-                            <button
-                                onclick="cetakLabelBarcodeMassalPdf()"
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"
-                            >
-                                <i class="fa-solid fa-file-pdf mr-1.5"></i>
-                                Cetak Label Massal
-                            </button>
-        
-                            <button
-                                onclick="exportKeExcelMassal()"
-                                class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"
-                            >
-                                <i class="fa-solid fa-file-excel mr-1.5"></i>
-                                Export Excel
-                            </button>
-        
-                            <label
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"
-                            >
-                                <i class="fa-solid fa-file-arrow-up mr-1.5"></i>
-                                Import Excel
-        
-                                <input
-                                    type="file"
-                                    id="file-excel-input"
-                                    accept=".xlsx, .xls, .csv"
-                                    onchange="importDataDariExcel(event)"
-                                    class="hidden"
-                                >
-                            </label>
-        
-                            <button
-                                onclick="openModalAlatManual()"
-                                class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"
-                            >
-                                <i class="fa-solid fa-plus mr-1"></i>
-                                Tambah Manual
-                            </button>
-                        `;
-        
-                    } else {
-        
-                        containerMasterAction.innerHTML = '';
-        
-                    }
+                    const buttons = [];
+                    if (masterExport) buttons.push(`<button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>`);
+                    if (masterImport) buttons.push(`<label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"><i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel<input type="file" id="file-excel-input" accept=".xlsx,.xls,.csv" onchange="importDataDariExcel(event)" class="hidden"></label>`);
+                    if (masterTambah) buttons.push(`<button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
+                    if (masterRead && (role === 'Admin')) buttons.push(`<button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>`);
+                    containerMasterAction.innerHTML = buttons.join('');
                 }
-        
-                // ============================================
-                // UPLOAD PDF
-                // ============================================
-        
-                const btnUploadPdf =
-                    document.getElementById(
-                        'btn-upload-pdf-baru'
-                    );
-        
-                if (btnUploadPdf) {
-        
-                    if (currentActiveRole === 'User') {
-                        btnUploadPdf.classList.add('hidden');
-                    } else {
-                        btnUploadPdf.classList.remove('hidden');
-                    }
-        
-                }
-        
-                // ============================================
-                // ROLE-BASED UI
-                // ============================================
-        
-                if (currentActiveRole === 'Admin') {
-        
-                    document
-                        .querySelectorAll('.menu-akses-teknisi')
-                        .forEach(el =>
-                            el.classList.remove('hidden')
-                        );
-        
-                    document
-                        .querySelectorAll('.menu-akses-admin-saja')
-                        .forEach(el =>
-                            el.classList.remove('hidden')
-                        );
-        
-                    document
-                        .getElementById('btn-dashboard')
-                        .classList.remove('hidden');
-        
-                    document
-                        .getElementById('btn-data-alat')
-                        .classList.remove('hidden');
-        
-                    document
-                        .getElementById('btn-ticket-system')
-                        .classList.remove('hidden');
-        
-                    document
-                        .getElementById('btn-kalibrasi')
-                        .classList.remove('hidden');
-        
-                    document
-                        .getElementById('box-form-buat-ticket')
-                        .classList.add('hidden');
-        
-                    switchTab('dashboard');
-        
-                } else {
-        
-                    document
-                        .querySelectorAll('.menu-akses-admin-saja')
-                        .forEach(el =>
-                            el.classList.add('hidden')
-                        );
-        
-                    if (currentActiveRole === 'Teknisi') {
-        
-                        document
-                            .querySelectorAll('.menu-akses-teknisi')
-                            .forEach(el =>
-                                el.classList.remove('hidden')
-                            );
-        
-                        document
-                            .getElementById('box-form-buat-ticket')
-                            .classList.add('hidden');
-        
-                    } else {
-        
-                        document
-                            .querySelectorAll('.menu-akses-teknisi')
-                            .forEach(el =>
-                                el.classList.add('hidden')
-                            );
-        
-                        document
-                            .getElementById('box-form-buat-ticket')
-                            .classList.remove('hidden');
-                    }
-        
-                    // ========================================
-                    // MENU ACCESS
-                    // ========================================
-        
-                    const izinDash =
-                        userAksesMenuArray.dashboard
-                            ? (
-                                userAksesMenuArray.dashboard.read ||
-                                userAksesMenuArray.dashboard.edit
-                            )
-                            : true;
-        
-                    const izinMaster =
-                        userAksesMenuArray.master
-                            ? (
-                                userAksesMenuArray.master.read ||
-                                userAksesMenuArray.master.edit
-                            )
-                            : false;
-        
-                    const izinTicket =
-                        userAksesMenuArray.ticket
-                            ? (
-                                userAksesMenuArray.ticket.read ||
-                                userAksesMenuArray.ticket.edit
-                            )
-                            : false;
-        
-                    const izinRiwayat =
-                        userAksesMenuArray.riwayat
-                            ? (
-                                userAksesMenuArray.riwayat.read ||
-                                userAksesMenuArray.riwayat.edit
-                            )
-                            : false;
-        
-                    document
-                        .getElementById('btn-dashboard')
-                        .classList.toggle(
-                            'hidden',
-                            !izinDash
-                        );
-        
-                    document
-                        .getElementById('btn-data-alat')
-                        .classList.toggle(
-                            'hidden',
-                            !izinMaster
-                        );
-        
-                    document
-                        .getElementById('btn-ticket-system')
-                        .classList.toggle(
-                            'hidden',
-                            !izinTicket
-                        );
-        
-                    document
-                        .getElementById('btn-kalibrasi')
-                        .classList.toggle(
-                            'hidden',
-                            !izinRiwayat
-                        );
-        
-                    if (izinDash) {
-                        switchTab('dashboard');
-        
-                    } else if (izinMaster) {
-                        switchTab('data-alat');
-        
-                    } else if (izinTicket) {
-                        switchTab('ticket-system');
-        
-                    } else if (izinRiwayat) {
-                        switchTab('kalibrasi');
-                    }
-                }
-        
+
+                const btnUploadPdf = document.getElementById('btn-upload-pdf-baru');
+                if (btnUploadPdf) btnUploadPdf.classList.toggle('hidden', !riwayatUpload);
+
+                const boxTicket = document.getElementById('box-form-buat-ticket');
+                if (boxTicket) boxTicket.classList.toggle('hidden', !ticketLapor);
+
+                // Tombol cepat pembuatan LK hanya untuk akun yang memiliki izin mengerjakan tiket.
+                document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
+                    el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
+                });
+
                 // ============================================
                 // RENDER APLIKASI
                 // ============================================
@@ -4627,6 +4340,7 @@ function renderMaintenanceHistory() {
 
         async function kirimTiketKeluhanKerusakan(e) {
             e.preventDefault();
+            if (!izinMenu('ticket', 'lapor')) { showToast('Akun ini tidak memiliki izin untuk melaporkan kerusakan.', 'error'); return; }
             if (window.__sedangKirimTiket) return;
 
             const alatIdEl = document.getElementById('ticket-form-alat');
@@ -4819,30 +4533,24 @@ function renderMaintenanceHistory() {
                 let aksiAksi = "";
                 let formatTglLapor = t.tglLapor ? t.tglLapor.replace('T', ' ') : '-';
 
-                if (currentActiveRole !== 'User') {
+                if (currentActiveRole !== 'User' && (izinMenu('ticket', 'kerjakan') || izinMenu('ticket', 'selesai') || izinMenu('ticket', 'hapus'))) {
                     if (t.statusTiket !== 'Selesai') {
-                        let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka LK' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
-                        let warnaTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-amber-600 hover:bg-amber-700';
-                        aksiAksi = `
-                            <td class="p-3 text-center">
-                                <div class="inline-flex space-x-1">
-                                    <button onclick="eksekusiTiketLangsungKerjakan('${t.id}','${t.alatId}')" class="${warnaTombolKerja} text-white font-bold px-2 py-1 rounded-lg text-[10px] transition">${textTombolKerja}</button>
-                                    <button onclick="selesaikanTiketTroubleManual('${t.id}','${t.alatId}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition"><i class="fa-solid fa-check"></i> Selesai</button>
-                                    <button onclick="hapusTiketUser('${t.id}', '${t.alatId}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition" title="Hapus Tiket"><i class="fa-solid fa-trash"></i></button>
-                                </div>
-                            </td>
-                        `;
+                        const actionButtons = [];
+                        if (izinMenu('ticket', 'kerjakan')) {
+                            let textTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? '<i class="fa-solid fa-file-signature"></i> Buka LK' : '<i class="fa-solid fa-wrench"></i> Kerjakan';
+                            let warnaTombolKerja = t.statusTiket === "Sedang Dikerjakan" ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-amber-600 hover:bg-amber-700';
+                            actionButtons.push(`<button onclick="eksekusiTiketLangsungKerjakan('${t.id}','${t.alatId}')" class="${warnaTombolKerja} text-white font-bold px-2 py-1 rounded-lg text-[10px] transition">${textTombolKerja}</button>`);
+                        }
+                        if (izinMenu('ticket', 'selesai')) actionButtons.push(`<button onclick="selesaikanTiketTroubleManual('${t.id}','${t.alatId}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition"><i class="fa-solid fa-check"></i> Selesai</button>`);
+                        if (izinMenu('ticket', 'hapus')) actionButtons.push(`<button onclick="hapusTiketUser('${t.id}', '${t.alatId}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition" title="Hapus Tiket"><i class="fa-solid fa-trash"></i></button>`);
+                        aksiAksi = `<td class="p-3 text-center"><div class="inline-flex space-x-1">${actionButtons.join('')}</div></td>`;
                     } else {
                         let matchingLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi].find(lk => lk.alatId === t.alatId);
                         let tombolBukaLk = matchingLk ? `<button onclick="bukaLembarKerjaDinamisDarlLog('${matchingLk.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] transition"><i class="fa-solid fa-file-lines mr-1"></i> Buka LK</button>` : `<span class="text-[10px] text-slate-400 italic">Arsip</span>`;
-                        aksiAksi = `
-                            <td class="p-3 text-center">
-                                <div class="inline-flex space-x-1 items-center">
-                                    <span class="text-emerald-600 font-bold text-[10px] mr-1">✅ Selesai</span>
-                                    ${tombolBukaLk}
-                                    <button onclick="hapusTiketUser('${t.id}', '${t.alatId}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition ml-1" title="Hapus Tiket"><i class="fa-solid fa-trash"></i></button>
-                                </div>
-                            </td>`;
+                        const actionButtons = [`<span class="text-emerald-600 font-bold text-[10px] mr-1">✅ Selesai</span>`];
+                        if (matchingLk && izinMenu('ticket', 'kerjakan')) actionButtons.push(tombolBukaLk);
+                        if (izinMenu('ticket', 'hapus')) actionButtons.push(`<button onclick="hapusTiketUser('${t.id}', '${t.alatId}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded-lg text-[10px] transition ml-1" title="Hapus Tiket"><i class="fa-solid fa-trash"></i></button>`);
+                        aksiAksi = `<td class="p-3 text-center"><div class="inline-flex space-x-1 items-center">${actionButtons.join('')}</div></td>`;
                     }
                 }
 
@@ -4864,8 +4572,9 @@ function renderMaintenanceHistory() {
             }).join('');
         }
 
-        function hapusTiketUser(tiketId, alatId) {
-            if(confirm("Batalkan atau hapus laporan kerusakan ini? Status alat akan dikembalikan menjadi Siap Pakai.")) {
+        async function hapusTiketUser(tiketId, alatId) {
+            if (!izinMenu('ticket', 'hapus')) { showToast('Anda tidak memiliki izin menghapus tiket.', 'error'); return; }
+            if(await showConfirmDialog("Batalkan atau hapus laporan kerusakan ini? Status alat akan dikembalikan menjadi Siap Pakai.", { title: "Batalkan Laporan Kerusakan", okText: "Ya, Batalkan", icon: "fa-trash-can" })) {
                 db.collection("troubleTickets").doc(tiketId).delete().then(() => {
                     return db.collection("dataAlat").doc(alatId).update({ status: "Siap Digunakan" }).catch(err => console.warn('Status aset tidak dapat dipulihkan:', err));
                 }).then(() => { showToast("Laporan kerusakan dibatalkan.", "info"); }).catch(err => showToast('Gagal membatalkan tiket: ' + (err.message || ''), 'error'));
@@ -4873,6 +4582,7 @@ function renderMaintenanceHistory() {
         }
 
         async function eksekusiTiketLangsungKerjakan(tiketId, alatId) {
+            if (!izinMenu('ticket', 'kerjakan')) { showToast('Anda tidak memiliki izin mengerjakan tiket.', 'error'); return; }
             const targetTiket = dataTiket.find(t => t.id === tiketId);
             bukaLembarKerjaBaruKosong();
             document.getElementById('dlk-selected-alat-id').value = alatId;
@@ -4967,7 +4677,8 @@ function renderMaintenanceHistory() {
         }
 
         async function selesaikanTiketTroubleManual(tiketId, alatId) {
-            if (!confirm("Apakah Anda ingin menyelesaikan trouble ticket ini dan mengubah status alat menjadi Siap Pakai?")) return;
+            if (!izinMenu('ticket', 'selesai')) { showToast('Anda tidak memiliki izin menyelesaikan tiket.', 'error'); return; }
+            if (!await showConfirmDialog("Apakah Anda ingin menyelesaikan trouble ticket ini dan mengubah status alat menjadi Siap Pakai?", { title: "Selesaikan Trouble Ticket", okText: "Ya, Selesaikan", variant: "safe", icon: "fa-circle-check" })) return;
 
             try {
                 // Ticket + Master Aset harus berhasil bersama-sama.
@@ -5041,21 +4752,13 @@ function renderMaintenanceHistory() {
                 
                 let dNama = a.nama || '-', dMerk = a.merk || '-', dTipe = a.tipe || '-', dSeri = a.seri || '-', dIzin = a.izinEdar || a.edar || '-', dLokasi = a.ruangan || a.lokasi || '-';
                 let aksiManajemenHTML = "";
-                if (currentActiveRole === 'Admin') {
-                    aksiManajemenHTML = `
-                        <div class="inline-flex rounded-xl border border-slate-200 overflow-hidden">
-                            <button onclick="pemicuEditAlatLangsung('${a.id}')" class="bg-amber-50 text-amber-600 px-3 py-2 text-[11px] hover:bg-amber-100 transition border-r border-slate-200" title="Edit Aset"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-50 text-blue-600 px-3 py-2 text-[11px] hover:bg-blue-100 transition border-r border-slate-200" title="Log Pemeliharaan"><i class="fa-solid fa-book-medical"></i></button>
-                            <button onclick="hapAlatMasterFirebase('${a.id}', '${a.nama}')" class="bg-rose-50 text-rose-600 px-3 py-2 text-[11px] hover:bg-rose-100 transition" title="Hapus Aset"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
-                } else {
-                    aksiManajemenHTML = `
-                        <div class="inline-flex rounded-xl border border-slate-200 overflow-hidden">
-                            <button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-50 text-blue-600 px-3 py-2 text-[11px] hover:bg-blue-100 transition" title="Log Pemeliharaan"><i class="fa-solid fa-book-medical mr-1"></i> Lihat Log</button>
-                        </div>
-                    `;
-                }
+                const canMasterEdit = izinMenu('master', 'edit');
+                const canMasterDelete = izinMenu('master', 'hapus');
+                const actionButtons = [];
+                if (canMasterEdit) actionButtons.push(`<button onclick="pemicuEditAlatLangsung('${a.id}')" class="bg-amber-50 text-amber-600 px-3 py-2 text-[11px] hover:bg-amber-100 transition border-r border-slate-200" title="Edit Aset"><i class="fa-solid fa-pen-to-square"></i></button>`);
+                actionButtons.push(`<button onclick="bukaKartuPemeliharaan('${a.id}')" class="bg-blue-50 text-blue-600 px-3 py-2 text-[11px] hover:bg-blue-100 transition ${canMasterDelete || canMasterEdit ? 'border-r border-slate-200' : ''}" title="Log Pemeliharaan"><i class="fa-solid fa-book-medical"></i></button>`);
+                if (canMasterDelete) actionButtons.push(`<button onclick="hapAlatMasterFirebase('${a.id}', '${String(a.nama || '').replace(/'/g, '&#39;')}')" class="bg-rose-50 text-rose-600 px-3 py-2 text-[11px] hover:bg-rose-100 transition" title="Hapus Aset"><i class="fa-solid fa-trash"></i></button>`);
+                aksiManajemenHTML = `<div class="inline-flex rounded-xl border border-slate-200 overflow-hidden">${actionButtons.join('')}</div>`;
 
                 return `
                     <tr class="border-b border-slate-100 hover:bg-slate-50 text-slate-700">
@@ -5563,7 +5266,7 @@ function renderMaintenanceHistory() {
             
             tBody.innerHTML = docs.map(d => {
                 let tombolAksiHapus = "";
-                if (currentActiveRole === 'Admin' || currentActiveRole === 'Teknisi') {
+                if (izinMenu('riwayat', 'hapus')) {
                     if (d.jenis === 'SOP / Buku Petunjuk') {
                         tombolAksiHapus = `<button onclick="hapusBukuPetunjuk('${d.id}')" class="bg-rose-50 text-rose-600 p-1.5 rounded-r-lg hover:bg-rose-100 transition border-l border-slate-200" title="Hapus Berkas"><i class="fa-solid fa-trash"></i></button>`;
                     } else {
@@ -5595,7 +5298,13 @@ function renderMaintenanceHistory() {
             }).join('');
         }
 
-        function switchTab(tId) { 
+        function switchTab(tId) {
+            const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'riwayat', equipment: 'equipment', 'kelola-akun': 'akun' };
+            const menu = menuMap[tId];
+            if (menu && !izinMenu(menu, 'read')) {
+                showToast('Akses menu ini tidak diberikan untuk akun Anda.', 'error');
+                return;
+            }
             document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); 
             const targetTab = document.getElementById('tab-' + tId);
             if(targetTab) targetTab.classList.remove('hidden'); 
@@ -5636,6 +5345,7 @@ function renderMaintenanceHistory() {
         }
 
         function openModalAlatManual() { 
+            if (currentActiveRole !== 'Admin' || !izinMenu('master', 'tambah')) { showToast('Anda tidak memiliki izin menambah aset.', 'error'); return; }
             document.getElementById('form-alat-id').value = ""; 
             document.getElementById('form-alat-nama').value = ""; 
             document.getElementById('form-alat-merk').value = ""; 
@@ -5647,6 +5357,7 @@ function renderMaintenanceHistory() {
         }
         
         function pemicuEditAlatLangsung(id) { 
+            if (currentActiveRole !== 'Admin' || !izinMenu('master', 'edit')) { showToast('Anda tidak memiliki izin mengedit aset.', 'error'); return; }
             const a = dataAlat.find(i => i.id == id); if(!a) return; 
             document.getElementById('form-alat-id').value = a.id; 
             document.getElementById('form-alat-nama').value = a.nama || ''; 
@@ -5659,7 +5370,9 @@ function renderMaintenanceHistory() {
         }
 
         function submitFormAlatMaster(e) { 
-            e.preventDefault(); 
+            e.preventDefault();
+            const idAsetForm = document.getElementById('form-alat-id').value;
+            if (currentActiveRole !== 'Admin' || !(idAsetForm ? izinMenu('master', 'edit') : izinMenu('master', 'tambah'))) { showToast('Anda tidak memiliki izin untuk menyimpan perubahan aset.', 'error'); return; } 
             const id = document.getElementById('form-alat-id').value; 
             const payload = { 
                 nama: document.getElementById('form-alat-nama').value, merk: document.getElementById('form-alat-merk').value, 
@@ -5680,20 +5393,218 @@ function renderMaintenanceHistory() {
             } 
         }
 
+        // ============================================================
+        // SISTEM HAK AKSES MEDIX v6
+        // Role menentukan preset awal, checkbox menentukan detail menu.
+        // Hak akses UI tetap dilindungi oleh role + Firestore Rules.
+        // ============================================================
+        const MEDIX_ACCESS_PRESETS = {
+            Admin: {
+                dashboard: { read: true, edit: true },
+                master: { read: true, tambah: true, edit: true, hapus: true, import: true, export: true },
+                ticket: { read: true, lapor: true, kerjakan: true, selesai: true, hapus: true, edit: true },
+                equipment: { read: true, edit: true },
+                riwayat: { read: true, upload: true, download: true, hapus: true, edit: true },
+                akun: { read: true, edit: true, nonaktifkan: true }
+            },
+            Teknisi: {
+                dashboard: { read: true, edit: false },
+                master: { read: true, tambah: false, edit: false, hapus: false, import: false, export: true },
+                ticket: { read: true, lapor: false, kerjakan: true, selesai: true, hapus: false, edit: true },
+                equipment: { read: true, edit: true },
+                riwayat: { read: true, upload: true, download: true, hapus: false, edit: true },
+                akun: { read: false, edit: false, nonaktifkan: false }
+            },
+            User: {
+                dashboard: { read: true, edit: false },
+                master: { read: false, tambah: false, edit: false, hapus: false, import: false, export: false },
+                ticket: { read: true, lapor: true, kerjakan: false, selesai: false, hapus: false, edit: false },
+                equipment: { read: false, edit: false },
+                riwayat: { read: true, upload: false, download: true, hapus: false, edit: false },
+                akun: { read: false, edit: false, nonaktifkan: false }
+            }
+        };
+
+        function cloneAccessPreset(role) {
+            const preset = MEDIX_ACCESS_PRESETS[role] || MEDIX_ACCESS_PRESETS.User;
+            return JSON.parse(JSON.stringify(preset));
+        }
+
+        function normalisasiMenuAkses(raw, role = 'User') {
+            const base = cloneAccessPreset(role);
+            const src = raw || {};
+            Object.keys(base).forEach(menu => {
+                if (!src[menu] || typeof src[menu] !== 'object') return;
+                Object.keys(base[menu]).forEach(action => {
+                    if (typeof src[menu][action] === 'boolean') base[menu][action] = src[menu][action];
+                });
+            });
+            // Kompatibilitas dengan struktur lama MEDIX.
+            if (src.master?.edit === true) base.master.edit = true;
+            if (src.ticket?.edit === true) base.ticket.kerjakan = true;
+            if (src.riwayat?.edit === true) base.riwayat.upload = true;
+            if (src.dashboard?.edit === true) base.dashboard.edit = true;
+            // Hak tindakan otomatis membutuhkan hak Lihat pada menu terkait.
+            base.master.read = !!(base.master.read || base.master.tambah || base.master.edit || base.master.hapus || base.master.import || base.master.export);
+            base.ticket.read = !!(base.ticket.read || base.ticket.lapor || base.ticket.kerjakan || base.ticket.selesai || base.ticket.hapus);
+            base.equipment.read = !!(base.equipment.read || base.equipment.edit);
+            base.riwayat.read = !!(base.riwayat.read || base.riwayat.upload || base.riwayat.download || base.riwayat.hapus);
+            base.akun.read = !!(base.akun.read || base.akun.edit || base.akun.nonaktifkan);
+            // Equipment wajib tersedia untuk Admin/Teknisi sesuai kebijakan MEDIX terbaru.
+            if (role === 'Admin' || role === 'Teknisi') base.equipment = { read: true, edit: true };
+            else base.equipment = { read: false, edit: false };
+            // Kelola akun hanya Admin.
+            if (role !== 'Admin') base.akun = { read: false, edit: false, nonaktifkan: false };
+            return base;
+        }
+
+        function izinMenu(menu, action = 'read') {
+            const role = currentActiveRole || 'User';
+            if (menu === 'equipment') {
+                return (role === 'Admin' || role === 'Teknisi') && !!userAksesMenuArray?.equipment?.[action];
+            }
+            if (menu === 'akun') return role === 'Admin' && !!userAksesMenuArray?.akun?.[action];
+            return !!userAksesMenuArray?.[menu]?.[action];
+        }
+
+        function terapkanPresetIzinRole(role) {
+            const preset = cloneAccessPreset(role);
+            const map = {
+                'akses-dash-read': preset.dashboard.read,
+                'akses-master-read': preset.master.read,
+                'akses-master-tambah': preset.master.tambah,
+                'akses-master-edit': preset.master.edit,
+                'akses-master-hapus': preset.master.hapus,
+                'akses-master-import': preset.master.import,
+                'akses-master-export': preset.master.export,
+                'akses-ticket-read': preset.ticket.read,
+                'akses-ticket-lapor': preset.ticket.lapor,
+                'akses-ticket-kerjakan': preset.ticket.kerjakan,
+                'akses-ticket-selesai': preset.ticket.selesai,
+                'akses-ticket-hapus': preset.ticket.hapus,
+                'akses-equipment-read': preset.equipment.read,
+                'akses-equipment-edit': preset.equipment.edit,
+                'akses-riwayat-read': preset.riwayat.read,
+                'akses-riwayat-upload': preset.riwayat.upload,
+                'akses-riwayat-download': preset.riwayat.download,
+                'akses-riwayat-hapus': preset.riwayat.hapus,
+                'akses-akun-read': preset.akun.read,
+                'akses-akun-edit': preset.akun.edit,
+                'akses-akun-nonaktifkan': preset.akun.nonaktifkan
+            };
+            Object.entries(map).forEach(([id, value]) => {
+                const el = document.getElementById(id);
+                if (el) el.checked = !!value;
+            });
+            const equipmentLocked = role === 'User';
+            ['akses-equipment-read','akses-equipment-edit'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = equipmentLocked;
+            });
+            const accountLocked = role !== 'Admin';
+            ['akses-akun-read','akses-akun-edit','akses-akun-nonaktifkan'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = accountLocked;
+            });
+            const note = document.getElementById('akses-equipment-note');
+            if (note) note.textContent = role === 'User'
+                ? 'Akses Equipment Management otomatis ditutup untuk User.'
+                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Kelola Equipment Management.';
+        }
+
+        function ambilMenuAksesDariForm() {
+            return {
+                dashboard: { read: !!document.getElementById('akses-dash-read')?.checked, edit: !!document.getElementById('akses-dash-read')?.checked },
+                master: {
+                    read: !!document.getElementById('akses-master-read')?.checked,
+                    tambah: !!document.getElementById('akses-master-tambah')?.checked,
+                    edit: !!document.getElementById('akses-master-edit')?.checked,
+                    hapus: !!document.getElementById('akses-master-hapus')?.checked,
+                    import: !!document.getElementById('akses-master-import')?.checked,
+                    export: !!document.getElementById('akses-master-export')?.checked
+                },
+                ticket: {
+                    read: !!document.getElementById('akses-ticket-read')?.checked,
+                    lapor: !!document.getElementById('akses-ticket-lapor')?.checked,
+                    kerjakan: !!document.getElementById('akses-ticket-kerjakan')?.checked,
+                    selesai: !!document.getElementById('akses-ticket-selesai')?.checked,
+                    hapus: !!document.getElementById('akses-ticket-hapus')?.checked,
+                    edit: !!document.getElementById('akses-ticket-kerjakan')?.checked
+                },
+                equipment: {
+                    read: !!document.getElementById('akses-equipment-read')?.checked,
+                    edit: !!document.getElementById('akses-equipment-edit')?.checked
+                },
+                riwayat: {
+                    read: !!document.getElementById('akses-riwayat-read')?.checked,
+                    upload: !!document.getElementById('akses-riwayat-upload')?.checked,
+                    download: !!document.getElementById('akses-riwayat-download')?.checked,
+                    hapus: !!document.getElementById('akses-riwayat-hapus')?.checked,
+                    edit: !!document.getElementById('akses-riwayat-upload')?.checked
+                },
+                akun: {
+                    read: !!document.getElementById('akses-akun-read')?.checked,
+                    edit: !!document.getElementById('akses-akun-edit')?.checked,
+                    nonaktifkan: !!document.getElementById('akses-akun-nonaktifkan')?.checked
+                }
+            };
+        }
+
+        function isiFormIzinAkses(raw, role) {
+            const m = normalisasiMenuAkses(raw, role);
+            const map = {
+                'akses-dash-read': m.dashboard.read,
+                'akses-master-read': m.master.read,
+                'akses-master-tambah': m.master.tambah,
+                'akses-master-edit': m.master.edit,
+                'akses-master-hapus': m.master.hapus,
+                'akses-master-import': m.master.import,
+                'akses-master-export': m.master.export,
+                'akses-ticket-read': m.ticket.read,
+                'akses-ticket-lapor': m.ticket.lapor,
+                'akses-ticket-kerjakan': m.ticket.kerjakan,
+                'akses-ticket-selesai': m.ticket.selesai,
+                'akses-ticket-hapus': m.ticket.hapus,
+                'akses-equipment-read': m.equipment.read,
+                'akses-equipment-edit': m.equipment.edit,
+                'akses-riwayat-read': m.riwayat.read,
+                'akses-riwayat-upload': m.riwayat.upload,
+                'akses-riwayat-download': m.riwayat.download,
+                'akses-riwayat-hapus': m.riwayat.hapus,
+                'akses-akun-read': m.akun.read,
+                'akses-akun-edit': m.akun.edit,
+                'akses-akun-nonaktifkan': m.akun.nonaktifkan
+            };
+            Object.entries(map).forEach(([id, value]) => {
+                const el = document.getElementById(id);
+                if (el) el.checked = !!value;
+            });
+            terapkanPresetIzinRoleLock(role);
+        }
+
+        function terapkanPresetIzinRoleLock(role) {
+            const equipmentLocked = role === 'User';
+            ['akses-equipment-read','akses-equipment-edit'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = equipmentLocked;
+            });
+            const accountLocked = role !== 'Admin';
+            ['akses-akun-read','akses-akun-edit','akses-akun-nonaktifkan'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = accountLocked;
+            });
+            const note = document.getElementById('akses-equipment-note');
+            if (note) note.textContent = role === 'User'
+                ? 'Akses Equipment Management otomatis ditutup untuk User.'
+                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Kelola Equipment Management.';
+        }
+
         function resetFormUser() {
-            const ids = [
-                'user-form-id','user-form-nama','user-form-username','user-form-password'
-            ];
+            const ids = ['user-form-id','user-form-nama','user-form-username','user-form-password'];
             ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
             const role = document.getElementById('user-form-role');
             if (role) role.value = 'User';
-            const defaults = {
-                'akses-dash-read': true, 'akses-dash-edit': true,
-                'akses-master-read': false, 'akses-master-edit': false, 'akses-master-hapus': false,
-                'akses-ticket-read': true, 'akses-ticket-edit': false, 'akses-ticket-hapus': false,
-                'akses-riwayat-read': true, 'akses-riwayat-upload': false, 'akses-riwayat-download': true, 'akses-riwayat-hapus': false
-            };
-            Object.entries(defaults).forEach(([id, value]) => { const el = document.getElementById(id); if (el) el.checked = value; });
+            terapkanPresetIzinRole('User');
             const title = document.getElementById('form-user-title');
             if (title) title.innerHTML = '<i class="fa-solid fa-user-plus mr-1.5"></i> Buat Akun';
             const btn = document.getElementById('btn-submit-user');
@@ -5796,8 +5707,8 @@ function renderMaintenanceHistory() {
 
         async function submitFormUserAdmin(e) {
             e.preventDefault();
-            if (currentActiveRole !== 'Admin') {
-                showToast('Hanya Admin yang dapat mengelola akun.', 'error');
+            if (currentActiveRole !== 'Admin' || !izinMenu('akun', 'edit')) {
+                showToast('Anda tidak memiliki izin untuk membuat atau mengubah akun.', 'error');
                 return;
             }
             const id = document.getElementById('user-form-id').value.trim();
@@ -5806,12 +5717,8 @@ function renderMaintenanceHistory() {
             const passwordEl = document.getElementById('user-form-password');
             const password = passwordEl.value;
             if (!nama || !email || !email.includes('@')) return showToast('Nama dan email login harus diisi dengan benar.', 'error');
-            const menuAksesPayload = {
-                dashboard: { read: document.getElementById('akses-dash-read').checked, edit: document.getElementById('akses-dash-edit').checked },
-                master: { read: document.getElementById('akses-master-read').checked, edit: document.getElementById('akses-master-edit').checked, hapus: document.getElementById('akses-master-hapus').checked },
-                ticket: { read: document.getElementById('akses-ticket-read').checked, edit: document.getElementById('akses-ticket-edit').checked, hapus: document.getElementById('akses-ticket-hapus').checked },
-                riwayat: { read: document.getElementById('akses-riwayat-read').checked, upload: document.getElementById('akses-riwayat-upload').checked, download: document.getElementById('akses-riwayat-download').checked, hapus: document.getElementById('akses-riwayat-hapus').checked }
-            };
+            const role = document.getElementById('user-form-role').value;
+            const menuAksesPayload = normalisasiMenuAkses(ambilMenuAksesDariForm(), role);
             try {
                 if (id) {
                     const payload = { nama, email, username: email, role: document.getElementById('user-form-role').value, menuAkses: menuAksesPayload, aktif: true, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
@@ -5849,9 +5756,9 @@ function renderMaintenanceHistory() {
         function renderDaftarUser() {
             const tbody = document.getElementById('table-user-body');
             if (!tbody) return;
-            if (currentActiveRole !== 'Admin') { tbody.innerHTML = ''; return; }
+            if (currentActiveRole !== 'Admin' || !izinMenu('akun', 'read')) { tbody.innerHTML = ''; return; }
             if (!Array.isArray(dataUserSistem) || dataUserSistem.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400 italic">Belum ada akun terdaftar.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400 italic">Belum ada akun terdaftar.</td></tr>';
                 return;
             }
             tbody.innerHTML = dataUserSistem.map(u => {
@@ -5860,10 +5767,19 @@ function renderMaintenanceHistory() {
                 const email = escapeHtmlEquipment(u.email || u.username || '-');
                 const role = escapeHtmlEquipment(u.role || 'User');
                 const aktif = u.aktif !== false;
+                const m = normalisasiMenuAkses(u.menuAkses || {}, u.role || 'User');
+                const chips = [];
+                if (m.dashboard.read) chips.push('Dashboard');
+                if (m.master.read) chips.push('Master');
+                if (m.ticket.read) chips.push('Tiket');
+                if (m.equipment.read) chips.push('Equipment');
+                if (m.riwayat.read) chips.push('Dokumen');
+                if (m.akun.read) chips.push('Akun');
                 return `<tr class="border-b border-slate-100">
                     <td class="p-3 font-semibold">${nama}<div class="text-[9px] text-slate-400">${aktif ? 'Aktif' : 'Nonaktif'}</div></td>
                     <td class="p-3 font-mono text-[10px]">${email}</td>
                     <td class="p-3"><span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-bold">${role}</span></td>
+                    <td class="p-3"><div class="flex flex-wrap gap-1">${chips.map(c => `<span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] font-bold">${c}</span>`).join('')}</div><div class="text-[8px] text-slate-400 mt-1">${[m.master.edit&&'Edit aset',m.ticket.kerjakan&&'Kerjakan tiket',m.riwayat.upload&&'Upload dokumen',m.equipment.edit&&'Kelola equipment'].filter(Boolean).join(' • ') || 'Akses baca terbatas'}</div></td>
                     <td class="p-3 text-center whitespace-nowrap">
                         <button type="button" onclick="editAkunUserOlehAdmin('${uid}')" class="bg-amber-50 text-amber-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Edit</button>
                         <button type="button" onclick="kirimResetPasswordAkun('${uid}')" class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Reset Password</button>
@@ -5874,7 +5790,7 @@ function renderMaintenanceHistory() {
         }
 
         async function kirimResetPasswordAkun(userId) {
-            if (currentActiveRole !== 'Admin') return showToast('Akses ditolak.', 'error');
+            if (currentActiveRole !== 'Admin' || !izinMenu('akun', 'edit')) return showToast('Anda tidak memiliki izin reset password.', 'error');
             const userObj = dataUserSistem.find(u => u.id === userId || u.uid === userId);
             const email = userObj?.email || userObj?.username || '';
             if (!email || !email.includes('@')) return showToast('Email akun tidak valid.', 'error');
@@ -5888,6 +5804,7 @@ function renderMaintenanceHistory() {
         }
 
         function editAkunUserOlehAdmin(userId) {
+            if (currentActiveRole !== 'Admin' || !izinMenu('akun', 'edit')) return showToast('Anda tidak memiliki izin mengedit akun.', 'error');
             const userObj = dataUserSistem.find(u => u.id === userId);
             if(!userObj) return;
             document.getElementById('user-form-id').value = userObj.id;
@@ -5896,29 +5813,18 @@ function renderMaintenanceHistory() {
             document.getElementById('user-form-password').value = '';
             document.getElementById('user-form-password').placeholder = 'Kosongkan jika password tidak diubah';
             document.getElementById('user-form-password').required = false;
-            document.getElementById('user-form-role').value = userObj.role || 'User';
-            const m = userObj.menuAkses || {};
-            if(document.getElementById('akses-dash-read')) document.getElementById('akses-dash-read').checked = m.dashboard ? m.dashboard.read : true;
-            if(document.getElementById('akses-dash-edit')) document.getElementById('akses-dash-edit').checked = m.dashboard ? m.dashboard.edit : true;
-            if(document.getElementById('akses-master-read')) document.getElementById('akses-master-read').checked = m.master ? m.master.read : false;
-            if(document.getElementById('akses-master-edit')) document.getElementById('akses-master-edit').checked = m.master ? m.master.edit : false;
-            if(document.getElementById('akses-master-hapus')) document.getElementById('akses-master-hapus').checked = m.master ? m.master.hapus : false;
-            if(document.getElementById('akses-ticket-read')) document.getElementById('akses-ticket-read').checked = m.ticket ? m.ticket.read : false;
-            if(document.getElementById('akses-ticket-edit')) document.getElementById('akses-ticket-edit').checked = m.ticket ? m.ticket.edit : false;
-            if(document.getElementById('akses-ticket-hapus')) document.getElementById('akses-ticket-hapus').checked = m.ticket ? m.ticket.hapus : false;
-            if(document.getElementById('akses-riwayat-read')) document.getElementById('akses-riwayat-read').checked = m.riwayat ? m.riwayat.read : false;
-            if(document.getElementById('akses-riwayat-upload')) document.getElementById('akses-riwayat-upload').checked = m.riwayat ? m.riwayat.upload : false;
-            if(document.getElementById('akses-riwayat-download')) document.getElementById('akses-riwayat-download').checked = m.riwayat ? m.riwayat.download : false;
-            if(document.getElementById('akses-riwayat-hapus')) document.getElementById('akses-riwayat-hapus').checked = m.riwayat ? m.riwayat.hapus : false;
+            const role = userObj.role || 'User';
+            document.getElementById('user-form-role').value = role;
+            isiFormIzinAkses(userObj.menuAkses || {}, role);
             document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-pen mr-1.5"></i> Edit Akun: ${userObj.nama}`;
             document.getElementById('btn-submit-user').innerText = "Simpan Perubahan";
             document.getElementById('btn-cancel-edit-user').classList.remove('hidden');
         }
 
         async function hapusAkunUserOlehAdmin(userId, namaUser) {
-            if (currentActiveRole !== 'Admin') return showToast('Akses ditolak.', 'error');
+            if (currentActiveRole !== 'Admin' || !izinMenu('akun', 'nonaktifkan')) return showToast('Anda tidak memiliki izin menonaktifkan akun.', 'error');
             if (!userId) return showToast('ID akun tidak valid.', 'error');
-            if (!confirm(`Nonaktifkan akun "${namaUser}"? Akun Auth tidak dapat dihapus dari browser admin, jadi profil akan dinonaktifkan agar tidak dapat login ke MEDIX.`)) return;
+            if (!await showConfirmDialog(`Nonaktifkan akun "${namaUser}"? Akun Auth tidak dapat dihapus dari browser admin, jadi profil akan dinonaktifkan agar tidak dapat login ke MEDIX.`, { title: "Nonaktifkan Akun", okText: "Nonaktifkan", icon: "fa-user-slash" })) return;
             try {
                 await db.collection("users").doc(userId).set({
                     aktif: false,
@@ -6003,6 +5909,7 @@ function renderMaintenanceHistory() {
         }
 
         function exportKeExcelMassal() {
+            if (!izinMenu('master', 'export')) { showToast('Anda tidak memiliki izin Export Excel.', 'error'); return; }
             if(dataAlat.length === 0) return showToast("Tidak ada data alat untuk diexport!", "error");
             const dClean = dataAlat.map((a, index) => {
                 const listCal = dataKalibrasi.filter(c => c.alatId === a.id);
@@ -6017,11 +5924,12 @@ function renderMaintenanceHistory() {
             const ws = XLSX.utils.json_to_sheet(dClean); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Master Aset Medis"); XLSX.writeFile(wb, `MEDIX_DataAset_${new Date().toISOString().substring(0,10)}.xlsx`);
         }
 
-        function hapAlatMasterFirebase(id, namaAlat) { if(confirm(`Hapus aset "${namaAlat}" permanen?`)) { db.collection("dataAlat").doc(id).delete().then(() => showToast("Aset berhasil dihapus!", "success")); } }
+        async function hapAlatMasterFirebase(id, namaAlat) { if (!izinMenu('master', 'hapus')) { showToast('Anda tidak memiliki izin menghapus aset.', 'error'); return; } if(await showConfirmDialog(`Hapus aset "${namaAlat}" permanen?`, { title: "Hapus Aset Permanen", okText: "Ya, Hapus", icon: "fa-trash-can" })) { db.collection("dataAlat").doc(id).delete().then(() => showToast("Aset berhasil dihapus!", "success")); } }
         
-        function hapusDokumenLogSpesifik(docId, koleksiNama) {
+        async function hapusDokumenLogSpesifik(docId, koleksiNama) {
+            if (!izinMenu('riwayat', 'hapus')) { showToast('Anda tidak memiliki izin menghapus dokumen.', 'error'); return; }
             if(currentActiveRole === 'User' && koleksiNama !== 'laporanKeluhanLog') { showToast("Akses ditolak!", "error"); return; }
-            if(confirm("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?")) {
+            if(await showConfirmDialog("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?", { title: "Hapus Dokumen Riwayat", okText: "Ya, Hapus", icon: "fa-trash-can" })) {
                 db.collection(koleksiNama).doc(docId).delete().then(() => {
                     showToast("Dokumen log berhasil dihapus!", "success");
                     bukaKartuPemeliharaan(globalSelectedAlatIdForLog || globalSelectedAlatIdUntukLog); 
@@ -6029,9 +5937,10 @@ function renderMaintenanceHistory() {
             }
         }
 
-        function hapusDokumenPusatRiwayat(id, kol) { 
+        async function hapusDokumenPusatRiwayat(id, kol) { 
+            if (!izinMenu('riwayat', 'hapus')) { showToast('Anda tidak memiliki izin menghapus dokumen arsip.', 'error'); return; }
             if(currentActiveRole === 'User' && kol !== 'laporanKeluhanLog') { showToast("Akses ditolak!", "error"); return; }
-            if(confirm("Hapus dokumen arsip ini?")) { db.collection(kol).doc(id).delete().then(() => showToast("Dokumen arsip dibersihkan!", "success")); } 
+            if(await showConfirmDialog("Hapus dokumen arsip ini?", { title: "Hapus Dokumen Arsip", okText: "Ya, Hapus", icon: "fa-trash-can" })) { db.collection(kol).doc(id).delete().then(() => showToast("Dokumen arsip dibersihkan!", "success")); } 
         }
 
         function lihatFileLangsung(b, j, jdl) { 
@@ -6108,10 +6017,10 @@ function renderMaintenanceHistory() {
             const lkInspeksi = document.getElementById('kartu-list-inspeksi');
             const lkKalibrasi = document.getElementById('kartu-list-kalibrasi');
 
-            if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
-            if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded text-[10px]">PDF</button>${currentActiveRole==='User'?'':`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}</td></tr>`).join('');
+            if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
+            if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
+            if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
+            if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="lihatFileLangsung('${c.certPdf}','pdf','Sertifikat')" class="bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded text-[10px]">PDF</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
             
             const tbodyBuku = document.getElementById('kartu-list-buku-petunjuk');
             if(tbodyBuku) {
@@ -6124,7 +6033,7 @@ function renderMaintenanceHistory() {
                             <td class="p-4 font-mono text-slate-500">${b.tglUpload}</td>
                             <td class="p-4 text-center space-x-1">
                                 <button onclick="previewDokumenBukuPetunjuk('${b.fileData}', '${b.fileType}', '${b.namaFile}')" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] font-semibold"><i class="fa-solid fa-eye mr-1"></i> Preview</button>
-                                ${currentActiveRole==='User'?'':`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`}
+                                ${izinMenu('riwayat','hapus')?`<button onclick="hapusBukuPetunjuk('${b.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}
                             </td>
                         </tr>
                     `).join('');
@@ -6239,6 +6148,7 @@ function renderMaintenanceHistory() {
 
                     function draw(e) {
                         if(currentActiveRole === 'User' || !isDrawing || e.pointerId !== activePointerId) return;
+                        if (e.pointerType === 'mouse' && e.buttons === 0) { stopDrawing(e); return; }
 
                         const p = getPos(e);
                         ctx.lineTo(p.x, p.y);
@@ -6253,16 +6163,18 @@ function renderMaintenanceHistory() {
                     canvas.onpointerup = stopDrawing;
                     canvas.onpointercancel = stopDrawing;
                     canvas.onlostpointercapture = stopDrawing;
-                    canvas.onpointerleave = () => {};
+                    canvas.onpointerleave = e => { if (e.pointerType === 'mouse' && e.buttons === 0) stopDrawing(e); };
+                    canvas._medixStopDrawing = stopDrawing;
                 });
             } catch(e) {
                 console.warn('Inisialisasi tanda tangan gagal:', e);
             }
         }
 
-        function hapusBukuPetunjuk(id) {
+        async function hapusBukuPetunjuk(id) {
+            if (!izinMenu('riwayat', 'hapus')) { showToast('Anda tidak memiliki izin menghapus buku petunjuk.', 'error'); return; }
             if(currentActiveRole === 'User') return;
-            if(confirm("Hapus dokumen buku petunjuk ini?")) { db.collection("bukuPetunjukAlat").doc(id).delete().then(() => { showToast("Dokumen berhasil dihapus!", "success"); }); }
+            if(await showConfirmDialog("Hapus dokumen buku petunjuk ini?", { title: "Hapus Buku Petunjuk", okText: "Ya, Hapus", icon: "fa-book" })) { db.collection("bukuPetunjukAlat").doc(id).delete().then(() => { showToast("Dokumen berhasil dihapus!", "success"); }); }
         }
         
         function previewDokumenBukuPetunjuk(fileData, fileType, namaFile) {
@@ -6320,9 +6232,10 @@ function renderMaintenanceHistory() {
             }, 100);
         }
 
-        function cetakLabelBarcodeMassalPdf() {
+        async function cetakLabelBarcodeMassalPdf() {
+            if (!izinMenu('master', 'read')) { showToast('Anda tidak memiliki izin melihat Master Data Aset.', 'error'); return; }
             if (!dataAlat || dataAlat.length === 0) { showToast("Data aset medis sedang dimuat atau kosong.", "error"); return; }
-            if (!confirm(`Akan menyiapkan ${dataAlat.length} label barcode aset untuk dicetak/disimpan ke PDF. Lanjutkan?`)) return;
+            if (!await showConfirmDialog(`Akan menyiapkan ${dataAlat.length} label barcode aset untuk dicetak/disimpan ke PDF. Lanjutkan?`, { title: "Siapkan Label Barcode", okText: "Ya, Siapkan", variant: "safe", icon: "fa-print" })) return;
 
             let htmlContent = `
                 <!DOCTYPE html>
