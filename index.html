@@ -1700,6 +1700,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
             }
         }
 
+        function canonicalRole(role) {
+            const r = String(role || 'User').trim().toLowerCase();
+            if (r === 'admin') return 'Admin';
+            if (r === 'teknisi' || r === 'technician') return 'Teknisi';
+            return 'User';
+        }
+
         function applyUserContext(userData) {
 
             if (!userData) {
@@ -1714,8 +1721,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
                 "User";
         
             // Role
-            currentActiveRole =
-                userData.role || "User";
+            currentActiveRole = canonicalRole(userData.role);
         
             // Permission
             userAksesMenuArray = normalisasiMenuAkses(userData.menuAkses || {}, currentActiveRole);
@@ -1735,11 +1741,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
             return true;
         }
 
+        function ensureUserEticketForm() {
+            const box = document.getElementById('box-form-buat-ticket');
+            if (!box) return;
+            const isUser = canonicalRole(currentActiveRole) === 'User';
+            const canReport = isUser || izinMenu('ticket', 'lapor');
+            box.classList.toggle('hidden', !canReport);
+        }
+
         function renderSidebarByPermission() {
             const checks = {
                 dashboard: izinMenu('dashboard', 'read'),
                 master: izinMenu('master', 'read'),
-                ticket: currentActiveRole === 'User' ? true : izinMenu('ticket', 'read'),
+                ticket: canonicalRole(currentActiveRole) === 'User' ? true : izinMenu('ticket', 'read'),
                 riwayat: izinMenu('riwayat', 'read'),
                 equipment: izinMenu('equipment', 'read'),
                 akun: izinMenu('akun', 'read')
@@ -1775,7 +1789,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
             const checks = {
                 dashboard: izinMenu('dashboard','read'),
                 'data-alat': izinMenu('master','read'),
-                'ticket-system': currentActiveRole === 'User' ? true : izinMenu('ticket','read'),
+                'ticket-system': canonicalRole(currentActiveRole) === 'User' ? true : izinMenu('ticket','read'),
                 equipment: izinMenu('equipment','read')
             };
             nav.querySelectorAll('button[data-tab]').forEach(btn => {
@@ -4213,6 +4227,7 @@ function renderMaintenanceHistory() {
                 // AKSES MENU & AKSI BERDASARKAN PERIZINAN AKUN
                 // ============================================
                 renderSidebarByPermission();
+                ensureUserEticketForm();
 
                 const role = currentActiveRole || 'User';
                 const masterRead = izinMenu('master', 'read');
@@ -4221,7 +4236,7 @@ function renderMaintenanceHistory() {
                 const masterHapus = izinMenu('master', 'hapus');
                 const masterImport = izinMenu('master', 'import');
                 const masterExport = izinMenu('master', 'export');
-                const ticketLapor = currentActiveRole === 'User' ? true : izinMenu('ticket', 'lapor');
+                const ticketLapor = canonicalRole(currentActiveRole) === 'User' ? true : izinMenu('ticket', 'lapor');
                 const riwayatUpload = izinMenu('riwayat', 'upload');
 
                 // Container tombol Master Data harus diambil di dalam scope login handler.
@@ -5685,13 +5700,14 @@ function renderMaintenanceHistory() {
         function switchTab(tId) {
             const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'riwayat', equipment: 'equipment', 'kelola-akun': 'akun' };
             const menu = menuMap[tId];
-            if (menu && !(menu === 'ticket' && currentActiveRole === 'User') && !izinMenu(menu, 'read')) {
+            if (menu && !(menu === 'ticket' && canonicalRole(currentActiveRole) === 'User') && !izinMenu(menu, 'read')) {
                 showToast('Akses menu ini tidak diberikan untuk akun Anda.', 'error');
                 return;
             }
             document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); 
             const targetTab = document.getElementById('tab-' + tId);
-            if(targetTab) targetTab.classList.remove('hidden'); 
+            if(targetTab) targetTab.classList.remove('hidden');
+            if (tId === 'ticket-system') ensureUserEticketForm(); 
             document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); 
             const btnEl = document.getElementById('btn-' + tId);
             if(btnEl) btnEl.classList.add('active'); 
@@ -5822,6 +5838,7 @@ function renderMaintenanceHistory() {
         }
 
         function normalisasiMenuAkses(raw, role = 'User') {
+            role = canonicalRole(role);
             const base = cloneAccessPreset(role);
             const src = raw || {};
             Object.keys(base).forEach(menu => {
