@@ -320,8 +320,8 @@
 /* ==========================================================
    MEDIX APP DIALOG - GANTI NATIVE BROWSER CONFIRM
    ========================================================== */
-#medix-confirm-dialog { position:fixed; inset:0; z-index:1000000; display:flex; align-items:center; justify-content:center; padding:1rem; background:rgba(15,23,42,.52); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
-#medix-confirm-dialog.hidden { display:none !important; }
+#medix-confirm-dialog, #medix-input-dialog { position:fixed; inset:0; z-index:1000000; display:flex; align-items:center; justify-content:center; padding:1rem; background:rgba(15,23,42,.52); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+#medix-confirm-dialog.hidden, #medix-input-dialog.hidden { display:none !important; }
 .medix-dialog-card { width:min(430px,calc(100vw - 32px)); border:1px solid rgba(94,234,212,.9); border-radius:22px; background:#f0fdf4; color:#0f172a; box-shadow:0 28px 70px rgba(15,23,42,.28); overflow:hidden; transform:translateY(8px) scale(.98); opacity:0; animation:medixDialogIn .18s ease-out forwards; }
 .medix-dialog-head { display:flex; align-items:center; gap:12px; padding:16px 18px 12px; }
 .medix-dialog-icon { width:42px; height:42px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex:0 0 auto; background:#fef2f2; color:#e11d48; border:1px solid #fecdd3; }
@@ -335,7 +335,7 @@
 .medix-dialog-ok { color:#fff; background:linear-gradient(135deg,#e11d48,#be123c); box-shadow:0 8px 18px rgba(225,29,72,.22); }
 .medix-dialog-ok.is-safe { background:linear-gradient(135deg,#0d9488,#059669); box-shadow:0 8px 18px rgba(13,148,136,.22); }
 @keyframes medixDialogIn { to { transform:translateY(0) scale(1); opacity:1; } }
-body.dark-mode #medix-confirm-dialog { background:rgba(2,6,23,.70); }
+body.dark-mode #medix-confirm-dialog, body.dark-mode #medix-input-dialog { background:rgba(2,6,23,.70); }
 body.dark-mode .medix-dialog-card { background:#111827; border-color:rgba(94,234,212,.25); color:#f8fafc; }
 body.dark-mode .medix-dialog-message { color:#cbd5e1; }
 body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
@@ -357,6 +357,19 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
             </div>
             <p id="medix-confirm-message" class="medix-dialog-message"></p>
             <div class="medix-dialog-actions"><button type="button" id="medix-confirm-cancel" class="medix-dialog-btn medix-dialog-cancel">Batal</button><button type="button" id="medix-confirm-ok" class="medix-dialog-btn medix-dialog-ok">Ya, Lanjutkan</button></div>
+        </div>
+    </div>
+
+    <!-- MEDIX INPUT DIALOG - input bergaya aplikasi -->
+    <div id="medix-input-dialog" class="hidden" role="dialog" aria-modal="true" aria-labelledby="medix-input-title">
+        <div class="medix-dialog-card" role="document">
+            <div class="medix-dialog-head">
+                <div id="medix-input-icon" class="medix-dialog-icon"><i class="fa-solid fa-pen"></i></div>
+                <div><p class="text-[9px] uppercase tracking-[.16em] text-teal-600 font-black mb-0.5">MEDIX • Input</p><h3 id="medix-input-title" class="medix-dialog-title">Masukkan Data</h3></div>
+            </div>
+            <p id="medix-input-message" class="medix-dialog-message"></p>
+            <input id="medix-input-field" type="text" autocomplete="off" class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan-200 focus:border-cyan-400" />
+            <div class="medix-dialog-actions"><button type="button" id="medix-input-cancel" class="medix-dialog-btn medix-dialog-cancel">Batal</button><button type="button" id="medix-input-ok" class="medix-dialog-btn medix-dialog-ok">Simpan</button></div>
         </div>
     </div>
 
@@ -725,6 +738,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
                                             <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-hospital w-4 text-rose-500"></i> Equipment Management</span><span class="text-[8px] text-rose-500 font-bold">Admin / Teknisi</span></div>
                                             <div class="flex flex-wrap gap-x-4 gap-y-1.5">
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-equipment-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-equipment-maintenance" class="rounded border-slate-300 text-cyan-600"> <span>Maintenance</span></label>
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-equipment-edit" class="rounded border-slate-300 text-cyan-600"> <span>Kelola</span></label>
                                             </div>
                                             <p id="akses-equipment-note" class="text-[8px] text-slate-400 mt-1.5">Equipment merupakan proyeksi dari Master Data Aset; identitas aset utama tetap dikelola dari Master.</p>
@@ -5222,16 +5236,67 @@ function renderMaintenanceHistory() {
             selUsr.innerHTML = `<option value="">-- PILIH USER --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-user-baru" class="text-blue-600 font-bold">+ Tambah User Baru</option>`;
         }
 
-        function handleDropdownNamaBaru(selectEl, jenisRole) {
+        let medixInputResolver = null;
+        let medixInputKeyHandler = null;
+
+        function showMedixInputDialog(message, options = {}) {
+            return new Promise(resolve => {
+                const modal = document.getElementById('medix-input-dialog');
+                const field = document.getElementById('medix-input-field');
+                const messageEl = document.getElementById('medix-input-message');
+                const titleEl = document.getElementById('medix-input-title');
+                const okBtn = document.getElementById('medix-input-ok');
+                const cancelBtn = document.getElementById('medix-input-cancel');
+                if (!modal || !field || !messageEl || !titleEl || !okBtn || !cancelBtn) {
+                    showToast('Komponen input MEDIX tidak tersedia.', 'error');
+                    resolve(null);
+                    return;
+                }
+                if (typeof medixInputResolver === 'function') medixInputResolver(null);
+                let settled = false;
+                const finish = value => {
+                    if (settled) return;
+                    settled = true;
+                    if (medixInputKeyHandler) { document.removeEventListener('keydown', medixInputKeyHandler); medixInputKeyHandler = null; }
+                    if (medixInputResolver === finish) medixInputResolver = null;
+                    modal.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                    resolve(value);
+                };
+                medixInputResolver = finish;
+                titleEl.textContent = options.title || 'Masukkan Data';
+                messageEl.textContent = String(message || 'Silakan masukkan data.');
+                okBtn.textContent = options.okText || 'Simpan';
+                cancelBtn.textContent = options.cancelText || 'Batal';
+                field.value = options.value || '';
+                field.placeholder = options.placeholder || '';
+                okBtn.onclick = () => finish(field.value.trim());
+                cancelBtn.onclick = () => finish(null);
+                modal.onclick = e => { if (e.target === modal) finish(null); };
+                medixInputKeyHandler = e => {
+                    if (e.key === 'Escape') finish(null);
+                    else if (e.key === 'Enter') { e.preventDefault(); finish(field.value.trim()); }
+                };
+                document.addEventListener('keydown', medixInputKeyHandler);
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                setTimeout(() => { field.focus(); field.select(); }, 30);
+            });
+        }
+
+        async function handleDropdownNamaBaru(selectEl, jenisRole) {
             const val = selectEl.value;
             if(val === 'tambah-teknisi-baru' || val === 'tambah-user-baru') {
                 const targetRoleName = (jenisRole === 'Teknisi') ? 'Teknisi' : 'User';
-                let namaBaru = prompt(`Masukkan Nama Lengkap ${targetRoleName} Baru:`);
-                if(namaBaru && namaBaru.trim() !== '') {
-                    const cleanNama = namaBaru.trim();
+                const namaBaru = await showMedixInputDialog(`Masukkan Nama Lengkap ${targetRoleName} Baru:`, {
+                    title: `Tambah Nama ${targetRoleName}`,
+                    okText: 'Gunakan Nama',
+                    placeholder: `Nama lengkap ${targetRoleName}`
+                });
+                if(namaBaru) {
                     showToast(`Untuk membuat akun login ${targetRoleName}, gunakan menu Kelola Akun agar email/password Firebase dibuat dengan aman.`, 'info');
-                    selectEl.selectedIndex = 0;
-                } else { selectEl.selectedIndex = 0; }
+                }
+                selectEl.selectedIndex = 0;
             }
         }
         
@@ -5410,7 +5475,7 @@ function renderMaintenanceHistory() {
                 dashboard: { read: true, edit: true },
                 master: { read: true, tambah: true, edit: true, hapus: true, import: true, export: true },
                 ticket: { read: true, lapor: true, kerjakan: true, selesai: true, hapus: true, edit: true },
-                equipment: { read: true, edit: true },
+                equipment: { read: true, maintenance: true, edit: true },
                 riwayat: { read: true, upload: true, download: true, hapus: true, edit: true },
                 akun: { read: true, edit: true, nonaktifkan: true }
             },
@@ -5418,7 +5483,7 @@ function renderMaintenanceHistory() {
                 dashboard: { read: true, edit: false },
                 master: { read: true, tambah: false, edit: false, hapus: false, import: false, export: true },
                 ticket: { read: true, lapor: false, kerjakan: true, selesai: true, hapus: false, edit: true },
-                equipment: { read: true, edit: true },
+                equipment: { read: true, maintenance: true, edit: true },
                 riwayat: { read: true, upload: true, download: true, hapus: false, edit: true },
                 akun: { read: false, edit: false, nonaktifkan: false }
             },
@@ -5426,7 +5491,7 @@ function renderMaintenanceHistory() {
                 dashboard: { read: true, edit: false },
                 master: { read: false, tambah: false, edit: false, hapus: false, import: false, export: false },
                 ticket: { read: true, lapor: true, kerjakan: false, selesai: false, hapus: false, edit: false },
-                equipment: { read: false, edit: false },
+                equipment: { read: false, maintenance: false, edit: false },
                 riwayat: { read: true, upload: false, download: true, hapus: false, edit: false },
                 akun: { read: false, edit: false, nonaktifkan: false }
             }
@@ -5454,12 +5519,13 @@ function renderMaintenanceHistory() {
             // Hak tindakan otomatis membutuhkan hak Lihat pada menu terkait.
             base.master.read = !!(base.master.read || base.master.tambah || base.master.edit || base.master.hapus || base.master.import || base.master.export);
             base.ticket.read = !!(base.ticket.read || base.ticket.lapor || base.ticket.kerjakan || base.ticket.selesai || base.ticket.hapus);
-            base.equipment.read = !!(base.equipment.read || base.equipment.edit);
+            base.equipment.read = !!(base.equipment.read || base.equipment.maintenance || base.equipment.edit);
+            base.equipment.maintenance = !!(base.equipment.maintenance || base.equipment.edit);
             base.riwayat.read = !!(base.riwayat.read || base.riwayat.upload || base.riwayat.download || base.riwayat.hapus);
             base.akun.read = !!(base.akun.read || base.akun.edit || base.akun.nonaktifkan);
             // Equipment wajib tersedia untuk Admin/Teknisi sesuai kebijakan MEDIX terbaru.
-            if (role === 'Admin' || role === 'Teknisi') base.equipment = { read: true, edit: true };
-            else base.equipment = { read: false, edit: false };
+            if (role === 'Admin' || role === 'Teknisi') base.equipment = { read: true, maintenance: true, edit: true };
+            else base.equipment = { read: false, maintenance: false, edit: false };
             // Kelola akun hanya Admin.
             if (role !== 'Admin') base.akun = { read: false, edit: false, nonaktifkan: false };
             return base;
@@ -5490,6 +5556,7 @@ function renderMaintenanceHistory() {
                 'akses-ticket-selesai': preset.ticket.selesai,
                 'akses-ticket-hapus': preset.ticket.hapus,
                 'akses-equipment-read': preset.equipment.read,
+                'akses-equipment-maintenance': preset.equipment.maintenance,
                 'akses-equipment-edit': preset.equipment.edit,
                 'akses-riwayat-read': preset.riwayat.read,
                 'akses-riwayat-upload': preset.riwayat.upload,
@@ -5504,7 +5571,7 @@ function renderMaintenanceHistory() {
                 if (el) el.checked = !!value;
             });
             const equipmentLocked = role === 'User';
-            ['akses-equipment-read','akses-equipment-edit'].forEach(id => {
+            ['akses-equipment-read','akses-equipment-maintenance','akses-equipment-edit'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.disabled = equipmentLocked;
             });
@@ -5516,7 +5583,7 @@ function renderMaintenanceHistory() {
             const note = document.getElementById('akses-equipment-note');
             if (note) note.textContent = role === 'User'
                 ? 'Akses Equipment Management otomatis ditutup untuk User.'
-                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Kelola Equipment Management.';
+                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Maintenance + Kelola Equipment Management.';
         }
 
         function ambilMenuAksesDariForm() {
@@ -5540,6 +5607,7 @@ function renderMaintenanceHistory() {
                 },
                 equipment: {
                     read: !!document.getElementById('akses-equipment-read')?.checked,
+                    maintenance: !!document.getElementById('akses-equipment-maintenance')?.checked,
                     edit: !!document.getElementById('akses-equipment-edit')?.checked
                 },
                 riwayat: {
@@ -5573,6 +5641,7 @@ function renderMaintenanceHistory() {
                 'akses-ticket-selesai': m.ticket.selesai,
                 'akses-ticket-hapus': m.ticket.hapus,
                 'akses-equipment-read': m.equipment.read,
+                'akses-equipment-maintenance': m.equipment.maintenance,
                 'akses-equipment-edit': m.equipment.edit,
                 'akses-riwayat-read': m.riwayat.read,
                 'akses-riwayat-upload': m.riwayat.upload,
@@ -5591,7 +5660,7 @@ function renderMaintenanceHistory() {
 
         function terapkanPresetIzinRoleLock(role) {
             const equipmentLocked = role === 'User';
-            ['akses-equipment-read','akses-equipment-edit'].forEach(id => {
+            ['akses-equipment-read','akses-equipment-maintenance','akses-equipment-edit'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.disabled = equipmentLocked;
             });
@@ -5603,7 +5672,7 @@ function renderMaintenanceHistory() {
             const note = document.getElementById('akses-equipment-note');
             if (note) note.textContent = role === 'User'
                 ? 'Akses Equipment Management otomatis ditutup untuk User.'
-                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Kelola Equipment Management.';
+                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Maintenance + Kelola Equipment Management.';
         }
 
         function resetFormUser() {
@@ -5786,7 +5855,7 @@ function renderMaintenanceHistory() {
                     <td class="p-3 font-semibold">${nama}<div class="text-[9px] text-slate-400">${aktif ? 'Aktif' : 'Nonaktif'}</div></td>
                     <td class="p-3 font-mono text-[10px]">${email}</td>
                     <td class="p-3"><span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-bold">${role}</span></td>
-                    <td class="p-3"><div class="flex flex-wrap gap-1">${chips.map(c => `<span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] font-bold">${c}</span>`).join('')}</div><div class="text-[8px] text-slate-400 mt-1">${[m.master.edit&&'Edit aset',m.ticket.kerjakan&&'Kerjakan tiket',m.riwayat.upload&&'Upload dokumen',m.equipment.edit&&'Kelola equipment'].filter(Boolean).join(' • ') || 'Akses baca terbatas'}</div></td>
+                    <td class="p-3"><div class="flex flex-wrap gap-1">${chips.map(c => `<span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] font-bold">${c}</span>`).join('')}</div><div class="text-[8px] text-slate-400 mt-1">${[m.master.edit&&'Edit aset',m.ticket.kerjakan&&'Kerjakan tiket',m.riwayat.upload&&'Upload dokumen',m.equipment.maintenance&&'Maintenance equipment',m.equipment.edit&&'Kelola equipment'].filter(Boolean).join(' • ') || 'Akses baca terbatas'}</div></td>
                     <td class="p-3 text-center whitespace-nowrap">
                         <button type="button" onclick="editAkunUserOlehAdmin('${uid}')" class="bg-amber-50 text-amber-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Edit</button>
                         <button type="button" onclick="kirimResetPasswordAkun('${uid}')" class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Reset Password</button>
