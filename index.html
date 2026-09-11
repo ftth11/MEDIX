@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="medix-version" content="v6-access-control">
+    <meta name="medix-version" content="v10-app-scrollbar-eticket">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -41,7 +41,8 @@
             overscroll-behavior-y: none !important;
             -webkit-overflow-scrolling: touch;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow-x: auto;
+            overflow-y: auto;
         }
 
         header {
@@ -325,6 +326,77 @@
             min-height:60px !important; height:auto !important; box-sizing:border-box !important;
             overflow-y:auto !important; overflow-x:hidden !important; resize:vertical;
         }
+        /* ==========================================================
+           MEDIX APP SCROLLBAR — tipis, selalu terlihat, tanpa nuansa
+           scrollbar browser yang besar. Dipakai untuk area aplikasi utama.
+           ========================================================== */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(71, 85, 105, 0.62) transparent;
+        }
+        body {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(71, 85, 105, 0.62) transparent;
+        }
+        #main-content-area {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(71, 85, 105, 0.62) transparent;
+            scrollbar-gutter: stable;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar,
+        #main-content-area::-webkit-scrollbar {
+            width: 9px;
+            height: 9px;
+        }
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track,
+        #main-content-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb,
+        #main-content-area::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.58);
+            border-radius: 999px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            min-height: 42px;
+        }
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover,
+        #main-content-area::-webkit-scrollbar-thumb:hover {
+            background: rgba(51, 65, 85, 0.78);
+            background-clip: padding-box;
+        }
+        html::-webkit-scrollbar-button,
+        body::-webkit-scrollbar-button,
+        #main-content-area::-webkit-scrollbar-button {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        /* Internal dropdown/list scroll tetap ringkas dan tidak mengganggu UI. */
+        .master-table-scroll,
+        #dlk-txt-deskripsi-tunggal {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(71, 85, 105, 0.45) transparent;
+        }
+        .master-table-scroll::-webkit-scrollbar,
+        #dlk-txt-deskripsi-tunggal::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        .master-table-scroll::-webkit-scrollbar-track,
+        #dlk-txt-deskripsi-tunggal::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .master-table-scroll::-webkit-scrollbar-thumb,
+        #dlk-txt-deskripsi-tunggal::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.45);
+            border-radius: 999px;
+        }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         * { scrollbar-width: none; -ms-overflow-style: none; }
@@ -367,9 +439,188 @@ body.dark-mode .medix-dialog-message { color:#cbd5e1; }
 body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
 body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
     </style>
+
+<style id="medix-pro-app-shell-v11">
+/* =========================================================
+   MEDIX v11 — Pro App Shell / Responsive UX
+   Desktop: persistent sidebar. Tablet: drawer. Mobile: bottom nav.
+   Horizontal scrolling is reserved for genuinely wide data tables.
+   ========================================================= */
+html, body { min-height:100%; }
+body { overflow:hidden !important; }
+#main-content-area {
+  min-width:0 !important;
+  height:100vh !important;
+  overflow-x:auto !important;
+  overflow-y:auto !important;
+  overscroll-behavior:contain;
+}
+#main-content-area > main {
+  min-width:0 !important;
+  overflow:visible !important;
+  padding-bottom:5rem !important;
+}
+#main-content-area > header {
+  position:sticky !important;
+  top:0 !important;
+  z-index:90 !important;
+}
+#app-sidebar { z-index:120 !important; }
+#app-sidebar .overflow-y-auto { scrollbar-width:thin; }
+
+/* Desktop app shell */
+@media (min-width:1024px) {
+  #app-sidebar {
+    transform:translateX(0) !important;
+    width:17rem !important;
+    box-shadow:8px 0 28px rgba(15,23,42,.07) !important;
+  }
+  #main-content-area {
+    margin-left:17rem !important;
+    width:calc(100% - 17rem) !important;
+  }
+  #main-content-area > header { padding-left:1.5rem !important; }
+  #medix-mobile-bottom-nav { display:none !important; }
+  #medix-mobile-backdrop { display:none !important; }
+}
+
+/* Tablet drawer */
+@media (min-width:768px) and (max-width:1023px) {
+  #main-content-area > main { padding-left:1rem !important; padding-right:1rem !important; }
+}
+
+/* Mobile: app-like cards, bottom navigation, compact header */
+@media (max-width:767px) {
+  #main-content-area { width:100% !important; margin-left:0 !important; }
+  #main-content-area > header {
+    min-height:64px !important;
+    padding: .65rem .85rem !important;
+    background:rgba(255,255,255,.94) !important;
+    backdrop-filter:blur(18px) !important;
+    -webkit-backdrop-filter:blur(18px) !important;
+  }
+  #main-content-area > header h1 { font-size:1.55rem !important; line-height:1 !important; }
+  #main-content-area > header span { font-size:7px !important; letter-spacing:.11em !important; }
+  #main-content-area > main { padding:1rem .75rem 6.25rem !important; }
+  #main-content-area > main > * { max-width:100% !important; }
+  #db-status-loader { bottom:4.7rem !important; right:.75rem !important; }
+
+  /* Master Data: mobile becomes cards, desktop/tablet remain tables. */
+  #master-table-nav { display:none !important; }
+  #master-table-scroll {
+    overflow-x:hidden !important;
+    overflow-y:visible !important;
+    max-height:none !important;
+  }
+  #master-table-scroll table {
+    min-width:0 !important;
+    width:100% !important;
+    display:block !important;
+  }
+  #master-table-scroll thead { display:none !important; }
+  #master-table-scroll tbody,
+  #master-table-scroll tr { display:block !important; width:100% !important; }
+  #master-table-scroll tr {
+    margin:0 0 .7rem 0 !important;
+    padding:.7rem !important;
+    border:1px solid rgba(20,184,166,.20) !important;
+    border-radius:16px !important;
+    background:rgba(255,255,255,.88) !important;
+    box-shadow:0 5px 18px rgba(15,23,42,.06) !important;
+  }
+  #master-table-scroll td {
+    display:grid !important;
+    grid-template-columns:7.2rem minmax(0,1fr) !important;
+    gap:.5rem !important;
+    align-items:start !important;
+    width:100% !important;
+    min-height:0 !important;
+    padding:.36rem .15rem !important;
+    border-bottom:1px solid rgba(148,163,184,.14) !important;
+    font-size:10px !important;
+    overflow-wrap:anywhere !important;
+  }
+  #master-table-scroll td:last-child { border-bottom:0 !important; }
+  #master-table-scroll td::before {
+    font-size:8px !important;
+    text-transform:uppercase !important;
+    letter-spacing:.06em !important;
+    color:#64748b !important;
+    font-weight:800 !important;
+  }
+  #master-table-scroll td:nth-child(1)::before { content:'Nama Alat'; }
+  #master-table-scroll td:nth-child(2)::before { content:'Merk'; }
+  #master-table-scroll td:nth-child(3)::before { content:'Model / Tipe'; }
+  #master-table-scroll td:nth-child(4)::before { content:'Nomor Seri'; }
+  #master-table-scroll td:nth-child(5)::before { content:'Izin Edar'; }
+  #master-table-scroll td:nth-child(6)::before { content:'Ruangan'; }
+  #master-table-scroll td:nth-child(7)::before { content:'Status'; }
+  #master-table-scroll td:nth-child(8)::before { content:'Kartu Pemeliharaan'; }
+
+  /* Bottom navigation */
+  #medix-mobile-bottom-nav {
+    position:fixed;
+    left:.6rem; right:.6rem; bottom:.6rem;
+    height:64px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:.2rem;
+    padding:.35rem;
+    border:1px solid rgba(94,234,212,.42);
+    border-radius:20px;
+    background:rgba(240,253,250,.92);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 14px 35px rgba(15,23,42,.16), 0 2px 8px rgba(13,148,136,.08);
+    z-index:200;
+  }
+  #medix-mobile-bottom-nav button {
+    border:0; background:transparent; border-radius:15px;
+    color:#64748b; font-weight:800; font-size:8px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:4px; min-width:0; cursor:pointer; transition:.18s ease;
+  }
+  #medix-mobile-bottom-nav button i { font-size:16px; }
+  #medix-mobile-bottom-nav button.active {
+    background:linear-gradient(135deg,#d1fae5,#ccfbf1);
+    color:#0f766e;
+    box-shadow:inset 0 0 0 1px rgba(20,184,166,.12);
+  }
+  #medix-mobile-bottom-nav button.hidden { display:none !important; }
+
+  /* Hide desktop-only quick-action blocks from competing with bottom nav. */
+  .menu-akses-teknisi { display:none !important; }
+}
+
+/* Internal tables: horizontal scrolling is explicit and visually discoverable. */
+.master-table-scroll, .table-scroll, .overflow-x-auto {
+  scrollbar-width:thin;
+  scrollbar-color:rgba(71,85,105,.58) transparent;
+}
+.master-table-scroll::-webkit-scrollbar, .table-scroll::-webkit-scrollbar, .overflow-x-auto::-webkit-scrollbar { width:8px; height:8px; }
+.master-table-scroll::-webkit-scrollbar-track, .table-scroll::-webkit-scrollbar-track, .overflow-x-auto::-webkit-scrollbar-track { background:transparent; }
+.master-table-scroll::-webkit-scrollbar-thumb, .table-scroll::-webkit-scrollbar-thumb, .overflow-x-auto::-webkit-scrollbar-thumb { background:rgba(71,85,105,.48); border-radius:999px; }
+
+/* Prevent accidental horizontal page overflow on ordinary cards/forms. */
+.glass-panel, .tab-content, .modal-panel { min-width:0 !important; }
+
+/* Better focus states for keyboard/mouse users. */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline:2px solid rgba(20,184,166,.65) !important;
+  outline-offset:2px !important;
+}
+
+/* Print never shows app navigation. */
+@media print {
+  body { overflow:visible !important; }
+  #app-sidebar, #medix-mobile-bottom-nav { display:none !important; }
+  #main-content-area { margin:0 !important; width:100% !important; overflow:visible !important; height:auto !important; }
+}
+</style>
+
 </head>
     
-<body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500 no-scrollbar">
+<body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
 
     <!-- KUSTOM TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-5 right-5 z-[999999] space-y-2 pointer-events-none"></div>
@@ -459,7 +710,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
         <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" id="status-dot"></div>
     </div>
 
-    <div class="flex h-screen w-full relative no-scrollbar bg-transparent">
+    <div class="flex h-screen w-full relative bg-transparent">
                 
         <!-- SIDEBAR MENU UTAMA MEDIX -->
         <div id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white text-slate-800 flex flex-col justify-between no-print z-50 shadow-2xl border-r border-slate-200 transform -translate-x-full transition-transform duration-300 ease-in-out no-scrollbar">
@@ -488,7 +739,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
                             <i class="fa-solid fa-microscope w-5 text-blue-600"></i><span>Master Data Aset</span>
                         </button>
                         <button onclick="switchTab('ticket-system')" id="btn-ticket-system" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
-                            <i class="fa-solid fa-headset w-5 text-amber-500"></i><span>Pelaporan Kerusakan</span>
+                            <i class="fa-solid fa-headset w-5 text-amber-500"></i><span>E-Ticket / Pelaporan Kerusakan</span>
                         </button>
                         <button onclick="switchTab('kalibrasi')" id="btn-kalibrasi" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
                             <i class="fa-solid fa-file-invoice-dollar w-5 text-indigo-600"></i><span>Riwayat Dokumen</span>
@@ -518,7 +769,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
         </div>
 
         <!-- AREA UTAMA APLIKASI -->
-        <div id="main-content-area" class="flex-1 flex flex-col overflow-y-auto z-10 bg-transparent no-scrollbar transition-all duration-300 ease-in-out">
+        <div id="main-content-area" class="flex-1 flex flex-col overflow-auto z-10 bg-transparent transition-all duration-300 ease-in-out min-w-0">
             
             <header class="bg-white backdrop-blur-md shadow-sm px-6 py-4 flex items-center justify-between no-print border-b border-slate-200">
                 <div class="flex items-center space-x-4">
@@ -636,7 +887,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
                 <div id="tab-ticket-system" class="tab-content hidden space-y-6">
                     <div class="grid grid-cols-1 gap-6 no-print">
                         <div id="box-form-buat-ticket" class="glass-panel p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3 hidden">
-                            <h3 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center"><i class="fa-solid fa-headset mr-2 text-amber-500"></i>Buat Tiket Laporan Kerusakan Baru</h3>
+                            <h3 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center"><i class="fa-solid fa-headset mr-2 text-amber-500"></i>Buat E-Ticket Laporan Kerusakan Baru</h3>
                             <form onsubmit="kirimTiketKeluhanKerusakan(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                                 <div>
                                     <label class="block mb-1 text-slate-600 font-bold">Pilih Alat Medis yang Bermasalah : *</label>
@@ -1488,7 +1739,7 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
             const checks = {
                 dashboard: izinMenu('dashboard', 'read'),
                 master: izinMenu('master', 'read'),
-                ticket: izinMenu('ticket', 'read'),
+                ticket: currentActiveRole === 'User' ? true : izinMenu('ticket', 'read'),
                 riwayat: izinMenu('riwayat', 'read'),
                 equipment: izinMenu('equipment', 'read'),
                 akun: izinMenu('akun', 'read')
@@ -1515,6 +1766,24 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
                     return izinMenu(menu, 'read');
                 });
             if (activeTab) switchTab(activeTab);
+            renderBottomNavigation();
+        }
+
+        function renderBottomNavigation(activeTab) {
+            const nav = document.getElementById('medix-mobile-bottom-nav');
+            if (!nav) return;
+            const checks = {
+                dashboard: izinMenu('dashboard','read'),
+                'data-alat': izinMenu('master','read'),
+                'ticket-system': currentActiveRole === 'User' ? true : izinMenu('ticket','read'),
+                equipment: izinMenu('equipment','read')
+            };
+            nav.querySelectorAll('button[data-tab]').forEach(btn => {
+                const tab = btn.dataset.tab;
+                if (tab === 'more') { btn.classList.remove('hidden'); return; }
+                btn.classList.toggle('hidden', !checks[tab]);
+                btn.classList.toggle('active', tab === activeTab);
+            });
         }
 
         async function loginWithFirebaseAuth(email, password) {
@@ -3952,7 +4221,7 @@ function renderMaintenanceHistory() {
                 const masterHapus = izinMenu('master', 'hapus');
                 const masterImport = izinMenu('master', 'import');
                 const masterExport = izinMenu('master', 'export');
-                const ticketLapor = izinMenu('ticket', 'lapor');
+                const ticketLapor = currentActiveRole === 'User' ? true : izinMenu('ticket', 'lapor');
                 const riwayatUpload = izinMenu('riwayat', 'upload');
 
                 // Container tombol Master Data harus diambil di dalam scope login handler.
@@ -4254,7 +4523,17 @@ function renderMaintenanceHistory() {
                         <br><br><br>
                         <p><b>( ............................................ )</b></p>
                     </div>
-                </body>
+                
+<!-- MEDIX v11 MOBILE BOTTOM NAVIGATION -->
+<div id="medix-mobile-bottom-nav" class="no-print" aria-label="Navigasi utama mobile">
+  <button type="button" data-tab="dashboard" onclick="switchTab('dashboard')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+  <button type="button" data-tab="data-alat" onclick="switchTab('data-alat')"><i class="fa-solid fa-microscope"></i><span>Aset</span></button>
+  <button type="button" data-tab="ticket-system" onclick="switchTab('ticket-system')"><i class="fa-solid fa-ticket"></i><span>E-Ticket</span></button>
+  <button type="button" data-tab="equipment" data-menu="equipment" onclick="switchTab('equipment')"><i class="fa-solid fa-hospital"></i><span>Equipment</span></button>
+  <button type="button" data-tab="more" onclick="toggleSidebarMenu(true)"><i class="fa-solid fa-ellipsis"></i><span>Menu</span></button>
+</div>
+
+</body>
                 </html>
             `;
 
@@ -4578,7 +4857,7 @@ function renderMaintenanceHistory() {
 
             if(dataTiket.length === 0) { 
                 let totalKolom = (currentActiveRole === 'User') ? 5 : 6;
-                body.innerHTML = `<tr><td colspan="${totalKolom}" class="p-4 text-center text-slate-400 italic">Tidak ada antrean laporan kerusakan aktif.</td></tr>`; 
+                body.innerHTML = `<tr><td colspan="${totalKolom}" class="p-4 text-center text-slate-400 italic">Belum ada laporan kerusakan. Gunakan formulir E-Ticket di atas untuk melaporkan kerusakan alat.</td></tr>`; 
                 return; 
             }
             
@@ -5406,7 +5685,7 @@ function renderMaintenanceHistory() {
         function switchTab(tId) {
             const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'riwayat', equipment: 'equipment', 'kelola-akun': 'akun' };
             const menu = menuMap[tId];
-            if (menu && !izinMenu(menu, 'read')) {
+            if (menu && !(menu === 'ticket' && currentActiveRole === 'User') && !izinMenu(menu, 'read')) {
                 showToast('Akses menu ini tidak diberikan untuk akun Anda.', 'error');
                 return;
             }
@@ -5424,12 +5703,19 @@ function renderMaintenanceHistory() {
                 }, 300);
             }
             if (riwayatNavigasiTab[riwayatNavigasiTab.length - 1] !== tId) { riwayatNavigasiTab.push(tId); }
+            renderBottomNavigation(tId);
         }
         
         function toggleSidebarMenu(s) { 
             const sb = document.getElementById('app-sidebar'); 
             const mainArea = document.getElementById('main-content-area');
             if(sb) { 
+                // Desktop pro-shell: sidebar remains persistent.
+                if (window.innerWidth >= 1024) {
+                    sb.classList.remove('-translate-x-full');
+                    if (mainArea) mainArea.style.marginLeft = '17rem';
+                    return;
+                }
                 const isClosed = sb.classList.contains('-translate-x-full');
                 if(s === true || (s === undefined && isClosed)) {
                     sb.classList.remove('-translate-x-full');
@@ -5559,6 +5845,14 @@ function renderMaintenanceHistory() {
             // Equipment wajib tersedia untuk Admin/Teknisi sesuai kebijakan MEDIX terbaru.
             if (role === 'Admin' || role === 'Teknisi') base.equipment = { read: true, maintenance: true, edit: true };
             else base.equipment = { read: false, maintenance: false, edit: false };
+
+            // E-Ticket wajib tersedia untuk User agar akun User selalu dapat
+            // melaporkan kerusakan, termasuk pada profil lama yang menuAkses-nya
+            // belum memiliki struktur permission terbaru atau tersimpan false.
+            if (role === 'User') {
+                base.ticket = { read: true, lapor: true, kerjakan: false, selesai: false, hapus: false, edit: false };
+            }
+
             // Kelola akun hanya Admin.
             if (role !== 'Admin') base.akun = { read: false, edit: false, nonaktifkan: false };
             return base;
