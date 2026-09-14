@@ -6827,6 +6827,150 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ const 
   #tab-ticket-system tbody td[data-label="Tindakan"]{grid-column:1/-1;align-items:stretch!important;border-top:1px solid #e2e8f0!important;margin-top:4px;padding-top:10px!important}
   #tab-ticket-system tbody td[data-label="Tindakan"]>div{display:flex;flex-wrap:wrap;gap:6px;width:100%}
 }
+
+/* =========================================================
+   MEDIX v15 — PROFESSIONAL RESPONSIVE SCROLL LAYER
+   Page scroll = vertical. Dense data = local horizontal scroll.
+   ========================================================= */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(71,85,105,.52) transparent;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar { width: 9px; height: 9px; }
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: transparent; }
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: rgba(71,85,105,.48); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+body::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover { background: rgba(51,65,85,.68); background-clip: padding-box; }
+body { overflow-x: hidden !important; }
+
+/* Dense data containers are the only places allowed to scroll horizontally. */
+.master-table-scroll, .table-scroll, .overflow-x-auto {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(71,85,105,.58) transparent !important;
+  -ms-overflow-style: auto !important;
+}
+.master-table-scroll::-webkit-scrollbar,
+.table-scroll::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar { display:block !important; width:8px; height:8px; }
+.master-table-scroll::-webkit-scrollbar-track,
+.table-scroll::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track { background:rgba(148,163,184,.08); border-radius:999px; }
+.master-table-scroll::-webkit-scrollbar-thumb,
+.table-scroll::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb { background:rgba(71,85,105,.48); border-radius:999px; }
+.master-table-scroll::-webkit-scrollbar-thumb:hover,
+.table-scroll::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover { background:rgba(51,65,85,.68); }
+
+/* Do not let generic no-scrollbar hide an intentionally scrollable data surface. */
+.master-table-scroll.no-scrollbar,
+.table-scroll.no-scrollbar,
+.overflow-x-auto.no-scrollbar {
+  scrollbar-width: thin !important;
+  -ms-overflow-style: auto !important;
+}
+.master-table-scroll.no-scrollbar::-webkit-scrollbar,
+.table-scroll.no-scrollbar::-webkit-scrollbar,
+.overflow-x-auto.no-scrollbar::-webkit-scrollbar { display:block !important; }
+
+/* Equipment EM: card mode on small screens; monthly Rekapan EM remains a dense table. */
+@media (max-width:767px) {
+  #em-content-database > .overflow-x-auto {
+    overflow-x:hidden !important;
+    overflow-y:visible !important;
+  }
+  #em-content-database table {
+    min-width:0 !important;
+    width:100% !important;
+    display:block !important;
+  }
+  #em-content-database thead { display:none !important; }
+  #em-content-database tbody,
+  #em-content-database tr { display:block !important; width:100% !important; }
+  #em-content-database tr {
+    margin:0 0 .7rem !important;
+    padding:.75rem !important;
+    border:1px solid rgba(20,184,166,.20) !important;
+    border-radius:16px !important;
+    background:rgba(255,255,255,.90) !important;
+    box-shadow:0 5px 18px rgba(15,23,42,.06) !important;
+  }
+  #em-content-database td {
+    display:grid !important;
+    grid-template-columns:7.4rem minmax(0,1fr) !important;
+    gap:.5rem !important;
+    align-items:start !important;
+    width:100% !important;
+    padding:.36rem .15rem !important;
+    border-bottom:1px solid rgba(148,163,184,.14) !important;
+    font-size:10px !important;
+    text-align:left !important;
+    overflow-wrap:anywhere !important;
+  }
+  #em-content-database td:last-child { border-bottom:0 !important; }
+  #em-content-database td::before {
+    font-size:8px !important;
+    text-transform:uppercase !important;
+    letter-spacing:.06em !important;
+    color:#64748b !important;
+    font-weight:800 !important;
+  }
+  #em-content-database td:nth-child(1)::before { content:'Nama Alkes'; }
+  #em-content-database td:nth-child(2)::before { content:'Populasi'; }
+  #em-content-database td:nth-child(3)::before { content:'Satuan'; }
+  #em-content-database td:nth-child(4)::before { content:'Fungsi'; }
+  #em-content-database td:nth-child(5)::before { content:'Risiko'; }
+  #em-content-database td:nth-child(6)::before { content:'Perawatan'; }
+  #em-content-database td:nth-child(7)::before { content:'Insiden'; }
+  #em-content-database td:nth-child(8)::before { content:'Nilai EM'; }
+  #em-content-database td:nth-child(9)::before { content:'Periode PM'; }
+  #em-content-database td:nth-child(10)::before { content:'Ruangan / Teknisi'; }
+  #em-content-database td:nth-child(11)::before { content:'Sumber'; }
+
+  /* Jadwal PM: compact mobile cards. */
+  #em-content-jadwal > .overflow-x-auto { overflow-x:hidden !important; overflow-y:visible !important; }
+  #em-content-jadwal table { min-width:0 !important; width:100% !important; display:block !important; }
+  #em-content-jadwal thead { display:none !important; }
+  #em-content-jadwal tbody,
+  #em-content-jadwal tr { display:block !important; width:100% !important; }
+  #em-content-jadwal tr {
+    margin:0 0 .7rem !important; padding:.7rem !important;
+    border:1px solid rgba(20,184,166,.20) !important; border-radius:16px !important;
+    background:rgba(255,255,255,.90) !important; box-shadow:0 5px 18px rgba(15,23,42,.05) !important;
+  }
+  #em-content-jadwal td {
+    display:grid !important; grid-template-columns:7.4rem minmax(0,1fr) !important;
+    gap:.5rem !important; width:100% !important; padding:.36rem .15rem !important;
+    border-bottom:1px solid rgba(148,163,184,.14) !important; font-size:10px !important;
+    text-align:left !important; overflow-wrap:anywhere !important;
+  }
+  #em-content-jadwal td:last-child { border-bottom:0 !important; }
+  #em-content-jadwal td::before { font-size:8px !important; text-transform:uppercase !important; letter-spacing:.06em !important; color:#64748b !important; font-weight:800 !important; }
+  #em-content-jadwal td:nth-child(1)::before { content:'Hari'; }
+  #em-content-jadwal td:nth-child(2)::before { content:'Bulan'; }
+  #em-content-jadwal td:nth-child(3)::before { content:'Nama Alat'; }
+  #em-content-jadwal td:nth-child(4)::before { content:'Nomor Seri'; }
+  #em-content-jadwal td:nth-child(5)::before { content:'Ruangan'; }
+  #em-content-jadwal td:nth-child(6)::before { content:'Periode'; }
+
+  /* Rekapan EM is intentionally dense: keep horizontal scroll discoverable. */
+  #em-content-rekapan > .overflow-x-auto {
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+  }
+}
+
+/* App-like data surface: subtle edge cue when a table is wider than its viewport. */
+.master-table-scroll, .table-scroll, #em-content-database > .overflow-x-auto, #em-content-jadwal > .overflow-x-auto, #em-content-rekapan > .overflow-x-auto {
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media print {
+  html, body { scrollbar-width:none !important; }
+  html::-webkit-scrollbar, body::-webkit-scrollbar { display:none !important; }
+}
+
 </style>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
                 </head>
