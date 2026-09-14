@@ -4544,37 +4544,6 @@ function renderMaintenanceHistory() {
                         <p><b>( ............................................ )</b></p>
                     </div>
                 
-<!-- MEDIX v11 MOBILE BOTTOM NAVIGATION -->
-<div id="medix-mobile-bottom-nav" class="no-print" aria-label="Navigasi utama mobile">
-  <button type="button" data-tab="dashboard" onclick="switchTab('dashboard')"><i class="fa-solid fa-house"></i><span>Home</span></button>
-  <button type="button" data-tab="data-alat" onclick="switchTab('data-alat')"><i class="fa-solid fa-microscope"></i><span>Aset</span></button>
-  <button type="button" data-tab="ticket-system" onclick="switchTab('ticket-system')"><i class="fa-solid fa-ticket"></i><span>E-Ticket</span></button>
-  <button type="button" data-tab="equipment" data-menu="equipment" onclick="switchTab('equipment')"><i class="fa-solid fa-hospital"></i><span>Equipment</span></button>
-  <button type="button" data-tab="more" onclick="toggleSidebarMenu(true)"><i class="fa-solid fa-ellipsis"></i><span>Menu</span></button>
-</div>
-
-
-<!-- MEDIX v14: E-Ticket detail bottom sheet -->
-<div id="ticket-detail-sheet" class="ticket-detail-sheet" aria-hidden="true" onclick="tutupDetailTiket(event)">
-  <section id="ticket-detail-card" class="ticket-detail-card" role="dialog" aria-modal="true" aria-labelledby="ticket-detail-title" onclick="event.stopPropagation()">
-    <div class="ticket-detail-handle"></div>
-    <div class="px-5 pb-5 pt-2">
-      <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
-        <div>
-          <p class="text-[10px] uppercase tracking-wider font-black text-indigo-500">E-Ticket MEDIX</p>
-          <h3 id="ticket-detail-title" class="text-base font-black text-slate-900 mt-0.5">Detail Laporan Kerusakan</h3>
-        </div>
-        <button type="button" onclick="tutupDetailTiket()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div id="ticket-detail-content" class="pt-4"></div>
-    </div>
-  </section>
-</div>
-
-
-<script>
-document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ const sheet=document.getElementById('ticket-detail-sheet'); if(sheet && sheet.classList.contains('show')) tutupDetailTiket(); }});
-</script>
 
 </body>
                 </html>
@@ -7182,6 +7151,35 @@ body { overflow-x: hidden !important; }
             };
         }
     </script>
+
+
+<!-- MEDIX v11 MOBILE BOTTOM NAVIGATION -->
+<div id="medix-mobile-bottom-nav" class="no-print" aria-label="Navigasi utama mobile">
+  <button type="button" data-tab="dashboard" onclick="switchTab('dashboard')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+  <button type="button" data-tab="data-alat" onclick="switchTab('data-alat')"><i class="fa-solid fa-microscope"></i><span>Aset</span></button>
+  <button type="button" data-tab="ticket-system" onclick="switchTab('ticket-system')"><i class="fa-solid fa-ticket"></i><span>E-Ticket</span></button>
+  <button type="button" data-tab="equipment" data-menu="equipment" onclick="switchTab('equipment')"><i class="fa-solid fa-hospital"></i><span>Equipment</span></button>
+  <button type="button" data-tab="more" onclick="toggleSidebarMenu(true)"><i class="fa-solid fa-ellipsis"></i><span>Menu</span></button>
+</div>
+
+
+<!-- MEDIX v14: E-Ticket detail bottom sheet -->
+<div id="ticket-detail-sheet" class="ticket-detail-sheet" aria-hidden="true" onclick="tutupDetailTiket(event)">
+  <section id="ticket-detail-card" class="ticket-detail-card" role="dialog" aria-modal="true" aria-labelledby="ticket-detail-title" onclick="event.stopPropagation()">
+    <div class="ticket-detail-handle"></div>
+    <div class="px-5 pb-5 pt-2">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
+        <div>
+          <p class="text-[10px] uppercase tracking-wider font-black text-indigo-500">E-Ticket MEDIX</p>
+          <h3 id="ticket-detail-title" class="text-base font-black text-slate-900 mt-0.5">Detail Laporan Kerusakan</h3>
+        </div>
+        <button type="button" onclick="tutupDetailTiket()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="ticket-detail-content" class="pt-4"></div>
+    </div>
+  </section>
+</div>
+
 
 </body>
 </html>
