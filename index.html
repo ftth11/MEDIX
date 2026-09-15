@@ -1,10 +1,10 @@
-<!-- MEDIX FINAL STABLE BUILD: 2026-09-15 -->
+<!-- MEDIX FINAL BUILD: 2026-09-14 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE">
+    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-2">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -713,6 +713,401 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 </style>
 
 \n<style id="medix-final-stable-design-system">\n/* =========================================================\n   MEDIX FINAL STABLE DESIGN SYSTEM\n   Desktop / Tablet / Mobile + Light / Dark\n   ========================================================= */\n:root {\n  --mx-bg:#f8fafc; --mx-surface:#ffffff; --mx-surface-2:#f1f5f9;\n  --mx-border:#e2e8f0; --mx-text:#0f172a; --mx-text-2:#475569; --mx-muted:#64748b;\n  --mx-primary:#0f766e; --mx-primary-2:#14b8a6; --mx-focus:#2563eb;\n}\nbody { background:var(--mx-bg) !important; color:var(--mx-text) !important; }\nbody #main-content-area, body #main-content-area > main { background:var(--mx-bg) !important; }\nbody #main-content-area > header { background:rgba(255,255,255,.94) !important; border-color:var(--mx-border) !important; }\nbody .glass-panel, body #app-sidebar, body .bg-white, body [class*="bg-white/"] { background-color:var(--mx-surface) !important; }\nbody .glass-panel { border-color:var(--mx-border) !important; box-shadow:0 8px 28px rgba(15,23,42,.055) !important; }\nbody #app-sidebar { border-color:var(--mx-border) !important; }\nbody table th { background:#f1f5f9 !important; color:#334155 !important; border-color:#cbd5e1 !important; }\nbody table td { color:#334155 !important; border-color:#e2e8f0 !important; }\nbody input, body select, body textarea { background:#fff !important; color:#0f172a !important; border-color:#cbd5e1 !important; }\nbody input:focus, body select:focus, body textarea:focus { border-color:#14b8a6 !important; box-shadow:0 0 0 3px rgba(20,184,166,.12) !important; }\nbody .sidebar-item { color:#475569 !important; }\nbody .sidebar-item:hover { background:#f0fdfa !important; color:#0f766e !important; border-left-color:#14b8a6 !important; }\nbody .sidebar-item.active { background:linear-gradient(90deg,#ccfbf1,#f0fdfa) !important; color:#0f766e !important; border-left-color:#0f766e !important; }\n\n/* Backdrop + drawer */\n#medix-mobile-backdrop {\n  display:block; position:fixed; inset:0; z-index:250; border:0; padding:0;\n  background:rgba(15,23,42,.42); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px);\n  opacity:0; pointer-events:none; transition:opacity .2s ease;\n}\n#medix-mobile-backdrop.show { opacity:1; pointer-events:auto; }\nbody.medix-drawer-open { overflow:hidden !important; }\n@media (min-width:1024px) {\n  #medix-mobile-backdrop { display:none !important; }\n  #app-sidebar { transform:translateX(0) !important; width:17rem !important; }\n  #main-content-area { margin-left:17rem !important; width:calc(100% - 17rem) !important; }\n}\n@media (min-width:768px) and (max-width:1023px) {\n  #app-sidebar { width:min(18rem,82vw) !important; z-index:500 !important; box-shadow:16px 0 40px rgba(15,23,42,.18) !important; }\n  #main-content-area { margin-left:0 !important; width:100% !important; }\n  #main-content-area > main { padding-left:1rem !important; padding-right:1rem !important; }\n}\n@media (max-width:767px) {\n  #app-sidebar { width:min(18rem,88vw) !important; z-index:500 !important; box-shadow:16px 0 40px rgba(15,23,42,.22) !important; }\n  #main-content-area { margin-left:0 !important; width:100% !important; }\n  #main-content-area > main { padding-bottom:7rem !important; }\n  #main-content-area > header { min-height:60px !important; padding:.65rem .8rem !important; }\n  #medix-mobile-bottom-nav { z-index:450 !important; bottom:calc(.55rem + env(safe-area-inset-bottom)) !important; }\n}\n\n/* Mobile/tablet account footer */\n#app-sidebar .medix-sidebar-footer { background:rgba(255,255,255,.97) !important; border-color:var(--mx-border) !important; }\n#app-sidebar .medix-sidebar-footer button[title="Keluar"] { min-height:42px !important; background:#fff1f2 !important; color:#e11d48 !important; border-color:#fecdd3 !important; }\n#app-sidebar .medix-sidebar-footer button[title="Keluar"]:hover { background:#ffe4e6 !important; }\n\n/* Mobile data cards — light */\n@media (max-width:767px) {\n  #master-table-scroll tbody tr, #em-content-database tbody tr, #em-content-jadwal tbody tr {\n    background:#fff !important; border-color:#e2e8f0 !important; box-shadow:0 5px 18px rgba(15,23,42,.055) !important;\n  }\n  #master-table-scroll td::before, #em-content-database td::before, #em-content-jadwal td::before { color:#64748b !important; }\n}\n\n/* Ticket detail — application CSS (not PDF template) */\n.ticket-detail-sheet { position:fixed; inset:0; z-index:10050; display:flex; align-items:flex-end; justify-content:center; background:rgba(15,23,42,.42); backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); opacity:0; pointer-events:none; transition:opacity .22s ease; }\n.ticket-detail-sheet.show { opacity:1; pointer-events:auto; }\n.ticket-detail-card { width:min(860px,calc(100% - 24px)); max-height:88vh; overflow:auto; background:#fff; border:1px solid #e2e8f0; border-radius:24px 24px 0 0; box-shadow:0 -18px 50px rgba(15,23,42,.2); transform:translateY(22px); transition:transform .22s ease; }\n.ticket-detail-sheet.show .ticket-detail-card { transform:translateY(0); }\n.ticket-detail-handle { width:42px; height:4px; border-radius:999px; background:#cbd5e1; margin:10px auto 0; }\n.ticket-step { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; min-width:0; }\n.ticket-step-dot { width:32px; height:32px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; color:#94a3b8; border:1px solid #e2e8f0; }\n.ticket-step.done .ticket-step-dot, .ticket-step.current .ticket-step-dot { background:#ccfbf1; color:#0f766e; border-color:#99f6e4; }\n.ticket-step-line { flex:1; height:2px; background:#e2e8f0; margin-top:15px; }\n.ticket-step-line.done { background:#14b8a6; }\n@media (min-width:768px) { .ticket-detail-sheet { align-items:center; padding:20px; } .ticket-detail-card { border-radius:24px; } }\n@media (max-width:767px) { .ticket-detail-card { width:100%; max-height:92vh; border-radius:24px 24px 0 0; } }\n\n/* DARK THEME */\nbody.dark-mode { --mx-bg:#0b1220; --mx-surface:#111827; --mx-surface-2:#172033; --mx-border:#263449; --mx-text:#f8fafc; --mx-text-2:#cbd5e1; --mx-muted:#94a3b8; --mx-primary:#2dd4bf; --mx-primary-2:#14b8a6; background:#0b1220 !important; color:#f8fafc !important; }\nbody.dark-mode #main-content-area, body.dark-mode #main-content-area > main { background:#0b1220 !important; }\nbody.dark-mode #main-content-area > header { background:rgba(17,24,39,.94) !important; border-color:#263449 !important; }\nbody.dark-mode .glass-panel, body.dark-mode #app-sidebar, body.dark-mode .bg-white, body.dark-mode [class*="bg-white/"] { background:#111827 !important; color:#f8fafc !important; border-color:#263449 !important; }\nbody.dark-mode .glass-panel { box-shadow:0 10px 30px rgba(0,0,0,.18) !important; }\nbody.dark-mode #app-sidebar .bg-slate-50, body.dark-mode #app-sidebar .bg-slate-100 { background:#172033 !important; color:#e2e8f0 !important; border-color:#263449 !important; }\nbody.dark-mode .sidebar-item { color:#cbd5e1 !important; }\nbody.dark-mode .sidebar-item:hover { background:#172033 !important; color:#5eead4 !important; }\nbody.dark-mode .sidebar-item.active { background:linear-gradient(90deg,rgba(20,184,166,.18),rgba(20,184,166,.05)) !important; color:#5eead4 !important; border-left-color:#2dd4bf !important; }\nbody.dark-mode table th { background:#172033 !important; color:#f8fafc !important; border-color:#334155 !important; }\nbody.dark-mode table td { background:#111827 !important; color:#cbd5e1 !important; border-color:#263449 !important; }\nbody.dark-mode table tbody tr:hover { background:#172033 !important; }\nbody.dark-mode input, body.dark-mode select, body.dark-mode textarea { background:#0b1220 !important; color:#f8fafc !important; border-color:#334155 !important; }\nbody.dark-mode input::placeholder, body.dark-mode textarea::placeholder { color:#64748b !important; }\nbody.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode p, body.dark-mode label { color:#f8fafc !important; }\nbody.dark-mode .text-slate-900, body.dark-mode .text-slate-800, body.dark-mode .text-slate-700 { color:#f1f5f9 !important; }\nbody.dark-mode .text-slate-600 { color:#cbd5e1 !important; }\nbody.dark-mode .text-slate-500, body.dark-mode .text-slate-400 { color:#94a3b8 !important; }\nbody.dark-mode .bg-slate-50 { background:#172033 !important; color:#e2e8f0 !important; }\nbody.dark-mode .bg-slate-100, body.dark-mode .bg-slate-200 { background:#1e293b !important; color:#e2e8f0 !important; }\nbody.dark-mode .border-slate-100, body.dark-mode .border-slate-200, body.dark-mode .border-slate-300 { border-color:#263449 !important; }\nbody.dark-mode .medix-sidebar-footer { background:rgba(17,24,39,.97) !important; }\nbody.dark-mode .medix-sidebar-footer button[title="Keluar"] { background:rgba(244,63,94,.12) !important; color:#fb7185 !important; border-color:rgba(251,113,133,.28) !important; }\nbody.dark-mode #medix-mobile-bottom-nav { background:rgba(17,24,39,.94) !important; border-color:#263449 !important; box-shadow:0 14px 35px rgba(0,0,0,.32) !important; }\nbody.dark-mode #medix-mobile-bottom-nav button { color:#94a3b8 !important; }\nbody.dark-mode #medix-mobile-bottom-nav button.active { background:rgba(20,184,166,.16) !important; color:#5eead4 !important; }\nbody.dark-mode #app-sidebar .medix-sidebar-footer p { color:#94a3b8 !important; }\nbody.dark-mode .master-table-scroll tbody tr, body.dark-mode #master-table-scroll tbody tr, body.dark-mode #em-content-database tbody tr, body.dark-mode #em-content-jadwal tbody tr { background:#111827 !important; border-color:#263449 !important; box-shadow:0 8px 20px rgba(0,0,0,.16) !important; }\nbody.dark-mode #master-table-scroll td::before, body.dark-mode #em-content-database td::before, body.dark-mode #em-content-jadwal td::before { color:#94a3b8 !important; }\nbody.dark-mode .ticket-detail-card { background:#111827 !important; border-color:#263449 !important; }\nbody.dark-mode .ticket-detail-card .bg-slate-50 { background:#172033 !important; }\nbody.dark-mode .ticket-detail-card .text-slate-900, body.dark-mode .ticket-detail-card .text-slate-700 { color:#f1f5f9 !important; }\nbody.dark-mode .ticket-detail-card .text-slate-500, body.dark-mode .ticket-detail-card .text-slate-400 { color:#94a3b8 !important; }\nbody.dark-mode .ticket-detail-card .border-slate-200, body.dark-mode .ticket-detail-card .border-slate-100 { border-color:#263449 !important; }\nbody.dark-mode .ticket-detail-handle { background:#475569; }\nbody.dark-mode #medix-mobile-backdrop { background:rgba(2,6,23,.64); }\n\n/* Avoid horizontal page overflow; data tables retain their own scroll. */\nhtml, body { overflow-x:hidden !important; }\n#main-content-area { min-width:0 !important; }\n.master-table-scroll, .table-scroll, .overflow-x-auto { max-width:100% !important; }\n\n@media print {\n  #medix-mobile-backdrop { display:none !important; }\n  .ticket-detail-sheet, #medix-mobile-bottom-nav, #app-sidebar { display:none !important; }\n  body, body.dark-mode, #main-content-area, #main-content-area > main { background:#fff !important; color:#000 !important; }\n}\n</style>\n
+
+<style id="medix-final-production-overrides">
+/* ============================================================
+   MEDIX FINAL PRODUCTION OVERRIDES
+   Fix: sidebar overlay/collapse, single page scrollbar,
+   theme icon semantics, complete dark surfaces, EM/PM table.
+   ============================================================ */
+
+/* One and only one page scroll surface. */
+html, body {
+  width:100%;
+  height:100%;
+  min-height:100%;
+  overflow:hidden !important;
+}
+body {
+  overscroll-behavior:none !important;
+}
+#main-content-area {
+  height:100dvh !important;
+  max-height:100dvh !important;
+  min-width:0 !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  overscroll-behavior:contain !important;
+  scrollbar-width:thin !important;
+}
+#main-content-area::-webkit-scrollbar { width:9px; height:9px; display:block !important; }
+#main-content-area::-webkit-scrollbar-track { background:transparent; }
+#main-content-area::-webkit-scrollbar-thumb {
+  background:rgba(71,85,105,.48);
+  border-radius:999px;
+  border:2px solid transparent;
+  background-clip:padding-box;
+}
+
+/* Sidebar is always opaque: content behind it must never bleed through. */
+#app-sidebar {
+  opacity:1 !important;
+  isolation:isolate !important;
+  background:#ffffff !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  z-index:500 !important;
+}
+
+/* Desktop: sidebar is collapsible. */
+@media (min-width:1024px) {
+  #app-sidebar {
+    transform:translateX(0) !important;
+    width:17rem !important;
+  }
+  #main-content-area {
+    margin-left:17rem !important;
+    width:calc(100% - 17rem) !important;
+  }
+  body.medix-sidebar-collapsed #app-sidebar {
+    transform:translateX(-100%) !important;
+  }
+  body.medix-sidebar-collapsed #main-content-area {
+    margin-left:0 !important;
+    width:100% !important;
+  }
+}
+
+/* Tablet + phone: real overlay drawer, never push the content. */
+@media (max-width:1023px) {
+  #app-sidebar {
+    width:min(18rem,88vw) !important;
+    max-width:88vw !important;
+    transform:translateX(-100%) !important;
+    box-shadow:16px 0 42px rgba(15,23,42,.22) !important;
+  }
+  #app-sidebar:not(.-translate-x-full) {
+    transform:translateX(0) !important;
+  }
+  #main-content-area {
+    margin-left:0 !important;
+    width:100% !important;
+  }
+  #medix-mobile-backdrop {
+    z-index:450 !important;
+  }
+  #medix-mobile-bottom-nav {
+    z-index:440 !important;
+  }
+  body.medix-drawer-open #app-sidebar {
+    transform:translateX(0) !important;
+  }
+}
+
+/* Sidebar internal layout: menu scrolls, account footer stays visible. */
+#app-sidebar > div:first-child {
+  display:flex !important;
+  flex-direction:column !important;
+  height:100% !important;
+  min-height:100dvh !important;
+  overflow:hidden !important;
+}
+#app-sidebar > div:first-child > div:first-child {
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+#app-sidebar > div:first-child > div:last-child {
+  flex:0 0 auto !important;
+  position:relative !important;
+  z-index:10 !important;
+  background:#ffffff !important;
+  border-top:1px solid #e2e8f0 !important;
+  box-shadow:0 -8px 20px rgba(15,23,42,.05) !important;
+}
+#app-sidebar .medix-sidebar-footer,
+#app-sidebar .medix-sidebar-footer * {
+  opacity:1 !important;
+}
+#app-sidebar .medix-sidebar-footer button[title="Keluar"] {
+  min-height:42px !important;
+  width:100% !important;
+  background:#fff1f2 !important;
+  color:#e11d48 !important;
+  border:1px solid #fecdd3 !important;
+}
+
+/* Header toggle should remain usable after collapsing the desktop sidebar. */
+#main-content-area > header {
+  position:sticky !important;
+  top:0 !important;
+  z-index:100 !important;
+}
+
+/* Current-mode icon: sun in light mode, moon in dark mode. */
+#theme-icon.fa-sun { color:#f59e0b !important; }
+body.dark-mode #theme-icon.fa-moon { color:#e2e8f0 !important; }
+
+/* Remove the unused eye/detail affordance completely. */
+.ticket-mobile-detail-btn { display:none !important; }
+
+/* EM/PM table: six columns, no artificial day/month columns. */
+#em-content-jadwal table { min-width:900px !important; }
+#em-content-jadwal th,
+#em-content-jadwal td { white-space:nowrap; }
+@media (max-width:767px) {
+  #em-content-jadwal > .overflow-x-auto {
+    overflow-x:hidden !important;
+  }
+  #em-content-jadwal table {
+    min-width:0 !important;
+    width:100% !important;
+  }
+  #em-content-jadwal thead { display:none !important; }
+  #em-content-jadwal tbody,
+  #em-content-jadwal tr { display:block !important; width:100% !important; }
+  #em-content-jadwal tr {
+    margin:0 0 .7rem !important;
+    padding:.75rem !important;
+    border:1px solid #e2e8f0 !important;
+    border-radius:16px !important;
+    background:#ffffff !important;
+  }
+  #em-content-jadwal td {
+    display:grid !important;
+    grid-template-columns:6.8rem minmax(0,1fr) !important;
+    gap:.5rem !important;
+    width:100% !important;
+    padding:.38rem .15rem !important;
+    white-space:normal !important;
+    border-bottom:1px solid #e2e8f0 !important;
+    text-align:left !important;
+  }
+  #em-content-jadwal td:last-child { border-bottom:0 !important; }
+  #em-content-jadwal td:nth-child(1)::before { content:'Nama Alat'; }
+  #em-content-jadwal td:nth-child(2)::before { content:'Merek'; }
+  #em-content-jadwal td:nth-child(3)::before { content:'Tipe / Model'; }
+  #em-content-jadwal td:nth-child(4)::before { content:'SN'; }
+  #em-content-jadwal td:nth-child(5)::before { content:'Ruangan'; }
+  #em-content-jadwal td:nth-child(6)::before { content:'Periode PM'; }
+  #em-content-jadwal td::before {
+    font-size:8px !important;
+    font-weight:800 !important;
+    text-transform:uppercase !important;
+    letter-spacing:.05em !important;
+    color:#64748b !important;
+  }
+}
+
+/* ---------- Dark mode: structural surfaces ---------- */
+body.dark-mode #app-sidebar,
+body.dark-mode #app-sidebar > div:first-child,
+body.dark-mode #app-sidebar .medix-sidebar-footer {
+  background:#111827 !important;
+  color:#f8fafc !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #app-sidebar .medix-sidebar-footer {
+  box-shadow:0 -8px 20px rgba(0,0,0,.18) !important;
+}
+body.dark-mode #app-sidebar .bg-slate-50,
+body.dark-mode #app-sidebar .bg-slate-100 {
+  background:#172033 !important;
+  color:#e2e8f0 !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #app-sidebar .sidebar-item {
+  color:#cbd5e1 !important;
+}
+body.dark-mode #app-sidebar .sidebar-item:hover {
+  background:#172033 !important;
+  color:#5eead4 !important;
+}
+body.dark-mode #app-sidebar .sidebar-item.active {
+  background:rgba(20,184,166,.14) !important;
+  color:#5eead4 !important;
+  border-left-color:#2dd4bf !important;
+}
+body.dark-mode #app-sidebar .text-slate-400,
+body.dark-mode #app-sidebar .text-slate-500 {
+  color:#94a3b8 !important;
+}
+
+/* Dark forms and modal surfaces. */
+body.dark-mode [id^="modal-"] > form,
+body.dark-mode [id^="modal-"] > div,
+body.dark-mode [id^="modal-"] form {
+  background:#111827 !important;
+  color:#f8fafc !important;
+  border-color:#263449 !important;
+}
+body.dark-mode [id^="modal-"] .bg-slate-50,
+body.dark-mode [id^="modal-"] .bg-slate-100,
+body.dark-mode [id^="modal-"] .bg-slate-200 {
+  background:#172033 !important;
+  color:#e2e8f0 !important;
+  border-color:#263449 !important;
+}
+body.dark-mode [id^="modal-"] input,
+body.dark-mode [id^="modal-"] select,
+body.dark-mode [id^="modal-"] textarea {
+  background:#0b1220 !important;
+  color:#f8fafc !important;
+  border-color:#334155 !important;
+}
+body.dark-mode [id^="modal-"] .text-slate-900,
+body.dark-mode [id^="modal-"] .text-slate-800,
+body.dark-mode [id^="modal-"] .text-slate-700,
+body.dark-mode [id^="modal-"] .text-slate-600 {
+  color:#e2e8f0 !important;
+}
+body.dark-mode [id^="modal-"] .text-slate-500,
+body.dark-mode [id^="modal-"] .text-slate-400 {
+  color:#94a3b8 !important;
+}
+
+/* Ticket/report panels and common light utility surfaces. */
+body.dark-mode .ticket-report-intro {
+  background:#1b2435 !important;
+  border-color:#5b4a20 !important;
+}
+body.dark-mode .ticket-report-icon {
+  background:rgba(245,158,11,.14) !important;
+  border-color:rgba(245,158,11,.25) !important;
+}
+body.dark-mode .ticket-mobile-detail-btn {
+  display:none !important;
+}
+body.dark-mode #box-form-buat-ticket,
+body.dark-mode #tab-ticket-system .glass-panel {
+  background:#111827 !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #tab-ticket-system table tbody tr {
+  background:#111827 !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #tab-ticket-system table tbody tr:hover {
+  background:#172033 !important;
+}
+
+/* Dark search bars and filter strips. */
+body.dark-mode #em-content-jadwal > div:first-child,
+body.dark-mode #em-content-database > div:first-child,
+body.dark-mode #em-content-rekapan > div:first-child {
+  background:#172033 !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #search-rekapan-pm {
+  background:#0b1220 !important;
+  color:#f8fafc !important;
+  border-color:#334155 !important;
+}
+
+/* Dark EM/PM rows. */
+body.dark-mode #em-content-jadwal tr,
+body.dark-mode #em-content-database tr,
+body.dark-mode #em-content-rekapan tr {
+  background:#111827 !important;
+  color:#e2e8f0 !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #em-content-jadwal td,
+body.dark-mode #em-content-database td,
+body.dark-mode #em-content-rekapan td {
+  background:#111827 !important;
+  color:#cbd5e1 !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #em-content-jadwal td::before { color:#94a3b8 !important; }
+body.dark-mode #em-content-jadwal tr:hover,
+body.dark-mode #em-content-database tr:hover,
+body.dark-mode #em-content-rekapan tr:hover {
+  background:#172033 !important;
+}
+
+/* Dark mobile cards for all major data surfaces. */
+@media (max-width:767px) {
+  body.dark-mode #master-table-scroll tbody tr,
+  body.dark-mode #em-content-database tbody tr,
+  body.dark-mode #em-content-jadwal tbody tr {
+    background:#111827 !important;
+    border-color:#263449 !important;
+    box-shadow:0 8px 20px rgba(0,0,0,.18) !important;
+  }
+  body.dark-mode #master-table-scroll td,
+  body.dark-mode #em-content-database td,
+  body.dark-mode #em-content-jadwal td {
+    background:transparent !important;
+    color:#cbd5e1 !important;
+    border-color:#263449 !important;
+  }
+  body.dark-mode #master-table-scroll td::before,
+  body.dark-mode #em-content-database td::before,
+  body.dark-mode #em-content-jadwal td::before {
+    color:#94a3b8 !important;
+  }
+}
+
+/* Dark bottom nav and drawer backdrop. */
+body.dark-mode #medix-mobile-bottom-nav {
+  background:rgba(17,24,39,.96) !important;
+  border-color:#263449 !important;
+}
+body.dark-mode #medix-mobile-bottom-nav button {
+  color:#94a3b8 !important;
+}
+body.dark-mode #medix-mobile-bottom-nav button.active {
+  background:rgba(20,184,166,.16) !important;
+  color:#5eead4 !important;
+}
+body.dark-mode #medix-mobile-backdrop {
+  background:rgba(2,6,23,.70) !important;
+}
+
+/* Dark account footer/logout. */
+body.dark-mode #app-sidebar .medix-sidebar-footer button[title="Keluar"] {
+  background:rgba(244,63,94,.12) !important;
+  color:#fb7185 !important;
+  border-color:rgba(251,113,133,.30) !important;
+}
+body.dark-mode #app-sidebar .medix-sidebar-footer p {
+  color:#94a3b8 !important;
+}
+
+/* Dark custom dialogs. */
+body.dark-mode #medix-confirm-dialog,
+body.dark-mode #medix-input-dialog {
+  background:rgba(2,6,23,.68) !important;
+}
+body.dark-mode .medix-dialog-card {
+  background:#111827 !important;
+  color:#f8fafc !important;
+  border-color:#263449 !important;
+}
+body.dark-mode .medix-dialog-message {
+  color:#cbd5e1 !important;
+}
+
+/* Dark header logo area. */
+body.dark-mode #main-content-area > header {
+  background:rgba(17,24,39,.97) !important;
+}
+body.dark-mode #main-content-area > header button {
+  color:#e2e8f0 !important;
+}
+
+/* Tablet/mobile header and main content never inherit sidebar opacity. */
+@media (max-width:1023px) {
+  #main-content-area > header,
+  #main-content-area > main {
+    position:relative;
+    z-index:1;
+  }
+}
+</style>
+
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -880,7 +1275,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
             
             <header class="bg-white backdrop-blur-md shadow-sm px-6 py-4 flex items-center justify-between no-print border-b border-slate-200">
                 <div class="flex items-center space-x-4">
-                    <button onclick="toggleSidebarMenu(true)" class="text-slate-600 hover:text-blue-600 focus:outline-none p-1.5 rounded-xl hover:bg-slate-100 transition">
+                    <button onclick="toggleSidebarMenu()" class="text-slate-600 hover:text-blue-600 focus:outline-none p-1.5 rounded-xl hover:bg-slate-100 transition" aria-label="Buka atau sembunyikan menu">
                         <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                     <div onclick="switchTab('dashboard')" class="flex flex-col cursor-pointer group">
@@ -890,7 +1285,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
                 </div>
                 
                 <button onclick="toggleLightDarkMode()" class="text-slate-600 hover:text-amber-500 p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 transition cursor-pointer shadow-sm" title="Ganti Mode Tampilan">
-                    <i id="theme-icon" class="fa-solid fa-moon text-lg text-slate-700"></i>
+                    <i id="theme-icon" class="fa-solid fa-sun text-lg text-amber-500"></i>
                 </button>
             </header>
 
@@ -1272,9 +1667,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
                             <table class="w-full text-left text-xs border-collapse min-w-[900px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
-                                        <th class="p-3 text-center">Hari ke-</th>
-                                        <th class="p-3 text-center">Bulan ke-</th>
                                         <th class="p-3">Nama Alat Medis</th>
+                                        <th class="p-3">Merek</th>
+                                        <th class="p-3">Tipe / Model</th>
                                         <th class="p-3">SN</th>
                                         <th class="p-3">Ruangan</th>
                                         <th class="p-3">Periode PM</th>
@@ -1779,7 +2174,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
         // PWA SERVICE WORKER REGISTRATION
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+                navigator.serviceWorker.register('./sw.js')
                     .then(reg => console.log('ServiceWorker registered!'))
                     .catch(err => console.log('ServiceWorker error:', err));
             });
@@ -2675,56 +3070,57 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             if (!tbody) return;
 
             const searchKeyword = (document.getElementById('search-rekapan-pm')?.value || '').trim().toLowerCase();
-            const rows = [];
 
-            // Jadwal PM tetap per UNIT. Master EM boleh agregat, tetapi teknisi
-            // perlu melihat setiap serial number sebagai target pemeliharaan.
-            dataEquipment.forEach((item, index) => {
-                const jadwal = getJadwalPMUntukAsset(item, index);
-                if (jadwal.length === 0) {
-                    rows.push({ item, hari: '-', bulan: '-', periode: item.rekomendasiPeriode || 'Inspeksi Sesuai Kebutuhan' });
-                    return;
-                }
-                jadwal.forEach(j => rows.push({
-                    item,
-                    hari: j.hari || 1,
-                    bulan: j.bulan || 1,
-                    periode: item.rekomendasiPeriode || '-'
-                }));
-            });
+            // Jadwal EM/PM ditampilkan satu baris per unit aset.
+            // Hari ke-/bulan ke- tidak lagi ditampilkan karena periode PM
+            // sudah menjadi informasi utama yang dibutuhkan teknisi.
+            const rows = dataEquipment.map(item => ({
+                item,
+                periode: item.rekomendasiPeriode || 'Inspeksi Sesuai Kebutuhan'
+            }));
 
-            rows.sort((a, b) => {
-                const bulanA = a.bulan === '-' ? 99 : parseInt(a.bulan) || 99;
-                const bulanB = b.bulan === '-' ? 99 : parseInt(b.bulan) || 99;
-                if (bulanA !== bulanB) return bulanA - bulanB;
-                return (a.item.namaAlat || '').localeCompare(b.item.namaAlat || '', 'id');
-            });
+            rows.sort((a, b) =>
+                (a.item.namaAlat || '').localeCompare(b.item.namaAlat || '', 'id') ||
+                (a.item.serialNumber || '').localeCompare(b.item.serialNumber || '', 'id')
+            );
 
             const filtered = rows.filter(row => {
-                const item = row.item;
-                const searchable = [row.hari, row.bulan, item.namaAlat, item.serialNumber, item.lokasi, row.periode]
-                    .filter(Boolean).join(' ').toLowerCase();
+                const item = row.item || {};
+                const searchable = [
+                    item.namaAlat,
+                    item.merk,
+                    item.tipe,
+                    item.model,
+                    item.serialNumber,
+                    item.lokasi,
+                    row.periode
+                ].filter(Boolean).join(' ').toLowerCase();
                 return !searchKeyword || searchable.includes(searchKeyword);
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada jadwal PM dari Master Data Aset.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal PM dari Master Data Aset.</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = filtered.map(row => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="p-3 text-center font-bold font-mono text-cyan-700">${row.hari}</td>
-                    <td class="p-3 text-center font-bold font-mono text-blue-700">${row.bulan === '-' ? 'Sesuai kebutuhan' : 'Bulan ' + row.bulan}</td>
-                    <td class="p-3 font-semibold text-slate-900">${escapeHtmlEquipment(row.item.namaAlat || '-')}</td>
-                    <td class="p-3 font-mono text-[10px]">${escapeHtmlEquipment(row.item.serialNumber || '-')}</td>
-                    <td class="p-3">${escapeHtmlEquipment(row.item.lokasi || '-')}</td>
-                    <td class="p-3"><span class="px-2 py-1 rounded-full text-[9px] font-bold ${kelasBadgePeriodeEM(row.periode)}">${escapeHtmlEquipment(row.periode)}</span></td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = filtered.map(row => {
+                const item = row.item || {};
+                const merk = item.merk || '-';
+                const tipe = item.tipe || item.model || '-';
+                const sn = item.serialNumber || item.seri || '-';
+                const lokasi = item.lokasi || item.ruangan || '-';
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 font-semibold text-slate-900" data-label="Nama Alat Medis">${escapeHtmlEquipment(item.namaAlat || '-')}</td>
+                        <td class="p-3" data-label="Merek">${escapeHtmlEquipment(merk)}</td>
+                        <td class="p-3" data-label="Tipe / Model">${escapeHtmlEquipment(tipe)}</td>
+                        <td class="p-3 font-mono text-[10px]" data-label="SN">${escapeHtmlEquipment(sn)}</td>
+                        <td class="p-3" data-label="Ruangan">${escapeHtmlEquipment(lokasi)}</td>
+                        <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold ${kelasBadgePeriodeEM(row.periode)}">${escapeHtmlEquipment(row.periode)}</span></td>
+                    </tr>
+                `;
+            }).join('');
         }
-
-
 
         // ============================================================
         // REKAPAN EM - TARGET VS REALISASI PEMELIHARAAN
@@ -4155,7 +4551,7 @@ function renderMaintenanceHistory() {
             body.classList.toggle('dark-mode', isDark);
             localStorage.setItem('medix_theme', isDark ? 'dark' : 'light');
             if (themeMeta) themeMeta.setAttribute('content', isDark ? '#0b1220' : '#0f766e');
-            if (themeIcon) themeIcon.className = isDark ? 'fa-solid fa-sun text-lg text-amber-400' : 'fa-solid fa-moon text-lg text-slate-700';
+            if (themeIcon) { themeIcon.className = isDark ? 'fa-solid fa-moon text-lg text-slate-200' : 'fa-solid fa-sun text-lg text-amber-500'; const themeBtn = themeIcon.closest('button'); if (themeBtn) { themeBtn.title = isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'; themeBtn.setAttribute('aria-label', themeBtn.title); } }
         }
 
         function toggleLightDarkMode() {
@@ -5023,7 +5419,7 @@ function renderMaintenanceHistory() {
                 return `
                     <tr class="border-b border-slate-100 hover:bg-slate-50">
                         <td class="p-3" data-label="Alat / Ruangan"><b>${alat.nama}</b><br><span class="text-[10px] text-slate-500">SN: ${alat.seri || '-'} (${alat.ruangan || alat.lokasi || '-'})</span></td>
-                        <td class="p-3 text-slate-600 font-mono" data-label="Keluhan Masalah"><span>${t.keluhan}</span><button type="button" class="ticket-mobile-detail-btn" onclick="bukaDetailTiket('${t.id}')"><i class="fa-solid fa-eye mr-1"></i> Detail</button></td>
+                        <td class="p-3 text-slate-600 font-mono" data-label="Keluhan Masalah"><span>${t.keluhan}</span></td>
                         <td class="p-3 text-center" data-label="Foto Before">${fotoBeforeThm}</td>
                         <td class="p-3 text-[11px] font-mono text-slate-500" data-label="Waktu Lapor">${formatTglLapor}</td>
                         <td class="p-3" data-label="Status Tiket"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${kelasBadgeStatus}">${t.statusTiket}</span></td>
@@ -5890,10 +6286,20 @@ function renderMaintenanceHistory() {
             const backdrop = document.getElementById('medix-mobile-backdrop');
             if (!sb) return;
 
-            // Desktop: persistent sidebar, never treated as a drawer.
-            if (window.innerWidth >= 1024) {
+            const isDesktop = window.innerWidth >= 1024;
+
+            if (isDesktop) {
+                const collapsed = document.body.classList.contains('medix-sidebar-collapsed');
+                // On desktop, an explicit false is used by switchTab() and must NOT
+                // reopen a sidebar the user intentionally collapsed.
+                if (s === false) return;
+                const open = s === true ? true : collapsed;
+                document.body.classList.toggle('medix-sidebar-collapsed', !open);
                 sb.classList.remove('-translate-x-full');
-                if (mainArea) { mainArea.style.marginLeft = '17rem'; mainArea.style.width = 'calc(100% - 17rem)'; }
+                if (mainArea) {
+                    mainArea.style.marginLeft = open ? '17rem' : '0rem';
+                    mainArea.style.width = open ? 'calc(100% - 17rem)' : '100%';
+                }
                 if (backdrop) backdrop.classList.remove('show');
                 document.body.classList.remove('medix-drawer-open');
                 return;
@@ -5902,11 +6308,44 @@ function renderMaintenanceHistory() {
             const isClosed = sb.classList.contains('-translate-x-full');
             const open = s === true || (s === undefined && isClosed);
             sb.classList.toggle('-translate-x-full', !open);
-            if (mainArea) { mainArea.style.marginLeft = '0rem'; mainArea.style.width = '100%'; }
+            if (mainArea) {
+                mainArea.style.marginLeft = '0rem';
+                mainArea.style.width = '100%';
+            }
             if (backdrop) backdrop.classList.toggle('show', open);
             document.body.classList.toggle('medix-drawer-open', open);
         }
-        
+
+        function sinkronkanShellResponsiveMEDIX() {
+            const sb = document.getElementById('app-sidebar');
+            const mainArea = document.getElementById('main-content-area');
+            const backdrop = document.getElementById('medix-mobile-backdrop');
+            if (!sb) return;
+
+            if (window.innerWidth >= 1024) {
+                const collapsed = document.body.classList.contains('medix-sidebar-collapsed');
+                sb.classList.remove('-translate-x-full');
+                document.body.classList.remove('medix-drawer-open');
+                if (backdrop) backdrop.classList.remove('show');
+                if (mainArea) {
+                    mainArea.style.marginLeft = collapsed ? '0rem' : '17rem';
+                    mainArea.style.width = collapsed ? '100%' : 'calc(100% - 17rem)';
+                }
+            } else {
+                // Tablet/HP always starts as a drawer. Preserve open state only
+                // when the drawer was explicitly opened.
+                const open = !sb.classList.contains('-translate-x-full');
+                if (mainArea) {
+                    mainArea.style.marginLeft = '0rem';
+                    mainArea.style.width = '100%';
+                }
+                document.body.classList.toggle('medix-drawer-open', open);
+                if (backdrop) backdrop.classList.toggle('show', open);
+            }
+        }
+
+        window.addEventListener('resize', sinkronkanShellResponsiveMEDIX);
+
         function clickDashboardStat(t) { 
             if(t === 'all'){ globalFilterStatus = "all"; switchTab('data-alat'); } 
             else if(t === 'ready'){ globalFilterStatus = "Siap Digunakan"; switchTab('data-alat'); } 
@@ -6878,6 +7317,229 @@ function renderMaintenanceHistory() {
                         .footer-label { text-align: center; font-size: 7.5px; color: #666; border-top: 1px dotted #ccc; padding-top: 2px; font-style: italic; }
                         @media print { body { padding: 0; } .no-print { display: none; } }
                     
+/* ============================================================
+   MEDIX v14 - E-TICKET DETAIL WORKFLOW / APP POLISH
+   ============================================================ */
+.ticket-detail-sheet{position:fixed;inset:0;z-index:10050;display:flex;align-items:flex-end;justify-content:center;background:rgba(15,23,42,.42);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .22s ease}
+.ticket-detail-sheet.show{opacity:1;pointer-events:auto}
+.ticket-detail-card{width:min(760px,100%);max-height:min(86vh,760px);overflow:auto;background:rgba(255,255,255,.98);border:1px solid rgba(148,163,184,.25);border-radius:24px 24px 0 0;box-shadow:0 -18px 55px rgba(15,23,42,.22);transform:translateY(28px);transition:transform .25s ease}
+.ticket-detail-sheet.show .ticket-detail-card{transform:translateY(0)}
+.ticket-detail-handle{width:42px;height:4px;border-radius:99px;background:#cbd5e1;margin:10px auto 2px}
+.ticket-step{display:flex;align-items:center;gap:9px;min-width:0}
+.ticket-step-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 30px;border:2px solid #cbd5e1;background:#fff;color:#94a3b8;font-size:11px}
+.ticket-step.done .ticket-step-dot{border-color:#10b981;background:#ecfdf5;color:#059669}
+.ticket-step.current .ticket-step-dot{border-color:#f59e0b;background:#fffbeb;color:#d97706;box-shadow:0 0 0 4px rgba(245,158,11,.10)}
+.ticket-step-line{height:2px;flex:1;background:#e2e8f0;margin:0 4px}.ticket-step-line.done{background:#10b981}
+
+@media (min-width:768px){.ticket-detail-sheet{align-items:center;padding:20px}.ticket-detail-card{border-radius:24px;max-height:88vh}}
+
+/* ============================================================
+   MEDIX v13 - E-TICKET MOBILE APP POLISH
+   ============================================================ */
+.ticket-report-intro{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #fde68a;background:linear-gradient(135deg,#fffbeb,#fff7ed);border-radius:14px;margin-bottom:2px}
+.ticket-report-icon{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#fef3c7;color:#d97706;border:1px solid #fde68a}
+@media (max-width:767px){
+  #tab-ticket-system .glass-panel{padding:14px!important;border-radius:18px}
+  #box-form-buat-ticket form{grid-template-columns:1fr!important}
+  #box-form-buat-ticket .md\:col-span-2{grid-column:span 1!important}
+  #tab-ticket-system .overflow-x-auto{overflow:visible!important}
+  #tab-ticket-system table,#tab-ticket-system tbody{display:block;width:100%!important;min-width:0!important}
+  #tab-ticket-system thead{display:none}
+  #tab-ticket-system tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;margin-bottom:12px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.78);box-shadow:0 5px 18px rgba(15,23,42,.05)}
+  #tab-ticket-system tbody td{display:flex!important;flex-direction:column;align-items:flex-start!important;gap:4px;padding:8px 2px!important;border:0!important;min-width:0!important;word-break:break-word}
+  #tab-ticket-system tbody td::before{content:attr(data-label);font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#64748b}
+  #tab-ticket-system tbody td:first-child,#tab-ticket-system tbody td:nth-child(2){grid-column:1/-1}
+  #tab-ticket-system tbody td[data-label="Foto Before"],#tab-ticket-system tbody td[data-label="Status Tiket"]{align-items:flex-start!important}
+  #tab-ticket-system tbody td[data-label="Tindakan"]{grid-column:1/-1;align-items:stretch!important;border-top:1px solid #e2e8f0!important;margin-top:4px;padding-top:10px!important}
+  #tab-ticket-system tbody td[data-label="Tindakan"]>div{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+}
+
+/* =========================================================
+   MEDIX v15 — PROFESSIONAL RESPONSIVE SCROLL LAYER
+   Page scroll = vertical. Dense data = local horizontal scroll.
+   ========================================================= */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(71,85,105,.52) transparent;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar { width: 9px; height: 9px; }
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: transparent; }
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: rgba(71,85,105,.48); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+body::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover { background: rgba(51,65,85,.68); background-clip: padding-box; }
+body { overflow-x: hidden !important; }
+
+/* Dense data containers are the only places allowed to scroll horizontally. */
+.master-table-scroll, .table-scroll, .overflow-x-auto {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(71,85,105,.58) transparent !important;
+  -ms-overflow-style: auto !important;
+}
+.master-table-scroll::-webkit-scrollbar,
+.table-scroll::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar { display:block !important; width:8px; height:8px; }
+.master-table-scroll::-webkit-scrollbar-track,
+.table-scroll::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track { background:rgba(148,163,184,.08); border-radius:999px; }
+.master-table-scroll::-webkit-scrollbar-thumb,
+.table-scroll::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb { background:rgba(71,85,105,.48); border-radius:999px; }
+.master-table-scroll::-webkit-scrollbar-thumb:hover,
+.table-scroll::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover { background:rgba(51,65,85,.68); }
+
+/* Do not let generic no-scrollbar hide an intentionally scrollable data surface. */
+.master-table-scroll.no-scrollbar,
+.table-scroll.no-scrollbar,
+.overflow-x-auto.no-scrollbar {
+  scrollbar-width: thin !important;
+  -ms-overflow-style: auto !important;
+}
+.master-table-scroll.no-scrollbar::-webkit-scrollbar,
+.table-scroll.no-scrollbar::-webkit-scrollbar,
+.overflow-x-auto.no-scrollbar::-webkit-scrollbar { display:block !important; }
+
+/* Equipment EM: card mode on small screens; monthly Rekapan EM remains a dense table. */
+@media (max-width:767px) {
+  #em-content-database > .overflow-x-auto {
+    overflow-x:hidden !important;
+    overflow-y:visible !important;
+  }
+  #em-content-database table {
+    min-width:0 !important;
+    width:100% !important;
+    display:block !important;
+  }
+  #em-content-database thead { display:none !important; }
+  #em-content-database tbody,
+  #em-content-database tr { display:block !important; width:100% !important; }
+  #em-content-database tr {
+    margin:0 0 .7rem !important;
+    padding:.75rem !important;
+    border:1px solid rgba(20,184,166,.20) !important;
+    border-radius:16px !important;
+    background:rgba(255,255,255,.90) !important;
+    box-shadow:0 5px 18px rgba(15,23,42,.06) !important;
+  }
+  #em-content-database td {
+    display:grid !important;
+    grid-template-columns:7.4rem minmax(0,1fr) !important;
+    gap:.5rem !important;
+    align-items:start !important;
+    width:100% !important;
+    padding:.36rem .15rem !important;
+    border-bottom:1px solid rgba(148,163,184,.14) !important;
+    font-size:10px !important;
+    text-align:left !important;
+    overflow-wrap:anywhere !important;
+  }
+  #em-content-database td:last-child { border-bottom:0 !important; }
+  #em-content-database td::before {
+    font-size:8px !important;
+    text-transform:uppercase !important;
+    letter-spacing:.06em !important;
+    color:#64748b !important;
+    font-weight:800 !important;
+  }
+  #em-content-database td:nth-child(1)::before { content:'Nama Alkes'; }
+  #em-content-database td:nth-child(2)::before { content:'Populasi'; }
+  #em-content-database td:nth-child(3)::before { content:'Satuan'; }
+  #em-content-database td:nth-child(4)::before { content:'Fungsi'; }
+  #em-content-database td:nth-child(5)::before { content:'Risiko'; }
+  #em-content-database td:nth-child(6)::before { content:'Perawatan'; }
+  #em-content-database td:nth-child(7)::before { content:'Insiden'; }
+  #em-content-database td:nth-child(8)::before { content:'Nilai EM'; }
+  #em-content-database td:nth-child(9)::before { content:'Periode PM'; }
+  #em-content-database td:nth-child(10)::before { content:'Ruangan / Teknisi'; }
+  #em-content-database td:nth-child(11)::before { content:'Sumber'; }
+
+  /* Jadwal PM: compact mobile cards. */
+  #em-content-jadwal > .overflow-x-auto { overflow-x:hidden !important; overflow-y:visible !important; }
+  #em-content-jadwal table { min-width:0 !important; width:100% !important; display:block !important; }
+  #em-content-jadwal thead { display:none !important; }
+  #em-content-jadwal tbody,
+  #em-content-jadwal tr { display:block !important; width:100% !important; }
+  #em-content-jadwal tr {
+    margin:0 0 .7rem !important; padding:.7rem !important;
+    border:1px solid rgba(20,184,166,.20) !important; border-radius:16px !important;
+    background:rgba(255,255,255,.90) !important; box-shadow:0 5px 18px rgba(15,23,42,.05) !important;
+  }
+  #em-content-jadwal td {
+    display:grid !important; grid-template-columns:7.4rem minmax(0,1fr) !important;
+    gap:.5rem !important; width:100% !important; padding:.36rem .15rem !important;
+    border-bottom:1px solid rgba(148,163,184,.14) !important; font-size:10px !important;
+    text-align:left !important; overflow-wrap:anywhere !important;
+  }
+  #em-content-jadwal td:last-child { border-bottom:0 !important; }
+  #em-content-jadwal td::before { font-size:8px !important; text-transform:uppercase !important; letter-spacing:.06em !important; color:#64748b !important; font-weight:800 !important; }
+  #em-content-jadwal td:nth-child(1)::before { content:'Hari'; }
+  #em-content-jadwal td:nth-child(2)::before { content:'Bulan'; }
+  #em-content-jadwal td:nth-child(3)::before { content:'Nama Alat'; }
+  #em-content-jadwal td:nth-child(4)::before { content:'Nomor Seri'; }
+  #em-content-jadwal td:nth-child(5)::before { content:'Ruangan'; }
+  #em-content-jadwal td:nth-child(6)::before { content:'Periode'; }
+
+  /* Rekapan EM is intentionally dense: keep horizontal scroll discoverable. */
+  #em-content-rekapan > .overflow-x-auto {
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+  }
+}
+
+/* App-like data surface: subtle edge cue when a table is wider than its viewport. */
+.master-table-scroll, .table-scroll, #em-content-database > .overflow-x-auto, #em-content-jadwal > .overflow-x-auto, #em-content-rekapan > .overflow-x-auto {
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media print {
+  html, body { scrollbar-width:none !important; }
+  html::-webkit-scrollbar, body::-webkit-scrollbar { display:none !important; }
+}
+
+
+/* MEDIX v17 — Responsive Master Asset Surface */
+@media (max-width:767px){
+  #master-table-nav{display:none!important;}
+  #master-table-scroll{max-height:none!important;overflow:visible!important;}
+  #master-table-scroll table{min-width:0!important;width:100%!important;display:block!important;}
+  #master-table-scroll thead{display:none!important;}
+  #master-table-scroll tbody{display:block!important;width:100%!important;}
+  #master-table-scroll tbody tr{
+    display:block!important;width:100%!important;margin:0 0 12px!important;padding:12px!important;
+    border:1px solid #dbe4ef!important;border-radius:18px!important;background:rgba(255,255,255,.94)!important;
+    box-shadow:0 6px 20px rgba(15,23,42,.055)!important;
+  }
+  #master-table-scroll tbody td{
+    display:grid!important;grid-template-columns:6.8rem minmax(0,1fr)!important;gap:10px!important;
+    width:100%!important;min-width:0!important;padding:7px 2px!important;border:0!important;
+    border-bottom:1px solid rgba(148,163,184,.13)!important;text-align:left!important;
+    overflow-wrap:anywhere!important;font-size:10px!important;
+  }
+  #master-table-scroll tbody td::before{
+    font-size:8px!important;line-height:1.25!important;text-transform:uppercase!important;
+    letter-spacing:.06em!important;color:#64748b!important;font-weight:800!important;
+  }
+  #master-table-scroll tbody td:nth-child(1)::before{content:'Nama Alat';}
+  #master-table-scroll tbody td:nth-child(2)::before{content:'Merk';}
+  #master-table-scroll tbody td:nth-child(3)::before{content:'Tipe / Model';}
+  #master-table-scroll tbody td:nth-child(4)::before{content:'Nomor Seri';}
+  #master-table-scroll tbody td:nth-child(5)::before{content:'Izin Edar';}
+  #master-table-scroll tbody td:nth-child(6)::before{content:'Ruangan';}
+  #master-table-scroll tbody td:nth-child(7)::before{content:'Status';}
+  #master-table-scroll tbody td:nth-child(8)::before{content:'Aksi';}
+  #master-table-scroll tbody td:nth-child(1){font-size:11px!important;font-weight:800!important;color:#0f172a!important;}
+  #master-table-scroll tbody td:nth-child(7){align-items:center!important;}
+  #master-table-scroll tbody td:nth-child(8){
+    grid-template-columns:6.8rem minmax(0,1fr)!important;border-bottom:0!important;padding-top:10px!important;
+  }
+  #master-table-scroll tbody td:nth-child(8)>div{justify-self:start!important;}
+  #master-table-scroll tbody td:nth-child(7) br{display:block;}
+}
+@media (min-width:768px){
+  #master-table-scroll{overflow-x:auto!important;overflow-y:auto!important;}
+}
+
 </style>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
                 </head>
@@ -7106,30 +7768,6 @@ function renderMaintenanceHistory() {
 })();
 </script>
 
-
-<script id="medix-final-responsive-runtime">
-(function(){
-  function syncResponsiveShell(){
-    if (window.innerWidth >= 1024) {
-      const sb=document.getElementById('app-sidebar');
-      if(sb) sb.classList.remove('-translate-x-full');
-      document.body.classList.remove('medix-drawer-open');
-      const bd=document.getElementById('medix-mobile-backdrop');
-      if(bd) bd.classList.remove('show');
-    }
-    if (typeof renderBottomNavigation === 'function') renderBottomNavigation();
-  }
-  window.addEventListener('resize', syncResponsiveShell, {passive:true});
-  document.addEventListener('keydown', function(e){
-    if(e.key==='Escape'){
-      const bd=document.getElementById('medix-mobile-backdrop');
-      if(bd && bd.classList.contains('show') && typeof toggleSidebarMenu==='function') toggleSidebarMenu(false);
-      const sheet=document.getElementById('ticket-detail-sheet');
-      if(sheet && sheet.classList.contains('show') && typeof tutupDetailTiket==='function') tutupDetailTiket();
-    }
-  });
-})();
-</script>
 
 <!-- MEDIX v11 MOBILE BOTTOM NAVIGATION -->
 <div id="medix-mobile-bottom-nav" class="no-print" aria-label="Navigasi utama mobile">
