@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-2">
+    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-4-2">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -1331,6 +1331,206 @@ body.dark-mode #theme-icon.fa-moon { color:#e2e8f0 !important; }
 }
 </style>
 
+
+<style id="medix-stable4-kartu-dark-fix">
+/* ==========================================================
+   MEDIX STABLE 4 — REKAM JEJAK PEMELIHARAAN ASET
+   Theme-safe styling for the full-screen maintenance log.
+   ========================================================== */
+#modal-kartu > div {
+    background: #ffffff !important;
+    color: #0f172a !important;
+}
+#modal-kartu .kartu-header,
+#modal-kartu > div > div:first-child {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border-color: #e2e8f0 !important;
+}
+#modal-kartu .kartu-info,
+#modal-kartu > div > div:nth-child(2) {
+    background: #f8fafc !important;
+    color: #334155 !important;
+    border-color: #e2e8f0 !important;
+}
+#modal-kartu .kartu-info p,
+#modal-kartu .kartu-info span {
+    color: #334155 !important;
+}
+#modal-kartu .kartu-tabbar,
+#modal-kartu > div > div:nth-child(3) {
+    background: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+}
+#modal-kartu .kartu-tab {
+    color: #475569 !important;
+}
+#modal-kartu .kartu-tab.active {
+    color: #0f766e !important;
+    border-bottom-color: #0f766e !important;
+}
+#modal-kartu .kartu-body,
+#modal-kartu > div > div:nth-child(4) {
+    background: #f8fafc !important;
+    color: #334155 !important;
+}
+#modal-kartu .kartu-body table,
+#modal-kartu .kartu-body .overflow-x-auto {
+    background: #ffffff !important;
+    color: #334155 !important;
+    border-color: #e2e8f0 !important;
+}
+#modal-kartu .kartu-body table th {
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+    border-color: #cbd5e1 !important;
+}
+#modal-kartu .kartu-body table td {
+    background: #ffffff !important;
+    color: #334155 !important;
+    border-color: #e2e8f0 !important;
+}
+#modal-kartu .kartu-body .text-slate-400 { color: #64748b !important; }
+#modal-kartu .kartu-body .text-slate-500 { color: #475569 !important; }
+#modal-kartu .kartu-body .text-slate-600 { color: #334155 !important; }
+#modal-kartu .kartu-body .text-slate-700 { color: #334155 !important; }
+#modal-kartu .kartu-body .text-slate-800,
+#modal-kartu .kartu-body .text-slate-900 { color: #0f172a !important; }
+#modal-kartu .kartu-body button.bg-slate-100 {
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+    border-color: #cbd5e1 !important;
+}
+
+/* Dark theme: every layer of the maintenance log follows the dark palette. */
+body.dark-mode #modal-kartu > div {
+    background: #111827 !important;
+    color: #e5e7eb !important;
+    border-color: #334155 !important;
+}
+body.dark-mode #modal-kartu > div > div:first-child,
+body.dark-mode #modal-kartu .kartu-header {
+    background: #172033 !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+body.dark-mode #modal-kartu > div > div:first-child h3,
+body.dark-mode #modal-kartu > div > div:first-child h3 i {
+    color: #f8fafc !important;
+}
+body.dark-mode #modal-kartu > div > div:first-child h3 i {
+    color: #60a5fa !important;
+}
+body.dark-mode #modal-kartu > div > div:first-child button {
+    background: #243244 !important;
+    color: #f8fafc !important;
+    border: 1px solid #475569 !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(2),
+body.dark-mode #modal-kartu .kartu-info {
+    background: #0f172a !important;
+    color: #cbd5e1 !important;
+    border-color: #334155 !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(2) p,
+body.dark-mode #modal-kartu > div > div:nth-child(2) span,
+body.dark-mode #modal-kartu .kartu-info p,
+body.dark-mode #modal-kartu .kartu-info span {
+    color: #cbd5e1 !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(2) p.text-slate-500,
+body.dark-mode #modal-kartu .kartu-info p.text-slate-500 {
+    color: #94a3b8 !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(2) p.text-slate-900,
+body.dark-mode #modal-kartu > div > div:nth-child(2) p.text-slate-700,
+body.dark-mode #modal-kartu .kartu-info p.text-slate-900,
+body.dark-mode #modal-kartu .kartu-info p.text-slate-700 {
+    color: #f8fafc !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(2) p.text-blue-600,
+body.dark-mode #modal-kartu .kartu-info p.text-blue-600 {
+    color: #60a5fa !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(2) > div:last-child,
+body.dark-mode #modal-kartu #qrcode-container {
+    background: #111827 !important;
+    border-color: #334155 !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(3),
+body.dark-mode #modal-kartu .kartu-tabbar {
+    background: #172033 !important;
+    border-color: #334155 !important;
+}
+body.dark-mode #modal-kartu .kartu-tab {
+    color: #cbd5e1 !important;
+    background: transparent !important;
+}
+body.dark-mode #modal-kartu .kartu-tab:hover {
+    color: #5eead4 !important;
+}
+body.dark-mode #modal-kartu .kartu-tab.active {
+    color: #5eead4 !important;
+    border-bottom-color: #2dd4bf !important;
+}
+body.dark-mode #modal-kartu > div > div:nth-child(4),
+body.dark-mode #modal-kartu .kartu-body {
+    background: #0b1220 !important;
+    color: #cbd5e1 !important;
+}
+body.dark-mode #modal-kartu .kartu-content-box > div,
+body.dark-mode #modal-kartu .kartu-body .overflow-x-auto {
+    background: #111827 !important;
+    border-color: #334155 !important;
+}
+body.dark-mode #modal-kartu .kartu-body table {
+    background: #111827 !important;
+    color: #cbd5e1 !important;
+}
+body.dark-mode #modal-kartu .kartu-body table th {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+    border-color: #475569 !important;
+}
+body.dark-mode #modal-kartu .kartu-body table td {
+    background: #111827 !important;
+    color: #cbd5e1 !important;
+    border-color: #243244 !important;
+}
+body.dark-mode #modal-kartu .kartu-body table tr:hover td {
+    background: #172033 !important;
+}
+body.dark-mode #modal-kartu .kartu-body .text-slate-400 { color: #94a3b8 !important; }
+body.dark-mode #modal-kartu .kartu-body .text-slate-500 { color: #94a3b8 !important; }
+body.dark-mode #modal-kartu .kartu-body .text-slate-600 { color: #cbd5e1 !important; }
+body.dark-mode #modal-kartu .kartu-body .text-slate-700 { color: #e2e8f0 !important; }
+body.dark-mode #modal-kartu .kartu-body .text-slate-800,
+body.dark-mode #modal-kartu .kartu-body .text-slate-900 { color: #f8fafc !important; }
+body.dark-mode #modal-kartu .kartu-body button.bg-slate-100 {
+    background: #243244 !important;
+    color: #e2e8f0 !important;
+    border-color: #475569 !important;
+}
+body.dark-mode #modal-kartu .kartu-body .bg-white {
+    background: #111827 !important;
+}
+
+/* Mobile/tablet readability */
+@media (max-width: 767px) {
+    #modal-kartu > div > div:nth-child(3) {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    #modal-kartu .kartu-tab {
+        min-width: 130px;
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+    body.dark-mode #modal-kartu > div > div:nth-child(4) {
+        background: #0b1220 !important;
+    }
+}
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
