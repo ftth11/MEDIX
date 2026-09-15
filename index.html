@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-5">
+    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-6">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -1551,6 +1551,33 @@ body.dark-mode .text-amber-600, body.dark-mode .text-orange-600, body.dark-mode 
 body.dark-mode .text-red-600 { filter:brightness(1.18); }
 body.dark-mode .shadow-sm, body.dark-mode .shadow, body.dark-mode .shadow-lg { --tw-shadow-color:rgba(0,0,0,.35) !important; }
 
+/* STABLE 7 — Comprehensive dark-mode surfaces for EM/PM badges and icon chips */
+body.dark-mode .bg-blue-100, body.dark-mode .bg-indigo-100, body.dark-mode .bg-cyan-100,
+body.dark-mode .bg-sky-100, body.dark-mode .bg-violet-100, body.dark-mode .bg-purple-100,
+body.dark-mode .bg-emerald-100, body.dark-mode .bg-green-100, body.dark-mode .bg-teal-100,
+body.dark-mode .bg-rose-100, body.dark-mode .bg-red-100, body.dark-mode .bg-orange-100,
+body.dark-mode .bg-amber-100, body.dark-mode .bg-yellow-100 {
+  background-color:#1e293b !important;
+  border-color:rgba(148,163,184,.28) !important;
+}
+body.dark-mode .border-blue-100, body.dark-mode .border-indigo-100, body.dark-mode .border-cyan-100,
+body.dark-mode .border-sky-100, body.dark-mode .border-violet-100, body.dark-mode .border-purple-100,
+body.dark-mode .border-emerald-100, body.dark-mode .border-green-100, body.dark-mode .border-teal-100,
+body.dark-mode .border-rose-100, body.dark-mode .border-red-100, body.dark-mode .border-orange-100,
+body.dark-mode .border-amber-100, body.dark-mode .border-yellow-100 {
+  border-color:rgba(148,163,184,.28) !important;
+}
+body.dark-mode .medix-period-badge {
+  background:#1e293b !important;
+  color:#e2e8f0 !important;
+  border:1px solid rgba(148,163,184,.28) !important;
+  box-shadow:none !important;
+}
+body.dark-mode .medix-period-badge.period-4 { color:#fb7185 !important; border-color:rgba(251,113,133,.35) !important; background:rgba(244,63,94,.12) !important; }
+body.dark-mode .medix-period-badge.period-6 { color:#fdba74 !important; border-color:rgba(251,146,60,.35) !important; background:rgba(234,88,12,.12) !important; }
+body.dark-mode .medix-period-badge.period-12 { color:#fcd34d !important; border-color:rgba(245,158,11,.35) !important; background:rgba(245,158,11,.12) !important; }
+body.dark-mode .medix-period-badge.period-inspeksi { color:#6ee7b7 !important; border-color:rgba(16,185,129,.35) !important; background:rgba(16,185,129,.12) !important; }
+
 /* Excel-like table filter controls */
 .medix-filterable-table { position:relative; }
 .medix-filter-th { position:relative !important; padding-right:2.35rem !important; }
@@ -1851,7 +1878,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                         <div class="flex space-x-2" id="master-action-buttons-container"></div>
                     </div>
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-4 border-b border-slate-100 bg-slate-50"><input type="text" id="search-alat" onkeyup="filterAlat()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 placeholder-slate-400 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, izin edar, ruangan..."></div>
+                        
                         <div class="master-table-scroll-wrap">
                             <div class="master-table-nav no-print" id="master-table-nav" aria-label="Navigasi tabel Master Data Aset">
                                 <button type="button" id="master-table-prev" onclick="geserMasterTable(-1)" aria-label="Geser tabel ke kiri" title="Geser ke kiri"><i class="fa-solid fa-chevron-left"></i></button>
@@ -2115,14 +2142,8 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <!-- Konten Sub-Tab 1: Database & Analisis EM -->
                     <div id="em-content-database" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
-                            <input type="text" id="search-equipment-em" oninput="renderEquipmentManagementTable()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari nama alat, merk, serial number, atau ruangan...">
-                            <select id="filter-em-periode" onchange="renderEquipmentManagementTable()" class="px-3 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none font-bold">
-                                <option value="">Semua Rekomendasi Periode</option>
-                                <option value="Setiap 4 Bulan">Setiap 4 Bulan</option>
-                                <option value="Setiap 6 Bulan">Setiap 6 Bulan</option>
-                                <option value="Satu Kali Per Tahun">Satu Kali Per Tahun</option>
-                                <option value="Inspeksi Sesuai Kebutuhan">Inspeksi Sesuai Kebutuhan</option>
-                            </select>
+                            
+                            
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[1250px]">
@@ -2149,7 +2170,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <!-- Konten Sub-Tab 2: Jadwal EM/PM -->
                     <div id="em-content-jadwal" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
-                            <input type="text" id="search-rekapan-pm" oninput="renderRekapanPMTable()" class="w-full max-w-md px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari nama alat, SN, ruangan, bulan...">
+                            
                             <span class="text-[10px] text-slate-500 font-semibold">Jadwal dibuat otomatis dari rekomendasi EM</span>
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
@@ -2174,7 +2195,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             <div class="flex items-center gap-2 flex-wrap">
                                 <select id="filter-rekapan-em-tahun" onchange="renderRekapanEMTable()" class="px-3 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none font-bold"></select>
-                                <input type="text" id="search-rekapan-em" oninput="renderRekapanEMTable()" class="w-full sm:w-72 px-4 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none focus:border-blue-500" placeholder="Cari nama alat...">
+                                
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="exportRekapanEMExcel()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm no-print">
@@ -3508,12 +3529,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 document.getElementById('em-stat-enam')?.replaceChildren(document.createTextNode(enamBulan));
                 document.getElementById('em-stat-satu')?.replaceChildren(document.createTextNode(tahunan));
                 document.getElementById('em-stat-inspeksi')?.replaceChildren(document.createTextNode(inspeksi));
-                const searchKeyword = (document.getElementById('search-equipment-em')?.value || '').trim().toLowerCase();
-                const filterPeriode = document.getElementById('filter-em-periode')?.value || '';
-                const filtered = groups.filter(item => {
-                    const searchable = [item.namaAlat, item.merk, item.tipe, item.lokasi, item.teknisi, ...item.serialNumbers].filter(Boolean).join(' ').toLowerCase();
-                    return (!searchKeyword || searchable.includes(searchKeyword)) && (!filterPeriode || item.rekomendasiPeriode === filterPeriode);
-                });
+                const filtered = groups;
                 const tbody = document.getElementById('table-equipment-em-body');
                 if (!tbody) return;
                 if (filtered.length === 0) {
@@ -3530,7 +3546,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                         <td class="p-3 text-center font-bold text-slate-700">${item.emPerawatan ?? '-'}</td>
                         <td class="p-3 text-center font-bold text-slate-700">${item.emInsiden ?? '-'}</td>
                         <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${kelasBadgePeriodeEM(item.rekomendasiPeriode)}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span></td>
+                        <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold medix-period-badge ${kelasBadgePeriodeEM(item.rekomendasiPeriode)} ${item.rekomendasiPeriode === 'Setiap 4 Bulan' ? 'period-4' : item.rekomendasiPeriode === 'Setiap 6 Bulan' ? 'period-6' : item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span></td>
                         <td class="p-3"><div class="font-semibold text-slate-800">${escapeHtmlEquipment(item.lokasi || '-')}</div><div class="text-[10px] text-slate-400">${escapeHtmlEquipment(item.teknisi || '-')}</div></td>
                         <td class="p-3 text-center"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold"><i class="fa-solid fa-database"></i> Master Aset</span></td>
                     </tr>`).join('');
@@ -3558,8 +3574,6 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             const tbody = document.getElementById('table-rekapan-pm-body');
             if (!tbody) return;
 
-            const searchKeyword = (document.getElementById('search-rekapan-pm')?.value || '').trim().toLowerCase();
-
             // Jadwal EM/PM ditampilkan satu baris per unit aset.
             // Hari ke-/bulan ke- tidak lagi ditampilkan karena periode PM
             // sudah menjadi informasi utama yang dibutuhkan teknisi.
@@ -3573,19 +3587,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 (a.item.serialNumber || '').localeCompare(b.item.serialNumber || '', 'id')
             );
 
-            const filtered = rows.filter(row => {
-                const item = row.item || {};
-                const searchable = [
-                    item.namaAlat,
-                    item.merk,
-                    item.tipe,
-                    item.model,
-                    item.serialNumber,
-                    item.lokasi,
-                    row.periode
-                ].filter(Boolean).join(' ').toLowerCase();
-                return !searchKeyword || searchable.includes(searchKeyword);
-            });
+const filtered = rows;
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal PM dari Master Data Aset.</td></tr>`;
@@ -3605,7 +3607,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                         <td class="p-3" data-label="Tipe / Model">${escapeHtmlEquipment(tipe)}</td>
                         <td class="p-3 font-mono text-[10px]" data-label="SN">${escapeHtmlEquipment(sn)}</td>
                         <td class="p-3" data-label="Ruangan">${escapeHtmlEquipment(lokasi)}</td>
-                        <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold ${kelasBadgePeriodeEM(row.periode)}">${escapeHtmlEquipment(row.periode)}</span></td>
+                        <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold medix-period-badge ${kelasBadgePeriodeEM(row.periode)} ${row.periode === 'Setiap 4 Bulan' ? 'period-4' : row.periode === 'Setiap 6 Bulan' ? 'period-6' : row.periode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(row.periode)}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -3874,12 +3876,8 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             inisialisasiFilterTahunRekapanEM();
 
             const tahun = parseInt(document.getElementById('filter-rekapan-em-tahun')?.value, 10) || new Date().getFullYear();
-            const search = (document.getElementById('search-rekapan-em')?.value || '').trim().toLowerCase();
-
             const allRows = buatDataRekapanEM(tahun);
-            const rows = allRows.filter(row =>
-                !search || row.namaAlat.toLowerCase().includes(search)
-            );
+            const rows = allRows;
 
             if (rows.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="19" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data Rekapan EM.</td></tr>`;
@@ -7388,12 +7386,10 @@ function renderMaintenanceHistory() {
             setTimeout(updateMasterTableNav, 300);
         }
 
-        function filterAlat() { 
+        function filterAlat() {
+            // Legacy compatibility. Table filtering is handled by the universal Excel-style filters.
             initMasterTableNavigation();
-            const searchEl = document.getElementById('search-alat'); const tbodyEl = document.getElementById('table-alat-body');
-            if(!searchEl || !tbodyEl) return;
-            const q = searchEl.value.toLowerCase(); const trs = tbodyEl.getElementsByTagName('tr'); 
-            for(let tr of trs) { tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none'; } 
+            if (window.medixInitTableFilters) window.medixInitTableFilters();
         }
         
         function updateStats() {
