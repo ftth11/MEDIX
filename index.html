@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-4-2">
+    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-5">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -1531,6 +1531,75 @@ body.dark-mode #modal-kartu .kartu-body .bg-white {
     }
 }
 </style>
+<style id="medix-stable5-enhancements">
+/* MEDIX STABLE 5 — Dark surfaces + Excel-like table filters */
+body.dark-mode .bg-blue-50, body.dark-mode .bg-indigo-50, body.dark-mode .bg-cyan-50,
+body.dark-mode .bg-sky-50, body.dark-mode .bg-violet-50, body.dark-mode .bg-purple-50,
+body.dark-mode .bg-emerald-50, body.dark-mode .bg-green-50, body.dark-mode .bg-teal-50,
+body.dark-mode .bg-rose-50, body.dark-mode .bg-red-50, body.dark-mode .bg-orange-50,
+body.dark-mode .bg-amber-50, body.dark-mode .bg-yellow-50 {
+  background:#172033 !important; color:#e2e8f0 !important;
+}
+body.dark-mode .bg-blue-100, body.dark-mode .bg-indigo-100, body.dark-mode .bg-cyan-100,
+body.dark-mode .bg-emerald-100, body.dark-mode .bg-rose-100, body.dark-mode .bg-amber-100 {
+  background:#1e293b !important; color:#e2e8f0 !important;
+}
+body.dark-mode .text-blue-600, body.dark-mode .text-indigo-600, body.dark-mode .text-cyan-600,
+body.dark-mode .text-emerald-600, body.dark-mode .text-green-600, body.dark-mode .text-teal-600,
+body.dark-mode .text-violet-600, body.dark-mode .text-purple-600, body.dark-mode .text-sky-600,
+body.dark-mode .text-amber-600, body.dark-mode .text-orange-600, body.dark-mode .text-rose-600,
+body.dark-mode .text-red-600 { filter:brightness(1.18); }
+body.dark-mode .shadow-sm, body.dark-mode .shadow, body.dark-mode .shadow-lg { --tw-shadow-color:rgba(0,0,0,.35) !important; }
+
+/* Excel-like table filter controls */
+.medix-filterable-table { position:relative; }
+.medix-filter-th { position:relative !important; padding-right:2.35rem !important; }
+.medix-filter-btn {
+  position:absolute; right:.35rem; top:50%; transform:translateY(-50%);
+  width:1.65rem; height:1.65rem; display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid transparent; border-radius:.45rem; background:transparent; color:inherit;
+  cursor:pointer; opacity:.72; transition:.15s ease; z-index:2;
+}
+.medix-filter-btn:hover, .medix-filter-btn.active { background:rgba(20,184,166,.13); border-color:rgba(20,184,166,.28); color:#0f766e; opacity:1; }
+body.dark-mode .medix-filter-btn:hover, body.dark-mode .medix-filter-btn.active { background:rgba(45,212,191,.14); border-color:rgba(45,212,191,.3); color:#5eead4; }
+.medix-filter-btn.has-filter { color:#0f766e; opacity:1; }
+body.dark-mode .medix-filter-btn.has-filter { color:#5eead4; }
+.medix-filter-popup {
+  position:fixed; z-index:99999; width:min(300px,calc(100vw - 20px)); max-height:min(440px,calc(100vh - 20px));
+  overflow:hidden; background:#fff; color:#0f172a; border:1px solid #dbe5ec; border-radius:14px;
+  box-shadow:0 18px 50px rgba(15,23,42,.22); font-size:12px;
+}
+body.dark-mode .medix-filter-popup { background:#111827; color:#f8fafc; border-color:#334155; box-shadow:0 22px 60px rgba(0,0,0,.48); }
+.medix-filter-head { padding:10px 11px; border-bottom:1px solid #e2e8f0; }
+body.dark-mode .medix-filter-head { border-color:#263449; }
+.medix-filter-title { font-weight:800; display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:8px; }
+.medix-filter-search { width:100%; box-sizing:border-box; padding:8px 9px; border:1px solid #cbd5e1; border-radius:9px; outline:none; background:#fff; color:#0f172a; }
+body.dark-mode .medix-filter-search { background:#0b1220; color:#f8fafc; border-color:#334155; }
+.medix-filter-actions { display:flex; gap:6px; padding:8px 11px; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; }
+body.dark-mode .medix-filter-actions { border-color:#263449; }
+.medix-filter-action { border:1px solid #cbd5e1; background:#f8fafc; color:#334155; padding:6px 8px; border-radius:8px; cursor:pointer; }
+body.dark-mode .medix-filter-action { background:#172033; color:#cbd5e1; border-color:#334155; }
+.medix-filter-values { overflow:auto; max-height:270px; padding:7px 9px; }
+.medix-filter-value { display:flex; align-items:center; gap:8px; padding:6px 5px; border-radius:7px; cursor:pointer; }
+.medix-filter-value:hover { background:#f1f5f9; }
+body.dark-mode .medix-filter-value:hover { background:#172033; }
+.medix-filter-value input { accent-color:#0f766e; }
+.medix-filter-empty { padding:14px 8px; color:#64748b; text-align:center; }
+.medix-filter-footer { padding:8px 11px; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between; gap:8px; align-items:center; }
+body.dark-mode .medix-filter-footer { border-color:#263449; }
+.medix-filter-clear { border:0; background:transparent; color:#dc2626; cursor:pointer; font-weight:700; }
+.medix-filter-close { border:0; background:#2563eb; color:#fff; padding:7px 12px; border-radius:8px; cursor:pointer; font-weight:700; }
+.medix-mobile-filter-bar { display:none; }
+.medix-mobile-filter-btn {
+  border:1px solid #dbe5ec; background:#fff; color:#334155; border-radius:10px; padding:7px 10px; font-size:11px; font-weight:800;
+}
+body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; border-color:#334155; }
+@media (max-width:767px) {
+  .medix-mobile-filter-bar { display:flex; justify-content:flex-end; padding:0 0 8px; }
+  .medix-filter-th { padding-right:.6rem !important; }
+  .medix-filter-btn { display:none; }
+}
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -1999,9 +2068,6 @@ body.dark-mode #modal-kartu .kartu-body .bg-white {
                             <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">
                                 Equipment Management & Rekapan PM Alkes
                             </h2>
-                            <p class="text-[10px] text-slate-500 mt-1 font-semibold">
-                                Seluruh data mengikuti <b>Master Data Aset Medis</b>. Populasi dikelompokkan per nama alkes dan penilaian mengikuti <b>EM WHO Rules</b>. Tidak perlu impor Excel atau input equipment manual.
-                            </p>
                         </div>
                         <div class="flex items-center gap-2">
                             <span id="equipment-sync-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold">
@@ -8210,6 +8276,123 @@ body { overflow-x: hidden !important; }
   </section>
 </div>
 
+
+
+<script>
+/* MEDIX STABLE 5 — universal Excel-like table filters */
+(function(){
+  const STATE = new WeakMap();
+  let popup = null;
+  let activeTable = null;
+  let activeCol = -1;
+
+  function norm(v){ return String(v ?? '').replace(/\s+/g,' ').trim(); }
+  function isFilterableHeader(text){
+    const t=norm(text).toLowerCase();
+    return t && !/^(aksi|aksi berkas|preview|kartu pemeliharaan|tindakan|action)$/.test(t);
+  }
+  function getState(table){
+    let s=STATE.get(table);
+    if(!s){ s={filters:new Map(), sort:null}; STATE.set(table,s); }
+    return s;
+  }
+  function rows(table){
+    return Array.from(table.tBodies||[]).flatMap(tb=>Array.from(tb.rows));
+  }
+  function cellText(row,i){ return norm(row.cells[i]?.innerText || row.cells[i]?.textContent || ''); }
+  function apply(table){
+    const s=getState(table), rs=rows(table);
+    rs.forEach(r=>{
+      if(r.querySelector('td[colspan]')) return;
+      let ok=true;
+      for(const [col,set] of s.filters){ if(set && set.size && !set.has(cellText(r,col))) {ok=false;break;} }
+      r.dataset.medixFilterHidden = ok ? '0' : '1';
+      r.style.display = ok ? '' : 'none';
+    });
+    table.querySelectorAll('.medix-filter-btn').forEach(b=>{
+      const i=Number(b.dataset.col), active=!!(s.filters.get(i)?.size);
+      b.classList.toggle('has-filter',active); b.classList.toggle('active',active);
+    });
+    updateMobileLabel(table);
+  }
+  function values(table,col){
+    const set=new Set(); rows(table).forEach(r=>{ if(!r.querySelector('td[colspan]')) set.add(cellText(r,col)); });
+    return Array.from(set).sort((a,b)=>a.localeCompare(b,'id',{numeric:true,sensitivity:'base'}));
+  }
+  function closePopup(){ if(popup){popup.remove();popup=null;} activeTable=null; activeCol=-1; }
+  function positionPopup(btn){
+    const r=btn.getBoundingClientRect(), w=Math.min(300,window.innerWidth-20), h=Math.min(440,window.innerHeight-20);
+    let left=Math.min(Math.max(10,r.left),window.innerWidth-w-10), top=r.bottom+6;
+    if(top+h>window.innerHeight-10) top=Math.max(10,r.top-h-6);
+    popup.style.left=left+'px'; popup.style.top=top+'px';
+  }
+  function openPopup(table,col,btn){
+    closePopup(); activeTable=table; activeCol=col; const s=getState(table), selected=new Set(s.filters.get(col)||[]);
+    const th=table.tHead?.rows[0]?.cells[col], title=norm(th?.innerText||'Kolom');
+    popup=document.createElement('div'); popup.className='medix-filter-popup';
+    popup.innerHTML=`<div class="medix-filter-head"><div class="medix-filter-title"><span>Filter: ${escapeHtml(title)}</span><span class="text-[10px] opacity-60">${selected.size?selected.size+' dipilih':'Semua'}</span></div><input class="medix-filter-search" placeholder="Cari nilai..."></div><div class="medix-filter-actions"><button type="button" class="medix-filter-action" data-act="all">Pilih semua</button><button type="button" class="medix-filter-action" data-act="none">Kosongkan</button><button type="button" class="medix-filter-action" data-act="az">A → Z</button><button type="button" class="medix-filter-action" data-act="za">Z → A</button></div><div class="medix-filter-values"></div><div class="medix-filter-footer"><button type="button" class="medix-filter-clear">Hapus filter</button><button type="button" class="medix-filter-close">Terapkan</button></div>`;
+    document.body.appendChild(popup); renderValues(''); positionPopup(btn);
+    popup.querySelector('.medix-filter-search').addEventListener('input',e=>renderValues(e.target.value));
+    popup.querySelector('[data-act="all"]').onclick=()=>{ selected.clear(); values(table,col).forEach(v=>selected.add(v)); renderValues(popup.querySelector('.medix-filter-search').value); };
+    popup.querySelector('[data-act="none"]').onclick=()=>{ selected.clear(); renderValues(popup.querySelector('.medix-filter-search').value); };
+    popup.querySelector('[data-act="az"]').onclick=()=>sortColumn(table,col,false);
+    popup.querySelector('[data-act="za"]').onclick=()=>sortColumn(table,col,true);
+    popup.querySelector('.medix-filter-clear').onclick=()=>{ s.filters.delete(col); apply(table); closePopup(); };
+    popup.querySelector('.medix-filter-close').onclick=()=>{ if(selected.size) s.filters.set(col,new Set(selected)); else s.filters.delete(col); apply(table); closePopup(); };
+    function renderValues(q){
+      const box=popup.querySelector('.medix-filter-values'), needle=norm(q).toLowerCase();
+      const vals=values(table,col).filter(v=>!needle||v.toLowerCase().includes(needle));
+      if(!vals.length){box.innerHTML='<div class="medix-filter-empty">Tidak ada nilai yang cocok.</div>';return;}
+      box.innerHTML=vals.map(v=>`<label class="medix-filter-value"><input type="checkbox" ${selected.has(v)?'checked':''} data-value="${escapeAttr(v)}"><span>${escapeHtml(v||'(Kosong)')}</span></label>`).join('');
+      box.querySelectorAll('input').forEach(cb=>cb.addEventListener('change',()=>{cb.checked?selected.add(cb.dataset.value):selected.delete(cb.dataset.value);}));
+    }
+  }
+  function sortColumn(table,col,desc){
+    const s=getState(table); s.sort={col,desc};
+    table.querySelectorAll('tbody').forEach(tb=>{
+      const arr=Array.from(tb.rows).filter(r=>!r.querySelector('td[colspan]'));
+      arr.sort((a,b)=>{const av=cellText(a,col),bv=cellText(b,col);return (desc?-1:1)*av.localeCompare(bv,'id',{numeric:true,sensitivity:'base'});});
+      arr.forEach(r=>tb.appendChild(r));
+    }); apply(table);
+  }
+  function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function escapeAttr(v){return escapeHtml(v);}
+  function updateMobileLabel(table){
+    const bar=table.parentElement?.querySelector(':scope > .medix-mobile-filter-bar'); if(!bar)return;
+    const n=getState(table).filters.size; const btn=bar.querySelector('button'); if(btn)btn.innerHTML=`<i class="fa-solid fa-filter"></i> Filter${n?' ('+n+')':''}`;
+  }
+  function decorateTable(table){
+    if(!table.tHead || table.dataset.medixFiltersReady==='1') return;
+    table.dataset.medixFiltersReady='1'; table.classList.add('medix-filterable-table');
+    Array.from(table.tHead.rows[0].cells).forEach((th,i)=>{
+      if(!isFilterableHeader(th.innerText)) return;
+      th.classList.add('medix-filter-th');
+      const b=document.createElement('button'); b.type='button'; b.className='medix-filter-btn'; b.dataset.col=i; b.title='Filter kolom'; b.setAttribute('aria-label','Filter '+norm(th.innerText)); b.innerHTML='<i class="fa-solid fa-filter"></i>';
+      b.addEventListener('click',e=>{e.stopPropagation();openPopup(table,i,b);}); th.appendChild(b);
+    });
+    const host=table.parentElement;
+    if(host && !host.querySelector(':scope > .medix-mobile-filter-bar')){
+      const bar=document.createElement('div'); bar.className='medix-mobile-filter-bar no-print';
+      bar.innerHTML='<button type="button" class="medix-mobile-filter-btn"><i class="fa-solid fa-filter"></i> Filter</button>';
+      bar.querySelector('button').onclick=()=>{ const first=Array.from(table.tHead.rows[0].cells).findIndex(th=>isFilterableHeader(th.innerText)); if(first>=0){const btn=table.tHead.rows[0].cells[first].querySelector('.medix-filter-btn'); if(btn)openPopup(table,first,btn);} };
+      host.insertBefore(bar,table);
+    }
+    observeBody(table); apply(table);
+  }
+  function observeBody(table){
+    if(table.dataset.medixObserver==='1') return; table.dataset.medixObserver='1';
+    Array.from(table.tBodies||[]).forEach(tb=>new MutationObserver(()=>{clearTimeout(tb._medixTimer);tb._medixTimer=setTimeout(()=>apply(table),0);}).observe(tb,{childList:true}));
+  }
+  function init(){ document.querySelectorAll('table').forEach(decorateTable); }
+  document.addEventListener('click',e=>{if(popup&&!popup.contains(e.target)&&!e.target.closest('.medix-filter-btn'))closePopup();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup();});
+  window.addEventListener('resize',()=>{if(popup&&activeTable){const btn=activeTable.tHead.rows[0].cells[activeCol]?.querySelector('.medix-filter-btn');if(btn)positionPopup(btn);}});
+  window.medixInitTableFilters=init;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  const mo=new MutationObserver(()=>init());
+  document.addEventListener('DOMContentLoaded',()=>mo.observe(document.body,{childList:true,subtree:true}),{once:true});
+})();
+</script>
 
 </body>
 </html>
