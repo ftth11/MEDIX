@@ -712,7 +712,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 </style>
 
-\n<style id="medix-final-stable-design-system">\n/* =========================================================\n   MEDIX FINAL STABLE DESIGN SYSTEM\n   Desktop / Tablet / Mobile + Light / Dark\n   ========================================================= */\n:root {\n  --mx-bg:#f8fafc; --mx-surface:#ffffff; --mx-surface-2:#f1f5f9;\n  --mx-border:#e2e8f0; --mx-text:#0f172a; --mx-text-2:#475569; --mx-muted:#64748b;\n  --mx-primary:#0f766e; --mx-primary-2:#14b8a6; --mx-focus:#2563eb;\n}\nbody { background:var(--mx-bg) !important; color:var(--mx-text) !important; }\nbody #main-content-area, body #main-content-area > main { background:var(--mx-bg) !important; }\nbody #main-content-area > header { background:rgba(255,255,255,.94) !important; border-color:var(--mx-border) !important; }\nbody .glass-panel, body #app-sidebar, body .bg-white, body [class*="bg-white/"] { background-color:var(--mx-surface) !important; }\nbody .glass-panel { border-color:var(--mx-border) !important; box-shadow:0 8px 28px rgba(15,23,42,.055) !important; }\nbody #app-sidebar { border-color:var(--mx-border) !important; }\nbody table th { background:#f1f5f9 !important; color:#334155 !important; border-color:#cbd5e1 !important; }\nbody table td { color:#334155 !important; border-color:#e2e8f0 !important; }\nbody input, body select, body textarea { background:#fff !important; color:#0f172a !important; border-color:#cbd5e1 !important; }\nbody input:focus, body select:focus, body textarea:focus { border-color:#14b8a6 !important; box-shadow:0 0 0 3px rgba(20,184,166,.12) !important; }\nbody .sidebar-item { color:#475569 !important; }\nbody .sidebar-item:hover { background:#f0fdfa !important; color:#0f766e !important; border-left-color:#14b8a6 !important; }\nbody .sidebar-item.active { background:linear-gradient(90deg,#ccfbf1,#f0fdfa) !important; color:#0f766e !important; border-left-color:#0f766e !important; }\n\n/* Backdrop + drawer */\n#medix-mobile-backdrop {\n  display:block; position:fixed; inset:0; z-index:250; border:0; padding:0;\n  background:rgba(15,23,42,.42); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px);\n  opacity:0; pointer-events:none; transition:opacity .2s ease;\n}\n#medix-mobile-backdrop.show { opacity:1; pointer-events:auto; }\nbody.medix-drawer-open { overflow:hidden !important; }\n@media (min-width:1024px) {\n  #medix-mobile-backdrop { display:none !important; }\n  #app-sidebar { transform:translateX(0) !important; width:17rem !important; }\n  #main-content-area { margin-left:17rem !important; width:calc(100% - 17rem) !important; }\n}\n@media (min-width:768px) and (max-width:1023px) {\n  #app-sidebar { width:min(18rem,82vw) !important; z-index:500 !important; box-shadow:16px 0 40px rgba(15,23,42,.18) !important; }\n  #main-content-area { margin-left:0 !important; width:100% !important; }\n  #main-content-area > main { padding-left:1rem !important; padding-right:1rem !important; }\n}\n@media (max-width:767px) {\n  #app-sidebar { width:min(18rem,88vw) !important; z-index:500 !important; box-shadow:16px 0 40px rgba(15,23,42,.22) !important; }\n  #main-content-area { margin-left:0 !important; width:100% !important; }\n  #main-content-area > main { padding-bottom:7rem !important; }\n  #main-content-area > header { min-height:60px !important; padding:.65rem .8rem !important; }\n  #medix-mobile-bottom-nav { z-index:450 !important; bottom:calc(.55rem + env(safe-area-inset-bottom)) !important; }\n}\n\n/* Mobile/tablet account footer */\n#app-sidebar .medix-sidebar-footer { background:rgba(255,255,255,.97) !important; border-color:var(--mx-border) !important; }\n#app-sidebar .medix-sidebar-footer button[title="Keluar"] { min-height:42px !important; background:#fff1f2 !important; color:#e11d48 !important; border-color:#fecdd3 !important; }\n#app-sidebar .medix-sidebar-footer button[title="Keluar"]:hover { background:#ffe4e6 !important; }\n\n/* Mobile data cards — light */\n@media (max-width:767px) {\n  #master-table-scroll tbody tr, #em-content-database tbody tr, #em-content-jadwal tbody tr {\n    background:#fff !important; border-color:#e2e8f0 !important; box-shadow:0 5px 18px rgba(15,23,42,.055) !important;\n  }\n  #master-table-scroll td::before, #em-content-database td::before, #em-content-jadwal td::before { color:#64748b !important; }\n}\n\n/* Ticket detail — application CSS (not PDF template) */\n.ticket-detail-sheet { position:fixed; inset:0; z-index:10050; display:flex; align-items:flex-end; justify-content:center; background:rgba(15,23,42,.42); backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); opacity:0; pointer-events:none; transition:opacity .22s ease; }\n.ticket-detail-sheet.show { opacity:1; pointer-events:auto; }\n.ticket-detail-card { width:min(860px,calc(100% - 24px)); max-height:88vh; overflow:auto; background:#fff; border:1px solid #e2e8f0; border-radius:24px 24px 0 0; box-shadow:0 -18px 50px rgba(15,23,42,.2); transform:translateY(22px); transition:transform .22s ease; }\n.ticket-detail-sheet.show .ticket-detail-card { transform:translateY(0); }\n.ticket-detail-handle { width:42px; height:4px; border-radius:999px; background:#cbd5e1; margin:10px auto 0; }\n.ticket-step { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; min-width:0; }\n.ticket-step-dot { width:32px; height:32px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; color:#94a3b8; border:1px solid #e2e8f0; }\n.ticket-step.done .ticket-step-dot, .ticket-step.current .ticket-step-dot { background:#ccfbf1; color:#0f766e; border-color:#99f6e4; }\n.ticket-step-line { flex:1; height:2px; background:#e2e8f0; margin-top:15px; }\n.ticket-step-line.done { background:#14b8a6; }\n@media (min-width:768px) { .ticket-detail-sheet { align-items:center; padding:20px; } .ticket-detail-card { border-radius:24px; } }\n@media (max-width:767px) { .ticket-detail-card { width:100%; max-height:92vh; border-radius:24px 24px 0 0; } }\n\n/* DARK THEME */\nbody.dark-mode { --mx-bg:#0b1220; --mx-surface:#111827; --mx-surface-2:#172033; --mx-border:#263449; --mx-text:#f8fafc; --mx-text-2:#cbd5e1; --mx-muted:#94a3b8; --mx-primary:#2dd4bf; --mx-primary-2:#14b8a6; background:#0b1220 !important; color:#f8fafc !important; }\nbody.dark-mode #main-content-area, body.dark-mode #main-content-area > main { background:#0b1220 !important; }\nbody.dark-mode #main-content-area > header { background:rgba(17,24,39,.94) !important; border-color:#263449 !important; }\nbody.dark-mode .glass-panel, body.dark-mode #app-sidebar, body.dark-mode .bg-white, body.dark-mode [class*="bg-white/"] { background:#111827 !important; color:#f8fafc !important; border-color:#263449 !important; }\nbody.dark-mode .glass-panel { box-shadow:0 10px 30px rgba(0,0,0,.18) !important; }\nbody.dark-mode #app-sidebar .bg-slate-50, body.dark-mode #app-sidebar .bg-slate-100 { background:#172033 !important; color:#e2e8f0 !important; border-color:#263449 !important; }\nbody.dark-mode .sidebar-item { color:#cbd5e1 !important; }\nbody.dark-mode .sidebar-item:hover { background:#172033 !important; color:#5eead4 !important; }\nbody.dark-mode .sidebar-item.active { background:linear-gradient(90deg,rgba(20,184,166,.18),rgba(20,184,166,.05)) !important; color:#5eead4 !important; border-left-color:#2dd4bf !important; }\nbody.dark-mode table th { background:#172033 !important; color:#f8fafc !important; border-color:#334155 !important; }\nbody.dark-mode table td { background:#111827 !important; color:#cbd5e1 !important; border-color:#263449 !important; }\nbody.dark-mode table tbody tr:hover { background:#172033 !important; }\nbody.dark-mode input, body.dark-mode select, body.dark-mode textarea { background:#0b1220 !important; color:#f8fafc !important; border-color:#334155 !important; }\nbody.dark-mode input::placeholder, body.dark-mode textarea::placeholder { color:#64748b !important; }\nbody.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode p, body.dark-mode label { color:#f8fafc !important; }\nbody.dark-mode .text-slate-900, body.dark-mode .text-slate-800, body.dark-mode .text-slate-700 { color:#f1f5f9 !important; }\nbody.dark-mode .text-slate-600 { color:#cbd5e1 !important; }\nbody.dark-mode .text-slate-500, body.dark-mode .text-slate-400 { color:#94a3b8 !important; }\nbody.dark-mode .bg-slate-50 { background:#172033 !important; color:#e2e8f0 !important; }\nbody.dark-mode .bg-slate-100, body.dark-mode .bg-slate-200 { background:#1e293b !important; color:#e2e8f0 !important; }\nbody.dark-mode .border-slate-100, body.dark-mode .border-slate-200, body.dark-mode .border-slate-300 { border-color:#263449 !important; }\nbody.dark-mode .medix-sidebar-footer { background:rgba(17,24,39,.97) !important; }\nbody.dark-mode .medix-sidebar-footer button[title="Keluar"] { background:rgba(244,63,94,.12) !important; color:#fb7185 !important; border-color:rgba(251,113,133,.28) !important; }\nbody.dark-mode #medix-mobile-bottom-nav { background:rgba(17,24,39,.94) !important; border-color:#263449 !important; box-shadow:0 14px 35px rgba(0,0,0,.32) !important; }\nbody.dark-mode #medix-mobile-bottom-nav button { color:#94a3b8 !important; }\nbody.dark-mode #medix-mobile-bottom-nav button.active { background:rgba(20,184,166,.16) !important; color:#5eead4 !important; }\nbody.dark-mode #app-sidebar .medix-sidebar-footer p { color:#94a3b8 !important; }\nbody.dark-mode .master-table-scroll tbody tr, body.dark-mode #master-table-scroll tbody tr, body.dark-mode #em-content-database tbody tr, body.dark-mode #em-content-jadwal tbody tr { background:#111827 !important; border-color:#263449 !important; box-shadow:0 8px 20px rgba(0,0,0,.16) !important; }\nbody.dark-mode #master-table-scroll td::before, body.dark-mode #em-content-database td::before, body.dark-mode #em-content-jadwal td::before { color:#94a3b8 !important; }\nbody.dark-mode .ticket-detail-card { background:#111827 !important; border-color:#263449 !important; }\nbody.dark-mode .ticket-detail-card .bg-slate-50 { background:#172033 !important; }\nbody.dark-mode .ticket-detail-card .text-slate-900, body.dark-mode .ticket-detail-card .text-slate-700 { color:#f1f5f9 !important; }\nbody.dark-mode .ticket-detail-card .text-slate-500, body.dark-mode .ticket-detail-card .text-slate-400 { color:#94a3b8 !important; }\nbody.dark-mode .ticket-detail-card .border-slate-200, body.dark-mode .ticket-detail-card .border-slate-100 { border-color:#263449 !important; }\nbody.dark-mode .ticket-detail-handle { background:#475569; }\nbody.dark-mode #medix-mobile-backdrop { background:rgba(2,6,23,.64); }\n\n/* Avoid horizontal page overflow; data tables retain their own scroll. */\nhtml, body { overflow-x:hidden !important; }\n#main-content-area { min-width:0 !important; }\n.master-table-scroll, .table-scroll, .overflow-x-auto { max-width:100% !important; }\n\n@media print {\n  #medix-mobile-backdrop { display:none !important; }\n  .ticket-detail-sheet, #medix-mobile-bottom-nav, #app-sidebar { display:none !important; }\n  body, body.dark-mode, #main-content-area, #main-content-area > main { background:#fff !important; color:#000 !important; }\n}\n</style>\n
+
 
 <style id="medix-final-production-overrides">
 /* ============================================================
@@ -1105,6 +1105,229 @@ body.dark-mode #main-content-area > header button {
     position:relative;
     z-index:1;
   }
+}
+</style>
+
+<style id="medix-final-ui-stability">
+/* ============================================================
+   MEDIX FINAL UI STABILITY
+   Desktop / Tablet / Phone + Light / Dark
+   ============================================================ */
+:root {
+  --mx-bg:#f8fafc;
+  --mx-surface:#ffffff;
+  --mx-surface-2:#f1f5f9;
+  --mx-border:#e2e8f0;
+  --mx-text:#0f172a;
+  --mx-text-2:#475569;
+  --mx-muted:#64748b;
+  --mx-primary:#0f766e;
+  --mx-primary-2:#14b8a6;
+}
+html, body { width:100%; height:100%; min-height:100%; overflow:hidden !important; }
+body { background:var(--mx-bg) !important; color:var(--mx-text) !important; overscroll-behavior:none !important; }
+#main-content-area {
+  height:100dvh !important; max-height:100dvh !important; min-width:0 !important;
+  margin-left:17rem; width:calc(100% - 17rem);
+  overflow-x:hidden !important; overflow-y:auto !important;
+  overscroll-behavior:contain !important; scrollbar-width:thin !important;
+}
+#main-content-area::-webkit-scrollbar { width:9px; height:9px; display:block !important; }
+#main-content-area::-webkit-scrollbar-track { background:transparent; }
+#main-content-area::-webkit-scrollbar-thumb { background:rgba(71,85,105,.48); border-radius:999px; border:2px solid transparent; background-clip:padding-box; }
+
+/* Sidebar: solid surface, independent from content and never transparent. */
+#app-sidebar {
+  position:fixed !important; inset:0 auto 0 0 !important;
+  width:17rem !important; height:100dvh !important; max-height:100dvh !important;
+  transform:translateX(0) !important; opacity:1 !important; isolation:isolate !important;
+  background:#ffffff !important; color:#0f172a !important;
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+  z-index:500 !important; overflow:hidden !important;
+}
+#app-sidebar > div:first-child {
+  display:flex !important; flex-direction:column !important;
+  width:100% !important; height:100% !important; min-height:100% !important;
+  overflow:hidden !important; background:#ffffff !important;
+}
+#app-sidebar > div:first-child > div:first-child {
+  flex:1 1 auto !important; min-height:0 !important;
+  overflow-y:auto !important; overflow-x:hidden !important;
+  background:#ffffff !important;
+  -webkit-overflow-scrolling:touch;
+}
+#app-sidebar > div:first-child > div:last-child,
+#app-sidebar .medix-sidebar-footer {
+  flex:0 0 auto !important; position:relative !important; z-index:20 !important;
+  background:#ffffff !important; border-top:1px solid #e2e8f0 !important;
+  box-shadow:0 -8px 20px rgba(15,23,42,.06) !important;
+  opacity:1 !important; backdrop-filter:none !important;
+}
+#app-sidebar > div:first-child > div:first-child > div:first-child {
+  min-height:72px !important; background:#ffffff !important;
+}
+#app-sidebar .medix-sidebar-footer * { opacity:1 !important; }
+#app-sidebar .medix-sidebar-footer button[title="Keluar"] {
+  width:100% !important; min-height:42px !important;
+  background:#fff1f2 !important; color:#e11d48 !important;
+  border:1px solid #fecdd3 !important; border-radius:12px !important;
+}
+#app-sidebar .medix-sidebar-footer button[title="Keluar"]:hover { background:#ffe4e6 !important; }
+
+/* Drawer state is controlled by an explicit class, not Tailwind transform classes. */
+body.medix-sidebar-collapsed #app-sidebar { transform:translateX(-105%) !important; }
+body.medix-sidebar-collapsed #main-content-area { margin-left:0 !important; width:100% !important; }
+#medix-mobile-backdrop {
+  position:fixed !important; inset:0 !important; display:block !important;
+  background:rgba(15,23,42,.48) !important; opacity:0 !important; pointer-events:none !important;
+  z-index:450 !important; border:0 !important; padding:0 !important;
+  transition:opacity .2s ease !important;
+}
+#medix-mobile-backdrop.show { opacity:1 !important; pointer-events:auto !important; }
+body.medix-drawer-open { overflow:hidden !important; }
+
+/* Desktop */
+@media (min-width:1024px) {
+  #app-sidebar { transform:translateX(0) !important; }
+  #medix-mobile-backdrop { display:none !important; }
+  #main-content-area { margin-left:17rem !important; width:calc(100% - 17rem) !important; }
+  body.medix-sidebar-collapsed #app-sidebar { transform:translateX(-105%) !important; }
+  body.medix-sidebar-collapsed #main-content-area { margin-left:0 !important; width:100% !important; }
+}
+
+/* Tablet + phone: true overlay drawer. */
+@media (max-width:1023px) {
+  #app-sidebar {
+    width:min(19rem,88vw) !important; max-width:88vw !important;
+    transform:translateX(-105%) !important;
+    box-shadow:18px 0 44px rgba(15,23,42,.24) !important;
+  }
+  #app-sidebar.medix-sidebar-open { transform:translateX(0) !important; }
+  #main-content-area { margin-left:0 !important; width:100% !important; }
+  #main-content-area > header { position:sticky !important; top:0 !important; z-index:100 !important; }
+  #main-content-area > main { padding-left:1rem !important; padding-right:1rem !important; }
+}
+@media (max-width:767px) {
+  #main-content-area > main { padding-bottom:7rem !important; }
+  #main-content-area > header { min-height:60px !important; padding:.65rem .8rem !important; }
+  #app-sidebar { width:min(19rem,88vw) !important; }
+  #medix-mobile-bottom-nav { z-index:440 !important; }
+}
+
+/* Single scroll surface; inner data tables can scroll horizontally. */
+.master-table-scroll, .table-scroll, .overflow-x-auto { max-width:100% !important; }
+.master-table-scroll::-webkit-scrollbar, .table-scroll::-webkit-scrollbar, .overflow-x-auto::-webkit-scrollbar { width:8px; height:8px; display:block !important; }
+
+/* Light theme surfaces. */
+body:not(.dark-mode) #main-content-area,
+body:not(.dark-mode) #main-content-area > main { background:#f8fafc !important; }
+body:not(.dark-mode) #main-content-area > header { background:rgba(255,255,255,.96) !important; border-color:#e2e8f0 !important; }
+body:not(.dark-mode) .glass-panel { background:#ffffff !important; border-color:#dbe5ec !important; color:#0f172a !important; }
+body:not(.dark-mode) table th { background:#f1f5f9 !important; color:#334155 !important; }
+body:not(.dark-mode) table td { color:#334155 !important; }
+
+/* Registration / document modals — controlled palette, independent of page theme. */
+#modal-alat > form, #modal-kalibrasi > form {
+  background:#ffffff !important; color:#0f172a !important;
+  border:1px solid #dbe5ec !important; overflow:hidden !important;
+}
+#modal-alat > form > div:first-of-type,
+#modal-alat > form > div:last-child,
+#modal-kalibrasi > form > div:first-of-type,
+#modal-kalibrasi > form > div:last-child {
+  background:#f8fafc !important; color:#334155 !important; border-color:#e2e8f0 !important;
+}
+#modal-alat label, #modal-kalibrasi label { color:#475569 !important; }
+#modal-alat input, #modal-kalibrasi input, #modal-alat select, #modal-kalibrasi select, #modal-alat textarea, #modal-kalibrasi textarea {
+  background:#ffffff !important; color:#0f172a !important; border-color:#cbd5e1 !important;
+}
+
+/* Dark theme: every major surface follows the same palette. */
+body.dark-mode { background:#0b1220 !important; color:#f8fafc !important; }
+body.dark-mode #main-content-area,
+body.dark-mode #main-content-area > main { background:#0b1220 !important; }
+body.dark-mode #main-content-area > header { background:#111827 !important; border-color:#263449 !important; }
+body.dark-mode #app-sidebar,
+body.dark-mode #app-sidebar > div:first-child,
+body.dark-mode #app-sidebar > div:first-child > div:first-child,
+body.dark-mode #app-sidebar > div:first-child > div:last-child,
+body.dark-mode #app-sidebar .medix-sidebar-footer { background:#111827 !important; color:#f8fafc !important; border-color:#263449 !important; }
+body.dark-mode #app-sidebar > div:first-child > div:first-child > div:first-child { background:#111827 !important; border-color:#263449 !important; }
+body.dark-mode #app-sidebar .bg-slate-50,
+body.dark-mode #app-sidebar .bg-slate-100 { background:#172033 !important; color:#e2e8f0 !important; border-color:#263449 !important; }
+body.dark-mode #app-sidebar .sidebar-item { color:#cbd5e1 !important; }
+body.dark-mode #app-sidebar .sidebar-item:hover { background:#172033 !important; color:#5eead4 !important; }
+body.dark-mode #app-sidebar .sidebar-item.active { background:rgba(20,184,166,.14) !important; color:#5eead4 !important; border-left-color:#2dd4bf !important; }
+body.dark-mode #app-sidebar .medix-sidebar-footer button[title="Keluar"] {
+  background:rgba(244,63,94,.12) !important; color:#fb7185 !important; border-color:rgba(251,113,133,.30) !important;
+}
+body.dark-mode #app-sidebar .medix-sidebar-footer p { color:#94a3b8 !important; }
+body.dark-mode .glass-panel { background:#111827 !important; border-color:#263449 !important; color:#f8fafc !important; }
+body.dark-mode table th { background:#172033 !important; color:#f8fafc !important; border-color:#334155 !important; }
+body.dark-mode table td { background:#111827 !important; color:#cbd5e1 !important; border-color:#263449 !important; }
+body.dark-mode table tbody tr:hover { background:#172033 !important; }
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+  background:#0b1220 !important; color:#f8fafc !important; border-color:#334155 !important;
+}
+body.dark-mode input::placeholder, body.dark-mode textarea::placeholder { color:#64748b !important; }
+body.dark-mode .bg-slate-50 { background:#172033 !important; color:#e2e8f0 !important; }
+body.dark-mode .bg-slate-100, body.dark-mode .bg-slate-200 { background:#1e293b !important; color:#e2e8f0 !important; }
+body.dark-mode .border-slate-100, body.dark-mode .border-slate-200, body.dark-mode .border-slate-300 { border-color:#263449 !important; }
+body.dark-mode .text-slate-900, body.dark-mode .text-slate-800, body.dark-mode .text-slate-700 { color:#f1f5f9 !important; }
+body.dark-mode .text-slate-600 { color:#cbd5e1 !important; }
+body.dark-mode .text-slate-500, body.dark-mode .text-slate-400 { color:#94a3b8 !important; }
+body.dark-mode #medix-mobile-bottom-nav { background:#111827 !important; border-color:#263449 !important; box-shadow:0 14px 35px rgba(0,0,0,.32) !important; }
+body.dark-mode #medix-mobile-bottom-nav button { color:#94a3b8 !important; }
+body.dark-mode #medix-mobile-bottom-nav button.active { background:rgba(20,184,166,.16) !important; color:#5eead4 !important; }
+body.dark-mode #modal-alat > form, body.dark-mode #modal-kalibrasi > form {
+  background:#111827 !important; color:#f8fafc !important; border-color:#263449 !important;
+}
+body.dark-mode #modal-alat > form > div:first-of-type,
+body.dark-mode #modal-alat > form > div:last-child,
+body.dark-mode #modal-kalibrasi > form > div:first-of-type,
+body.dark-mode #modal-kalibrasi > form > div:last-child {
+  background:#172033 !important; color:#e2e8f0 !important; border-color:#263449 !important;
+}
+body.dark-mode #modal-alat label, body.dark-mode #modal-kalibrasi label { color:#cbd5e1 !important; }
+body.dark-mode #modal-alat input, body.dark-mode #modal-kalibrasi input,
+body.dark-mode #modal-alat select, body.dark-mode #modal-kalibrasi select,
+body.dark-mode #modal-alat textarea, body.dark-mode #modal-kalibrasi textarea {
+  background:#0b1220 !important; color:#f8fafc !important; border-color:#334155 !important;
+}
+
+/* Theme button: icon describes the CURRENT mode. */
+#theme-icon.fa-sun { color:#f59e0b !important; }
+body.dark-mode #theme-icon.fa-moon { color:#e2e8f0 !important; }
+
+/* Remove unused ticket eye/detail affordance. */
+.ticket-mobile-detail-btn { display:none !important; }
+
+/* EM/PM: six columns — no day/month columns. */
+#em-content-jadwal table { min-width:900px !important; }
+#em-content-jadwal th, #em-content-jadwal td { white-space:nowrap; }
+@media (max-width:767px) {
+  #em-content-jadwal table { min-width:0 !important; width:100% !important; }
+  #em-content-jadwal thead { display:none !important; }
+  #em-content-jadwal tbody, #em-content-jadwal tr { display:block !important; width:100% !important; }
+  #em-content-jadwal tr { margin:0 0 .7rem !important; padding:.75rem !important; border:1px solid #e2e8f0 !important; border-radius:16px !important; background:#fff !important; }
+  #em-content-jadwal td { display:grid !important; grid-template-columns:6.8rem minmax(0,1fr) !important; gap:.5rem !important; width:100% !important; padding:.38rem .15rem !important; white-space:normal !important; text-align:left !important; border-bottom:1px solid #e2e8f0 !important; }
+  #em-content-jadwal td:last-child { border-bottom:0 !important; }
+  #em-content-jadwal td:nth-child(1)::before { content:'Nama Alat'; }
+  #em-content-jadwal td:nth-child(2)::before { content:'Merek'; }
+  #em-content-jadwal td:nth-child(3)::before { content:'Tipe / Model'; }
+  #em-content-jadwal td:nth-child(4)::before { content:'SN'; }
+  #em-content-jadwal td:nth-child(5)::before { content:'Ruangan'; }
+  #em-content-jadwal td:nth-child(6)::before { content:'Periode PM'; }
+  #em-content-jadwal td::before { font-size:8px !important; font-weight:800 !important; text-transform:uppercase !important; color:#64748b !important; }
+  body.dark-mode #em-content-jadwal tr { background:#111827 !important; border-color:#263449 !important; }
+  body.dark-mode #em-content-jadwal td { background:transparent !important; color:#cbd5e1 !important; border-color:#263449 !important; }
+  body.dark-mode #em-content-jadwal td::before { color:#94a3b8 !important; }
+}
+
+@media print {
+  html, body { overflow:visible !important; height:auto !important; }
+  #app-sidebar, #medix-mobile-bottom-nav, #medix-mobile-backdrop { display:none !important; }
+  #main-content-area { margin:0 !important; width:100% !important; height:auto !important; overflow:visible !important; }
 }
 </style>
 
@@ -5332,12 +5555,12 @@ function renderMaintenanceHistory() {
         function kirimNotifikasiTelegramOtomatis(namaAlat, ruangan, keluhan, ticketId = '') {
             const tokenBot = "8639957817:AAGVfrGvDMubnl9xEP0fDVGVcwTjw6ARTro";
             const chatId = "-1004495239180";
-            const pesan = `🚨 *LAPORAN KERUSAKAN ALAT MEDIS* 🚨\n\n` +
+            const pesan = `🚨 *LAPORAN KERUSAKAN ALAT MEDIS* 🚨` +
                 `📌 *Alat:* ${namaAlat}\n` +
                 `🏥 *Ruangan:* ${ruangan}\n` +
                 `⚠️ *Keluhan:* ${keluhan}\n` +
                 (ticketId ? `🎫 *Tiket:* ${ticketId}\n` : '') +
-                `🔴 *Status:* Dalam Perbaikan\n\n` +
+                `🔴 *Status:* Dalam Perbaikan` +
                 `_Segera buka aplikasi MEDIX untuk mengambil tindakan._`;
             const url = `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(pesan)}&parse_mode=Markdown`;
 
@@ -6285,33 +6508,23 @@ function renderMaintenanceHistory() {
             const mainArea = document.getElementById('main-content-area');
             const backdrop = document.getElementById('medix-mobile-backdrop');
             if (!sb) return;
-
             const isDesktop = window.innerWidth >= 1024;
-
             if (isDesktop) {
                 const collapsed = document.body.classList.contains('medix-sidebar-collapsed');
-                // On desktop, an explicit false is used by switchTab() and must NOT
-                // reopen a sidebar the user intentionally collapsed.
                 if (s === false) return;
                 const open = s === true ? true : collapsed;
                 document.body.classList.toggle('medix-sidebar-collapsed', !open);
                 sb.classList.remove('-translate-x-full');
-                if (mainArea) {
-                    mainArea.style.marginLeft = open ? '17rem' : '0rem';
-                    mainArea.style.width = open ? 'calc(100% - 17rem)' : '100%';
-                }
+                sb.classList.toggle('medix-sidebar-open', open);
+                if (mainArea) { mainArea.style.marginLeft = open ? '17rem' : '0rem'; mainArea.style.width = open ? 'calc(100% - 17rem)' : '100%'; }
                 if (backdrop) backdrop.classList.remove('show');
                 document.body.classList.remove('medix-drawer-open');
                 return;
             }
-
-            const isClosed = sb.classList.contains('-translate-x-full');
-            const open = s === true || (s === undefined && isClosed);
+            const open = s === true ? true : (s === false ? false : !sb.classList.contains('medix-sidebar-open'));
+            sb.classList.toggle('medix-sidebar-open', open);
             sb.classList.toggle('-translate-x-full', !open);
-            if (mainArea) {
-                mainArea.style.marginLeft = '0rem';
-                mainArea.style.width = '100%';
-            }
+            if (mainArea) { mainArea.style.marginLeft = '0rem'; mainArea.style.width = '100%'; }
             if (backdrop) backdrop.classList.toggle('show', open);
             document.body.classList.toggle('medix-drawer-open', open);
         }
@@ -6321,30 +6534,31 @@ function renderMaintenanceHistory() {
             const mainArea = document.getElementById('main-content-area');
             const backdrop = document.getElementById('medix-mobile-backdrop');
             if (!sb) return;
-
             if (window.innerWidth >= 1024) {
                 const collapsed = document.body.classList.contains('medix-sidebar-collapsed');
                 sb.classList.remove('-translate-x-full');
+                sb.classList.remove('medix-sidebar-open');
                 document.body.classList.remove('medix-drawer-open');
                 if (backdrop) backdrop.classList.remove('show');
-                if (mainArea) {
-                    mainArea.style.marginLeft = collapsed ? '0rem' : '17rem';
-                    mainArea.style.width = collapsed ? '100%' : 'calc(100% - 17rem)';
-                }
+                if (mainArea) { mainArea.style.marginLeft = collapsed ? '0rem' : '17rem'; mainArea.style.width = collapsed ? '100%' : 'calc(100% - 17rem)'; }
             } else {
-                // Tablet/HP always starts as a drawer. Preserve open state only
-                // when the drawer was explicitly opened.
-                const open = !sb.classList.contains('-translate-x-full');
-                if (mainArea) {
-                    mainArea.style.marginLeft = '0rem';
-                    mainArea.style.width = '100%';
-                }
+                document.body.classList.remove('medix-sidebar-collapsed');
+                const open = sb.classList.contains('medix-sidebar-open');
+                sb.classList.toggle('-translate-x-full', !open);
+                if (mainArea) { mainArea.style.marginLeft = '0rem'; mainArea.style.width = '100%'; }
                 document.body.classList.toggle('medix-drawer-open', open);
                 if (backdrop) backdrop.classList.toggle('show', open);
             }
         }
 
         window.addEventListener('resize', sinkronkanShellResponsiveMEDIX);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const sb = document.getElementById('app-sidebar');
+                if (window.innerWidth < 1024 && sb && sb.classList.contains('medix-sidebar-open')) toggleSidebarMenu(false);
+            }
+        });
+
 
         function clickDashboardStat(t) { 
             if(t === 'all'){ globalFilterStatus = "all"; switchTab('data-alat'); } 
