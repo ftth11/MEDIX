@@ -578,8 +578,12 @@ body { overflow:hidden !important; }
   }
   #medix-mobile-bottom-nav button.hidden { display:none !important; }
 
-  /* Hide desktop-only quick-action blocks from competing with bottom nav. */
+  /* Tablet + phone: keep the Lembar Kerja quick action available inside
+     the sidebar drawer. Other technician-only quick actions remain hidden
+     so the bottom navigation stays compact. */
   .menu-akses-teknisi { display:none !important; }
+  #btn-aksi-cepat-container { display:block !important; }
+  #btn-aksi-cepat-container > button { display:flex !important; }
 }
 
 /* Internal tables: horizontal scrolling is explicit and visually discoverable. */
