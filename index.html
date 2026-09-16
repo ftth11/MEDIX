@@ -428,7 +428,21 @@ body.dark-mode .medix-dialog-card { background:#111827; border-color:rgba(94,234
 body.dark-mode .medix-dialog-message { color:#cbd5e1; }
 body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
 body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
-    </style>
+    
+/* Dashboard utama: lima kartu statistik sejajar dan konsisten pada desktop. */
+@media (min-width: 1024px) {
+  #dashboard-stat-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+  #dashboard-stat-grid > * {
+    min-width: 0 !important;
+    min-height: 92px !important;
+  }
+}
+
+/* Equipment di Dashboard hanya berfungsi sebagai shortcut ke menu Equipment. */
+#dashboard-equipment-stat { width: 100% !important; }
+</style>
 
 <style id="medix-pro-app-shell-v11">
 /* =========================================================
@@ -1831,7 +1845,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 
                 <div id="tab-dashboard" class="tab-content space-y-4 no-print">
                     <!-- 4 Kartu Statistik Atas -->
-                    <div id="dashboard-stat-grid" class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <div id="dashboard-stat-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:scale-[1.01] transition">
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Aset Medis</p><h3 id="stat-total" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-2.5 sm:p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-box-archive text-base sm:text-lg"></i></div>
@@ -1851,7 +1865,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
 
                     <!-- Equipment Management dibuat sebagai kartu statistik ringkas di Dashboard -->
-                    <button id="dashboard-equipment-stat" type="button" onclick="bukaFilterStatEM('jenis')" aria-label="Buka Equipment Management" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                    <button id="dashboard-equipment-stat" type="button" onclick="switchTab('equipment')" aria-label="Buka Equipment Management" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
                         <div class="min-w-0">
                             <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Equipment Management</p>
                             <h3 id="dash-equipment-total" class="text-2xl sm:text-3xl font-black text-teal-700 mt-1">0</h3>
@@ -2118,12 +2132,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 Equipment Management & Rekapan PM Alkes
                             </h2>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span id="equipment-sync-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold">
-                                <i class="fa-solid fa-arrows-rotate"></i>
-                                Otomatis tersinkron
-                            </span>
-                        </div>
                     </div>
 
                     <!-- Statistik Ringkasan EM -->
@@ -2181,7 +2189,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                         <th class="p-3 text-center font-black text-blue-600">Nilai EM</th>
                                         <th class="p-3">Rekomendasi Periode PM</th>
                                         <th class="p-3">Ruangan / Teknisi</th>
-                                        <th class="p-3 text-center">Sumber</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-equipment-em-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -2193,7 +2200,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <div id="em-content-jadwal" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             
-                            <span class="text-[10px] text-slate-500 font-semibold">Jadwal dibuat otomatis dari rekomendasi EM</span>
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[900px]">
@@ -2229,9 +2235,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             </div>
                         </div>
 
-                        <div class="px-4 pt-1 text-[10px] text-slate-500">
-                            Target dihitung dari jadwal EM/PM otomatis per unit. Selesai dihitung dari LK dan histori maintenance yang terhubung ke alat pada tahun terpilih.
-                        </div>
 
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table id="table-rekapan-em" class="w-full text-left text-xs border-collapse min-w-[1500px]">
@@ -3592,7 +3595,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 const tbody = document.getElementById('table-equipment-em-body');
                 if (!tbody) return;
                 if (filtered.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
                     return;
                 }
                 tbody.innerHTML = filtered.map(item => `
@@ -3607,7 +3610,6 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                         <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
                         <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold medix-period-badge ${kelasBadgePeriodeEM(item.rekomendasiPeriode)} ${item.rekomendasiPeriode === 'Setiap 4 Bulan' ? 'period-4' : item.rekomendasiPeriode === 'Setiap 6 Bulan' ? 'period-6' : item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span></td>
                         <td class="p-3"><div class="font-semibold text-slate-800">${escapeHtmlEquipment(item.lokasi || '-')}</div><div class="text-[10px] text-slate-400">${escapeHtmlEquipment(item.teknisi || '-')}</div></td>
-                        <td class="p-3 text-center"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold"><i class="fa-solid fa-database"></i> Master Aset</span></td>
                     </tr>`).join('');
             } catch (error) {
                 console.error('Gagal merender tabel equipment:', error);
@@ -3692,7 +3694,12 @@ const filtered = rows;
             if (!select) return;
 
             const tahunSekarang = new Date().getFullYear();
-            const tahunData = new Set([tahunSekarang]);
+            // Sediakan tahun berjalan dan 5 tahun ke depan. Histori tahun sebelumnya
+            // tetap ditambahkan dari data LK/maintenance sehingga tidak pernah hilang.
+            const tahunData = new Set();
+            for (let tahun = tahunSekarang; tahun <= tahunSekarang + 5; tahun++) {
+                tahunData.add(tahun);
+            }
 
             [...dataLembarKerja, ...dataMaintenance].forEach(item => {
                 const d = tanggalRekapanEM(item);
@@ -7994,7 +8001,6 @@ body { overflow-x: hidden !important; }
   #em-content-database td:nth-child(8)::before { content:'Nilai EM'; }
   #em-content-database td:nth-child(9)::before { content:'Periode PM'; }
   #em-content-database td:nth-child(10)::before { content:'Ruangan / Teknisi'; }
-  #em-content-database td:nth-child(11)::before { content:'Sumber'; }
 
   /* Jadwal PM: compact mobile cards. */
   #em-content-jadwal > .overflow-x-auto { overflow-x:hidden !important; overflow-y:visible !important; }
@@ -8015,8 +8021,6 @@ body { overflow-x: hidden !important; }
   }
   #em-content-jadwal td:last-child { border-bottom:0 !important; }
   #em-content-jadwal td::before { font-size:8px !important; text-transform:uppercase !important; letter-spacing:.06em !important; color:#64748b !important; font-weight:800 !important; }
-  #em-content-jadwal td:nth-child(1)::before { content:'Hari'; }
-  #em-content-jadwal td:nth-child(2)::before { content:'Bulan'; }
   #em-content-jadwal td:nth-child(3)::before { content:'Nama Alat'; }
   #em-content-jadwal td:nth-child(4)::before { content:'Nomor Seri'; }
   #em-content-jadwal td:nth-child(5)::before { content:'Ruangan'; }
