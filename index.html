@@ -578,11 +578,9 @@ body { overflow:hidden !important; }
   }
   #medix-mobile-bottom-nav button.hidden { display:none !important; }
 
-  /* Tablet + phone: keep the Lembar Kerja quick action available inside
-     the sidebar drawer. Other technician-only quick actions remain hidden
-     so the bottom navigation stays compact. */
-  .menu-akses-teknisi { display:none !important; }
-  #btn-aksi-cepat-container { display:block !important; }
+  /* Tablet + phone: keep technician quick action available in the drawer.
+     Visibility is still controlled by renderSidebarByPermission(). */
+  #btn-aksi-cepat-container > button { display:flex !important; }
 }
 
 /* Internal tables: horizontal scrolling is explicit and visually discoverable. */
@@ -1833,7 +1831,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 
                 <div id="tab-dashboard" class="tab-content space-y-4 no-print">
                     <!-- 4 Kartu Statistik Atas -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <div id="dashboard-stat-grid" class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:scale-[1.01] transition">
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Aset Medis</p><h3 id="stat-total" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-2.5 sm:p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-box-archive text-base sm:text-lg"></i></div>
@@ -1852,49 +1850,18 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                         </div>
                     </div>
 
-                    <!-- Equipment Management: ringkasan EM langsung dari Dashboard -->
-                    <section id="dashboard-equipment-overview" class="glass-panel rounded-2xl shadow-sm border border-slate-200 p-4 space-y-4">
-                        <div class="flex items-center justify-between gap-3 flex-wrap">
-                            <div>
-                                <h4 class="text-[11px] font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center">
-                                    <i class="fa-solid fa-hospital-user mr-2 text-teal-600"></i> Equipment Management
-                                </h4>
-                                <p class="text-[10px] text-slate-500 mt-1">Ringkasan populasi dan rekomendasi periode PM berdasarkan Master Data Aset.</p>
-                            </div>
-                            <button type="button" onclick="bukaFilterStatEM('jenis')" class="px-3 py-2 rounded-xl bg-slate-900 text-white text-[10px] font-bold hover:bg-slate-700 transition">
-                                <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Buka Equipment
-                            </button>
+                    <!-- Equipment Management dibuat sebagai kartu statistik ringkas di Dashboard -->
+                    <button id="dashboard-equipment-stat" type="button" onclick="bukaFilterStatEM('jenis')" aria-label="Buka Equipment Management" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                        <div class="min-w-0">
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Equipment Management</p>
+                            <h3 id="dash-equipment-total" class="text-2xl sm:text-3xl font-black text-teal-700 mt-1">0</h3>
+                            <p class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-0.5">Total populasi EM</p>
                         </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-                            <button type="button" onclick="bukaFilterStatEM('jenis')" class="dashboard-em-mini">
-                                <span class="dashboard-em-mini-label">Jenis Alkes EM</span><strong id="dash-em-jenis">0</strong><span class="dashboard-em-mini-note">kelompok alat</span>
-                            </button>
-                            <button type="button" onclick="bukaFilterStatEM('populasi')" class="dashboard-em-mini">
-                                <span class="dashboard-em-mini-label">Populasi</span><strong id="dash-em-populasi">0</strong><span class="dashboard-em-mini-note">unit terdaftar</span>
-                            </button>
-                            <button type="button" onclick="bukaFilterStatEM('4')" class="dashboard-em-mini">
-                                <span class="dashboard-em-mini-label">Setiap 4 Bulan</span><strong id="dash-em-4">0</strong><span class="dashboard-em-mini-note">kelompok EM</span>
-                            </button>
-                            <button type="button" onclick="bukaFilterStatEM('6')" class="dashboard-em-mini">
-                                <span class="dashboard-em-mini-label">Setiap 6 Bulan</span><strong id="dash-em-6">0</strong><span class="dashboard-em-mini-note">kelompok EM</span>
-                            </button>
-                            <button type="button" onclick="bukaFilterStatEM('12')" class="dashboard-em-mini">
-                                <span class="dashboard-em-mini-label">Setiap 12 Bulan</span><strong id="dash-em-12">0</strong><span class="dashboard-em-mini-note">kelompok EM</span>
-                            </button>
+                        <div class="p-2.5 sm:p-3 bg-teal-50 text-teal-600 rounded-xl border border-teal-100 shrink-0">
+                            <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
                         </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                            <button type="button" onclick="bukaFilterStatEM('inspeksi')" class="lg:col-span-1 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 text-left hover:shadow-sm transition">
-                                <div class="flex items-center justify-between"><span class="text-[10px] font-black uppercase tracking-wide text-emerald-800">Inspeksi sesuai kebutuhan</span><i class="fa-solid fa-clipboard-check text-emerald-600"></i></div>
-                                <div id="dash-em-inspeksi" class="text-2xl font-black text-emerald-700 mt-1">0</div>
-                                <div class="text-[9px] text-emerald-700/80">Klik untuk membuka daftar</div>
-                            </button>
-                            <div class="lg:col-span-2 rounded-xl border border-slate-100 dark:border-slate-800 p-3 min-h-[150px]">
-                                <div class="flex items-center justify-between mb-2"><span class="text-[10px] font-black uppercase tracking-wide text-slate-700 dark:text-slate-200">Distribusi rekomendasi PM</span><span class="text-[9px] text-slate-400">Real-time</span></div>
-                                <div class="h-[120px] relative"><canvas id="chartEquipmentPM"></canvas></div>
-                            </div>
-                        </div>
-                    </section>
-                
+                    </button>
+
                     <!-- Bagian Grafik Bawah -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div class="glass-panel p-4 rounded-2xl shadow-sm flex flex-col justify-between lg:col-span-1 h-[380px]">
@@ -2841,7 +2808,10 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 el.classList.toggle('hidden', !checks.akun);
             });
             document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
-                el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
+                const role = canonicalRole(currentActiveRole);
+                const canCreateLk = (role === 'Admin' || role === 'Teknisi') && izinMenu('ticket', 'kerjakan');
+                el.classList.toggle('hidden', !canCreateLk);
+                el.setAttribute('aria-hidden', canCreateLk ? 'false' : 'true');
             });
 
             const activeTab = ['dashboard','data-alat','ticket-system','kalibrasi','equipment','kelola-akun']
@@ -5352,9 +5322,12 @@ function renderMaintenanceHistory() {
                 const boxTicket = document.getElementById('box-form-buat-ticket');
                 if (boxTicket) boxTicket.classList.toggle('hidden', !ticketLapor);
 
-                // Tombol cepat pembuatan LK hanya untuk akun yang memiliki izin mengerjakan tiket.
+                // Tombol cepat pembuatan LK hanya untuk Admin/Teknisi.
                 document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
-                    el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
+                    const role = canonicalRole(currentActiveRole);
+                    const canCreateLk = (role === 'Admin' || role === 'Teknisi') && izinMenu('ticket', 'kerjakan');
+                    el.classList.toggle('hidden', !canCreateLk);
+                    el.setAttribute('aria-hidden', canCreateLk ? 'false' : 'true');
                 });
 
                 // ============================================
@@ -5505,48 +5478,19 @@ function renderMaintenanceHistory() {
                     });
                 }
 
-                // Ringkasan Equipment Management pada Dashboard
+                // Equipment Management pada Dashboard: satu kartu ringkas, klik untuk masuk ke menu Equipment.
                 const emGroups = (typeof kelompokkanDataEquipmentUntukEM === 'function')
                     ? kelompokkanDataEquipmentUntukEM(Array.isArray(dataAlat) ? dataAlat : [], {})
                     : [];
-                const emStats = {
-                    jenis: emGroups.length,
-                    populasi: emGroups.reduce((sum, g) => sum + Number(g.populasi || 0), 0),
-                    empat: emGroups.filter(g => g.rekomendasiPeriode === 'Setiap 4 Bulan').length,
-                    enam: emGroups.filter(g => g.rekomendasiPeriode === 'Setiap 6 Bulan').length,
-                    duaBelas: emGroups.filter(g => g.rekomendasiPeriode === 'Satu Kali Per Tahun').length,
-                    inspeksi: emGroups.filter(g => g.rekomendasiPeriode === 'Inspeksi Sesuai Kebutuhan').length
-                };
-                [['dash-em-jenis', emStats.jenis], ['dash-em-populasi', emStats.populasi], ['dash-em-4', emStats.empat], ['dash-em-6', emStats.enam], ['dash-em-12', emStats.duaBelas], ['dash-em-inspeksi', emStats.inspeksi]].forEach(([id, value]) => {
-                    const el = document.getElementById(id);
-                    if (el) el.textContent = value;
-                });
-
-                const ctxEquipmentPM = document.getElementById('chartEquipmentPM');
-                if (ctxEquipmentPM && typeof Chart !== 'undefined') {
-                    if (instanceChartEquipmentPM) instanceChartEquipmentPM.destroy();
-                    instanceChartEquipmentPM = new Chart(ctxEquipmentPM, {
-                        type: 'bar',
-                        data: {
-                            labels: ['4 Bulan', '6 Bulan', '12 Bulan', 'Sesuai Kebutuhan'],
-                            datasets: [{
-                                label: 'Jenis Alkes EM',
-                                data: [emStats.empat, emStats.enam, emStats.duaBelas, emStats.inspeksi],
-                                backgroundColor: ['rgba(244,63,94,.78)', 'rgba(249,115,22,.78)', 'rgba(245,158,11,.78)', 'rgba(16,185,129,.78)'],
-                                borderRadius: 7,
-                                borderSkipped: false
-                            }]
-                        },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            scales: {
-                                x: { grid: { display:false }, ticks: { color: textColor, font:{size:9,weight:'bold'} } },
-                                y: { beginAtZero:true, grid:{ color: isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.05)' }, ticks:{ color:textColor, precision:0, font:{size:9} } }
-                            },
-                            plugins: { legend:{display:false} }
-                        }
-                    });
+                const emPopulation = emGroups.reduce((sum, g) => sum + Number(g.populasi || 0), 0);
+                const equipmentStat = document.getElementById('dashboard-equipment-stat');
+                const equipmentAllowed = typeof izinMenu === 'function' && izinMenu('equipment', 'read');
+                if (equipmentStat) {
+                    equipmentStat.classList.toggle('hidden', !equipmentAllowed);
+                    equipmentStat.setAttribute('aria-hidden', equipmentAllowed ? 'false' : 'true');
                 }
+                const equipmentTotal = document.getElementById('dash-equipment-total');
+                if (equipmentTotal) equipmentTotal.textContent = emPopulation;
             } catch (error) {}
         }
 
