@@ -429,19 +429,42 @@ body.dark-mode .medix-dialog-message { color:#cbd5e1; }
 body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
 body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
     
-/* Dashboard utama: lima kartu statistik sejajar dan konsisten pada desktop. */
+/* Dashboard utama: semua kartu statistik memakai ukuran yang sama. */
+#dashboard-stat-grid {
+  align-items: stretch !important;
+}
+#dashboard-stat-grid > * {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 92px !important;
+  box-sizing: border-box !important;
+}
+#dashboard-stat-grid > button {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+#dashboard-equipment-stat {
+  width: 100% !important;
+  height: 100% !important;
+}
 @media (min-width: 1024px) {
   #dashboard-stat-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   }
+}
+@media (max-width: 767px) {
+  #dashboard-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: .75rem !important;
+  }
   #dashboard-stat-grid > * {
-    min-width: 0 !important;
-    min-height: 92px !important;
+    min-height: 88px !important;
+    padding: .85rem !important;
+    border-radius: 1rem !important;
   }
 }
 
-/* Equipment di Dashboard hanya berfungsi sebagai shortcut ke menu Equipment. */
-#dashboard-equipment-stat { width: 100% !important; }
+/* Equipment di Dashboard adalah shortcut yang tampil persis seperti kartu statistik lain. */
 </style>
 
 <style id="medix-pro-app-shell-v11">
@@ -1862,19 +1885,18 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Dokumen</p><h3 id="stat-logs" class="text-2xl sm:text-3xl font-black text-indigo-600 mt-1">0</h3></div>
                             <div class="p-2.5 sm:p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100"><i class="fa-solid fa-file-waveform text-base sm:text-lg"></i></div>
                         </div>
+                        <!-- Equipment Management: kartu ringkas, satu ukuran dengan statistik Dashboard lainnya -->
+                        <button id="dashboard-equipment-stat" type="button" onclick="switchTab('equipment')" aria-label="Buka Equipment Management" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                            <div class="min-w-0">
+                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">Equipment Management</p>
+                                <h3 id="dash-equipment-total" class="text-2xl sm:text-3xl font-black text-teal-700 mt-1 leading-none">0</h3>
+                                <p class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-1">Total populasi EM</p>
+                            </div>
+                            <div class="p-2.5 sm:p-3 bg-teal-50 text-teal-600 rounded-xl border border-teal-100 shrink-0">
+                                <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
+                            </div>
+                        </button>
                     </div>
-
-                    <!-- Equipment Management dibuat sebagai kartu statistik ringkas di Dashboard -->
-                    <button id="dashboard-equipment-stat" type="button" onclick="switchTab('equipment')" aria-label="Buka Equipment Management" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
-                        <div class="min-w-0">
-                            <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Equipment Management</p>
-                            <h3 id="dash-equipment-total" class="text-2xl sm:text-3xl font-black text-teal-700 mt-1">0</h3>
-                            <p class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-0.5">Total populasi EM</p>
-                        </div>
-                        <div class="p-2.5 sm:p-3 bg-teal-50 text-teal-600 rounded-xl border border-teal-100 shrink-0">
-                            <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
-                        </div>
-                    </button>
 
                     <!-- Bagian Grafik Bawah -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
