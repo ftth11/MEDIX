@@ -392,30 +392,158 @@
         * { scrollbar-width: none; -ms-overflow-style: none; }
         *::-webkit-scrollbar { display: none; }
 
+        .lk-print-date-value { display:none; }
+
         @media print {
-            /* LK dicetak sebagai satu lembar A4 portrait. Ruang kosong antar-section
-               dipangkas dan seluruh form dipaksa tetap berada pada satu page box. */
-            @page { size: A4 portrait; margin: 5mm; }
-            html, body { background:#fff !important; width:100% !important; height:auto !important; min-height:0 !important; margin:0 !important; padding:0 !important; overflow:visible !important; }
-            body * { visibility:hidden !important; }
-            #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility:visible !important; }
-            #area-lembar-kerja-resmi { position:absolute !important; left:0 !important; top:0 !important; width:100% !important; height:287mm !important; max-height:287mm !important; background:#fff !important; color:#000 !important; display:block !important; padding:0 !important; margin:0 !important; border:none !important; box-shadow:none !important; overflow:hidden !important; z-index:999999 !important; }
-            #area-lembar-kerja-resmi > div { position:relative !important; box-sizing:border-box !important; width:100% !important; height:287mm !important; max-height:287mm !important; overflow:hidden !important; background:#fff !important; box-shadow:none !important; border:none !important; padding:0 !important; margin:0 !important; }
-            #area-lembar-kerja-resmi > div > * { break-inside:avoid !important; page-break-inside:avoid !important; }
+            /* Cetak hanya area LK. Menggunakan display:none pada elemen lain
+               mencegah blank page yang sebelumnya muncul sebelum LK. */
+            @page { size: A4 portrait; margin: 6mm; }
+            html, body {
+                background:#fff !important;
+                width:100% !important;
+                min-width:0 !important;
+                height:auto !important;
+                min-height:0 !important;
+                margin:0 !important;
+                padding:0 !important;
+                overflow:visible !important;
+            }
+            body > * { display:none !important; }
+            body > #area-lembar-kerja-resmi {
+                display:block !important;
+                position:static !important;
+                inset:auto !important;
+                transform:none !important;
+                width:194mm !important;
+                max-width:194mm !important;
+                min-height:0 !important;
+                height:auto !important;
+                margin:0 auto !important;
+                padding:0 !important;
+                background:#fff !important;
+                color:#0f172a !important;
+                border:0 !important;
+                box-shadow:none !important;
+                overflow:visible !important;
+            }
+            #area-lembar-kerja-resmi > div {
+                display:block !important;
+                position:static !important;
+                width:100% !important;
+                max-width:none !important;
+                min-height:0 !important;
+                height:auto !important;
+                margin:0 !important;
+                padding:0 !important;
+                border:0 !important;
+                border-radius:0 !important;
+                box-shadow:none !important;
+                background:#fff !important;
+                overflow:visible !important;
+            }
+            #area-lembar-kerja-resmi > div > * { box-sizing:border-box !important; }
             .no-print, button, input[type="file"], .absolute.top-4.right-4 { display:none !important; }
+
+            /* Kop dibuat ringkas supaya seluruh LK masuk satu A4. */
+            #area-lembar-kerja-resmi .print-kop,
+            #area-lembar-kerja-resmi > div > div:first-of-type {
+                margin:0 !important;
+            }
+            #area-lembar-kerja-resmi img { max-height:48px !important; }
+            #area-lembar-kerja-resmi h1 { font-size:8px !important; line-height:1.1 !important; }
+            #area-lembar-kerja-resmi h2 { font-size:15px !important; line-height:1.05 !important; }
+            #area-lembar-kerja-resmi h3 { font-size:10px !important; line-height:1.1 !important; margin:2px 0 !important; }
+            #area-lembar-kerja-resmi p { line-height:1.15 !important; }
+
+            /* Semua blok utama rapat tetapi tetap punya ruang antar bagian. */
             #area-lembar-kerja-resmi .grid { gap:3px !important; }
-            #area-lembar-kerja-resmi .space-y-3 > * + * { margin-top:3px !important; }
-            #area-lembar-kerja-resmi .space-y-2 > * + * { margin-top:2px !important; }
-            #area-lembar-kerja-resmi .p-6 { padding:0 !important; }
-            #area-lembar-kerja-resmi .p-2 { padding:4px !important; }
-            #area-lembar-kerja-resmi .h-\[155px\] { height:116px !important; }
-            #area-lembar-kerja-resmi .print\:h-\[130px\] { height:116px !important; }
-            #area-lembar-kerja-resmi input, #area-lembar-kerja-resmi select { background:transparent !important; border-bottom:1px solid #94a3b8 !important; }
-            .uraian-pekerjaan-wrapper { height:auto !important; min-height:45px !important; max-height:45px !important; overflow:hidden !important; display:block !important; }
-            #dlk-txt-deskripsi-tunggal { display:block !important; width:100% !important; box-sizing:border-box !important; height:auto !important; min-height:45px !important; max-height:45px !important; overflow:hidden !important; white-space:pre-wrap !important; word-wrap:break-word !important; overflow-wrap:anywhere !important; border:none !important; background:transparent !important; padding:0 !important; }
-            #area-lembar-kerja-resmi img { max-height:105px !important; }
-            #area-lembar-kerja-resmi canvas { max-height:70px !important; }
-            #area-lembar-kerja-resmi table { page-break-inside:avoid !important; }
+            #area-lembar-kerja-resmi .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top:4px !important; }
+            #area-lembar-kerja-resmi .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top:2px !important; }
+            #area-lembar-kerja-resmi .p-2,
+            #area-lembar-kerja-resmi .p-2\.5 { padding:4px !important; }
+
+            /* Baris kondisi + foto + data alat. */
+            #area-lembar-kerja-resmi .h-\[155px\] { height:105px !important; }
+            #area-lembar-kerja-resmi .print\:h-\[130px\] { height:105px !important; }
+            #area-lembar-kerja-resmi [class*="min-h-[90px]"] { min-height:68px !important; }
+
+            /* Checklist dibuat kompak; tinggi mengikuti jumlah item, bukan kotak besar kosong. */
+            #area-lembar-kerja-resmi #box-list-alatkerja,
+            #area-lembar-kerja-resmi #box-list-fisik,
+            #area-lembar-kerja-resmi #box-list-fungsi {
+                display:flex !important;
+                flex-direction:column !important;
+                gap:2px !important;
+            }
+            #area-lembar-kerja-resmi #box-list-alatkerja > *,
+            #area-lembar-kerja-resmi #box-list-fisik > *,
+            #area-lembar-kerja-resmi #box-list-fungsi > * {
+                min-height:16px !important;
+                padding:2px 4px !important;
+                font-size:8px !important;
+                line-height:1.1 !important;
+                box-sizing:border-box !important;
+            }
+
+            .uraian-pekerjaan-wrapper {
+                height:auto !important;
+                min-height:82px !important;
+                max-height:115px !important;
+                overflow:visible !important;
+                display:flex !important;
+                flex-direction:column !important;
+            }
+            #dlk-txt-deskripsi-tunggal {
+                display:block !important;
+                width:100% !important;
+                box-sizing:border-box !important;
+                height:auto !important;
+                min-height:58px !important;
+                max-height:92px !important;
+                overflow:hidden !important;
+                white-space:pre-wrap !important;
+                word-wrap:break-word !important;
+                overflow-wrap:anywhere !important;
+                border:1px solid #cbd5e1 !important;
+                background:#fff !important;
+                padding:4px !important;
+                font-size:8px !important;
+                line-height:1.2 !important;
+            }
+
+            /* Hasil dan tanda tangan dipadatkan agar tidak pindah halaman. */
+            #area-lembar-kerja-resmi .h-16 { height:48px !important; }
+            #area-lembar-kerja-resmi .print\:h-14 { height:48px !important; }
+            #area-lembar-kerja-resmi canvas { max-height:48px !important; }
+            #area-lembar-kerja-resmi select,
+            #area-lembar-kerja-resmi input {
+                font-size:8px !important;
+                line-height:1.1 !important;
+                min-height:14px !important;
+                background:transparent !important;
+                border-color:#94a3b8 !important;
+            }
+            #area-lembar-kerja-resmi input[type="date"] { color:transparent !important; opacity:1 !important; }
+            #area-lembar-kerja-resmi .lk-print-date-value {
+                display:block !important;
+                font-size:8px !important;
+                font-weight:700 !important;
+                line-height:1.1 !important;
+                min-height:14px !important;
+                padding:0 !important;
+                border-bottom:1px solid #94a3b8 !important;
+                color:#0f172a !important;
+            }
+            #area-lembar-kerja-resmi input[type="datetime-local"] { color:#0f172a !important; opacity:1 !important; }
+            #area-lembar-kerja-resmi .border-dashed { height:48px !important; }
+
+            /* Jangan pecah bagian penting di antara halaman. */
+            #area-lembar-kerja-resmi > div,
+            #area-lembar-kerja-resmi .grid,
+            #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper {
+                break-inside:avoid !important;
+                page-break-inside:avoid !important;
+            }
         }
 
 /* ==========================================================
@@ -1632,253 +1760,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   .medix-filter-btn { display:none; }
 }
 </style>
-
-<style>
-/* ==========================================================
-   MEDIX LK PRINT FINAL
-   - 1 halaman A4 portrait
-   - tidak membuat halaman kedua kosong
-   - uraian pekerjaan boleh memanjang
-   - nilai tanggal kalibrasi dicetak sebagai text
-   - layout mengecil secara proporsional bila isi panjang
-   ========================================================== */
-.print-only-value { display:none; }
-
-@media print {
-    @page {
-        size: A4 portrait;
-        margin: 0;
-    }
-
-    html, body {
-        width: 210mm !important;
-        min-width: 210mm !important;
-        max-width: 210mm !important;
-        height: auto !important;
-        min-height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #fff !important;
-        overflow: visible !important;
-    }
-
-    body {
-        font-size: 8.5pt !important;
-    }
-
-    body * {
-        visibility: hidden !important;
-    }
-
-    #area-lembar-kerja-resmi,
-    #area-lembar-kerja-resmi * {
-        visibility: visible !important;
-    }
-
-    #area-lembar-kerja-resmi {
-        position: static !important;
-        inset: auto !important;
-        display: block !important;
-        width: 210mm !important;
-        height: auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: visible !important;
-        background: #fff !important;
-        border: 0 !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-        z-index: auto !important;
-    }
-
-    #area-lembar-kerja-resmi > div {
-        position: relative !important;
-        width: 210mm !important;
-        max-width: none !important;
-        height: auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        margin: 0 !important;
-        padding: 5mm 6mm 4mm 6mm !important;
-        box-sizing: border-box !important;
-        overflow: visible !important;
-        background: #fff !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-    }
-
-    /* Header dibuat padat tetapi tetap proporsional. */
-    #area-lembar-kerja-resmi .w-16.h-16 {
-        width: 15mm !important;
-        height: 15mm !important;
-    }
-
-    #area-lembar-kerja-resmi .md\:w-20.md\:h-20 {
-        width: 15mm !important;
-        height: 15mm !important;
-    }
-
-    #area-lembar-kerja-resmi h2 {
-        font-size: 13pt !important;
-        line-height: 1.05 !important;
-    }
-
-    #area-lembar-kerja-resmi h1 {
-        font-size: 7.5pt !important;
-    }
-
-    #area-lembar-kerja-resmi .space-y-3 > * + * {
-        margin-top: 2mm !important;
-    }
-
-    #area-lembar-kerja-resmi .space-y-2 > * + * {
-        margin-top: 1.5mm !important;
-    }
-
-    #area-lembar-kerja-resmi .grid {
-        gap: 1.5mm !important;
-    }
-
-    #area-lembar-kerja-resmi input,
-    #area-lembar-kerja-resmi select {
-        min-height: 4mm !important;
-        line-height: 1.05 !important;
-        padding-top: 0.5mm !important;
-        padding-bottom: 0.5mm !important;
-    }
-
-    /* Area pemeriksaan utama tetap ringkas namun tidak dipotong. */
-    #area-lembar-kerja-resmi .h-\[155px\],
-    #area-lembar-kerja-resmi .print\:h-\[130px\] {
-        height: 34mm !important;
-        min-height: 34mm !important;
-        max-height: 34mm !important;
-    }
-
-    #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper {
-        height: auto !important;
-        min-height: 25mm !important;
-        max-height: none !important;
-        overflow: visible !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    #area-lembar-kerja-resmi #dlk-txt-deskripsi-tunggal {
-        display: block !important;
-        flex: 0 0 auto !important;
-        width: 100% !important;
-        height: auto !important;
-        min-height: 18mm !important;
-        max-height: none !important;
-        overflow: visible !important;
-        white-space: pre-wrap !important;
-        word-break: break-word !important;
-        overflow-wrap: anywhere !important;
-        resize: none !important;
-        border: 1px solid #cbd5e1 !important;
-        background: #fff !important;
-        padding: 2mm !important;
-        box-sizing: border-box !important;
-        line-height: 1.25 !important;
-    }
-
-    #area-lembar-kerja-resmi #box-preview-foto-before,
-    #area-lembar-kerja-resmi #box-preview-foto {
-        min-height: 0 !important;
-    }
-
-    #area-lembar-kerja-resmi img {
-        max-width: 100% !important;
-        max-height: 30mm !important;
-        object-fit: contain !important;
-    }
-
-    /* Hasil pemeriksaan dan TTD dipadatkan. */
-    #area-lembar-kerja-resmi .grid.grid-cols-1.md\:grid-cols-3.print\:grid-cols-3 {
-        gap: 2mm !important;
-    }
-
-    #area-lembar-kerja-resmi #sig-teknisi,
-    #area-lembar-kerja-resmi #sig-user,
-    #area-lembar-kerja-resmi #sig-pj {
-        max-height: 16mm !important;
-    }
-
-    #area-lembar-kerja-resmi .h-16.print\:h-14 {
-        height: 16mm !important;
-        max-height: 16mm !important;
-    }
-
-    /* Nilai tanggal dibuat text biasa pada print. */
-    #area-lembar-kerja-resmi #dlk-tglcal,
-    #area-lembar-kerja-resmi #dlk-nokal {
-        display: none !important;
-    }
-
-    #area-lembar-kerja-resmi .print-only-value {
-        display: block !important;
-        min-height: 4mm !important;
-        padding: 0.5mm 0 !important;
-        border-bottom: 1px solid #94a3b8 !important;
-        color: #0f172a !important;
-        font-weight: 700 !important;
-        font-size: 8pt !important;
-        line-height: 1.1 !important;
-    }
-
-    /* Kepala ruangan manual tetap tercetak sebagai nama, bukan placeholder. */
-    #area-lembar-kerja-resmi #dlk-kepala-ruangan-nama {
-        border: 0 !important;
-        background: transparent !important;
-        padding: 0 !important;
-        min-height: 5mm !important;
-        height: auto !important;
-        color: #0f172a !important;
-        text-align: center !important;
-        font-weight: 700 !important;
-    }
-
-    /* Pilihan teknisi tetap berupa nama, bukan control browser. */
-    #area-lembar-kerja-resmi #dlk-select-nama-teknisi {
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        border: 0 !important;
-        background: transparent !important;
-        color: #0f172a !important;
-        text-align: center !important;
-        font-weight: 700 !important;
-    }
-
-    /* Hilangkan elemen aksi/placeholder yang tidak dibutuhkan saat cetak. */
-    #area-lembar-kerja-resmi .no-print,
-    #area-lembar-kerja-resmi button,
-    #area-lembar-kerja-resmi input[type="file"],
-    #area-lembar-kerja-resmi .absolute.top-4.right-4 {
-        display: none !important;
-    }
-
-    /* Cegah tabel/section membuat page break. */
-    #area-lembar-kerja-resmi,
-    #area-lembar-kerja-resmi > div,
-    #area-lembar-kerja-resmi .grid,
-    #area-lembar-kerja-resmi .border {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
-
-    /* Jika teks uraian sangat panjang, browser tetap menampilkan semuanya
-       dan tidak memaksa max-height 45px. */
-    #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper,
-    #area-lembar-kerja-resmi #dlk-txt-deskripsi-tunggal {
-        max-height: none !important;
-    }
-}
-</style>
-
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -2577,16 +2458,8 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 <div class="flex flex-1"><span class="w-10 text-slate-500 font-medium">Ruang:</span><input type="text" id="dlk-lokasi" class="w-full border-b border-slate-200 p-0.5 bg-transparent text-slate-800 truncate" readonly></div>
                             </div>
                             <div class="flex space-x-2 pt-0.5">
-                                <div class="flex flex-1 flex-col">
-                                    <span class="text-blue-700 font-bold text-[9px]">Tgl Kalibrasi:</span>
-                                    <input type="date" id="dlk-tglcal" onchange="hitungOtomatisMasaBerlakuSatuTahun(this.value); sinkronisasiTanggalKalibrasiPrint()" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800">
-                                    <span id="dlk-tglcal-print" class="print-only-value"></span>
-                                </div>
-                                <div class="flex flex-1 flex-col">
-                                    <span class="text-blue-700 font-bold text-[9px]">Tgl Berakhir Kalibrasi:</span>
-                                    <input type="date" id="dlk-nokal" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800" onchange="sinkronisasiTanggalKalibrasiPrint()">
-                                    <span id="dlk-nokal-print" class="print-only-value"></span>
-                                </div>
+                                <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Kalibrasi:</span><input type="date" id="dlk-tglcal" onchange="hitungOtomatisMasaBerlakuSatuTahun(this.value)" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800"></div>
+                                <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Berakhir Kalibrasi:</span><input type="date" id="dlk-nokal" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800"></div>
                             </div>
                         </div>
                     </div>
@@ -2681,19 +2554,18 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
-                    <p class="font-semibold text-slate-500 text-[10px]">Kepala Ruangan / Petugas</p>
+                    <p class="font-semibold text-slate-500 text-[10px]">User Ruangan</p>
                     <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-user')" class="no-print text-[9px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200" id="btn-clear-sig-user">Hapus</button>
                     <div class="pt-0.5">
-                        <input type="hidden" id="dlk-select-nama-saksi" value="">
-                    <div class="pt-0.5 min-h-[18px]"><input id="dlk-kepala-ruangan-nama" type="text" class="w-full text-center font-bold text-slate-800 text-[10px] leading-tight border border-slate-300 rounded px-1 py-0.5 bg-white" placeholder="Kepala ruangan / petugas"></div>
+                        <select id="dlk-select-nama-saksi" onchange="handleDropdownNamaBaru(this, 'User')" class="w-full text-center border-b border-slate-300 p-0.5 font-bold text-slate-800 bg-transparent outline-none cursor-pointer text-[10px]"></select>
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
-                    <p class="font-semibold text-slate-500 text-[10px]">Penanggung Jawab Alkes</p>
+                    <p class="font-semibold text-slate-500 text-[10px]">PJ IPSRS Alkes</p>
                     <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-pj')" class="no-print text-[9px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200" id="btn-clear-sig-pj">Hapus</button>
-                    <div class="pt-0.5 font-bold text-slate-800 border-b border-slate-300 pb-0.5 text-[10px]" data-penanggung-jawab-alkes>Arrief Nurcahyo, S.Tr.Em.</div>
+                    <div id="dlk-nama-pj" class="pt-0.5 font-bold text-slate-800 border-b border-slate-300 pb-0.5 text-[10px]">Arrief Nurcahyo, S.Tr.Em.</div>
                 </div>
             </div>
 
@@ -6479,7 +6351,7 @@ function renderMaintenanceHistory() {
                 ttdPJ: document.getElementById('sig-pj')?.toDataURL() || '',
                 teknisiTtd: tekNama,
                 saksiTtd: document.getElementById('dlk-select-nama-saksi')?.value || '',
-                pjTtd: MEDIX_PENANGGUNG_JAWAB_ALKES,
+                pjTtd: 'Arrief Nurcahyo, S.Tr.Em.',
                 fotoAlat: stringFotoBase64 || '-',
                 fotoBefore: stringFotoBeforeBase64 || '-',
                 paramAlatKerja: JSON.stringify(terpakaiAlatKerja),
@@ -6623,10 +6495,6 @@ function renderMaintenanceHistory() {
             aktualisasikanTampilanKotakTabel('fungsi'); 
             populasikanDropdownNamaTandaTangan();
             
-            tampilkanKepalaRuanganWorksheet('');
-            inisialisasiInputKepalaRuanganWorksheet();
-            setPenanggungJawabAlkesOtomatis();
-            
             // Tidak perlu membaca seluruh koleksi LK hanya untuk nomor sementara.
             // Nomor final ditentukan kembali saat penyimpanan berdasarkan cache LK yang sudah ada.
             const nextNo = dataLembarKerja.reduce((max, item) => {
@@ -6685,7 +6553,6 @@ function renderMaintenanceHistory() {
             sinkronisasiDataAlatKeWorksheet(record.alatId); 
             if(record.tglKalibrasi) document.getElementById('dlk-tglcal').value = record.tglKalibrasi;
             if(record.tglExpKalibrasi) document.getElementById('dlk-nokal').value = record.tglExpKalibrasi;
-            sinkronisasiTanggalKalibrasiPrint();
 
             const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
             if(descTunggal) descTunggal.innerText = record.desc_kerja || "";
@@ -6712,14 +6579,7 @@ function renderMaintenanceHistory() {
 
             populasikanDropdownNamaTandaTangan();
             document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
-            // LK lama mempertahankan snapshot kepala ruangan.
-            // Jika LK lama belum memiliki nama, gunakan mapping ruangan saat ini.
-            sinkronisasiKepalaRuanganWorksheet(
-                document.getElementById('dlk-lokasi')?.value || '',
-                record.saksiTtd || ''
-            );
-            inisialisasiInputKepalaRuanganWorksheet();
-            setPenanggungJawabAlkesOtomatis();
+            document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
             
             terapkanModeLockedPermanenLk();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
@@ -6733,27 +6593,41 @@ function renderMaintenanceHistory() {
             }, 300);
         }
 
-        function formatTanggalCetakLK(v) {
-            if(!v) return '';
-            const parts = String(v).split('-');
-            if(parts.length !== 3) return String(v);
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
-
-        function sinkronisasiTanggalKalibrasiPrint() {
-            const tgl = document.getElementById('dlk-tglcal')?.value || '';
-            const exp = document.getElementById('dlk-nokal')?.value || '';
-            const outTgl = document.getElementById('dlk-tglcal-print');
-            const outExp = document.getElementById('dlk-nokal-print');
-            if(outTgl) outTgl.textContent = formatTanggalCetakLK(tgl);
-            if(outExp) outExp.textContent = formatTanggalCetakLK(exp);
-        }
-
         function pemicuCetakDokumen() {
-            sinkronisasiTanggalKalibrasiPrint();
-            setPenanggungJawabAlkesOtomatis();
-            setTimeout(() => { window.print(); }, 250);
+            siapkanLKUntukCetak();
+            setTimeout(() => { window.print(); }, 350);
         }
+
+        function formatTanggalCetakLK(v) {
+            if (!v) return '';
+            const m = String(v).match(/^(\d{4})-(\d{2})-(\d{2})/);
+            if (!m) return String(v);
+            return `${m[3]}/${m[2]}/${m[1]}`;
+        }
+
+        function siapkanLKUntukCetak() {
+            const area = document.getElementById('area-lembar-kerja-resmi');
+            if (!area) return;
+            const cal = document.getElementById('dlk-tglcal');
+            const exp = document.getElementById('dlk-nokal');
+            [cal, exp].forEach((input) => {
+                if (!input) return;
+                let span = document.getElementById(input.id + '-print-value');
+                if (!span) {
+                    span = document.createElement('span');
+                    span.id = input.id + '-print-value';
+                    span.className = 'lk-print-date-value';
+                    input.insertAdjacentElement('afterend', span);
+                }
+                span.textContent = formatTanggalCetakLK(input.value);
+            });
+            const pj = document.getElementById('dlk-nama-pj');
+            if (pj) pj.textContent = 'Arrief Nurcahyo, S.Tr.Em.';
+        }
+
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('.lk-print-date-value').forEach(el => el.remove());
+        });
 
         function muatTandaTanganKeCanvas(canvasId, dataUrl) {
             const canvas = document.getElementById(canvasId);
@@ -6761,125 +6635,6 @@ function renderMaintenanceHistory() {
             const ctx = canvas.getContext('2d');
             const img = new Image(); img.src = dataUrl;
             img.onload = function() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); };
-        }
-
-        /* =========================================================
-           MEDIX LK — TEMPLATE PEMERIKSAAN OTOMATIS PER JENIS ALAT
-           Setelah alat dipilih, daftar alat kerja, fisik, dan fungsi
-           diisi otomatis berdasarkan nama alat. Item tetap dapat diedit
-           manual melalui dropdown/custom item.
-           ========================================================= */
-        const MEDIX_LK_TEMPLATES = [
-            {
-                keys: ['high flow', 'airvo', 'nasal cannula', 'hfno'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Kabel Power', 'Flow Meter', 'Chamber', 'Filter', 'Aksesoris'],
-                fungsi: ['Display Monitor', 'Switch On/Off', 'Control/Setting', 'Keypad', 'Chamber', 'Flow Meter']
-            },
-            {
-                keys: ['ventilator', 'ventilasi'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Breathing Circuit', 'Filter', 'Humidifier', 'Trolley/Bracket'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Control/Setting', 'Mode Ventilasi', 'Alarm', 'Flow/O2', 'Patient Circuit']
-            },
-            {
-                keys: ['patient monitor', 'monitor pasien', 'bedside monitor'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'ECG Cable', 'SpO2 Sensor', 'NIBP Cuff', 'Temperature Probe'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Touchscreen/Keypad', 'ECG', 'SpO2', 'NIBP', 'Temperature', 'Alarm']
-            },
-            {
-                keys: ['infusion pump', 'infusion', 'volumetric pump'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Door/Clamp', 'Occlusion Sensor', 'Air-in-line Sensor'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'Flow Rate Setting', 'Alarm', 'Occlusion', 'Air-in-line']
-            },
-            {
-                keys: ['syringe pump', 'syringe'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Syringe Holder', 'Pusher/Plunger', 'Clamp'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'Flow Rate Setting', 'Alarm', 'Syringe Detection']
-            },
-            {
-                keys: ['ekg', 'ecg', 'electrocardiograph'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Patient Cable', 'Electrode Lead', 'Printer'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'ECG Acquisition', 'Paper Feed/Print', 'Alarm']
-            },
-            {
-                keys: ['defibrillator', 'defibrilator', 'aed'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Paddle/Pad', 'Patient Cable', 'Battery'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Charge', 'Energy Setting', 'Shock', 'ECG', 'Alarm']
-            },
-            {
-                keys: ['suction', 'vacuum', 'aspirator'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Kabel Power', 'Vacuum Bottle', 'Tubing', 'Filter', 'Regulator/Knob', 'Trolley/Bracket'],
-                fungsi: ['Power On/Off', 'Vacuum Regulation', 'Vacuum Gauge', 'Suction Flow', 'Alarm/Indicator']
-            },
-            {
-                keys: ['oxygen concentrator', 'konsentrator oksigen'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester', 'Oxygen Analyzer'],
-                fisik: ['Main Unit', 'Kabel Power', 'Flowmeter', 'Humidifier Bottle', 'Oxygen Outlet', 'Filter', 'Wheel/Caster'],
-                fungsi: ['Power On/Off', 'Flow Setting', 'Oxygen Concentration', 'Flowmeter', 'Alarm/Indicator']
-            },
-            {
-                keys: ['incubator', 'infant incubator', 'baby incubator'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Canopy', 'Mattress', 'Kabel Power', 'Temperature Probe', 'Humidifier', 'Wheel/Caster'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Temperature Setting', 'Humidity Setting', 'Alarm', 'Control/Setting']
-            },
-            {
-                keys: ['autoclave', 'sterilizer'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Chamber', 'Door/Gasket', 'Kabel Power', 'Tray', 'Pressure Gauge'],
-                fungsi: ['Power On/Off', 'Temperature Setting', 'Time Setting', 'Pressure', 'Heating', 'Alarm']
-            },
-            {
-                keys: ['ultrasound', 'usg', 'sonography'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Transducer', 'Probe Cable', 'Keyboard/Control Panel'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Probe Selection', 'Gain/Depth Setting', 'Image Display', 'Measurement']
-            },
-            {
-                keys: ['x-ray', 'xray', 'radiography'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Tube Housing', 'Collimator', 'Kabel Power', 'Table/Stand', 'Control Panel'],
-                fungsi: ['Power On/Off', 'Exposure Setting', 'Collimator', 'Exposure', 'Display/Indicator', 'Alarm']
-            },
-            {
-                keys: ['hemoglobin', 'hematology analyzer', 'chemistry analyzer', 'analyzer'],
-                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Sample Port', 'Reagent Area', 'Printer'],
-                fungsi: ['Power On/Off', 'Display Monitor', 'Menu/Keypad', 'Sample Processing', 'Result Display', 'Printer']
-            }
-        ];
-
-        const MEDIX_LK_DEFAULT_TEMPLATE = {
-            alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
-            fisik: ['Main Unit', 'Kabel Power', 'Casing/Panel', 'Display/Indicator', 'Konektor/Aksesoris'],
-            fungsi: ['Power On/Off', 'Display/Indicator', 'Control/Setting', 'Fungsi Utama', 'Alarm/Indicator']
-        };
-
-        function ambilTemplateLK(namaAlat) {
-            const nama = String(namaAlat || '').toLowerCase();
-            return MEDIX_LK_TEMPLATES.find(t => t.keys.some(k => nama.includes(k))) || MEDIX_LK_DEFAULT_TEMPLATE;
-        }
-
-        function terapkanTemplateLKUntukAlat(namaAlat, paksa = true) {
-            const template = ambilTemplateLK(namaAlat);
-            if (!paksa && (terpakaiAlatKerja.length || terpakaiFisik.length || terpakaiFungsi.length)) return;
-            terpakaiAlatKerja = template.alatkerja.map(nama => ({nama, status:'Baik'}));
-            terpakaiFisik = template.fisik.map(nama => ({nama, status:'Baik'}));
-            terpakaiFungsi = template.fungsi.map(nama => ({nama, status:'Baik'}));
-            template.alatkerja.forEach(n => { if(!opsAlatKerja.includes(n)) opsAlatKerja.push(n); });
-            template.fisik.forEach(n => { if(!opsFisik.includes(n)) opsFisik.push(n); });
-            template.fungsi.forEach(n => { if(!opsFungsi.includes(n)) opsFungsi.push(n); });
-            renderOpsiDropdownAwal();
-            aktualisasikanTampilanKotakTabel('alatkerja');
-            aktualisasikanTampilanKotakTabel('fisik');
-            aktualisasikanTampilanKotakTabel('fungsi');
         }
 
         function renderOpsiDropdownAwal() { 
@@ -6987,18 +6742,9 @@ function renderMaintenanceHistory() {
                 document.getElementById('dlk-tipe').value = dTipe; 
                 document.getElementById('dlk-seri').value = dSeri; 
                 document.getElementById('dlk-lokasi').value = dLokasi;
-
-                // Kepala ruangan otomatis mengikuti ruangan alat.
-                sinkronisasiKepalaRuanganWorksheet(dLokasi);
-                inisialisasiInputKepalaRuanganWorksheet();
-                setPenanggungJawabAlkesOtomatis();
                 
                 const inputSearch = document.getElementById('input-search-alat-worksheet');
                 if(inputSearch) inputSearch.value = a.nama + " (" + (a.seri || "-") + ")";
-
-                // LK baru / pemilihan alat: isi template pemeriksaan otomatis sesuai nama alat.
-                // Saat membuka LK lama, fungsi pemuatan record akan menimpa daftar ini dengan data tersimpan.
-                terapkanTemplateLKUntukAlat(a.nama, true);
 
                 const listCal = dataKalibrasi.filter(c => c.alatId === id);
                 if(listCal.length > 0) {
@@ -7009,7 +6755,6 @@ function renderMaintenanceHistory() {
                     document.getElementById('dlk-tglcal').value = "";
                     document.getElementById('dlk-nokal').value = "";
                 }
-                sinkronisasiTanggalKalibrasiPrint();
                 populasikanDropdownNamaTandaTangan();
                 const selTeknisi = document.getElementById('dlk-select-nama-teknisi');
                 if(selTeknisi && selTeknisi.innerHTML.includes(currentUserNama)) { selTeknisi.value = currentUserNama; }
@@ -7018,109 +6763,12 @@ function renderMaintenanceHistory() {
 
         function hitungOtomatisMasaBerlakuSatuTahun(v) { if(!v) return; let d = new Date(v); d.setFullYear(d.getFullYear()+1); document.getElementById('dlk-nokal').value = d.toISOString().substring(0,10); }
         
-        /* =========================================================
-           KEPALA RUANGAN — OTOMATIS DARI RUANGAN ALAT
-           Jika mapping belum tersedia, nama dibiarkan kosong.
-           LK lama mempertahankan nama tersimpan sebagai snapshot.
-           ========================================================= */
-        const MEDIX_KEPALA_RUANGAN = [
-            { keys: ['instalasi gawat darurat', 'igd'], nama: 'Ns. Titi Handayani, S.Kep.' },
-            { keys: ['instalasi bedah sentral', 'ibs'], nama: 'Ns. Anieta Ester Yulia Lukasim, S. Kep.' },
-            { keys: ['instalasi perinatologi dan nicu', 'perinatologi', 'nicu'], nama: 'Hilda Izzaty, S. Keb.' },
-            { keys: ['kamar bersalin', 'vk'], nama: 'Noviana Maulani, A.Md.Keb.' },
-            { keys: ['instalasi rawat inap', 'rawat inap'], nama: 'Pipit Samawati, AMK.' },
-            { keys: ['instalasi rawat jalan', 'rawat jalan'], nama: 'Siti Dahlia Gumala, A. Md. Kep.' },
-            { keys: ['instalasi icu/hcu', 'icu/hcu', 'icu hcu'], nama: 'Milani Puspasari, AMK.' },
-            { keys: ['pelayanan penunjang', 'penunjang'], nama: 'Dhiah Ernawaty, AMK., SAP., M.M.' },
-            { keys: ['instalasi farmasi', 'farmasi'], nama: 'Rani Widiastuti, S.Farm., Apt.' },
-            { keys: ['instalasi radiologi', 'radiologi'], nama: 'Karisma Rosita, S.Kes.' },
-            { keys: ['instalasi laboratorium dan bank darah', 'laboratorium dan bank darah', 'laboratorium', 'bank darah'], nama: 'Yusma Fitriani, AMAK.' },
-            { keys: ['instalasi cssd', 'cssd'], nama: 'Rizka Matsari, S.Gz.' },
-            { keys: ['instalasi rehab medik', 'rehab medik', 'rehabilitasi medik'], nama: 'Dewa Ayu Chyntia Arini, S.Ft., Ft.' },
-            { keys: ['instalasi pemeliharaan sarpras', 'pemeliharaan sarpras', 'sarpras'], nama: 'Enyk Mary Loca, S.T.' },
-            { keys: ['instalasi laundry', 'laundry'], nama: 'You Lisma Wulan Dari Beru Bangun, S. Si.' }
-        ];
-
-        const MEDIX_PENANGGUNG_JAWAB_ALKES = 'Arrief Nurcahyo, S.Tr.Em.';
-
-        function setPenanggungJawabAlkesOtomatis() {
-            const kandidatIds = [
-                'dlk-select-nama-penanggung-jawab',
-                'dlk-penanggung-jawab',
-                'dlk-pj-alkes',
-                'dlk-nama-penanggung-jawab'
-            ];
-            for (const id of kandidatIds) {
-                const el = document.getElementById(id);
-                if(el) {
-                    el.value = MEDIX_PENANGGUNG_JAWAB_ALKES;
-                    if(el.tagName === 'SELECT') {
-                        const exists = [...el.options].some(o => o.value === MEDIX_PENANGGUNG_JAWAB_ALKES);
-                        if(!exists) el.add(new Option(MEDIX_PENANGGUNG_JAWAB_ALKES, MEDIX_PENANGGUNG_JAWAB_ALKES));
-                    }
-                }
-            }
-            const textTargets = document.querySelectorAll('[data-penanggung-jawab-alkes]');
-            textTargets.forEach(el => el.textContent = MEDIX_PENANGGUNG_JAWAB_ALKES);
-        }
-
-        function normalisasiTeksRuangan(v) {
-            return String(v || '').toLowerCase()
-                .replace(/[.,()\/\\-]+/g, ' ')
-                .replace(/\s+/g, ' ').trim();
-        }
-
-        function cariKepalaRuangan(namaRuangan) {
-            const room = normalisasiTeksRuangan(namaRuangan);
-            if(!room || room === '-') return '';
-            const found = MEDIX_KEPALA_RUANGAN.find(item =>
-                item.keys.some(key => room.includes(normalisasiTeksRuangan(key)))
-            );
-            return found ? found.nama : '';
-        }
-
-        function tampilkanKepalaRuanganWorksheet(nama) {
-            const input = document.getElementById('dlk-select-nama-saksi');
-            const label = document.getElementById('dlk-kepala-ruangan-nama');
-            const nilai = String(nama || '').trim();
-            if(input) input.value = nilai;
-            if(label) {
-                label.value = nilai;
-                label.title = nilai;
-            }
-        }
-
-        function sinkronisasiKepalaRuanganWorksheet(ruangan, namaSnapshot = '') {
-            tampilkanKepalaRuanganWorksheet(
-                String(namaSnapshot || '').trim() || cariKepalaRuangan(ruangan)
-            );
-        }
-
-        function inisialisasiInputKepalaRuanganWorksheet() {
-            const input = document.getElementById('dlk-kepala-ruangan-nama');
-            const hidden = document.getElementById('dlk-select-nama-saksi');
-            if(!input) return;
-            if(input.dataset.bound === '1') return;
-            input.dataset.bound = '1';
-            input.addEventListener('input', () => {
-                if(hidden) hidden.value = input.value;
-            });
-        }
-
-
-
         function populasikanDropdownNamaTandaTangan() {
             const selTek = document.getElementById('dlk-select-nama-teknisi');
-            if(selTek) {
-                const teknisiLk = [
-                    'Arrief Nurcahyo, S.Tr.Em.',
-                    'Nabilah Azhar Ardiyana, S.Tr.TEM.',
-                    'Baits Abdul Pattah, A.Md.T'
-                ];
-                selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` +
-                    teknisiLk.map(n => `<option value="${n}">${n}</option>`).join('');
-            }
-            // Kepala Ruangan diisi otomatis dari ruangan alat.
+            const selUsr = document.getElementById('dlk-select-nama-saksi');
+            if(!selTek || !selUsr) return;
+            selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-teknisi-baru" class="text-blue-600 font-bold">+ Tambah Teknisi Baru</option>`;
+            selUsr.innerHTML = `<option value="">-- PILIH USER --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-user-baru" class="text-blue-600 font-bold">+ Tambah User Baru</option>`;
         }
 
         let medixInputResolver = null;
