@@ -2410,9 +2410,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             <div class="border border-slate-200 p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
                 <span class="font-bold block mb-1 text-slate-800 text-[10px]"><i class="fa-solid fa-square-poll-vertical mr-1.5 text-indigo-600"></i>3. Hasil Pemeriksaan Akhir:</span>
                 <div class="flex flex-wrap gap-4 pt-0.5 font-bold text-[10px]">
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-emerald-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Berfungsi Baik</span></label>
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Berfungsi dengan Catatan</span></label>
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-rose-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Rusak Perlu Perbaikan</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-emerald-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Alat Berfungsi Dengan Baik</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Alat Berfungsi Dengan Catatan</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-rose-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Alat Rusak Perlu Perbaikan</span></label>
                 </div>
             </div>
 
@@ -2426,12 +2426,12 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
-                    <p class="font-semibold text-slate-500 text-[10px]">Kepala Ruangan</p>
+                    <p class="font-semibold text-slate-500 text-[10px]">Kepala Ruangan / Petugas</p>
                     <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-user')" class="no-print text-[9px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200" id="btn-clear-sig-user">Hapus</button>
                     <div class="pt-0.5">
                         <input type="hidden" id="dlk-select-nama-saksi" value="">
-                    <div class="pt-0.5 min-h-[18px]"><div id="dlk-kepala-ruangan-nama" class="text-center font-bold text-slate-800 text-[10px] leading-tight break-words"></div></div>
+                    <div class="pt-0.5 min-h-[18px]"><input id="dlk-kepala-ruangan-nama" type="text" class="w-full text-center font-bold text-slate-800 text-[10px] leading-tight border border-slate-300 rounded px-1 py-0.5 bg-white" placeholder="Kepala ruangan / petugas"></div>
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
@@ -6369,6 +6369,8 @@ function renderMaintenanceHistory() {
             populasikanDropdownNamaTandaTangan();
             
             tampilkanKepalaRuanganWorksheet('');
+            inisialisasiInputKepalaRuanganWorksheet();
+            setPenanggungJawabAlkesOtomatis();
             
             // Tidak perlu membaca seluruh koleksi LK hanya untuk nomor sementara.
             // Nomor final ditentukan kembali saat penyimpanan berdasarkan cache LK yang sudah ada.
@@ -6460,6 +6462,8 @@ function renderMaintenanceHistory() {
                 document.getElementById('dlk-lokasi')?.value || '',
                 record.saksiTtd || ''
             );
+            inisialisasiInputKepalaRuanganWorksheet();
+            setPenanggungJawabAlkesOtomatis();
             
             terapkanModeLockedPermanenLk();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
@@ -6710,6 +6714,8 @@ function renderMaintenanceHistory() {
 
                 // Kepala ruangan otomatis mengikuti ruangan alat.
                 sinkronisasiKepalaRuanganWorksheet(dLokasi);
+                inisialisasiInputKepalaRuanganWorksheet();
+                setPenanggungJawabAlkesOtomatis();
                 
                 const inputSearch = document.getElementById('input-search-alat-worksheet');
                 if(inputSearch) inputSearch.value = a.nama + " (" + (a.seri || "-") + ")";
@@ -6758,6 +6764,29 @@ function renderMaintenanceHistory() {
             { keys: ['instalasi laundry', 'laundry'], nama: 'You Lisma Wulan Dari Beru Bangun, S. Si.' }
         ];
 
+        const MEDIX_PENANGGUNG_JAWAB_ALKES = 'Arrief Nurcahyo, S.Tr.Em.';
+
+        function setPenanggungJawabAlkesOtomatis() {
+            const kandidatIds = [
+                'dlk-select-nama-penanggung-jawab',
+                'dlk-penanggung-jawab',
+                'dlk-pj-alkes',
+                'dlk-nama-penanggung-jawab'
+            ];
+            for (const id of kandidatIds) {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.value = MEDIX_PENANGGUNG_JAWAB_ALKES;
+                    if(el.tagName === 'SELECT') {
+                        const exists = [...el.options].some(o => o.value === MEDIX_PENANGGUNG_JAWAB_ALKES);
+                        if(!exists) el.add(new Option(MEDIX_PENANGGUNG_JAWAB_ALKES, MEDIX_PENANGGUNG_JAWAB_ALKES));
+                    }
+                }
+            }
+            const textTargets = document.querySelectorAll('[data-penanggung-jawab-alkes]');
+            textTargets.forEach(el => el.textContent = MEDIX_PENANGGUNG_JAWAB_ALKES);
+        }
+
         function normalisasiTeksRuangan(v) {
             return String(v || '').toLowerCase()
                 .replace(/[.,()\/\\-]+/g, ' ')
@@ -6779,9 +6808,8 @@ function renderMaintenanceHistory() {
             const nilai = String(nama || '').trim();
             if(input) input.value = nilai;
             if(label) {
-                label.textContent = nilai;
+                label.value = nilai;
                 label.title = nilai;
-                if(!nilai) label.innerHTML = '&nbsp;';
             }
         }
 
@@ -6791,10 +6819,29 @@ function renderMaintenanceHistory() {
             );
         }
 
+        function inisialisasiInputKepalaRuanganWorksheet() {
+            const input = document.getElementById('dlk-kepala-ruangan-nama');
+            const hidden = document.getElementById('dlk-select-nama-saksi');
+            if(!input) return;
+            if(input.dataset.bound === '1') return;
+            input.dataset.bound = '1';
+            input.addEventListener('input', () => {
+                if(hidden) hidden.value = input.value;
+            });
+        }
+
+
+
         function populasikanDropdownNamaTandaTangan() {
             const selTek = document.getElementById('dlk-select-nama-teknisi');
             if(selTek) {
-                selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-teknisi-baru" class="text-blue-600 font-bold">+ Tambah Teknisi Baru</option>`;
+                const teknisiLk = [
+                    'Arrief Nurcahyo, S.Tr.Em.',
+                    'Nabilah Azhar Ardiyana, S.Tr.TEM.',
+                    'Baits Abdul Pattah, A.Md.T'
+                ];
+                selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` +
+                    teknisiLk.map(n => `<option value="${n}">${n}</option>`).join('');
             }
             // Kepala Ruangan diisi otomatis dari ruangan alat.
         }
