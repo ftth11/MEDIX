@@ -2426,11 +2426,12 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
-                    <p class="font-semibold text-slate-500 text-[10px]">User Ruangan</p>
+                    <p class="font-semibold text-slate-500 text-[10px]">Kepala Ruangan</p>
                     <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-user')" class="no-print text-[9px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200" id="btn-clear-sig-user">Hapus</button>
                     <div class="pt-0.5">
-                        <select id="dlk-select-nama-saksi" onchange="handleDropdownNamaBaru(this, 'User')" class="w-full text-center border-b border-slate-300 p-0.5 font-bold text-slate-800 bg-transparent outline-none cursor-pointer text-[10px]"></select>
+                        <input type="hidden" id="dlk-select-nama-saksi" value="">
+                    <div class="pt-0.5 min-h-[18px]"><div id="dlk-kepala-ruangan-nama" class="text-center font-bold text-slate-800 text-[10px] leading-tight break-words"></div></div>
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
@@ -6367,6 +6368,8 @@ function renderMaintenanceHistory() {
             aktualisasikanTampilanKotakTabel('fungsi'); 
             populasikanDropdownNamaTandaTangan();
             
+            tampilkanKepalaRuanganWorksheet('');
+            
             // Tidak perlu membaca seluruh koleksi LK hanya untuk nomor sementara.
             // Nomor final ditentukan kembali saat penyimpanan berdasarkan cache LK yang sudah ada.
             const nextNo = dataLembarKerja.reduce((max, item) => {
@@ -6451,7 +6454,12 @@ function renderMaintenanceHistory() {
 
             populasikanDropdownNamaTandaTangan();
             document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
-            document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
+            // LK lama mempertahankan snapshot kepala ruangan.
+            // Jika LK lama belum memiliki nama, gunakan mapping ruangan saat ini.
+            sinkronisasiKepalaRuanganWorksheet(
+                document.getElementById('dlk-lokasi')?.value || '',
+                record.saksiTtd || ''
+            );
             
             terapkanModeLockedPermanenLk();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
@@ -6699,6 +6707,9 @@ function renderMaintenanceHistory() {
                 document.getElementById('dlk-tipe').value = dTipe; 
                 document.getElementById('dlk-seri').value = dSeri; 
                 document.getElementById('dlk-lokasi').value = dLokasi;
+
+                // Kepala ruangan otomatis mengikuti ruangan alat.
+                sinkronisasiKepalaRuanganWorksheet(dLokasi);
                 
                 const inputSearch = document.getElementById('input-search-alat-worksheet');
                 if(inputSearch) inputSearch.value = a.nama + " (" + (a.seri || "-") + ")";
@@ -6724,12 +6735,68 @@ function renderMaintenanceHistory() {
 
         function hitungOtomatisMasaBerlakuSatuTahun(v) { if(!v) return; let d = new Date(v); d.setFullYear(d.getFullYear()+1); document.getElementById('dlk-nokal').value = d.toISOString().substring(0,10); }
         
+        /* =========================================================
+           KEPALA RUANGAN — OTOMATIS DARI RUANGAN ALAT
+           Jika mapping belum tersedia, nama dibiarkan kosong.
+           LK lama mempertahankan nama tersimpan sebagai snapshot.
+           ========================================================= */
+        const MEDIX_KEPALA_RUANGAN = [
+            { keys: ['instalasi gawat darurat', 'igd'], nama: 'Ns. Titi Handayani, S.Kep.' },
+            { keys: ['instalasi bedah sentral', 'ibs'], nama: 'Ns. Anieta Ester Yulia Lukasim, S. Kep.' },
+            { keys: ['instalasi perinatologi dan nicu', 'perinatologi', 'nicu'], nama: 'Hilda Izzaty, S. Keb.' },
+            { keys: ['kamar bersalin', 'vk'], nama: 'Noviana Maulani, A.Md.Keb.' },
+            { keys: ['instalasi rawat inap', 'rawat inap'], nama: 'Pipit Samawati, AMK.' },
+            { keys: ['instalasi rawat jalan', 'rawat jalan'], nama: 'Siti Dahlia Gumala, A. Md. Kep.' },
+            { keys: ['instalasi icu/hcu', 'icu/hcu', 'icu hcu'], nama: 'Milani Puspasari, AMK.' },
+            { keys: ['pelayanan penunjang', 'penunjang'], nama: 'Dhiah Ernawaty, AMK., SAP., M.M.' },
+            { keys: ['instalasi farmasi', 'farmasi'], nama: 'Rani Widiastuti, S.Farm., Apt.' },
+            { keys: ['instalasi radiologi', 'radiologi'], nama: 'Karisma Rosita, S.Kes.' },
+            { keys: ['instalasi laboratorium dan bank darah', 'laboratorium dan bank darah', 'laboratorium', 'bank darah'], nama: 'Yusma Fitriani, AMAK.' },
+            { keys: ['instalasi cssd', 'cssd'], nama: 'Rizka Matsari, S.Gz.' },
+            { keys: ['instalasi rehab medik', 'rehab medik', 'rehabilitasi medik'], nama: 'Dewa Ayu Chyntia Arini, S.Ft., Ft.' },
+            { keys: ['instalasi pemeliharaan sarpras', 'pemeliharaan sarpras', 'sarpras'], nama: 'Enyk Mary Loca, S.T.' },
+            { keys: ['instalasi laundry', 'laundry'], nama: 'You Lisma Wulan Dari Beru Bangun, S. Si.' }
+        ];
+
+        function normalisasiTeksRuangan(v) {
+            return String(v || '').toLowerCase()
+                .replace(/[.,()\/\\-]+/g, ' ')
+                .replace(/\s+/g, ' ').trim();
+        }
+
+        function cariKepalaRuangan(namaRuangan) {
+            const room = normalisasiTeksRuangan(namaRuangan);
+            if(!room || room === '-') return '';
+            const found = MEDIX_KEPALA_RUANGAN.find(item =>
+                item.keys.some(key => room.includes(normalisasiTeksRuangan(key)))
+            );
+            return found ? found.nama : '';
+        }
+
+        function tampilkanKepalaRuanganWorksheet(nama) {
+            const input = document.getElementById('dlk-select-nama-saksi');
+            const label = document.getElementById('dlk-kepala-ruangan-nama');
+            const nilai = String(nama || '').trim();
+            if(input) input.value = nilai;
+            if(label) {
+                label.textContent = nilai;
+                label.title = nilai;
+                if(!nilai) label.innerHTML = '&nbsp;';
+            }
+        }
+
+        function sinkronisasiKepalaRuanganWorksheet(ruangan, namaSnapshot = '') {
+            tampilkanKepalaRuanganWorksheet(
+                String(namaSnapshot || '').trim() || cariKepalaRuangan(ruangan)
+            );
+        }
+
         function populasikanDropdownNamaTandaTangan() {
             const selTek = document.getElementById('dlk-select-nama-teknisi');
-            const selUsr = document.getElementById('dlk-select-nama-saksi');
-            if(!selTek || !selUsr) return;
-            selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-teknisi-baru" class="text-blue-600 font-bold">+ Tambah Teknisi Baru</option>`;
-            selUsr.innerHTML = `<option value="">-- PILIH USER --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-user-baru" class="text-blue-600 font-bold">+ Tambah User Baru</option>`;
+            if(selTek) {
+                selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-teknisi-baru" class="text-blue-600 font-bold">+ Tambah Teknisi Baru</option>`;
+            }
+            // Kepala Ruangan diisi otomatis dari ruangan alat.
         }
 
         let medixInputResolver = null;
