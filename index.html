@@ -1632,6 +1632,253 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   .medix-filter-btn { display:none; }
 }
 </style>
+
+<style>
+/* ==========================================================
+   MEDIX LK PRINT FINAL
+   - 1 halaman A4 portrait
+   - tidak membuat halaman kedua kosong
+   - uraian pekerjaan boleh memanjang
+   - nilai tanggal kalibrasi dicetak sebagai text
+   - layout mengecil secara proporsional bila isi panjang
+   ========================================================== */
+.print-only-value { display:none; }
+
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    html, body {
+        width: 210mm !important;
+        min-width: 210mm !important;
+        max-width: 210mm !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        overflow: visible !important;
+    }
+
+    body {
+        font-size: 8.5pt !important;
+    }
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    #area-lembar-kerja-resmi,
+    #area-lembar-kerja-resmi * {
+        visibility: visible !important;
+    }
+
+    #area-lembar-kerja-resmi {
+        position: static !important;
+        inset: auto !important;
+        display: block !important;
+        width: 210mm !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        background: #fff !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        z-index: auto !important;
+    }
+
+    #area-lembar-kerja-resmi > div {
+        position: relative !important;
+        width: 210mm !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 5mm 6mm 4mm 6mm !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+        background: #fff !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* Header dibuat padat tetapi tetap proporsional. */
+    #area-lembar-kerja-resmi .w-16.h-16 {
+        width: 15mm !important;
+        height: 15mm !important;
+    }
+
+    #area-lembar-kerja-resmi .md\:w-20.md\:h-20 {
+        width: 15mm !important;
+        height: 15mm !important;
+    }
+
+    #area-lembar-kerja-resmi h2 {
+        font-size: 13pt !important;
+        line-height: 1.05 !important;
+    }
+
+    #area-lembar-kerja-resmi h1 {
+        font-size: 7.5pt !important;
+    }
+
+    #area-lembar-kerja-resmi .space-y-3 > * + * {
+        margin-top: 2mm !important;
+    }
+
+    #area-lembar-kerja-resmi .space-y-2 > * + * {
+        margin-top: 1.5mm !important;
+    }
+
+    #area-lembar-kerja-resmi .grid {
+        gap: 1.5mm !important;
+    }
+
+    #area-lembar-kerja-resmi input,
+    #area-lembar-kerja-resmi select {
+        min-height: 4mm !important;
+        line-height: 1.05 !important;
+        padding-top: 0.5mm !important;
+        padding-bottom: 0.5mm !important;
+    }
+
+    /* Area pemeriksaan utama tetap ringkas namun tidak dipotong. */
+    #area-lembar-kerja-resmi .h-\[155px\],
+    #area-lembar-kerja-resmi .print\:h-\[130px\] {
+        height: 34mm !important;
+        min-height: 34mm !important;
+        max-height: 34mm !important;
+    }
+
+    #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper {
+        height: auto !important;
+        min-height: 25mm !important;
+        max-height: none !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #area-lembar-kerja-resmi #dlk-txt-deskripsi-tunggal {
+        display: block !important;
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 18mm !important;
+        max-height: none !important;
+        overflow: visible !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        resize: none !important;
+        border: 1px solid #cbd5e1 !important;
+        background: #fff !important;
+        padding: 2mm !important;
+        box-sizing: border-box !important;
+        line-height: 1.25 !important;
+    }
+
+    #area-lembar-kerja-resmi #box-preview-foto-before,
+    #area-lembar-kerja-resmi #box-preview-foto {
+        min-height: 0 !important;
+    }
+
+    #area-lembar-kerja-resmi img {
+        max-width: 100% !important;
+        max-height: 30mm !important;
+        object-fit: contain !important;
+    }
+
+    /* Hasil pemeriksaan dan TTD dipadatkan. */
+    #area-lembar-kerja-resmi .grid.grid-cols-1.md\:grid-cols-3.print\:grid-cols-3 {
+        gap: 2mm !important;
+    }
+
+    #area-lembar-kerja-resmi #sig-teknisi,
+    #area-lembar-kerja-resmi #sig-user,
+    #area-lembar-kerja-resmi #sig-pj {
+        max-height: 16mm !important;
+    }
+
+    #area-lembar-kerja-resmi .h-16.print\:h-14 {
+        height: 16mm !important;
+        max-height: 16mm !important;
+    }
+
+    /* Nilai tanggal dibuat text biasa pada print. */
+    #area-lembar-kerja-resmi #dlk-tglcal,
+    #area-lembar-kerja-resmi #dlk-nokal {
+        display: none !important;
+    }
+
+    #area-lembar-kerja-resmi .print-only-value {
+        display: block !important;
+        min-height: 4mm !important;
+        padding: 0.5mm 0 !important;
+        border-bottom: 1px solid #94a3b8 !important;
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        font-size: 8pt !important;
+        line-height: 1.1 !important;
+    }
+
+    /* Kepala ruangan manual tetap tercetak sebagai nama, bukan placeholder. */
+    #area-lembar-kerja-resmi #dlk-kepala-ruangan-nama {
+        border: 0 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        min-height: 5mm !important;
+        height: auto !important;
+        color: #0f172a !important;
+        text-align: center !important;
+        font-weight: 700 !important;
+    }
+
+    /* Pilihan teknisi tetap berupa nama, bukan control browser. */
+    #area-lembar-kerja-resmi #dlk-select-nama-teknisi {
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        border: 0 !important;
+        background: transparent !important;
+        color: #0f172a !important;
+        text-align: center !important;
+        font-weight: 700 !important;
+    }
+
+    /* Hilangkan elemen aksi/placeholder yang tidak dibutuhkan saat cetak. */
+    #area-lembar-kerja-resmi .no-print,
+    #area-lembar-kerja-resmi button,
+    #area-lembar-kerja-resmi input[type="file"],
+    #area-lembar-kerja-resmi .absolute.top-4.right-4 {
+        display: none !important;
+    }
+
+    /* Cegah tabel/section membuat page break. */
+    #area-lembar-kerja-resmi,
+    #area-lembar-kerja-resmi > div,
+    #area-lembar-kerja-resmi .grid,
+    #area-lembar-kerja-resmi .border {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Jika teks uraian sangat panjang, browser tetap menampilkan semuanya
+       dan tidak memaksa max-height 45px. */
+    #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper,
+    #area-lembar-kerja-resmi #dlk-txt-deskripsi-tunggal {
+        max-height: none !important;
+    }
+}
+</style>
+
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -2330,8 +2577,16 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 <div class="flex flex-1"><span class="w-10 text-slate-500 font-medium">Ruang:</span><input type="text" id="dlk-lokasi" class="w-full border-b border-slate-200 p-0.5 bg-transparent text-slate-800 truncate" readonly></div>
                             </div>
                             <div class="flex space-x-2 pt-0.5">
-                                <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Kalibrasi:</span><input type="date" id="dlk-tglcal" onchange="hitungOtomatisMasaBerlakuSatuTahun(this.value)" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800"></div>
-                                <div class="flex flex-1 flex-col"><span class="text-blue-700 font-bold text-[9px]">Tgl Berakhir Kalibrasi:</span><input type="date" id="dlk-nokal" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800"></div>
+                                <div class="flex flex-1 flex-col">
+                                    <span class="text-blue-700 font-bold text-[9px]">Tgl Kalibrasi:</span>
+                                    <input type="date" id="dlk-tglcal" onchange="hitungOtomatisMasaBerlakuSatuTahun(this.value); sinkronisasiTanggalKalibrasiPrint()" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800">
+                                    <span id="dlk-tglcal-print" class="print-only-value"></span>
+                                </div>
+                                <div class="flex flex-1 flex-col">
+                                    <span class="text-blue-700 font-bold text-[9px]">Tgl Berakhir Kalibrasi:</span>
+                                    <input type="date" id="dlk-nokal" class="w-full border-b border-slate-200 p-0 bg-transparent font-bold outline-none text-[9px] text-slate-800" onchange="sinkronisasiTanggalKalibrasiPrint()">
+                                    <span id="dlk-nokal-print" class="print-only-value"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2410,9 +2665,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             <div class="border border-slate-200 p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
                 <span class="font-bold block mb-1 text-slate-800 text-[10px]"><i class="fa-solid fa-square-poll-vertical mr-1.5 text-indigo-600"></i>3. Hasil Pemeriksaan Akhir:</span>
                 <div class="flex flex-wrap gap-4 pt-0.5 font-bold text-[10px]">
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-emerald-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Alat Berfungsi Dengan Baik</span></label>
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Alat Berfungsi Dengan Catatan</span></label>
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-rose-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Alat Rusak Perlu Perbaikan</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-emerald-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Berfungsi Baik</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Berfungsi dengan Catatan</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-rose-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Rusak Perlu Perbaikan</span></label>
                 </div>
             </div>
 
@@ -2435,10 +2690,10 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
-                    <p class="font-semibold text-slate-500 text-[10px]">PJ IPSRS Alkes</p>
+                    <p class="font-semibold text-slate-500 text-[10px]">Penanggung Jawab Alkes</p>
                     <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-pj" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-pj')" class="no-print text-[9px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200" id="btn-clear-sig-pj">Hapus</button>
-                    <div class="pt-0.5 font-bold text-slate-800 border-b border-slate-300 pb-0.5 text-[10px]">PJ Alkes</div>
+                    <div class="pt-0.5 font-bold text-slate-800 border-b border-slate-300 pb-0.5 text-[10px]" data-penanggung-jawab-alkes>Arrief Nurcahyo, S.Tr.Em.</div>
                 </div>
             </div>
 
@@ -6224,7 +6479,7 @@ function renderMaintenanceHistory() {
                 ttdPJ: document.getElementById('sig-pj')?.toDataURL() || '',
                 teknisiTtd: tekNama,
                 saksiTtd: document.getElementById('dlk-select-nama-saksi')?.value || '',
-                pjTtd: 'PJ Alkes',
+                pjTtd: MEDIX_PENANGGUNG_JAWAB_ALKES,
                 fotoAlat: stringFotoBase64 || '-',
                 fotoBefore: stringFotoBeforeBase64 || '-',
                 paramAlatKerja: JSON.stringify(terpakaiAlatKerja),
@@ -6430,6 +6685,7 @@ function renderMaintenanceHistory() {
             sinkronisasiDataAlatKeWorksheet(record.alatId); 
             if(record.tglKalibrasi) document.getElementById('dlk-tglcal').value = record.tglKalibrasi;
             if(record.tglExpKalibrasi) document.getElementById('dlk-nokal').value = record.tglExpKalibrasi;
+            sinkronisasiTanggalKalibrasiPrint();
 
             const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
             if(descTunggal) descTunggal.innerText = record.desc_kerja || "";
@@ -6477,7 +6733,27 @@ function renderMaintenanceHistory() {
             }, 300);
         }
 
-        function pemicuCetakDokumen() { setTimeout(() => { window.print(); }, 250); }
+        function formatTanggalCetakLK(v) {
+            if(!v) return '';
+            const parts = String(v).split('-');
+            if(parts.length !== 3) return String(v);
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function sinkronisasiTanggalKalibrasiPrint() {
+            const tgl = document.getElementById('dlk-tglcal')?.value || '';
+            const exp = document.getElementById('dlk-nokal')?.value || '';
+            const outTgl = document.getElementById('dlk-tglcal-print');
+            const outExp = document.getElementById('dlk-nokal-print');
+            if(outTgl) outTgl.textContent = formatTanggalCetakLK(tgl);
+            if(outExp) outExp.textContent = formatTanggalCetakLK(exp);
+        }
+
+        function pemicuCetakDokumen() {
+            sinkronisasiTanggalKalibrasiPrint();
+            setPenanggungJawabAlkesOtomatis();
+            setTimeout(() => { window.print(); }, 250);
+        }
 
         function muatTandaTanganKeCanvas(canvasId, dataUrl) {
             const canvas = document.getElementById(canvasId);
@@ -6733,6 +7009,7 @@ function renderMaintenanceHistory() {
                     document.getElementById('dlk-tglcal').value = "";
                     document.getElementById('dlk-nokal').value = "";
                 }
+                sinkronisasiTanggalKalibrasiPrint();
                 populasikanDropdownNamaTandaTangan();
                 const selTeknisi = document.getElementById('dlk-select-nama-teknisi');
                 if(selTeknisi && selTeknisi.innerHTML.includes(currentUserNama)) { selTeknisi.value = currentUserNama; }
