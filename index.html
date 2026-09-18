@@ -393,16 +393,29 @@
         *::-webkit-scrollbar { display: none; }
 
         @media print {
-            @page { size: A4 portrait; margin: 8mm; }
-            body, html { background: white !important; width: 100% !important; height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
-            body * { visibility: hidden !important; }
-            #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility: visible !important; }
-            #area-lembar-kerja-resmi { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: auto !important; background: white !important; color: black !important; display: block !important; padding: 0 !important; margin: 0 !important; border: none !important; box-shadow: none !important; overflow: visible !important; z-index: 999999 !important; }
-            #area-lembar-kerja-resmi > div { position: relative !important; box-shadow: none !important; border: none !important; padding: 0 !important; max-height: none !important; height: auto !important; width: 100% !important; overflow: visible !important; background: white !important; }
-            .no-print, button, input[type="file"], .absolute.top-4.right-4 { display: none !important; }
-            input, select { background: transparent !important; border-bottom: 1px solid #94a3b8 !important; }
-            .uraian-pekerjaan-wrapper { height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; display: block !important; }
-            #dlk-txt-deskripsi-tunggal { display:block !important; width:100% !important; box-sizing:border-box !important; height:auto !important; min-height:72px !important; max-height:none !important; overflow:visible !important; white-space:pre-wrap !important; word-wrap:break-word !important; overflow-wrap:anywhere !important; border:none !important; background:transparent !important; padding:0 !important; }
+            /* LK dicetak sebagai satu lembar A4 portrait. Ruang kosong antar-section
+               dipangkas dan seluruh form dipaksa tetap berada pada satu page box. */
+            @page { size: A4 portrait; margin: 5mm; }
+            html, body { background:#fff !important; width:100% !important; height:auto !important; min-height:0 !important; margin:0 !important; padding:0 !important; overflow:visible !important; }
+            body * { visibility:hidden !important; }
+            #area-lembar-kerja-resmi, #area-lembar-kerja-resmi * { visibility:visible !important; }
+            #area-lembar-kerja-resmi { position:absolute !important; left:0 !important; top:0 !important; width:100% !important; height:287mm !important; max-height:287mm !important; background:#fff !important; color:#000 !important; display:block !important; padding:0 !important; margin:0 !important; border:none !important; box-shadow:none !important; overflow:hidden !important; z-index:999999 !important; }
+            #area-lembar-kerja-resmi > div { position:relative !important; box-sizing:border-box !important; width:100% !important; height:287mm !important; max-height:287mm !important; overflow:hidden !important; background:#fff !important; box-shadow:none !important; border:none !important; padding:0 !important; margin:0 !important; }
+            #area-lembar-kerja-resmi > div > * { break-inside:avoid !important; page-break-inside:avoid !important; }
+            .no-print, button, input[type="file"], .absolute.top-4.right-4 { display:none !important; }
+            #area-lembar-kerja-resmi .grid { gap:3px !important; }
+            #area-lembar-kerja-resmi .space-y-3 > * + * { margin-top:3px !important; }
+            #area-lembar-kerja-resmi .space-y-2 > * + * { margin-top:2px !important; }
+            #area-lembar-kerja-resmi .p-6 { padding:0 !important; }
+            #area-lembar-kerja-resmi .p-2 { padding:4px !important; }
+            #area-lembar-kerja-resmi .h-\[155px\] { height:116px !important; }
+            #area-lembar-kerja-resmi .print\:h-\[130px\] { height:116px !important; }
+            #area-lembar-kerja-resmi input, #area-lembar-kerja-resmi select { background:transparent !important; border-bottom:1px solid #94a3b8 !important; }
+            .uraian-pekerjaan-wrapper { height:auto !important; min-height:45px !important; max-height:45px !important; overflow:hidden !important; display:block !important; }
+            #dlk-txt-deskripsi-tunggal { display:block !important; width:100% !important; box-sizing:border-box !important; height:auto !important; min-height:45px !important; max-height:45px !important; overflow:hidden !important; white-space:pre-wrap !important; word-wrap:break-word !important; overflow-wrap:anywhere !important; border:none !important; background:transparent !important; padding:0 !important; }
+            #area-lembar-kerja-resmi img { max-height:105px !important; }
+            #area-lembar-kerja-resmi canvas { max-height:70px !important; }
+            #area-lembar-kerja-resmi table { page-break-inside:avoid !important; }
         }
 
 /* ==========================================================
@@ -428,44 +441,7 @@ body.dark-mode .medix-dialog-card { background:#111827; border-color:rgba(94,234
 body.dark-mode .medix-dialog-message { color:#cbd5e1; }
 body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
 body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
-    
-/* Dashboard utama: semua kartu statistik memakai ukuran yang sama. */
-#dashboard-stat-grid {
-  align-items: stretch !important;
-}
-#dashboard-stat-grid > * {
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 92px !important;
-  box-sizing: border-box !important;
-}
-#dashboard-stat-grid > button {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-}
-#dashboard-equipment-stat {
-  width: 100% !important;
-  height: 100% !important;
-}
-@media (min-width: 1024px) {
-  #dashboard-stat-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-  }
-}
-@media (max-width: 767px) {
-  #dashboard-stat-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: .75rem !important;
-  }
-  #dashboard-stat-grid > * {
-    min-height: 88px !important;
-    padding: .85rem !important;
-    border-radius: 1rem !important;
-  }
-}
-
-/* Equipment di Dashboard adalah shortcut yang tampil persis seperti kartu statistik lain. */
-</style>
+    </style>
 
 <style id="medix-pro-app-shell-v11">
 /* =========================================================
@@ -615,9 +591,11 @@ body { overflow:hidden !important; }
   }
   #medix-mobile-bottom-nav button.hidden { display:none !important; }
 
-  /* Tablet + phone: keep technician quick action available in the drawer.
-     Visibility is still controlled by renderSidebarByPermission(). */
-  #btn-aksi-cepat-container > button { display:flex !important; }
+  /* Tablet + phone: keep the Lembar Kerja quick action available inside
+     the sidebar drawer. Other technician-only quick actions remain hidden
+     so the bottom navigation stays compact. */
+  .menu-akses-teknisi { display:none !important; }
+  #btn-aksi-cepat-container { display:block !important; }
 }
 
 /* Internal tables: horizontal scrolling is explicit and visually discoverable. */
@@ -1605,16 +1583,6 @@ body.dark-mode .medix-period-badge.period-6 { color:#fdba74 !important; border-c
 body.dark-mode .medix-period-badge.period-12 { color:#fcd34d !important; border-color:rgba(245,158,11,.35) !important; background:rgba(245,158,11,.12) !important; }
 body.dark-mode .medix-period-badge.period-inspeksi { color:#6ee7b7 !important; border-color:rgba(16,185,129,.35) !important; background:rgba(16,185,129,.12) !important; }
 
-/* Dashboard Equipment mini cards */
-.dashboard-em-mini { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; min-height:82px; padding:.75rem; border:1px solid #e2e8f0; border-radius:14px; background:rgba(248,250,252,.72); text-align:left; transition:.18s ease; }
-.dashboard-em-mini:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(15,23,42,.08); border-color:rgba(20,184,166,.28); }
-.dashboard-em-mini-label { font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; color:#64748b; }
-.dashboard-em-mini strong { margin-top:3px; font-size:22px; line-height:1; font-weight:950; color:#0f766e; }
-.dashboard-em-mini-note { margin-top:4px; font-size:8px; color:#94a3b8; font-weight:700; }
-body.dark-mode .dashboard-em-mini { background:rgba(15,23,42,.72); border-color:#263449; }
-body.dark-mode .dashboard-em-mini-label { color:#94a3b8; }
-body.dark-mode .dashboard-em-mini strong { color:#5eead4; }
-
 /* Excel-like table filter controls */
 .medix-filterable-table { position:relative; }
 .medix-filter-th { position:relative !important; padding-right:2.35rem !important; }
@@ -1655,22 +1623,8 @@ body.dark-mode .medix-filter-footer { border-color:#263449; }
 .medix-filter-close { border:0; background:#2563eb; color:#fff; padding:7px 12px; border-radius:8px; cursor:pointer; font-weight:700; }
 .medix-mobile-filter-bar { display:none; }
 .medix-mobile-filter-btn {
-  border:1px solid #dbe5ec; background:#fff; color:#334155; border-radius:10px; padding:7px 10px; font-size:11px; font-weight:800; cursor:pointer;
+  border:1px solid #dbe5ec; background:#fff; color:#334155; border-radius:10px; padding:7px 10px; font-size:11px; font-weight:800;
 }
-body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; border-color:#334155; }
-.medix-mobile-filter-sheet { position:fixed; inset:0; z-index:100001; display:flex; align-items:flex-end; justify-content:center; }
-.medix-mobile-filter-backdrop { position:absolute; inset:0; background:rgba(15,23,42,.52); backdrop-filter:blur(5px); }
-.medix-mobile-filter-panel { position:relative; width:min(560px,100%); max-height:82dvh; background:#fff; color:#0f172a; border:1px solid #dbe5ec; border-bottom:0; border-radius:22px 22px 0 0; box-shadow:0 -18px 55px rgba(15,23,42,.22); animation:medixFilterSheetIn .18s ease-out; overflow:hidden; }
-.medix-mobile-filter-handle { width:42px; height:4px; border-radius:999px; background:#cbd5e1; margin:9px auto 0; }
-.medix-mobile-filter-close { width:34px; height:34px; border:0; border-radius:10px; background:#f1f5f9; color:#475569; }
-.medix-mobile-filter-col { min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 11px; border:1px solid #e2e8f0; border-radius:12px; background:#f8fafc; color:#334155; font-size:10px; font-weight:800; text-align:left; }
-.medix-mobile-filter-col:hover { border-color:#5eead4; background:#f0fdfa; color:#0f766e; }
-.medix-mobile-filter-reset { width:100%; min-height:42px; border:1px solid #fecdd3; border-radius:11px; background:#fff1f2; color:#be123c; font-size:10px; font-weight:900; }
-body.dark-mode .medix-mobile-filter-panel { background:#111827; color:#f8fafc; border-color:#334155; }
-body.dark-mode .medix-mobile-filter-close { background:#1e293b; color:#e2e8f0; }
-body.dark-mode .medix-mobile-filter-col { background:#172033; color:#e2e8f0; border-color:#334155; }
-body.dark-mode .medix-mobile-filter-col:hover { background:#0f2b2a; border-color:#2dd4bf; color:#5eead4; }
-@keyframes medixFilterSheetIn { from { transform:translateY(20px); opacity:.65; } to { transform:translateY(0); opacity:1; } }
 body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; border-color:#334155; }
 @media (max-width:767px) {
   .medix-mobile-filter-bar { display:flex; justify-content:flex-end; padding:0 0 8px; }
@@ -1868,7 +1822,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 
                 <div id="tab-dashboard" class="tab-content space-y-4 no-print">
                     <!-- 4 Kartu Statistik Atas -->
-                    <div id="dashboard-stat-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:scale-[1.01] transition">
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Aset Medis</p><h3 id="stat-total" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-2.5 sm:p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-box-archive text-base sm:text-lg"></i></div>
@@ -1885,19 +1839,8 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Dokumen</p><h3 id="stat-logs" class="text-2xl sm:text-3xl font-black text-indigo-600 mt-1">0</h3></div>
                             <div class="p-2.5 sm:p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100"><i class="fa-solid fa-file-waveform text-base sm:text-lg"></i></div>
                         </div>
-                        <!-- Equipment Management: kartu ringkas, satu ukuran dengan statistik Dashboard lainnya -->
-                        <button id="dashboard-equipment-stat" type="button" onclick="switchTab('equipment')" aria-label="Buka Equipment Management" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
-                            <div class="min-w-0">
-                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">Equipment Management</p>
-                                <h3 id="dash-equipment-total" class="text-2xl sm:text-3xl font-black text-teal-700 mt-1 leading-none">0</h3>
-                                <p class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-1">Total populasi EM</p>
-                            </div>
-                            <div class="p-2.5 sm:p-3 bg-teal-50 text-teal-600 rounded-xl border border-teal-100 shrink-0">
-                                <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
-                            </div>
-                        </button>
                     </div>
-
+                
                     <!-- Bagian Grafik Bawah -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div class="glass-panel p-4 rounded-2xl shadow-sm flex flex-col justify-between lg:col-span-1 h-[380px]">
@@ -2154,34 +2097,40 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 Equipment Management & Rekapan PM Alkes
                             </h2>
                         </div>
+                        <div class="flex items-center gap-2">
+                            <span id="equipment-sync-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                                Otomatis tersinkron
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Statistik Ringkasan EM -->
                     <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
-                        <button type="button" onclick="bukaFilterStatEM('jenis')" aria-label="Buka seluruh jenis alkes EM" class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left w-full cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition">
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Jenis Alkes EM</p><h3 id="em-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-layer-group text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaFilterStatEM('populasi')" aria-label="Buka populasi alkes EM" class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left w-full cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition">
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Total Populasi</p><h3 id="em-stat-populasi" class="text-2xl font-black text-cyan-600 mt-1">0</h3></div>
                             <div class="p-3 bg-cyan-50 text-cyan-600 rounded-xl border border-cyan-100"><i class="fa-solid fa-boxes-stacked text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaFilterStatEM('4')" aria-label="Buka alkes dengan periode setiap 4 bulan" class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left w-full cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition">
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 4 Bulan</p><h3 id="em-stat-empat" class="text-2xl font-black text-rose-600 mt-1">0</h3></div>
                             <div class="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaFilterStatEM('6')" aria-label="Buka alkes dengan periode setiap 6 bulan" class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left w-full cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition">
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 6 Bulan</p><h3 id="em-stat-enam" class="text-2xl font-black text-orange-600 mt-1">0</h3></div>
                             <div class="p-3 bg-orange-50 text-orange-600 rounded-xl border border-orange-100"><i class="fa-solid fa-calendar-days text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaFilterStatEM('12')" aria-label="Buka alkes dengan periode setiap 12 bulan" class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left w-full cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition">
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 12 Bulan</p><h3 id="em-stat-satu" class="text-2xl font-black text-amber-600 mt-1">0</h3></div>
                             <div class="p-3 bg-amber-50 text-amber-600 rounded-xl border border-amber-100"><i class="fa-solid fa-calendar-check text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaFilterStatEM('inspeksi')" aria-label="Buka alkes inspeksi sesuai kebutuhan" class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left w-full cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition">
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Inspeksi Sesuai Kebutuhan</p><h3 id="em-stat-inspeksi" class="text-2xl font-black text-emerald-600 mt-1">0</h3></div>
                             <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100"><i class="fa-solid fa-clipboard-check text-lg"></i></div>
-                        </button>
+                        </div>
                     </div>
 
                     <!-- Sub-Tab Navigasi Equipment -->
@@ -2198,7 +2147,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
-                            <table id="table-equipment-em" class="w-full text-left text-xs border-collapse min-w-[1250px]">
+                            <table class="w-full text-left text-xs border-collapse min-w-[1250px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
                                         <th class="p-3">Nama Alkes</th>
@@ -2211,6 +2160,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                         <th class="p-3 text-center font-black text-blue-600">Nilai EM</th>
                                         <th class="p-3">Rekomendasi Periode PM</th>
                                         <th class="p-3">Ruangan / Teknisi</th>
+                                        <th class="p-3 text-center">Sumber</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-equipment-em-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -2222,6 +2172,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <div id="em-content-jadwal" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             
+                            <span class="text-[10px] text-slate-500 font-semibold">Jadwal dibuat otomatis dari rekomendasi EM</span>
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[900px]">
@@ -2257,6 +2208,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             </div>
                         </div>
 
+                        <div class="px-4 pt-1 text-[10px] text-slate-500">
+                            Target dihitung dari jadwal EM/PM otomatis per unit. Selesai dihitung dari LK dan histori maintenance yang terhubung ke alat pada tahun terpilih.
+                        </div>
 
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table id="table-rekapan-em" class="w-full text-left text-xs border-collapse min-w-[1500px]">
@@ -2833,10 +2787,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 el.classList.toggle('hidden', !checks.akun);
             });
             document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
-                const role = canonicalRole(currentActiveRole);
-                const canCreateLk = (role === 'Admin' || role === 'Teknisi') && izinMenu('ticket', 'kerjakan');
-                el.classList.toggle('hidden', !canCreateLk);
-                el.setAttribute('aria-hidden', canCreateLk ? 'false' : 'true');
+                el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
             });
 
             const activeTab = ['dashboard','data-alat','ticket-system','kalibrasi','equipment','kelola-akun']
@@ -2887,7 +2838,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
         let userAksesMenuArray = {};
         let currentUser = null;
         let currentEMSubTab = 'database';
-        let filterStatEquipmentEM = 'jenis';
         let dataEquipment = []; // Projection per unit dari Master Data Aset
         let dataLembarKerja = []; // Seluruh LK untuk Rekapan EM
         let dataMaintenance = []; // Seluruh histori maintenance untuk Rekapan EM
@@ -3090,39 +3040,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 },
                 (error) => console.error("Listener lembarKerja gagal:", error)
             ));
-        }
-
-        function bukaFilterStatEM(mode) {
-            if (!izinMenu('equipment', 'read')) {
-                showToast('Anda tidak memiliki akses Equipment Management.', 'error');
-                return;
-            }
-            currentEMSubTab = 'database';
-            filterStatEquipmentEM = mode || 'jenis';
-            gantiSubTabEM('database');
-
-            const run = () => {
-                const tableId = 'table-equipment-em';
-                if (!document.getElementById(tableId)) return;
-                if (window.medixClearTableFilters) window.medixClearTableFilters(tableId);
-
-                if (filterStatEquipmentEM === '4' && window.medixSetTableFilter) {
-                    window.medixSetTableFilter(tableId, 8, ['Setiap 4 Bulan']);
-                } else if (filterStatEquipmentEM === '6' && window.medixSetTableFilter) {
-                    window.medixSetTableFilter(tableId, 8, ['Setiap 6 Bulan']);
-                } else if (filterStatEquipmentEM === '12' && window.medixSetTableFilter) {
-                    window.medixSetTableFilter(tableId, 8, ['Satu Kali Per Tahun']);
-                } else if (filterStatEquipmentEM === 'inspeksi' && window.medixSetTableFilter) {
-                    window.medixSetTableFilter(tableId, 8, ['Inspeksi Sesuai Kebutuhan']);
-                } else if (filterStatEquipmentEM === 'populasi' && window.medixSortTableColumn) {
-                    window.medixSortTableColumn(tableId, 1, true);
-                } else if (window.medixSortTableColumn) {
-                    window.medixSortTableColumn(tableId, 0, false);
-                }
-                const target = document.getElementById('em-content-database');
-                target?.scrollIntoView({behavior:'smooth', block:'start'});
-            };
-            setTimeout(run, 80);
         }
 
         function gantiSubTabEM(tab) {
@@ -3617,7 +3534,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 const tbody = document.getElementById('table-equipment-em-body');
                 if (!tbody) return;
                 if (filtered.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
                     return;
                 }
                 tbody.innerHTML = filtered.map(item => `
@@ -3632,6 +3549,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                         <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
                         <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold medix-period-badge ${kelasBadgePeriodeEM(item.rekomendasiPeriode)} ${item.rekomendasiPeriode === 'Setiap 4 Bulan' ? 'period-4' : item.rekomendasiPeriode === 'Setiap 6 Bulan' ? 'period-6' : item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span></td>
                         <td class="p-3"><div class="font-semibold text-slate-800">${escapeHtmlEquipment(item.lokasi || '-')}</div><div class="text-[10px] text-slate-400">${escapeHtmlEquipment(item.teknisi || '-')}</div></td>
+                        <td class="p-3 text-center"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold"><i class="fa-solid fa-database"></i> Master Aset</span></td>
                     </tr>`).join('');
             } catch (error) {
                 console.error('Gagal merender tabel equipment:', error);
@@ -3716,12 +3634,7 @@ const filtered = rows;
             if (!select) return;
 
             const tahunSekarang = new Date().getFullYear();
-            // Sediakan tahun berjalan dan 5 tahun ke depan. Histori tahun sebelumnya
-            // tetap ditambahkan dari data LK/maintenance sehingga tidak pernah hilang.
-            const tahunData = new Set();
-            for (let tahun = tahunSekarang; tahun <= tahunSekarang + 5; tahun++) {
-                tahunData.add(tahun);
-            }
+            const tahunData = new Set([tahunSekarang]);
 
             [...dataLembarKerja, ...dataMaintenance].forEach(item => {
                 const d = tanggalRekapanEM(item);
@@ -5151,7 +5064,7 @@ function renderMaintenanceHistory() {
         
         let dataAlat = []; let dataKalibrasi = []; let dataPerbaikan = []; let dataPM = []; let dataInspeksi = []; let dataTiket = []; let dataUserSistem = []; let dataKeluhanLog = [];
         let globalFilterStatus = "all"; subTabDokumenAktif = "all"; let stringFotoBase64 = "-"; let stringFotoBeforeBase64 = "-";
-        let instanceChartKondisi = null; let instanceChartRuangan = null; let instanceChartTren = null; let instanceChartEquipmentPM = null;
+        let instanceChartKondisi = null; let instanceChartRuangan = null; let instanceChartTren = null;
 
         let terpakaiAlatKerja = []; 
         let terpakaiFisik = []; 
@@ -5351,12 +5264,9 @@ function renderMaintenanceHistory() {
                 const boxTicket = document.getElementById('box-form-buat-ticket');
                 if (boxTicket) boxTicket.classList.toggle('hidden', !ticketLapor);
 
-                // Tombol cepat pembuatan LK hanya untuk Admin/Teknisi.
+                // Tombol cepat pembuatan LK hanya untuk akun yang memiliki izin mengerjakan tiket.
                 document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
-                    const role = canonicalRole(currentActiveRole);
-                    const canCreateLk = (role === 'Admin' || role === 'Teknisi') && izinMenu('ticket', 'kerjakan');
-                    el.classList.toggle('hidden', !canCreateLk);
-                    el.setAttribute('aria-hidden', canCreateLk ? 'false' : 'true');
+                    el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
                 });
 
                 // ============================================
@@ -5506,20 +5416,6 @@ function renderMaintenanceHistory() {
                         }
                     });
                 }
-
-                // Equipment Management pada Dashboard: satu kartu ringkas, klik untuk masuk ke menu Equipment.
-                const emGroups = (typeof kelompokkanDataEquipmentUntukEM === 'function')
-                    ? kelompokkanDataEquipmentUntukEM(Array.isArray(dataAlat) ? dataAlat : [], {})
-                    : [];
-                const emPopulation = emGroups.reduce((sum, g) => sum + Number(g.populasi || 0), 0);
-                const equipmentStat = document.getElementById('dashboard-equipment-stat');
-                const equipmentAllowed = typeof izinMenu === 'function' && izinMenu('equipment', 'read');
-                if (equipmentStat) {
-                    equipmentStat.classList.toggle('hidden', !equipmentAllowed);
-                    equipmentStat.setAttribute('aria-hidden', equipmentAllowed ? 'false' : 'true');
-                }
-                const equipmentTotal = document.getElementById('dash-equipment-total');
-                if (equipmentTotal) equipmentTotal.textContent = emPopulation;
             } catch (error) {}
         }
 
@@ -6579,6 +6475,125 @@ function renderMaintenanceHistory() {
             img.onload = function() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); };
         }
 
+        /* =========================================================
+           MEDIX LK — TEMPLATE PEMERIKSAAN OTOMATIS PER JENIS ALAT
+           Setelah alat dipilih, daftar alat kerja, fisik, dan fungsi
+           diisi otomatis berdasarkan nama alat. Item tetap dapat diedit
+           manual melalui dropdown/custom item.
+           ========================================================= */
+        const MEDIX_LK_TEMPLATES = [
+            {
+                keys: ['high flow', 'airvo', 'nasal cannula', 'hfno'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Kabel Power', 'Flow Meter', 'Chamber', 'Filter', 'Aksesoris'],
+                fungsi: ['Display Monitor', 'Switch On/Off', 'Control/Setting', 'Keypad', 'Chamber', 'Flow Meter']
+            },
+            {
+                keys: ['ventilator', 'ventilasi'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Breathing Circuit', 'Filter', 'Humidifier', 'Trolley/Bracket'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Control/Setting', 'Mode Ventilasi', 'Alarm', 'Flow/O2', 'Patient Circuit']
+            },
+            {
+                keys: ['patient monitor', 'monitor pasien', 'bedside monitor'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'ECG Cable', 'SpO2 Sensor', 'NIBP Cuff', 'Temperature Probe'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Touchscreen/Keypad', 'ECG', 'SpO2', 'NIBP', 'Temperature', 'Alarm']
+            },
+            {
+                keys: ['infusion pump', 'infusion', 'volumetric pump'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Door/Clamp', 'Occlusion Sensor', 'Air-in-line Sensor'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'Flow Rate Setting', 'Alarm', 'Occlusion', 'Air-in-line']
+            },
+            {
+                keys: ['syringe pump', 'syringe'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Syringe Holder', 'Pusher/Plunger', 'Clamp'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'Flow Rate Setting', 'Alarm', 'Syringe Detection']
+            },
+            {
+                keys: ['ekg', 'ecg', 'electrocardiograph'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Patient Cable', 'Electrode Lead', 'Printer'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'ECG Acquisition', 'Paper Feed/Print', 'Alarm']
+            },
+            {
+                keys: ['defibrillator', 'defibrilator', 'aed'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Paddle/Pad', 'Patient Cable', 'Battery'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Charge', 'Energy Setting', 'Shock', 'ECG', 'Alarm']
+            },
+            {
+                keys: ['suction', 'vacuum', 'aspirator'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Kabel Power', 'Vacuum Bottle', 'Tubing', 'Filter', 'Regulator/Knob', 'Trolley/Bracket'],
+                fungsi: ['Power On/Off', 'Vacuum Regulation', 'Vacuum Gauge', 'Suction Flow', 'Alarm/Indicator']
+            },
+            {
+                keys: ['oxygen concentrator', 'konsentrator oksigen'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester', 'Oxygen Analyzer'],
+                fisik: ['Main Unit', 'Kabel Power', 'Flowmeter', 'Humidifier Bottle', 'Oxygen Outlet', 'Filter', 'Wheel/Caster'],
+                fungsi: ['Power On/Off', 'Flow Setting', 'Oxygen Concentration', 'Flowmeter', 'Alarm/Indicator']
+            },
+            {
+                keys: ['incubator', 'infant incubator', 'baby incubator'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Canopy', 'Mattress', 'Kabel Power', 'Temperature Probe', 'Humidifier', 'Wheel/Caster'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Temperature Setting', 'Humidity Setting', 'Alarm', 'Control/Setting']
+            },
+            {
+                keys: ['autoclave', 'sterilizer'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Chamber', 'Door/Gasket', 'Kabel Power', 'Tray', 'Pressure Gauge'],
+                fungsi: ['Power On/Off', 'Temperature Setting', 'Time Setting', 'Pressure', 'Heating', 'Alarm']
+            },
+            {
+                keys: ['ultrasound', 'usg', 'sonography'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Transducer', 'Probe Cable', 'Keyboard/Control Panel'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Probe Selection', 'Gain/Depth Setting', 'Image Display', 'Measurement']
+            },
+            {
+                keys: ['x-ray', 'xray', 'radiography'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Tube Housing', 'Collimator', 'Kabel Power', 'Table/Stand', 'Control Panel'],
+                fungsi: ['Power On/Off', 'Exposure Setting', 'Collimator', 'Exposure', 'Display/Indicator', 'Alarm']
+            },
+            {
+                keys: ['hemoglobin', 'hematology analyzer', 'chemistry analyzer', 'analyzer'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Sample Port', 'Reagent Area', 'Printer'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Menu/Keypad', 'Sample Processing', 'Result Display', 'Printer']
+            }
+        ];
+
+        const MEDIX_LK_DEFAULT_TEMPLATE = {
+            alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+            fisik: ['Main Unit', 'Kabel Power', 'Casing/Panel', 'Display/Indicator', 'Konektor/Aksesoris'],
+            fungsi: ['Power On/Off', 'Display/Indicator', 'Control/Setting', 'Fungsi Utama', 'Alarm/Indicator']
+        };
+
+        function ambilTemplateLK(namaAlat) {
+            const nama = String(namaAlat || '').toLowerCase();
+            return MEDIX_LK_TEMPLATES.find(t => t.keys.some(k => nama.includes(k))) || MEDIX_LK_DEFAULT_TEMPLATE;
+        }
+
+        function terapkanTemplateLKUntukAlat(namaAlat, paksa = true) {
+            const template = ambilTemplateLK(namaAlat);
+            if (!paksa && (terpakaiAlatKerja.length || terpakaiFisik.length || terpakaiFungsi.length)) return;
+            terpakaiAlatKerja = template.alatkerja.map(nama => ({nama, status:'Baik'}));
+            terpakaiFisik = template.fisik.map(nama => ({nama, status:'Baik'}));
+            terpakaiFungsi = template.fungsi.map(nama => ({nama, status:'Baik'}));
+            template.alatkerja.forEach(n => { if(!opsAlatKerja.includes(n)) opsAlatKerja.push(n); });
+            template.fisik.forEach(n => { if(!opsFisik.includes(n)) opsFisik.push(n); });
+            template.fungsi.forEach(n => { if(!opsFungsi.includes(n)) opsFungsi.push(n); });
+            renderOpsiDropdownAwal();
+            aktualisasikanTampilanKotakTabel('alatkerja');
+            aktualisasikanTampilanKotakTabel('fisik');
+            aktualisasikanTampilanKotakTabel('fungsi');
+        }
+
         function renderOpsiDropdownAwal() { 
             const dAk = document.getElementById('drop-alatkerja'); const dFs = document.getElementById('drop-fisik'); const dFn = document.getElementById('drop-fungsi');
             if(dAk) dAk.innerHTML = `<option value="">-- PILIH ALAT KERJA --</option>` + opsAlatKerja.map(i => `<option value="${i}">${i}</option>`).join('') + `<option value="tambah-baru">+ Tambah Alat Kerja</option>`; 
@@ -6687,6 +6702,10 @@ function renderMaintenanceHistory() {
                 
                 const inputSearch = document.getElementById('input-search-alat-worksheet');
                 if(inputSearch) inputSearch.value = a.nama + " (" + (a.seri || "-") + ")";
+
+                // LK baru / pemilihan alat: isi template pemeriksaan otomatis sesuai nama alat.
+                // Saat membuka LK lama, fungsi pemuatan record akan menimpa daftar ini dengan data tersimpan.
+                terapkanTemplateLKUntukAlat(a.nama, true);
 
                 const listCal = dataKalibrasi.filter(c => c.alatId === id);
                 if(listCal.length > 0) {
@@ -8023,6 +8042,7 @@ body { overflow-x: hidden !important; }
   #em-content-database td:nth-child(8)::before { content:'Nilai EM'; }
   #em-content-database td:nth-child(9)::before { content:'Periode PM'; }
   #em-content-database td:nth-child(10)::before { content:'Ruangan / Teknisi'; }
+  #em-content-database td:nth-child(11)::before { content:'Sumber'; }
 
   /* Jadwal PM: compact mobile cards. */
   #em-content-jadwal > .overflow-x-auto { overflow-x:hidden !important; overflow-y:visible !important; }
@@ -8043,6 +8063,8 @@ body { overflow-x: hidden !important; }
   }
   #em-content-jadwal td:last-child { border-bottom:0 !important; }
   #em-content-jadwal td::before { font-size:8px !important; text-transform:uppercase !important; letter-spacing:.06em !important; color:#64748b !important; font-weight:800 !important; }
+  #em-content-jadwal td:nth-child(1)::before { content:'Hari'; }
+  #em-content-jadwal td:nth-child(2)::before { content:'Bulan'; }
   #em-content-jadwal td:nth-child(3)::before { content:'Nama Alat'; }
   #em-content-jadwal td:nth-child(4)::before { content:'Nomor Seri'; }
   #em-content-jadwal td:nth-child(5)::before { content:'Ruangan'; }
@@ -8451,25 +8473,6 @@ body { overflow-x: hidden !important; }
     const bar=table.parentElement?.querySelector(':scope > .medix-mobile-filter-bar'); if(!bar)return;
     const n=getState(table).filters.size; const btn=bar.querySelector('button'); if(btn)btn.innerHTML=`<i class="fa-solid fa-filter"></i> Filter${n?' ('+n+')':''}`;
   }
-  function closeMobileFilterSheet(){ const el=document.getElementById('medix-mobile-filter-sheet'); if(el)el.remove(); }
-  function openMobileFilter(table){
-    closePopup(); closeMobileFilterSheet();
-    if(!table?.tHead?.rows?.[0]) return;
-    const cols=Array.from(table.tHead.rows[0].cells).map((th,i)=>({i,title:norm(th.innerText)})).filter(x=>isFilterableHeader(x.title));
-    const sheet=document.createElement('div');
-    sheet.id='medix-mobile-filter-sheet'; sheet.className='medix-mobile-filter-sheet';
-    sheet.innerHTML=`<div class="medix-mobile-filter-backdrop"></div><section class="medix-mobile-filter-panel" role="dialog" aria-modal="true" aria-label="Pilih kolom filter"><div class="medix-mobile-filter-handle"></div><div class="flex items-center justify-between gap-3 px-4 pt-2 pb-3 border-b border-slate-200"><div><div class="text-[9px] uppercase tracking-wider font-black text-teal-600">MEDIX • Filter Tabel</div><h3 class="text-sm font-black text-slate-900 mt-0.5">Pilih kolom yang ingin difilter</h3></div><button type="button" class="medix-mobile-filter-close" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button></div><div class="p-3 grid grid-cols-2 gap-2 max-h-[58vh] overflow-y-auto">${cols.map(c=>`<button type="button" class="medix-mobile-filter-col" data-col="${c.i}"><span>${escapeHtml(c.title)}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div><div class="px-3 pb-3"><button type="button" class="medix-mobile-filter-reset">Hapus semua filter</button></div></section>`;
-    document.body.appendChild(sheet);
-    sheet.querySelector('.medix-mobile-filter-backdrop').onclick=closeMobileFilterSheet;
-    sheet.querySelector('.medix-mobile-filter-close').onclick=closeMobileFilterSheet;
-    sheet.querySelector('.medix-mobile-filter-reset').onclick=()=>{ if(window.medixClearTableFilters)window.medixClearTableFilters(table.id); closeMobileFilterSheet(); };
-    sheet.querySelectorAll('.medix-mobile-filter-col').forEach(b=>b.onclick=()=>{
-      const col=Number(b.dataset.col); const anchor=table.tHead.rows[0].cells[col]?.querySelector('.medix-filter-btn');
-      closeMobileFilterSheet();
-      if(anchor) openPopup(table,col,anchor);
-    });
-  }
-
   function decorateTable(table){
     if(!table.tHead || table.dataset.medixFiltersReady==='1') return;
     table.dataset.medixFiltersReady='1'; table.classList.add('medix-filterable-table');
@@ -8483,7 +8486,7 @@ body { overflow-x: hidden !important; }
     if(host && !host.querySelector(':scope > .medix-mobile-filter-bar')){
       const bar=document.createElement('div'); bar.className='medix-mobile-filter-bar no-print';
       bar.innerHTML='<button type="button" class="medix-mobile-filter-btn"><i class="fa-solid fa-filter"></i> Filter</button>';
-      bar.querySelector('button').onclick=()=>openMobileFilter(table);
+      bar.querySelector('button').onclick=()=>{ const first=Array.from(table.tHead.rows[0].cells).findIndex(th=>isFilterableHeader(th.innerText)); if(first>=0){const btn=table.tHead.rows[0].cells[first].querySelector('.medix-filter-btn'); if(btn)openPopup(table,first,btn);} };
       host.insertBefore(bar,table);
     }
     observeBody(table); apply(table);
@@ -8496,9 +8499,6 @@ body { overflow-x: hidden !important; }
   document.addEventListener('click',e=>{if(popup&&!popup.contains(e.target)&&!e.target.closest('.medix-filter-btn'))closePopup();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup();});
   window.addEventListener('resize',()=>{if(popup&&activeTable){const btn=activeTable.tHead.rows[0].cells[activeCol]?.querySelector('.medix-filter-btn');if(btn)positionPopup(btn);}});
-  window.medixSetTableFilter=function(tableId,col,vals){ const table=document.getElementById(tableId); if(!table)return; const arr=Array.isArray(vals)?vals:[]; getState(table).filters.set(Number(col),new Set(arr.map(norm))); apply(table); };
-  window.medixClearTableFilters=function(tableId){ const table=document.getElementById(tableId); if(!table)return; getState(table).filters.clear(); apply(table); };
-  window.medixSortTableColumn=function(tableId,col,desc){ const table=document.getElementById(tableId); if(!table)return; sortColumn(table,Number(col),!!desc); };
   window.medixInitTableFilters=init;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   const mo=new MutationObserver(()=>init());
