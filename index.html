@@ -23,6 +23,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     
     <!-- QR Code & Scanner Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -427,6 +428,8 @@
                 overflow:visible !important;
             }
             body > * { display:none !important; }
+            body.medix-lk-printing > * { display:none !important; }
+            body.medix-lk-printing > #area-lembar-kerja-resmi { display:block !important; }
             body > #area-lembar-kerja-resmi {
                 display:block !important;
                 position:static !important;
@@ -2896,6 +2899,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
         const auth = firebase.auth();
+        const storage = firebase.storage();
 
         // Untuk komputer/HP bersama, gunakan SESSION: refresh tetap masuk,
         // tetapi sesi tidak dipertahankan setelah tab/browser ditutup.
@@ -6713,8 +6717,19 @@ function renderMaintenanceHistory() {
         }
 
         function pemicuCetakDokumen() {
+            const area = document.getElementById('area-lembar-kerja-resmi');
+            if (!area || area.classList.contains('hidden')) {
+                showToast('Lembar Kerja belum terbuka untuk dicetak.', 'error');
+                return;
+            }
             siapkanLKUntukCetak();
-            setTimeout(() => { window.print(); }, 350);
+            document.body.classList.add('medix-lk-printing');
+            area.classList.add('medix-lk-print-ready');
+            const mulaiCetak = () => {
+                try { window.focus(); window.print(); }
+                catch (err) { console.error('Print LK gagal:', err); showToast('Dialog cetak tidak dapat dibuka. Coba izinkan pop-up/cetak pada browser.', 'error'); }
+            };
+            requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(mulaiCetak, 120)));
         }
 
         function formatTanggalCetakLK(v) {
@@ -6749,6 +6764,8 @@ function renderMaintenanceHistory() {
         window.addEventListener('afterprint', () => {
             document.querySelectorAll('.lk-print-date-value').forEach(el => el.remove());
             document.querySelectorAll('.lk-print-calibration-card').forEach(el => el.classList.remove('lk-print-calibration-card'));
+            document.body.classList.remove('medix-lk-printing');
+            document.getElementById('area-lembar-kerja-resmi')?.classList.remove('medix-lk-print-ready');
         });
 
         function muatTandaTanganKeCanvas(canvasId, dataUrl) {
@@ -7200,7 +7217,13 @@ function renderMaintenanceHistory() {
             const combinedLk = [...dataPerbaikan, ...dataPM, ...dataInspeksi];
             combinedLk.forEach(lk => { 
                 const a = dataAlat.find(i => i.id == lk.alatId) || { nama: 'Alat Medis', tipe: '-' }; 
-                docs.push({ id: lk.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: lk.jenisKerja, lkNo: lk.noLk, tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'), desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd || '-'}`, file: lk.id, type: 'lk-print', hasil: lk.hasilTunggal || 'Baik', koleksiDb: 'lembarKerja' }); 
+                docs.push({
+                    id: lk.id, namaAlat: a.nama, seri: a.seri || a.tipe || '-', jenis: lk.jenisKerja, lkNo: lk.noLk,
+                    tgl: lk.textTgl || (lk.tgl ? lk.tgl.substring(0,16) : '-'),
+                    desc: `No LK: ${lk.noLk} | Teknisi: ${lk.teknisiTtd || '-'}`,
+                    file: lk.fileData || lk.id, fileType: lk.fileType || 'application/pdf',
+                    type: lk.fileData ? 'sop-preview' : 'lk-print', hasil: lk.hasilTunggal || 'Baik', koleksiDb: 'lembarKerja'
+                }); 
             });
             
             dataKeluhanLog.forEach(lg => {
@@ -8712,37 +8735,32 @@ body { overflow-x: hidden !important; }
             if(container) container.style.display = "none";
         }
     
-        function submitUploadBerkasUniversal(e) {
+        async function submitUploadBerkasUniversal(e) {
             e.preventDefault();
-            const alatId = document.getElementById('form-cal-alat-id').value;
-            if(!alatId) return showToast("Pilih instrumen alat medis terlebih dahulu!", "error");
-            const jenisKategori = document.getElementById('form-upload-jenis-kategori').value;
-            const fileInput = document.getElementById('form-cal-pdf-file').files[0];
-            if(!fileInput) return showToast("Pilih file berkas yang akan diunggah!", "error");
-        
-            const reader = new FileReader(); reader.readAsDataURL(fileInput);
-            reader.onload = function(event) {
-                const fileDataResult = event.target.result;
-                let targetCollection = "dataKalibrasi"; let payload = {};
-        
-                if (jenisKategori === 'kalibrasi') {
-                    targetCollection = "dataKalibrasi";
-                    payload = { alatId: alatId, tgl: document.getElementById('form-cal-tgl').value, exp: document.getElementById('form-cal-exp').value, vendor: document.getElementById('form-cal-vendor').value || "Eksternal / Vendor", certPdf: fileDataResult, hasil: document.getElementById('form-cal-hasil').value };
-                } else if (jenisKategori === 'sop') {
-                    targetCollection = "bukuPetunjukAlat";
-                    payload = { alatId: alatId, namaFile: document.getElementById('form-keterangan-namafile').value || fileInput.name, fileType: fileInput.type, fileData: fileDataResult, tglUpload: new Date().toISOString().substring(0, 10) };
-                } else {
-                    targetCollection = "lembarKerja";
-                    let ketManual = document.getElementById('form-keterangan-namafile').value || "Upload LK Manual";
-                    payload = { alatId: alatId, noLk: ketManual, textTgl: new Date().toISOString().substring(0, 10), jenisKerja: "Corrective Maintenance", desc_kerja: "Dokumen Lembar Kerja (LK) diunggah manual.", hasilTunggal: "Alat Berfungsi Dengan Baik", fotoAlat: fileDataResult, isLocked: true, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
-                }
-        
-                db.collection(targetCollection).add(payload).then(() => {
-                    toggleModal('modal-kalibrasi', false);
-                    showToast("Berkas berhasil diunggah dan terintegrasi otomatis!", "success");
-                });
-            };
+            if (!izinMenu('riwayat', 'upload') || currentActiveRole === 'User') return showToast('Akses upload dokumen hanya tersedia untuk Admin/Teknisi.', 'error');
+            const form=e.currentTarget, submitBtn=form?.querySelector('button[type="submit"]');
+            const alatId=document.getElementById('form-cal-alat-id')?.value||'', jenisKategori=document.getElementById('form-upload-jenis-kategori')?.value||'kalibrasi', file=document.getElementById('form-cal-pdf-file')?.files?.[0];
+            if(!alatId) return showToast('Pilih instrumen alat medis terlebih dahulu!','error');
+            if(!file) return showToast('Pilih file berkas yang akan diunggah!','error');
+            if(jenisKategori==='kalibrasi') { const tgl=document.getElementById('form-cal-tgl')?.value||'', exp=document.getElementById('form-cal-exp')?.value||''; if(!tgl||!exp) return showToast('Tanggal uji dan masa berlaku sertifikat wajib diisi.','error'); }
+            else if(!(document.getElementById('form-keterangan-namafile')?.value||'').trim()) return showToast('Nama/keterangan dokumen wajib diisi.','error');
+            if(file.size>20*1024*1024) return showToast('Ukuran file maksimal 20 MB.','error');
+            if(submitBtn){submitBtn.disabled=true;submitBtn.dataset.oldHtml=submitBtn.innerHTML;submitBtn.innerHTML='<i class="fa-solid fa-spinner fa-spin mr-1"></i>Mengunggah...';}
+            try {
+                const safeName=file.name.replace(/[^a-zA-Z0-9._-]+/g,'_').replace(/^_+|_+$/g,'')||'dokumen', uid=auth.currentUser?.uid||'unknown-user';
+                let fileLocation='';
+                if(file.size<=700*1024){ fileLocation=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result||''));r.onerror=()=>reject(r.error||new Error('File tidak dapat dibaca.'));r.readAsDataURL(file);}); }
+                else { const ref=storage.ref(`dokumenAset/${uid}/${Date.now()}_${safeName}`); const snap=await ref.put(file,{contentType:file.type||'application/octet-stream',customMetadata:{alatId:String(alatId),kategori:jenisKategori,uploadedBy:uid}}); fileLocation=await snap.ref.getDownloadURL(); }
+                let targetCollection='', payload={};
+                if(jenisKategori==='kalibrasi'){ targetCollection='dataKalibrasi'; payload={alatId,tgl:document.getElementById('form-cal-tgl').value,exp:document.getElementById('form-cal-exp').value,vendor:document.getElementById('form-cal-vendor').value.trim()||'Eksternal / Vendor',certPdf:fileLocation,certFileName:file.name,certFileType:file.type||'application/pdf',certFileSize:file.size,storageType:file.size<=700*1024?'firestore-data-url':'firebase-storage',hasil:document.getElementById('form-cal-hasil').value,createdAt:firebase.firestore.FieldValue.serverTimestamp()}; }
+                else if(jenisKategori==='sop'){ targetCollection='bukuPetunjukAlat'; payload={alatId,namaFile:document.getElementById('form-keterangan-namafile').value.trim()||file.name,fileType:file.type||'application/octet-stream',fileData:fileLocation,fileName:file.name,fileSize:file.size,storageType:file.size<=700*1024?'firestore-data-url':'firebase-storage',tglUpload:new Date().toISOString().substring(0,10),createdAt:firebase.firestore.FieldValue.serverTimestamp()}; }
+                else { targetCollection='lembarKerja'; payload={alatId,noLk:document.getElementById('form-keterangan-namafile').value.trim(),textTgl:new Date().toISOString().substring(0,10),jenisKerja:'Dokumen Lembar Kerja (LK)',desc_kerja:'Dokumen Lembar Kerja (LK) diunggah manual.',hasilTunggal:'Alat Berfungsi Dengan Baik',fileData:fileLocation,fileType:file.type||'application/pdf',fileName:file.name,fileSize:file.size,storageType:file.size<=700*1024?'firestore-data-url':'firebase-storage',fotoAlat:'-',isLocked:true,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; }
+                await db.collection(targetCollection).add(payload);
+                form.reset(); document.getElementById('form-cal-alat-id').value=''; document.getElementById('input-search-alat-kalibrasi').value=''; ubahTampilanFormUpload('kalibrasi'); toggleModal('modal-kalibrasi',false); renderTabelPusatDokumen(); showToast('Berkas berhasil diunggah dan diintegrasikan ke Riwayat & Dokumen.','success');
+            } catch(error){ console.error('Upload dokumen gagal:',error); let msg=error?.message||'Terjadi kesalahan saat mengunggah dokumen.'; if(error?.code==='permission-denied') msg='Akses Firestore ditolak. Pastikan akun Admin/Teknisi aktif dan Security Rules mengizinkan upload.'; else if(String(error?.code||'').includes('storage/unauthorized')) msg='Upload Storage ditolak oleh Firebase Storage Rules.'; else if(String(error?.code||'').includes('storage/unauthenticated')) msg='Sesi login sudah berakhir. Silakan login kembali.'; showToast('Gagal menyimpan berkas: '+msg,'error'); }
+            finally { if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML=submitBtn.dataset.oldHtml||'Simpan & Integrasikan';} }
         }
+
     
 (function medixSidebarFooterObserver(){
     if (window.medixSidebarFooterObserverStarted) return;
