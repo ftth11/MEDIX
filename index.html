@@ -723,7 +723,6 @@ body { overflow:hidden !important; }
      the sidebar drawer. Other technician-only quick actions remain hidden
      so the bottom navigation stays compact. */
   .menu-akses-teknisi { display:none !important; }
-  #btn-aksi-cepat-container { display:block !important; }
 }
 
 /* Internal tables: horizontal scrolling is explicit and visually discoverable. */
@@ -1760,6 +1759,16 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   .medix-filter-btn { display:none; }
 }
 </style>
+
+<style id="medix-lk-dashboard-fix">
+#dashboard-stat-grid { align-items: stretch !important; }
+#dashboard-stat-grid > * { width:100% !important; min-width:0 !important; min-height:92px !important; box-sizing:border-box !important; }
+#dashboard-stat-grid > button { appearance:none !important; -webkit-appearance:none !important; }
+#dashboard-equipment-stat { width:100% !important; height:100% !important; }
+@media (min-width:1024px) { #dashboard-stat-grid { grid-template-columns:repeat(5,minmax(0,1fr)) !important; } }
+@media (max-width:767px) { #dashboard-stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:.75rem !important; } }
+#dlk-kepala-ruangan-nama { min-width:0 !important; }
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -1950,7 +1959,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 
                 <div id="tab-dashboard" class="tab-content space-y-4 no-print">
                     <!-- 4 Kartu Statistik Atas -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <div id="dashboard-stat-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:scale-[1.01] transition">
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Aset Medis</p><h3 id="stat-total" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-2.5 sm:p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-box-archive text-base sm:text-lg"></i></div>
@@ -1967,6 +1976,16 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             <div><p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase">Total Dokumen</p><h3 id="stat-logs" class="text-2xl sm:text-3xl font-black text-indigo-600 mt-1">0</h3></div>
                             <div class="p-2.5 sm:p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100"><i class="fa-solid fa-file-waveform text-base sm:text-lg"></i></div>
                         </div>
+                        <button id="dashboard-equipment-stat" type="button" onclick="switchTab('equipment')" aria-label="Buka Equipment Management" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                            <div class="min-w-0">
+                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">Equipment Management</p>
+                                <h3 id="dash-equipment-total" class="text-2xl sm:text-3xl font-black text-teal-700 mt-1 leading-none">0</h3>
+                                <p class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-1">Total populasi EM</p>
+                            </div>
+                            <div class="p-2.5 sm:p-3 bg-teal-50 text-teal-600 rounded-xl border border-teal-100 shrink-0">
+                                <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
+                            </div>
+                        </button>
                     </div>
                 
                     <!-- Bagian Grafik Bawah -->
@@ -2538,9 +2557,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             <div class="border border-slate-200 p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
                 <span class="font-bold block mb-1 text-slate-800 text-[10px]"><i class="fa-solid fa-square-poll-vertical mr-1.5 text-indigo-600"></i>3. Hasil Pemeriksaan Akhir:</span>
                 <div class="flex flex-wrap gap-4 pt-0.5 font-bold text-[10px]">
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-emerald-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Berfungsi Baik</span></label>
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Berfungsi dengan Catatan</span></label>
-                    <label class="flex items-center space-x-1.5 cursor-pointer text-rose-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Rusak Perlu Perbaikan</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-emerald-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Baik" checked> <span>Alat Berfungsi Dengan Baik</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-amber-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Berfungsi Dengan Catatan"> <span>Alat Berfungsi Dengan Catatan</span></label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer text-rose-700"><input type="radio" name="dlk-hasil-tunggal" value="Alat Rusak Perlu Perbaikan"> <span>Alat Rusak Perlu Perbaikan</span></label>
                 </div>
             </div>
 
@@ -2554,11 +2573,12 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
-                    <p class="font-semibold text-slate-500 text-[10px]">User Ruangan</p>
+                    <p class="font-semibold text-slate-500 text-[10px]">Kepala Ruangan / Petugas</p>
                     <div class="border border-dashed border-slate-300 rounded bg-slate-50 h-16 print:h-14 relative overflow-hidden"><canvas id="sig-user" class="w-full h-full absolute inset-0 z-10"></canvas></div>
                     <button type="button" onclick="clearCanvasSignature('sig-user')" class="no-print text-[9px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200" id="btn-clear-sig-user">Hapus</button>
                     <div class="pt-0.5">
-                        <select id="dlk-select-nama-saksi" onchange="handleDropdownNamaBaru(this, 'User')" class="w-full text-center border-b border-slate-300 p-0.5 font-bold text-slate-800 bg-transparent outline-none cursor-pointer text-[10px]"></select>
+                        <input id="dlk-kepala-ruangan-nama" type="text" placeholder="Otomatis sesuai ruangan / isi manual" class="w-full text-center border-b border-slate-300 p-0.5 font-bold text-slate-800 bg-transparent outline-none text-[10px]" autocomplete="off">
+                        <input id="dlk-select-nama-saksi" type="hidden" value="">
                     </div>
                 </div>
                 <div class="text-center space-y-0.5">
@@ -6489,11 +6509,17 @@ function renderMaintenanceHistory() {
                 if(el) { el.value = ""; el.removeAttribute('disabled'); }
             });
 
+            const kepalaInput = document.getElementById('dlk-kepala-ruangan-nama');
+            const kepalaHidden = document.getElementById('dlk-select-nama-saksi');
+            if(kepalaInput) kepalaInput.value = '';
+            if(kepalaHidden) kepalaHidden.value = '';
             renderOpsiDropdownAwal(); 
             aktualisasikanTampilanKotakTabel('alatkerja'); 
             aktualisasikanTampilanKotakTabel('fisik'); 
             aktualisasikanTampilanKotakTabel('fungsi'); 
             populasikanDropdownNamaTandaTangan();
+            inisialisasiInputKepalaRuanganWorksheet();
+            setPenanggungJawabAlkesOtomatis();
             
             // Tidak perlu membaca seluruh koleksi LK hanya untuk nomor sementara.
             // Nomor final ditentukan kembali saat penyimpanan berdasarkan cache LK yang sudah ada.
@@ -6580,6 +6606,9 @@ function renderMaintenanceHistory() {
             populasikanDropdownNamaTandaTangan();
             document.getElementById('dlk-select-nama-teknisi').value = record.teknisiTtd || "";
             document.getElementById('dlk-select-nama-saksi').value = record.saksiTtd || "";
+            const kepalaRuanganInput = document.getElementById('dlk-kepala-ruangan-nama');
+            if (kepalaRuanganInput) kepalaRuanganInput.value = record.saksiTtd || "";
+            setPenanggungJawabAlkesOtomatis();
             
             terapkanModeLockedPermanenLk();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
@@ -6636,6 +6665,218 @@ function renderMaintenanceHistory() {
             const img = new Image(); img.src = dataUrl;
             img.onload = function() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); };
         }
+
+        /* =========================================================
+           MEDIX LK — TEMPLATE PEMERIKSAAN OTOMATIS PER JENIS ALAT
+           Setelah alat dipilih, daftar alat kerja, fisik, dan fungsi
+           diisi otomatis berdasarkan nama alat. Item tetap dapat diedit
+           manual melalui dropdown/custom item.
+           ========================================================= */
+        const MEDIX_LK_TEMPLATES = [
+            {
+                keys: ['high flow', 'airvo', 'nasal cannula', 'hfno'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Kabel Power', 'Flow Meter', 'Chamber', 'Filter', 'Aksesoris'],
+                fungsi: ['Display Monitor', 'Switch On/Off', 'Control/Setting', 'Keypad', 'Chamber', 'Flow Meter']
+            },
+            {
+                keys: ['ventilator', 'ventilasi'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Breathing Circuit', 'Filter', 'Humidifier', 'Trolley/Bracket'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Control/Setting', 'Mode Ventilasi', 'Alarm', 'Flow/O2', 'Patient Circuit']
+            },
+            {
+                keys: ['patient monitor', 'monitor pasien', 'bedside monitor'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'ECG Cable', 'SpO2 Sensor', 'NIBP Cuff', 'Temperature Probe'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Touchscreen/Keypad', 'ECG', 'SpO2', 'NIBP', 'Temperature', 'Alarm']
+            },
+            {
+                keys: ['infusion pump', 'infusion', 'volumetric pump'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Door/Clamp', 'Occlusion Sensor', 'Air-in-line Sensor'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'Flow Rate Setting', 'Alarm', 'Occlusion', 'Air-in-line']
+            },
+            {
+                keys: ['syringe pump', 'syringe'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Syringe Holder', 'Pusher/Plunger', 'Clamp'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'Flow Rate Setting', 'Alarm', 'Syringe Detection']
+            },
+            {
+                keys: ['ekg', 'ecg', 'electrocardiograph'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Patient Cable', 'Electrode Lead', 'Printer'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Keypad', 'ECG Acquisition', 'Paper Feed/Print', 'Alarm']
+            },
+            {
+                keys: ['defibrillator', 'defibrilator', 'aed'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Paddle/Pad', 'Patient Cable', 'Battery'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Charge', 'Energy Setting', 'Shock', 'ECG', 'Alarm']
+            },
+            {
+                keys: ['suction', 'vacuum', 'aspirator'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Kabel Power', 'Vacuum Bottle', 'Tubing', 'Filter', 'Regulator/Knob', 'Trolley/Bracket'],
+                fungsi: ['Power On/Off', 'Vacuum Regulation', 'Vacuum Gauge', 'Suction Flow', 'Alarm/Indicator']
+            },
+            {
+                keys: ['oxygen concentrator', 'konsentrator oksigen'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester', 'Oxygen Analyzer'],
+                fisik: ['Main Unit', 'Kabel Power', 'Flowmeter', 'Humidifier Bottle', 'Oxygen Outlet', 'Filter', 'Wheel/Caster'],
+                fungsi: ['Power On/Off', 'Flow Setting', 'Oxygen Concentration', 'Flowmeter', 'Alarm/Indicator']
+            },
+            {
+                keys: ['incubator', 'infant incubator', 'baby incubator'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Canopy', 'Mattress', 'Kabel Power', 'Temperature Probe', 'Humidifier', 'Wheel/Caster'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Temperature Setting', 'Humidity Setting', 'Alarm', 'Control/Setting']
+            },
+            {
+                keys: ['autoclave', 'sterilizer'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Chamber', 'Door/Gasket', 'Kabel Power', 'Tray', 'Pressure Gauge'],
+                fungsi: ['Power On/Off', 'Temperature Setting', 'Time Setting', 'Pressure', 'Heating', 'Alarm']
+            },
+            {
+                keys: ['ultrasound', 'usg', 'sonography'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Transducer', 'Probe Cable', 'Keyboard/Control Panel'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Probe Selection', 'Gain/Depth Setting', 'Image Display', 'Measurement']
+            },
+            {
+                keys: ['x-ray', 'xray', 'radiography'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Tube Housing', 'Collimator', 'Kabel Power', 'Table/Stand', 'Control Panel'],
+                fungsi: ['Power On/Off', 'Exposure Setting', 'Collimator', 'Exposure', 'Display/Indicator', 'Alarm']
+            },
+            {
+                keys: ['hemoglobin', 'hematology analyzer', 'chemistry analyzer', 'analyzer'],
+                alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+                fisik: ['Main Unit', 'Display', 'Kabel Power', 'Sample Port', 'Reagent Area', 'Printer'],
+                fungsi: ['Power On/Off', 'Display Monitor', 'Menu/Keypad', 'Sample Processing', 'Result Display', 'Printer']
+            }
+        ];
+
+        const MEDIX_LK_DEFAULT_TEMPLATE = {
+            alatkerja: ['ESA', 'Thermohygrometer', 'Toolset', 'Cleaning Kit', 'Multi Tester'],
+            fisik: ['Main Unit', 'Kabel Power', 'Casing/Panel', 'Display/Indicator', 'Konektor/Aksesoris'],
+            fungsi: ['Power On/Off', 'Display/Indicator', 'Control/Setting', 'Fungsi Utama', 'Alarm/Indicator']
+        };
+
+        function ambilTemplateLK(namaAlat) {
+            const nama = String(namaAlat || '').toLowerCase();
+            return MEDIX_LK_TEMPLATES.find(t => t.keys.some(k => nama.includes(k))) || MEDIX_LK_DEFAULT_TEMPLATE;
+        }
+
+        function terapkanTemplateLKUntukAlat(namaAlat, paksa = true) {
+            const template = ambilTemplateLK(namaAlat);
+            if (!paksa && (terpakaiAlatKerja.length || terpakaiFisik.length || terpakaiFungsi.length)) return;
+            terpakaiAlatKerja = template.alatkerja.map(nama => ({nama, status:'Baik'}));
+            terpakaiFisik = template.fisik.map(nama => ({nama, status:'Baik'}));
+            terpakaiFungsi = template.fungsi.map(nama => ({nama, status:'Baik'}));
+            template.alatkerja.forEach(n => { if(!opsAlatKerja.includes(n)) opsAlatKerja.push(n); });
+            template.fisik.forEach(n => { if(!opsFisik.includes(n)) opsFisik.push(n); });
+            template.fungsi.forEach(n => { if(!opsFungsi.includes(n)) opsFungsi.push(n); });
+            renderOpsiDropdownAwal();
+            aktualisasikanTampilanKotakTabel('alatkerja');
+            aktualisasikanTampilanKotakTabel('fisik');
+            aktualisasikanTampilanKotakTabel('fungsi');
+        }
+
+        /* =========================================================
+           KEPALA RUANGAN — OTOMATIS DARI RUANGAN ALAT
+           Jika mapping belum tersedia, nama dibiarkan kosong.
+           LK lama mempertahankan nama tersimpan sebagai snapshot.
+           ========================================================= */
+        const MEDIX_KEPALA_RUANGAN = [
+            { keys: ['instalasi gawat darurat', 'igd'], nama: 'Ns. Titi Handayani, S.Kep.' },
+            { keys: ['instalasi bedah sentral', 'ibs'], nama: 'Ns. Anieta Ester Yulia Lukasim, S. Kep.' },
+            { keys: ['instalasi perinatologi dan nicu', 'perinatologi', 'nicu'], nama: 'Hilda Izzaty, S. Keb.' },
+            { keys: ['kamar bersalin', 'vk'], nama: 'Noviana Maulani, A.Md.Keb.' },
+            { keys: ['instalasi rawat inap', 'rawat inap'], nama: 'Pipit Samawati, AMK.' },
+            { keys: ['instalasi rawat jalan', 'rawat jalan'], nama: 'Siti Dahlia Gumala, A. Md. Kep.' },
+            { keys: ['instalasi icu/hcu', 'icu/hcu', 'icu hcu'], nama: 'Milani Puspasari, AMK.' },
+            { keys: ['pelayanan penunjang', 'penunjang'], nama: 'Dhiah Ernawaty, AMK., SAP., M.M.' },
+            { keys: ['instalasi farmasi', 'farmasi'], nama: 'Rani Widiastuti, S.Farm., Apt.' },
+            { keys: ['instalasi radiologi', 'radiologi'], nama: 'Karisma Rosita, S.Kes.' },
+            { keys: ['instalasi laboratorium dan bank darah', 'laboratorium dan bank darah', 'laboratorium', 'bank darah'], nama: 'Yusma Fitriani, AMAK.' },
+            { keys: ['instalasi cssd', 'cssd'], nama: 'Rizka Matsari, S.Gz.' },
+            { keys: ['instalasi rehab medik', 'rehab medik', 'rehabilitasi medik'], nama: 'Dewa Ayu Chyntia Arini, S.Ft., Ft.' },
+            { keys: ['instalasi pemeliharaan sarpras', 'pemeliharaan sarpras', 'sarpras'], nama: 'Enyk Mary Loca, S.T.' },
+            { keys: ['instalasi laundry', 'laundry'], nama: 'You Lisma Wulan Dari Beru Bangun, S. Si.' }
+        ];
+
+        const MEDIX_PENANGGUNG_JAWAB_ALKES = 'Arrief Nurcahyo, S.Tr.Em.';
+
+        function setPenanggungJawabAlkesOtomatis() {
+            const kandidatIds = [
+                'dlk-select-nama-penanggung-jawab',
+                'dlk-penanggung-jawab',
+                'dlk-pj-alkes',
+                'dlk-nama-penanggung-jawab'
+            ];
+            for (const id of kandidatIds) {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.value = MEDIX_PENANGGUNG_JAWAB_ALKES;
+                    if(el.tagName === 'SELECT') {
+                        const exists = [...el.options].some(o => o.value === MEDIX_PENANGGUNG_JAWAB_ALKES);
+                        if(!exists) el.add(new Option(MEDIX_PENANGGUNG_JAWAB_ALKES, MEDIX_PENANGGUNG_JAWAB_ALKES));
+                    }
+                }
+            }
+            const textTargets = document.querySelectorAll('[data-penanggung-jawab-alkes]');
+            textTargets.forEach(el => el.textContent = MEDIX_PENANGGUNG_JAWAB_ALKES);
+            const pjText = document.getElementById('dlk-nama-pj');
+            if (pjText) pjText.textContent = MEDIX_PENANGGUNG_JAWAB_ALKES;
+        }
+
+        function normalisasiTeksRuangan(v) {
+            return String(v || '').toLowerCase()
+                .replace(/[.,()\/\\-]+/g, ' ')
+                .replace(/\s+/g, ' ').trim();
+        }
+
+        function cariKepalaRuangan(namaRuangan) {
+            const room = normalisasiTeksRuangan(namaRuangan);
+            if(!room || room === '-') return '';
+            const found = MEDIX_KEPALA_RUANGAN.find(item =>
+                item.keys.some(key => room.includes(normalisasiTeksRuangan(key)))
+            );
+            return found ? found.nama : '';
+        }
+
+        function tampilkanKepalaRuanganWorksheet(nama) {
+            const input = document.getElementById('dlk-select-nama-saksi');
+            const label = document.getElementById('dlk-kepala-ruangan-nama');
+            const nilai = String(nama || '').trim();
+            if(input) input.value = nilai;
+            if(label) {
+                label.value = nilai;
+                label.title = nilai;
+            }
+        }
+
+        function sinkronisasiKepalaRuanganWorksheet(ruangan, namaSnapshot = '') {
+            tampilkanKepalaRuanganWorksheet(
+                String(namaSnapshot || '').trim() || cariKepalaRuangan(ruangan)
+            );
+        }
+
+        function inisialisasiInputKepalaRuanganWorksheet() {
+            const input = document.getElementById('dlk-kepala-ruangan-nama');
+            const hidden = document.getElementById('dlk-select-nama-saksi');
+            if(!input) return;
+            if(input.dataset.bound === '1') return;
+            input.dataset.bound = '1';
+            input.addEventListener('input', () => {
+                if(hidden) hidden.value = input.value;
+            });
+        }
+
+
 
         function renderOpsiDropdownAwal() { 
             const dAk = document.getElementById('drop-alatkerja'); const dFs = document.getElementById('drop-fisik'); const dFn = document.getElementById('drop-fungsi');
@@ -6742,6 +6983,14 @@ function renderMaintenanceHistory() {
                 document.getElementById('dlk-tipe').value = dTipe; 
                 document.getElementById('dlk-seri').value = dSeri; 
                 document.getElementById('dlk-lokasi').value = dLokasi;
+
+                // Otomatis isi kepala ruangan/petugas berdasarkan lokasi alat.
+                sinkronisasiKepalaRuanganWorksheet(dLokasi);
+                inisialisasiInputKepalaRuanganWorksheet();
+                setPenanggungJawabAlkesOtomatis();
+
+                // Otomatis isi alat kerja, pemeriksaan fisik dan fungsi berdasarkan nama alat.
+                terapkanTemplateLKUntukAlat(a.nama, true);
                 
                 const inputSearch = document.getElementById('input-search-alat-worksheet');
                 if(inputSearch) inputSearch.value = a.nama + " (" + (a.seri || "-") + ")";
@@ -6765,10 +7014,21 @@ function renderMaintenanceHistory() {
         
         function populasikanDropdownNamaTandaTangan() {
             const selTek = document.getElementById('dlk-select-nama-teknisi');
-            const selUsr = document.getElementById('dlk-select-nama-saksi');
-            if(!selTek || !selUsr) return;
-            selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` + listNamaTeknisi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-teknisi-baru" class="text-blue-600 font-bold">+ Tambah Teknisi Baru</option>`;
-            selUsr.innerHTML = `<option value="">-- PILIH USER --</option>` + listNamaSaksi.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="tambah-user-baru" class="text-blue-600 font-bold">+ Tambah User Baru</option>`;
+            if(selTek) {
+                const teknisiLk = [
+                    'Arrief Nurcahyo, S.Tr.Em.',
+                    'Nabilah Azhar Ardiyana, S.Tr.TEM.',
+                    'Baits Abdul Pattah, A.Md.T'
+                ];
+                const nilaiLama = selTek.value;
+                selTek.innerHTML = `<option value="">-- PILIH TEKNISI --</option>` +
+                    teknisiLk.map(n => `<option value="${n}">${n}</option>`).join('');
+                if (nilaiLama && teknisiLk.includes(nilaiLama)) selTek.value = nilaiLama;
+            }
+            const inputKepala = document.getElementById('dlk-kepala-ruangan-nama');
+            const hiddenKepala = document.getElementById('dlk-select-nama-saksi');
+            if(inputKepala && hiddenKepala) hiddenKepala.value = inputKepala.value || '';
+            setPenanggungJawabAlkesOtomatis();
         }
 
         let medixInputResolver = null;
@@ -7561,6 +7821,15 @@ function renderMaintenanceHistory() {
                 if (!sudahAdaLk) totalDocsCount++;
             });
             if(statLogs) statLogs.innerText = totalDocsCount;
+
+            const dashEquipment = document.getElementById('dashboard-equipment-stat');
+            const dashEquipmentTotal = document.getElementById('dash-equipment-total');
+            const equipmentAllowed = typeof izinMenu === 'function' && izinMenu('equipment', 'read');
+            if(dashEquipment) {
+                dashEquipment.classList.toggle('hidden', !equipmentAllowed);
+                dashEquipment.setAttribute('aria-hidden', equipmentAllowed ? 'false' : 'true');
+            }
+            if(dashEquipmentTotal) dashEquipmentTotal.textContent = dataAlat.length;
         }
         
         function previewFotoDipilih(input) {
