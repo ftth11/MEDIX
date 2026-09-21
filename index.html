@@ -523,9 +523,12 @@
                 background:transparent !important;
                 border-color:#94a3b8 !important;
             }
-            #area-lembar-kerja-resmi input[type="date"] { color:transparent !important; opacity:1 !important; }
+            #area-lembar-kerja-resmi input[type="date"] { display:none !important; }
             #area-lembar-kerja-resmi .lk-print-date-value {
                 display:block !important;
+                width:100% !important;
+                white-space:nowrap !important;
+                overflow:visible !important;
                 font-size:8px !important;
                 font-weight:700 !important;
                 line-height:1.1 !important;
@@ -2244,37 +2247,32 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 Equipment Management & Rekapan PM Alkes
                             </h2>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span id="equipment-sync-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-xl text-[10px] font-bold">
-                                <i class="fa-solid fa-arrows-rotate"></i>
-                                Otomatis tersinkron
-                            </span>
-                        </div>
+                        <div class="flex items-center gap-2"></div>
                     </div>
 
                     <!-- Statistik Ringkasan EM -->
                     <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
-                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" role="button" tabindex="0" onclick="bukaEquipmentDariStatistik('all')" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); bukaEquipmentDariStatistik('all'); }">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Jenis Alkes EM</p><h3 id="em-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-layer-group text-lg"></i></div>
                         </div>
-                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" role="button" tabindex="0" onclick="bukaEquipmentDariStatistik('all')" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); bukaEquipmentDariStatistik('all'); }">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Total Populasi</p><h3 id="em-stat-populasi" class="text-2xl font-black text-cyan-600 mt-1">0</h3></div>
                             <div class="p-3 bg-cyan-50 text-cyan-600 rounded-xl border border-cyan-100"><i class="fa-solid fa-boxes-stacked text-lg"></i></div>
                         </div>
-                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" role="button" tabindex="0" onclick="bukaEquipmentDariStatistik('Setiap 4 Bulan')" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); bukaEquipmentDariStatistik('Setiap 4 Bulan'); }">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 4 Bulan</p><h3 id="em-stat-empat" class="text-2xl font-black text-rose-600 mt-1">0</h3></div>
                             <div class="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div>
                         </div>
-                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" role="button" tabindex="0" onclick="bukaEquipmentDariStatistik('Setiap 6 Bulan')" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); bukaEquipmentDariStatistik('Setiap 6 Bulan'); }">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 6 Bulan</p><h3 id="em-stat-enam" class="text-2xl font-black text-orange-600 mt-1">0</h3></div>
                             <div class="p-3 bg-orange-50 text-orange-600 rounded-xl border border-orange-100"><i class="fa-solid fa-calendar-days text-lg"></i></div>
                         </div>
-                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" role="button" tabindex="0" onclick="bukaEquipmentDariStatistik('Satu Kali Per Tahun')" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); bukaEquipmentDariStatistik('Satu Kali Per Tahun'); }">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 12 Bulan</p><h3 id="em-stat-satu" class="text-2xl font-black text-amber-600 mt-1">0</h3></div>
                             <div class="p-3 bg-amber-50 text-amber-600 rounded-xl border border-amber-100"><i class="fa-solid fa-calendar-check text-lg"></i></div>
                         </div>
-                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                        <div class="glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" role="button" tabindex="0" onclick="bukaEquipmentDariStatistik('Inspeksi Sesuai Kebutuhan')" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); bukaEquipmentDariStatistik('Inspeksi Sesuai Kebutuhan'); }">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Inspeksi Sesuai Kebutuhan</p><h3 id="em-stat-inspeksi" class="text-2xl font-black text-emerald-600 mt-1">0</h3></div>
                             <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100"><i class="fa-solid fa-clipboard-check text-lg"></i></div>
                         </div>
@@ -2307,7 +2305,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                         <th class="p-3 text-center font-black text-blue-600">Nilai EM</th>
                                         <th class="p-3">Rekomendasi Periode PM</th>
                                         <th class="p-3">Ruangan / Teknisi</th>
-                                        <th class="p-3 text-center">Sumber</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-equipment-em-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -2319,7 +2316,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <div id="em-content-jadwal" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             
-                            <span class="text-[10px] text-slate-500 font-semibold">Jadwal dibuat otomatis dari rekomendasi EM</span>
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[900px]">
@@ -2353,10 +2349,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                     <i class="fa-solid fa-print mr-1"></i> Cetak
                                 </button>
                             </div>
-                        </div>
-
-                        <div class="px-4 pt-1 text-[10px] text-slate-500">
-                            Target dihitung dari jadwal EM/PM otomatis per unit. Selesai dihitung dari LK dan histori maintenance yang terhubung ke alat pada tahun terpilih.
                         </div>
 
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
@@ -2934,8 +2926,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             document.querySelectorAll('.menu-akses-admin-saja').forEach(el => {
                 el.classList.toggle('hidden', !checks.akun);
             });
+            const canCreateLk = ['Admin', 'Teknisi'].includes(canonicalRole(currentActiveRole));
             document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
-                el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
+                el.classList.toggle('hidden', !canCreateLk);
             });
 
             const activeTab = ['dashboard','data-alat','ticket-system','kalibrasi','equipment','kelola-akun']
@@ -3660,6 +3653,25 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             }
         }
 
+        // Klik statistik Equipment -> buka Master Data EM dan langsung filter periode.
+        window.medixEMStatFilter = 'all';
+        function bukaEquipmentDariStatistik(filterPeriode = 'all') {
+            window.medixEMStatFilter = filterPeriode || 'all';
+            if (typeof switchTab === 'function') switchTab('equipment');
+            setTimeout(() => {
+                if (typeof gantiSubTabEM === 'function') gantiSubTabEM('database');
+                else {
+                    const dbTab = document.getElementById('em-subtab-db');
+                    const content = document.getElementById('em-content-database');
+                    if (dbTab) dbTab.click();
+                    if (content) content.classList.remove('hidden');
+                }
+                if (typeof renderEquipmentManagementTable === 'function') renderEquipmentManagementTable();
+                const panel = document.getElementById('em-content-database');
+                if (panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
+            }, 80);
+        }
+
         function renderEquipmentManagementTable() {
             try {
                 if (!Array.isArray(dataAlat)) dataAlat = [];
@@ -3678,11 +3690,12 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 document.getElementById('em-stat-enam')?.replaceChildren(document.createTextNode(enamBulan));
                 document.getElementById('em-stat-satu')?.replaceChildren(document.createTextNode(tahunan));
                 document.getElementById('em-stat-inspeksi')?.replaceChildren(document.createTextNode(inspeksi));
-                const filtered = groups;
+                const activeFilter = window.medixEMStatFilter || 'all';
+                const filtered = activeFilter === 'all' ? groups : groups.filter(g => g.rekomendasiPeriode === activeFilter);
                 const tbody = document.getElementById('table-equipment-em-body');
                 if (!tbody) return;
                 if (filtered.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="11" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
                     return;
                 }
                 tbody.innerHTML = filtered.map(item => `
@@ -3697,7 +3710,6 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                         <td class="p-3 text-center font-black text-blue-600 text-sm">${item.nilaiEM ?? '-'}</td>
                         <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold medix-period-badge ${kelasBadgePeriodeEM(item.rekomendasiPeriode)} ${item.rekomendasiPeriode === 'Setiap 4 Bulan' ? 'period-4' : item.rekomendasiPeriode === 'Setiap 6 Bulan' ? 'period-6' : item.rekomendasiPeriode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(item.rekomendasiPeriode || '-')}</span></td>
                         <td class="p-3"><div class="font-semibold text-slate-800">${escapeHtmlEquipment(item.lokasi || '-')}</div><div class="text-[10px] text-slate-400">${escapeHtmlEquipment(item.teknisi || '-')}</div></td>
-                        <td class="p-3 text-center"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold"><i class="fa-solid fa-database"></i> Master Aset</span></td>
                     </tr>`).join('');
             } catch (error) {
                 console.error('Gagal merender tabel equipment:', error);
@@ -3783,6 +3795,11 @@ const filtered = rows;
 
             const tahunSekarang = new Date().getFullYear();
             const tahunData = new Set([tahunSekarang]);
+            const tahunTersimpan = (() => {
+                try { return JSON.parse(localStorage.getItem('medix_rekapan_em_years') || '[]'); }
+                catch (_) { return []; }
+            })();
+            tahunTersimpan.forEach(t => { if (/^\d{4}$/.test(String(t))) tahunData.add(Number(t)); });
 
             [...dataLembarKerja, ...dataMaintenance].forEach(item => {
                 const d = tanggalRekapanEM(item);
@@ -3791,16 +3808,15 @@ const filtered = rows;
 
             const tahunTerpilih = parseInt(select.value, 10);
             const years = [...tahunData].filter(Number.isFinite).sort((a, b) => b - a);
+            select.innerHTML = years.map(tahun => `<option value="${tahun}">${tahun}</option>`).join('');
 
-            select.innerHTML = years.map(tahun =>
-                `<option value="${tahun}">${tahun}</option>`
-            ).join('');
-
-            if (years.includes(tahunTerpilih)) {
-                select.value = String(tahunTerpilih);
-            } else {
-                select.value = String(tahunSekarang);
-            }
+            const pilihan = Number.isFinite(tahunTerpilih) && years.includes(tahunTerpilih)
+                ? tahunTerpilih
+                : tahunSekarang;
+            select.value = String(pilihan);
+            try {
+                localStorage.setItem('medix_rekapan_em_years', JSON.stringify(years));
+            } catch (_) {}
         }
 
         function tanggalRekapanEM(item) {
@@ -4025,6 +4041,11 @@ const filtered = rows;
             inisialisasiFilterTahunRekapanEM();
 
             const tahun = parseInt(document.getElementById('filter-rekapan-em-tahun')?.value, 10) || new Date().getFullYear();
+            try {
+                const years = JSON.parse(localStorage.getItem('medix_rekapan_em_years') || '[]');
+                if (!years.includes(tahun)) years.push(tahun);
+                localStorage.setItem('medix_rekapan_em_years', JSON.stringify(years.filter(Number.isFinite).sort((a,b)=>b-a)));
+            } catch (_) {}
             const allRows = buatDataRekapanEM(tahun);
             const rows = allRows;
 
@@ -5413,8 +5434,9 @@ function renderMaintenanceHistory() {
                 if (boxTicket) boxTicket.classList.toggle('hidden', !ticketLapor);
 
                 // Tombol cepat pembuatan LK hanya untuk akun yang memiliki izin mengerjakan tiket.
+                const canCreateLk = ['Admin', 'Teknisi'].includes(canonicalRole(currentActiveRole));
                 document.querySelectorAll('.menu-akses-teknisi').forEach(el => {
-                    el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
+                    el.classList.toggle('hidden', !canCreateLk);
                 });
 
                 // ============================================
@@ -6486,6 +6508,10 @@ function renderMaintenanceHistory() {
         }
 
         function bukaLembarKerjaBaruKosong() { 
+            if (!['Admin', 'Teknisi'].includes(canonicalRole(currentActiveRole))) {
+                showToast('Pembuatan Lembar Kerja hanya dapat dilakukan oleh Admin atau Teknisi.', 'error');
+                return;
+            }
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); if(!areaLK) return;
             document.getElementById('dlk-firebase-id').value = ""; stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
             resetFotoAfterDisplay();
@@ -6520,6 +6546,8 @@ function renderMaintenanceHistory() {
             populasikanDropdownNamaTandaTangan();
             inisialisasiInputKepalaRuanganWorksheet();
             setPenanggungJawabAlkesOtomatis();
+            const pjNamaBaru = document.getElementById('dlk-nama-pj');
+            if (pjNamaBaru) pjNamaBaru.textContent = MEDIX_PENANGGUNG_JAWAB_ALKES;
             
             // Tidak perlu membaca seluruh koleksi LK hanya untuk nomor sementara.
             // Nomor final ditentukan kembali saat penyimpanan berdasarkan cache LK yang sudah ada.
@@ -8350,7 +8378,6 @@ body { overflow-x: hidden !important; }
   #em-content-database td:nth-child(8)::before { content:'Nilai EM'; }
   #em-content-database td:nth-child(9)::before { content:'Periode PM'; }
   #em-content-database td:nth-child(10)::before { content:'Ruangan / Teknisi'; }
-  #em-content-database td:nth-child(11)::before { content:'Sumber'; }
 
   /* Jadwal PM: compact mobile cards. */
   #em-content-jadwal > .overflow-x-auto { overflow-x:hidden !important; overflow-y:visible !important; }
