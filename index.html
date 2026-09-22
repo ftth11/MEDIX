@@ -560,14 +560,19 @@
             }
             #area-lembar-kerja-resmi .lk-calibration-dates input[type="date"] {
                 display:none !important;
+                visibility:hidden !important;
             }
             #area-lembar-kerja-resmi .lk-print-date-value {
                 display:block !important;
+                visibility:visible !important;
+                opacity:1 !important;
                 width:100% !important;
                 box-sizing:border-box !important;
-                font-size:7.5px !important;
-                font-weight:700 !important;
-                line-height:1.2 !important;
+                color:#0f172a !important;
+                background:#fff !important;
+                font-size:8.5px !important;
+                font-weight:800 !important;
+                line-height:14px !important;
                 height:14px !important;
                 min-height:14px !important;
                 padding:1px 2px !important;
@@ -2340,27 +2345,27 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <!-- Statistik Ringkasan EM — setiap kartu dapat ditekan untuk membuka daftar sesuai fungsinya -->
                     <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
                         <button type="button" onclick="bukaEMDenganFilter('all')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka seluruh Jenis Alkes EM">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Jenis Alkes EM</p><h3 id="em-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3><span class="text-[9px] text-slate-400">Klik untuk membuka daftar</span></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Jenis Alkes EM</p><h3 id="em-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-layer-group text-lg"></i></div>
                         </button>
                         <button type="button" onclick="bukaEMDenganFilter('all')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka seluruh populasi EM">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Total Populasi</p><h3 id="em-stat-populasi" class="text-2xl font-black text-cyan-600 mt-1">0</h3><span class="text-[9px] text-slate-400">Klik untuk membuka daftar</span></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Total Populasi</p><h3 id="em-stat-populasi" class="text-2xl font-black text-cyan-600 mt-1">0</h3></div>
                             <div class="p-3 bg-cyan-50 text-cyan-600 rounded-xl border border-cyan-100"><i class="fa-solid fa-boxes-stacked text-lg"></i></div>
                         </button>
                         <button type="button" onclick="bukaEMDenganFilter('Setiap 4 Bulan')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 4 bulan">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 4 Bulan</p><h3 id="em-stat-empat" class="text-2xl font-black text-rose-600 mt-1">0</h3><span class="text-[9px] text-slate-400">Klik untuk membuka daftar</span></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 4 Bulan</p><h3 id="em-stat-empat" class="text-2xl font-black text-rose-600 mt-1">0</h3></div>
                             <div class="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div>
                         </button>
                         <button type="button" onclick="bukaEMDenganFilter('Setiap 6 Bulan')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 6 bulan">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 6 Bulan</p><h3 id="em-stat-enam" class="text-2xl font-black text-orange-600 mt-1">0</h3><span class="text-[9px] text-slate-400">Klik untuk membuka daftar</span></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 6 Bulan</p><h3 id="em-stat-enam" class="text-2xl font-black text-orange-600 mt-1">0</h3></div>
                             <div class="p-3 bg-orange-50 text-orange-600 rounded-xl border border-orange-100"><i class="fa-solid fa-calendar-days text-lg"></i></div>
                         </button>
                         <button type="button" onclick="bukaEMDenganFilter('Satu Kali Per Tahun')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 12 bulan">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 12 Bulan</p><h3 id="em-stat-satu" class="text-2xl font-black text-amber-600 mt-1">0</h3><span class="text-[9px] text-slate-400">Klik untuk membuka daftar</span></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 12 Bulan</p><h3 id="em-stat-satu" class="text-2xl font-black text-amber-600 mt-1">0</h3></div>
                             <div class="p-3 bg-amber-50 text-amber-600 rounded-xl border border-amber-100"><i class="fa-solid fa-calendar-check text-lg"></i></div>
                         </button>
                         <button type="button" onclick="bukaEMDenganFilter('Inspeksi Sesuai Kebutuhan')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat inspeksi sesuai kebutuhan">
-                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Inspeksi Sesuai Kebutuhan</p><h3 id="em-stat-inspeksi" class="text-2xl font-black text-emerald-600 mt-1">0</h3><span class="text-[9px] text-slate-400">Klik untuk membuka daftar</span></div>
+                            <div><p class="text-[10px] text-slate-500 font-bold uppercase">Inspeksi Sesuai Kebutuhan</p><h3 id="em-stat-inspeksi" class="text-2xl font-black text-emerald-600 mt-1">0</h3></div>
                             <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100"><i class="fa-solid fa-clipboard-check text-lg"></i></div>
                         </button>
                     </div>
@@ -2749,7 +2754,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             </div>
             <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
                 <button type="button" onclick="toggleModal('modal-kalibrasi', false)" class="border border-slate-300 px-4 py-1.5 rounded-xl text-slate-700">Batal</button>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-xl font-bold transition">Simpan & Integrasikan</button>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-xl font-bold transition">Simpan</button>
             </div>
         </form>
     </div>
@@ -6779,21 +6784,34 @@ function renderMaintenanceHistory() {
         function siapkanLKUntukCetak() {
             const area = document.getElementById('area-lembar-kerja-resmi');
             if (!area) return;
-            const cal = document.getElementById('dlk-tglcal');
-            const exp = document.getElementById('dlk-nokal');
-            const calibrationCard = cal?.closest('div.md\:col-span-6');
-            if (calibrationCard) calibrationCard.classList.add('lk-print-calibration-card');
-            [cal, exp].forEach((input) => {
+
+            const pairs = [
+                { id: 'dlk-tglcal', label: 'Tgl Kalibrasi' },
+                { id: 'dlk-nokal', label: 'Tgl Berakhir Kalibrasi' }
+            ];
+
+            pairs.forEach(({id, label}) => {
+                const input = document.getElementById(id);
                 if (!input) return;
-                let span = document.getElementById(input.id + '-print-value');
+                const parent = input.parentElement;
+                if (!parent) return;
+                let span = parent.querySelector('.lk-print-date-value');
                 if (!span) {
                     span = document.createElement('span');
-                    span.id = input.id + '-print-value';
                     span.className = 'lk-print-date-value';
                     input.insertAdjacentElement('afterend', span);
                 }
-                span.textContent = formatTanggalCetakLK(input.value);
+                const value = formatTanggalCetakLK(input.value);
+                span.textContent = `${label}: ${value || '-'};`;
+                span.setAttribute('data-print-value', value || '-');
             });
+
+            const dates = area.querySelector('.lk-calibration-dates');
+            if (dates) {
+                dates.classList.add('lk-print-calibration-dates');
+                dates.style.overflow = 'visible';
+            }
+
             const pj = document.getElementById('dlk-nama-pj');
             if (pj) pj.textContent = 'Arrief Nurcahyo, S.Tr.Em.';
         }
@@ -6801,6 +6819,7 @@ function renderMaintenanceHistory() {
         window.addEventListener('afterprint', () => {
             document.querySelectorAll('.lk-print-date-value').forEach(el => el.remove());
             document.querySelectorAll('.lk-print-calibration-card').forEach(el => el.classList.remove('lk-print-calibration-card'));
+            document.querySelectorAll('.lk-print-calibration-dates').forEach(el => { el.classList.remove('lk-print-calibration-dates'); el.style.removeProperty('overflow'); });
             document.body.classList.remove('medix-lk-printing');
             document.getElementById('area-lembar-kerja-resmi')?.classList.remove('medix-lk-print-ready');
         });
@@ -8793,9 +8812,9 @@ body { overflow-x: hidden !important; }
                 else if(jenisKategori==='sop'){ targetCollection='bukuPetunjukAlat'; payload={alatId,namaFile:document.getElementById('form-keterangan-namafile').value.trim()||file.name,fileType:file.type||'application/octet-stream',fileData:fileLocation,fileName:file.name,fileSize:file.size,storageType:file.size<=700*1024?'firestore-data-url':'firebase-storage',tglUpload:new Date().toISOString().substring(0,10),createdAt:firebase.firestore.FieldValue.serverTimestamp()}; }
                 else { targetCollection='lembarKerja'; payload={alatId,noLk:document.getElementById('form-keterangan-namafile').value.trim(),textTgl:new Date().toISOString().substring(0,10),jenisKerja:'Dokumen Lembar Kerja (LK)',desc_kerja:'Dokumen Lembar Kerja (LK) diunggah manual.',hasilTunggal:'Alat Berfungsi Dengan Baik',fileData:fileLocation,fileType:file.type||'application/pdf',fileName:file.name,fileSize:file.size,storageType:file.size<=700*1024?'firestore-data-url':'firebase-storage',fotoAlat:'-',isLocked:true,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; }
                 await db.collection(targetCollection).add(payload);
-                form.reset(); document.getElementById('form-cal-alat-id').value=''; document.getElementById('input-search-alat-kalibrasi').value=''; ubahTampilanFormUpload('kalibrasi'); toggleModal('modal-kalibrasi',false); renderTabelPusatDokumen(); showToast('Berkas berhasil diunggah dan diintegrasikan ke Riwayat & Dokumen.','success');
+                form.reset(); document.getElementById('form-cal-alat-id').value=''; document.getElementById('input-search-alat-kalibrasi').value=''; ubahTampilanFormUpload('kalibrasi'); toggleModal('modal-kalibrasi',false); renderTabelPusatDokumen(); showToast('Berkas berhasil disimpan ke Riwayat & Dokumen.','success');
             } catch(error){ console.error('Upload dokumen gagal:',error); let msg=error?.message||'Terjadi kesalahan saat mengunggah dokumen.'; if(error?.code==='permission-denied') msg='Akses Firestore ditolak. Pastikan akun Admin/Teknisi aktif dan Security Rules mengizinkan upload.'; else if(String(error?.code||'').includes('storage/unauthorized')) msg='Upload Storage ditolak oleh Firebase Storage Rules.'; else if(String(error?.code||'').includes('storage/unauthenticated')) msg='Sesi login sudah berakhir. Silakan login kembali.'; showToast('Gagal menyimpan berkas: '+msg,'error'); }
-            finally { if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML=submitBtn.dataset.oldHtml||'Simpan & Integrasikan';} }
+            finally { if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML=submitBtn.dataset.oldHtml||'Simpan';} }
         }
 
     
