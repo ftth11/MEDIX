@@ -488,10 +488,11 @@
                tidak tertutup oleh baris/section di bawahnya. Tinggi mengikuti
                kartu Data Alat Kesehatan yang paling padat. */
             #area-lembar-kerja-resmi .lk-info-top-card {
-                height:150px !important;
-                min-height:150px !important;
+                height:auto !important;
+                min-height:0 !important;
                 max-height:none !important;
                 overflow:visible !important;
+                align-self:start !important;
             }
             #area-lembar-kerja-resmi .lk-calibration-dates {
                 min-height:32px !important;
@@ -1887,9 +1888,11 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 }
 @media print {
   #area-lembar-kerja-resmi .lk-info-top-card {
-    height:150px !important;
-    min-height:150px !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
     overflow:visible !important;
+    align-self:start !important;
     page-break-inside:avoid !important;
   }
   #area-lembar-kerja-resmi .lk-calibration-dates {
@@ -1897,18 +1900,18 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
     z-index:20 !important;
     display:grid !important;
     grid-template-columns:1fr 1fr !important;
-    height:36px !important;
-    min-height:36px !important;
-    margin-top:3px !important;
+    height:auto !important;
+    min-height:30px !important;
+    margin-top:2px !important;
     overflow:visible !important;
   }
   #area-lembar-kerja-resmi .lk-print-date-value {
     position:relative !important;
     z-index:30 !important;
     display:block !important;
-    height:16px !important;
-    min-height:16px !important;
-    line-height:16px !important;
+    height:15px !important;
+    min-height:15px !important;
+    line-height:15px !important;
     white-space:nowrap !important;
     overflow:visible !important;
     color:#0f172a !important;
@@ -8882,12 +8885,11 @@ body { overflow-x: hidden !important; }
                 if (!storage) throw new Error('Firebase Storage belum tersedia pada aplikasi.');
 
                 /*
-                 * Jangan lagi menyimpan PDF sebagai Base64 di Firestore.
-                 * Base64 membengkakkan ukuran file sekitar 33% dan dapat membuat
-                 * dokumen Firestore mendekati/melewati batas ukuran 1 MiB.
-                 * Semua berkas sekarang disimpan di Firebase Storage, sedangkan
-                 * Firestore hanya menyimpan metadata + URL.
+                 * Simpan file ke Firebase Storage tanpa menampilkan progress persen.
+                 * Tombol cukup menunjukkan "Menyimpan data..." sampai seluruh proses
+                 * (file + metadata Firestore) selesai.
                  */
+                if (submitBtn) submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Menyimpan data...';
                 const storagePath = `dokumenAset/${uid}/${Date.now()}_${safeName}`;
                 const ref = storage.ref(storagePath);
                 const uploadTask = ref.put(file, {
@@ -8899,34 +8901,26 @@ body { overflow-x: hidden !important; }
                     }
                 });
 
-                const uploadSnapshot = await new Promise((resolve, reject) => {
-                    let selesai = false;
-                    const finish = (fn, value) => {
-                        if (selesai) return;
-                        selesai = true;
-                        if (uploadTimer) clearTimeout(uploadTimer);
-                        fn(value);
-                    };
+                uploadTimer = setTimeout(() => {
+                    try { uploadTask.cancel(); } catch (_) {}
+                }, 90000);
 
-                    uploadTimer = setTimeout(() => {
-                        try { uploadTask.cancel(); } catch (_) {}
-                        finish(reject, new Error('Upload melebihi batas waktu 90 detik. Periksa koneksi internet dan Firebase Storage Rules.'));
-                    }, 90000);
+                let uploadSnapshot;
+                try {
+                    uploadSnapshot = await uploadTask;
+                } catch (uploadError) {
+                    if (uploadError?.code === 'storage/canceled') {
+                        throw new Error('Penyimpanan file melebihi batas waktu 90 detik. Periksa koneksi dan Firebase Storage Rules.');
+                    }
+                    throw uploadError;
+                } finally {
+                    if (uploadTimer) { clearTimeout(uploadTimer); uploadTimer = null; }
+                }
 
-                    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-                        snapshot => {
-                            const pct = snapshot.totalBytes ? Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) : 0;
-                            if (submitBtn) submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Mengunggah ${pct}%...`;
-                        },
-                        error => finish(reject, error),
-                        () => finish(resolve, uploadTask.snapshot)
-                    );
-                });
-
-                if (!uploadSnapshot) throw new Error('Upload file tidak menghasilkan respons dari Firebase Storage.');
+                if (!uploadSnapshot) throw new Error('Firebase Storage tidak mengembalikan hasil penyimpanan file.');
                 const fileLocation = await Promise.race([
                     uploadSnapshot.ref.getDownloadURL(),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('Gagal mendapatkan URL dokumen dari Firebase Storage.')), 30000))
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Gagal mendapatkan alamat dokumen dari Firebase Storage.')), 30000))
                 ]);
 
                 let targetCollection = '', payload = {};
