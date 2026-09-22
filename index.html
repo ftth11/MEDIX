@@ -6718,19 +6718,56 @@ function renderMaintenanceHistory() {
 
         function pemicuCetakDokumen() {
             const area = document.getElementById('area-lembar-kerja-resmi');
-            if (!area || area.classList.contains('hidden')) {
-                showToast('Lembar Kerja belum terbuka untuk dicetak.', 'error');
+            if (!area) {
+                console.error('Area LK tidak ditemukan.');
                 return;
             }
-            siapkanLKUntukCetak();
-            document.body.classList.add('medix-lk-printing');
+
+            // Pastikan modal LK terlihat dan DOM sudah siap sebelum print.
+            area.classList.remove('hidden');
             area.classList.add('medix-lk-print-ready');
+            document.body.classList.add('medix-lk-printing');
+
+            // Siapkan nilai tanggal/PJ tanpa membiarkan error kecil menghentikan print.
+            try { siapkanLKUntukCetak(); } catch (err) { console.warn('Persiapan print LK:', err); }
+
             const mulaiCetak = () => {
-                try { window.focus(); window.print(); }
-                catch (err) { console.error('Print LK gagal:', err); showToast('Dialog cetak tidak dapat dibuka. Coba izinkan pop-up/cetak pada browser.', 'error'); }
+                try {
+                    window.focus();
+                    // window.print() adalah API browser, bukan popup/window.open,
+                    // sehingga tetap bekerja di desktop maupun Android/Chrome.
+                    window.print();
+                } catch (err) {
+                    console.error('Print LK gagal:', err);
+                    document.body.classList.remove('medix-lk-printing');
+                    area.classList.remove('medix-lk-print-ready');
+                    if (typeof showToast === 'function') {
+                        showToast('Cetak tidak dapat dibuka pada browser ini. Gunakan menu Cetak/Print browser.', 'error');
+                    }
+                }
             };
-            requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(mulaiCetak, 120)));
+
+            // Dua frame memberi browser kesempatan menyelesaikan perubahan CSS print.
+            if (typeof requestAnimationFrame === 'function') {
+                requestAnimationFrame(() => requestAnimationFrame(mulaiCetak));
+            } else {
+                setTimeout(mulaiCetak, 100);
+            }
         }
+
+        // Fallback: pastikan tombol LK tetap memiliki handler meskipun inline
+        // handler pernah tertimpa oleh perubahan template/CSS.
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnCetakLK = document.querySelector('#area-lembar-kerja-resmi button[onclick*="pemicuCetakDokumen"]');
+            if (btnCetakLK && !btnCetakLK.dataset.printBound) {
+                btnCetakLK.dataset.printBound = '1';
+                btnCetakLK.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    pemicuCetakDokumen();
+                });
+            }
+        });
 
         function formatTanggalCetakLK(v) {
             if (!v) return '';
