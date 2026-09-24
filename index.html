@@ -2516,7 +2516,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             <i class="fa-solid fa-hospital w-5 text-rose-500"></i><span>Equipment Management</span>
                         </button>
                         <button onclick="switchTab('bhp')" id="btn-bhp" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
-                            <i class="fa-solid fa-boxes-stacked w-5 text-emerald-600"></i><span>Monitoring BHP & Aksesoris</span>
+                            <i class="fa-solid fa-boxes-stacked w-5 text-emerald-600"></i><span>Monitoring BHP & Aksesori</span>
                         </button>
                         
                         <div id="btn-aksi-cepat-container" class="pt-4 mt-4 border-t border-slate-100 space-y-2 menu-akses-teknisi hidden">
@@ -2600,9 +2600,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
                             </div>
                         </button>
-                        <button id="dashboard-bhp-stat" type="button" onclick="switchTab('bhp')" aria-label="Buka Monitoring BHP dan Aksesoris" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                        <button id="dashboard-bhp-stat" type="button" onclick="switchTab('bhp')" aria-label="Buka Monitoring BHP dan Aksesori" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
                             <div class="min-w-0">
-                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">BHP & Aksesoris</p>
+                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">BHP & Aksesori</p>
                                 <h3 id="dash-bhp-total" class="text-2xl sm:text-3xl font-black text-emerald-700 mt-1 leading-none">0</h3>
                                 <p id="dash-bhp-warning" class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-1">0 perlu perhatian</p>
                             </div>
@@ -2863,7 +2863,8 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 <div id="tab-bhp" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
-                            <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesoris</h2>
+                            <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesori</h2>
+                            <p class="text-[10px] text-slate-500 mt-1">Master item diinput manual. Pengeluaran dapat dicatat otomatis dari pemakaian pada Lembar Kerja (LK).</p>
                         </div>
                         <div class="flex gap-2">
                             <button type="button" onclick="bukaModalBHP()" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow hover:bg-emerald-700"><i class="fa-solid fa-plus mr-1"></i>Tambah Item</button>
@@ -3213,16 +3214,16 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 <div class="px-3.5 py-3 border-b border-emerald-100 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 min-w-0">
                         <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-boxes-stacked"></i></div>
-                        <div class="min-w-0"><div class="font-black text-slate-800 text-[11px]">Penggunaan BHP / Aksesoris</div><div class="text-[9px] text-slate-500 truncate">Pilih manual sesuai kebutuhan alat yang sedang dikerjakan.</div></div>
+                        <div class="min-w-0"><div class="font-black text-slate-800 text-[11px]">Penggunaan BHP / Aksesori</div><div class="text-[9px] text-slate-500 truncate">Pilih manual sesuai kebutuhan alat yang sedang dikerjakan.</div></div>
                     </div>
                     <div class="text-right shrink-0"><div id="dlk-bhp-count" class="text-[11px] font-black text-emerald-700">0 item</div><div class="text-[8px] text-slate-400 uppercase font-bold tracking-wider">digunakan</div></div>
                 </div>
                 <div class="p-3 space-y-2.5">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
                         <div class="md:col-span-7 relative">
-                            <label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">BHP / Aksesoris</label>
+                            <label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">BHP / Aksesori</label>
                             <input id="dlk-bhp-search" oninput="filterDropdownBHPDiLK(this.value)" type="search" placeholder="🔍 Cari item atau nama alkes..." class="w-full border border-emerald-200 rounded-xl p-2.5 text-[10px] bg-white outline-none focus:border-emerald-500">
-                            <select id="dlk-bhp-item" onchange="updateStokInfoBHPDiLK()" class="w-full mt-1.5 border border-slate-300 rounded-xl p-2.5 text-[10px] bg-white font-semibold"><option value="">-- Pilih BHP / Aksesoris --</option></select>
+                            <select id="dlk-bhp-item" onchange="updateStokInfoBHPDiLK()" class="w-full mt-1.5 border border-slate-300 rounded-xl p-2.5 text-[10px] bg-white font-semibold"><option value="">-- Pilih BHP / Aksesori --</option></select>
                             <div id="dlk-bhp-stock-info" class="mt-1.5 min-h-[18px] text-[9px] font-bold text-slate-500"></div>
                         </div>
                         <div class="md:col-span-2"><label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">Jumlah</label><input id="dlk-bhp-qty" type="number" min="0.01" step="0.01" value="1" class="w-full border border-slate-300 rounded-xl p-2.5 text-[10px] text-center font-black bg-white" placeholder="Qty"></div>
@@ -7987,7 +7988,7 @@ function renderMaintenanceHistory() {
 
 
         // ================================================================
-        // MONITORING BHP & AKSESORIS — terintegrasi dengan Lembar Kerja (LK)
+        // MONITORING BHP & AKSESORI — terintegrasi dengan Lembar Kerja (LK)
         // Master item sengaja manual karena satu jenis alat dapat memakai
         // BHP yang sama atau berbeda. Stok dihitung dari transaksi IN/OUT.
         // ================================================================
@@ -8040,14 +8041,14 @@ function renderMaintenanceHistory() {
                 return (!q||hay.includes(q))&&(!jenis||i.jenisItem===jenis)&&(!status||statusStokBHP(i)===status)&&(!alkes||i.namaAlkes===alkes);
             });
             const count=document.getElementById('bhp-filter-count'); if(count) count.textContent=`${rows.length} item${rows.length===1?'':'s'}`;
-            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesoris. Tambahkan secara manual.</td></tr>`;
+            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
         }
         function bukaModalBHP(id='') {
             let m=document.getElementById('modal-bhp'); if(!m){
                 m=document.createElement('div'); m.id='modal-bhp'; m.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100000] flex items-center justify-center p-4 no-print'; document.body.appendChild(m);
             }
             const item=dataBHPItems.find(x=>String(x.id)===String(id));
-            m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesoris</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
+            m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesori</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
         }
         function tutupModalBHP(){document.getElementById('modal-bhp')?.remove();}
         async function simpanMasterBHP(e){e.preventDefault(); if(!izinMenu('equipment','edit')){showToast('Akses edit BHP tidak diberikan.','error');return;} const id=document.getElementById('bhp-form-id').value; const payload={namaAlkes:document.getElementById('bhp-form-alkes').value.trim(),namaItem:document.getElementById('bhp-form-item').value.trim(),jenisItem:document.getElementById('bhp-form-jenis').value,satuan:document.getElementById('bhp-form-satuan').value.trim(),spesifikasi:document.getElementById('bhp-form-spesifikasi').value.trim(),stokAwal:angkaBHP(document.getElementById('bhp-form-stok-awal').value),stokMinimum:angkaBHP(document.getElementById('bhp-form-min').value),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; try{if(id) await db.collection('bhpItems').doc(id).set(payload,{merge:true});else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('bhpItems').add(payload);} tutupModalBHP();showToast('Master BHP berhasil disimpan.','success');}catch(err){console.error('Simpan master BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpItems. Tambahkan izin read/write untuk Admin/Teknisi pada collection bhpItems.' : ('Gagal menyimpan master BHP: '+(err.message||err)); showToast(msg,'error');}}
@@ -8061,7 +8062,7 @@ function renderMaintenanceHistory() {
             const s=document.getElementById('dlk-bhp-item'); if(!s)return;
             const old=s.value; const q=String(filterText||document.getElementById('dlk-bhp-search')?.value||'').toLowerCase().trim();
             const rows=dataBHPItems.filter(i=>!q||[i.namaItem,i.namaAlkes,i.spesifikasi,i.jenisItem].some(v=>String(v||'').toLowerCase().includes(q)));
-            s.innerHTML='<option value="">-- Pilih BHP / Aksesoris --</option>'+rows.map(i=>{const st=getStokBHP(i.id);return `<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} · ${st.stok} ${escBHP(i.satuan||'')}</option>`}).join('');
+            s.innerHTML='<option value="">-- Pilih BHP / Aksesori --</option>'+rows.map(i=>{const st=getStokBHP(i.id);return `<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} · ${st.stok} ${escBHP(i.satuan||'')}</option>`}).join('');
             if(rows.some(i=>String(i.id)===old))s.value=old;
             updateStokInfoBHPDiLK(); renderBHPUsageLK();
         }
@@ -9016,22 +9017,19 @@ function renderMaintenanceHistory() {
             if(!qrImg) return showToast("QR Code sedang dimuat.", "info");
 
             const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-            canvas.width = 600; canvas.height = 400;
+            canvas.width = 600; canvas.height = 285;
             ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.strokeStyle = "#000000"; ctx.lineWidth = 4; ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
 
             ctx.fillStyle = "#000000"; ctx.font = "bold 16px sans-serif"; ctx.textAlign = "center";
             ctx.fillText("UPTD RSUD PONDOKGEDE - IPSRS", canvas.width / 2, 45);
-            ctx.font = "bold 13px sans-serif"; ctx.fillStyle = "#334155";
-            ctx.fillText("LABEL REKAM JEJAK & AKREDITASI ASET", canvas.width / 2, 68);
-
             let imgQr = new Image(); imgQr.crossOrigin = "anonymous"; imgQr.src = qrImg.src || qrImg.toDataURL();
             imgQr.onload = function() {
-                ctx.drawImage(imgQr, 40, 100, 180, 180);
-                ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#000000"; ctx.textAlign = "center";
-                ctx.fillText("SCAN KARTU ASET", 130, 295);
+                ctx.drawImage(imgQr, 38, 78, 145, 145);
+                ctx.font = "bold 10px sans-serif"; ctx.fillStyle = "#000000"; ctx.textAlign = "center";
+                ctx.fillText("SCAN KARTU ASET", 110, 238);
 
-                ctx.textAlign = "left"; let startX = 245; let startY = 115;
+                ctx.textAlign = "left"; let startX = 215; let startY = 82;
                 ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#64748b"; ctx.fillText("NAMA ASET:", startX, startY);
                 ctx.font = "bold 16px sans-serif"; ctx.fillStyle = "#000000"; ctx.fillText(alat.nama || "-", startX, startY + 20);
 
@@ -9204,7 +9202,7 @@ function renderMaintenanceHistory() {
             if(!window.jspdf?.jsPDF){showToast('Mesin PDF belum termuat. Muat ulang halaman lalu coba lagi.','error');return;}
             if(!await showConfirmDialog(`Download ${dataAlat.length} label barcode aset ke satu file PDF?`,{title:'Download Barcode Massal',okText:'Ya, Download',variant:'safe',icon:'fa-download'}))return;
             const {jsPDF}=window.jspdf; const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-            const margin=8, cols=2, rowsPerPage=4, gap=4; const labelW=(210-margin*2-gap)/cols, labelH=(297-margin*2-gap*3)/rowsPerPage;
+            const margin=7, cols=3, rowsPerPage=5, gap=3; const labelW=(210-margin*2-gap*(cols-1))/cols, labelH=(297-margin*2-gap*(rowsPerPage-1))/rowsPerPage;
             const originUrl=window.location.origin+window.location.pathname;
             const qrHost=document.createElement('div'); qrHost.style.cssText='position:fixed;left:-99999px;top:-99999px;width:120px;height:120px;background:#fff;'; document.body.appendChild(qrHost);
             const escPdf=v=>String(v??'-').replace(/[<>]/g,'');
@@ -9213,15 +9211,14 @@ function renderMaintenanceHistory() {
                     if(idx>0 && idx%(cols*rowsPerPage)===0)pdf.addPage();
                     const pos=idx%(cols*rowsPerPage), col=pos%cols, row=Math.floor(pos/cols); const x=margin+col*(labelW+gap), y=margin+row*(labelH+gap); const a=dataAlat[idx];
                     pdf.setDrawColor(148,163,184); pdf.roundedRect(x,y,labelW,labelH,3,3);
-                    pdf.setFont('helvetica','bold'); pdf.setFontSize(7); pdf.text('UPTD RSUD PONDOKGEDE - IPSRS',x+labelW/2,y+6,{align:'center'});
-                    pdf.setFontSize(5.5); pdf.setTextColor(71,85,105); pdf.text('LABEL REKAM JEJAK & AKREDITASI ASET',x+labelW/2,y+10,{align:'center'}); pdf.setTextColor(15,23,42);
-                    qrHost.innerHTML=''; new QRCode(qrHost,{text:originUrl+'?alat='+a.id,width:120,height:120,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
-                    await new Promise(r=>setTimeout(r,10)); const qr=qrHost.querySelector('canvas')||qrHost.querySelector('img'); if(qr){const src=qr.tagName==='CANVAS'?qr.toDataURL('image/png'):qr.src; pdf.addImage(src,'PNG',x+4,y+16,29,29);}
-                    const tx=x+37, max=labelW-41; pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NAMA ASET',tx,y+18); pdf.setTextColor(15,23,42); pdf.setFontSize(7); pdf.text(pdf.splitTextToSize(escPdf(a.nama||'-'),max).slice(0,2),tx,y+22);
-                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('MERK / MODEL',tx,y+31); pdf.setTextColor(15,23,42); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf((a.merk||'-')+' / '+(a.tipe||'-')),max).slice(0,2),tx,y+35);
-                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NOMOR SERI',tx,y+44); pdf.setTextColor(15,23,42); pdf.setFont('courier','bold'); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf(a.seri||'-'),max).slice(0,2),tx,y+48);
-                    pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('UNIT / RUANGAN',tx,y+57); pdf.setTextColor(29,78,216); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf(a.ruangan||a.lokasi||'-'),max).slice(0,2),tx,y+61);
-                    pdf.setDrawColor(203,213,225); pdf.line(x+4,y+labelH-9,x+labelW-4,y+labelH-9); pdf.setFontSize(4.5); pdf.setTextColor(100,116,139); pdf.text('Scan untuk melihat rekam jejak, SOP, & kalibrasi alat.',x+labelW/2,y+labelH-5,{align:'center'});
+                    pdf.setFont('helvetica','bold'); pdf.setFontSize(6); pdf.setTextColor(15,23,42); pdf.text('UPTD RSUD PONDOKGEDE - IPSRS',x+labelW/2,y+5,{align:'center'});
+                    qrHost.innerHTML=''; new QRCode(qrHost,{text:originUrl+'?alat='+a.id,width:110,height:110,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
+                    await new Promise(r=>setTimeout(r,10)); const qr=qrHost.querySelector('canvas')||qrHost.querySelector('img'); if(qr){const src=qr.tagName==='CANVAS'?qr.toDataURL('image/png'):qr.src; pdf.addImage(src,'PNG',x+3,y+9,24,24);}
+                    const tx=x+30, max=labelW-33; pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NAMA ASET',tx,y+11); pdf.setTextColor(15,23,42); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf(a.nama||'-'),max).slice(0,2),tx,y+15);
+                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('MERK / MODEL',tx,y+23); pdf.setTextColor(15,23,42); pdf.setFontSize(5.5); pdf.text(pdf.splitTextToSize(escPdf((a.merk||'-')+' / '+(a.tipe||'-')),max).slice(0,2),tx,y+27);
+                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NOMOR SERI',tx,y+35); pdf.setTextColor(15,23,42); pdf.setFont('courier','bold'); pdf.setFontSize(5.5); pdf.text(pdf.splitTextToSize(escPdf(a.seri||'-'),max).slice(0,2),tx,y+39);
+                    pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('UNIT / RUANGAN',tx,y+47); pdf.setTextColor(29,78,216); pdf.setFontSize(5.5); pdf.text(pdf.splitTextToSize(escPdf(a.ruangan||a.lokasi||'-'),max).slice(0,2),tx,y+51);
+                    pdf.setDrawColor(203,213,225); pdf.line(x+3,y+labelH-6,x+labelW-3,y+labelH-6); pdf.setFontSize(4); pdf.setTextColor(100,116,139); pdf.text('Scan untuk melihat rekam jejak, SOP, & kalibrasi alat.',x+labelW/2,y+labelH-3,{align:'center'});
                     if(idx%10===0) await new Promise(r=>setTimeout(r,0));
                 }
                 const safeName=('MEDIX_Label_Barcode_Aset_'+new Date().toISOString().slice(0,10)+'.pdf'); pdf.save(safeName); showToast(`${dataAlat.length} label barcode berhasil diunduh.`,'success');
@@ -9242,20 +9239,20 @@ function renderMaintenanceHistory() {
                     <title>Cetak Label Barcode Massal - UPTD RSUD Pondokgede</title>
                     <style>
                         body { font-family: sans-serif; margin: 0; padding: 15px; background: #fff; color: #000; }
-                        .grid-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: flex-start; }
-                        .label-card { width: 340px; height: 190px; border: 2px solid #000; border-radius: 6px; padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; page-break-inside: avoid; background: #fff; }
+                        .grid-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
+                        .label-card { width: 240px; height: 150px; border: 2px solid #000; border-radius: 6px; padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; page-break-inside: avoid; background: #fff; }
                         .header-label { text-align: center; border-bottom: 1.5px solid #333; padding-bottom: 4px; }
-                        .header-label h3 { margin: 0; font-size: 11px; font-weight: bold; color: #000; }
-                        .header-label p { margin: 2px 0 0 0; font-size: 9px; color: #333; font-weight: bold; }
-                        .content-body { display: flex; align-items: center; margin-top: 5px; gap: 10px; }
-                        .qr-box { width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+                        .header-label h3 { margin: 0; font-size: 8px; font-weight: bold; color: #000; }
+                        .header-label p { display:none; margin: 0; font-size: 0; color: #333; font-weight: bold; }
+                        .content-body { display: flex; align-items: center; margin-top: 3px; gap: 7px; }
+                        .qr-box { width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
                         .info-box { flex: 1; font-size: 9px; overflow: hidden; }
-                        .info-row { margin-bottom: 3px; }
-                        .info-row span.label-title { font-size: 8px; color: #555; font-weight: bold; display: block; text-transform: uppercase; }
-                        .info-row span.label-val { font-size: 11px; font-weight: bold; color: #000; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-                        .info-row span.label-val.sn { font-family: monospace; font-size: 10px; }
+                        .info-row { margin-bottom: 2px; }
+                        .info-row span.label-title { font-size: 6.5px; color: #555; font-weight: bold; display: block; text-transform: uppercase; }
+                        .info-row span.label-val { font-size: 8px; font-weight: bold; color: #000; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                        .info-row span.label-val.sn { font-family: monospace; font-size: 8px; }
                         .info-row span.label-val.ruang { color: #1d4ed8; }
-                        .footer-label { text-align: center; font-size: 7.5px; color: #666; border-top: 1px dotted #ccc; padding-top: 2px; font-style: italic; }
+                        .footer-label { text-align: center; font-size: 6px; color: #666; border-top: 1px dotted #ccc; padding-top: 2px; font-style: italic; }
                         @media print { body { padding: 0; } .no-print { display: none; } }
                     
 /* ============================================================
@@ -9746,7 +9743,7 @@ body { overflow-x: hidden !important; }
                     <div class="label-card">
                         <div class="header-label">
                             <h3>UPTD RSUD PONDOKGEDE - IPSRS</h3>
-                            <p>LABEL REKAM JEJAK & AKREDITASI ASET</p>
+                            
                         </div>
                         <div class="content-body">
                             <div class="qr-box" id="qrcode-${index}"></div>
