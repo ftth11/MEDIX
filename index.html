@@ -7179,19 +7179,26 @@ function renderMaintenanceHistory() {
                 { inputId: 'dlk-tglcal', label: 'Tgl Kalibrasi' },
                 { inputId: 'dlk-nokal', label: 'Tgl Berakhir Kalibrasi' }
             ];
-            pairs.forEach(({ inputId }) => {
-                const input = document.getElementById(inputId);
-                if (!input) return;
-                const parent = input.closest('.lk-date-field');
-                if (!parent) return;
-                let span = parent.querySelector('.lk-print-date-value-inline');
-                if (!span) {
-                    span = document.createElement('span');
-                    span.className = 'lk-print-date-value-inline';
-                    input.insertAdjacentElement('afterend', span);
+            // Buat satu baris khusus untuk PRINT/PREVIEW agar kedua tanggal
+            // selalu berada pada satu garis horizontal. Jangan mengandalkan
+            // layout input/grid lama karena label kedua cukup panjang.
+            const dateContainer = area.querySelector('.lk-calibration-dates');
+            if (dateContainer) {
+                let row = area.querySelector('.lk-print-date-singleline');
+                if (!row) {
+                    row = document.createElement('div');
+                    row.className = 'lk-print-date-singleline';
+                    row.innerHTML = `
+                        <div class="lk-print-date-item"><span>Tgl Kalibrasi:</span><strong class="lk-print-cal-date-1">-</strong></div>
+                        <div class="lk-print-date-item"><span>Tgl Berakhir Kalibrasi:</span><strong class="lk-print-cal-date-2">-</strong></div>
+                    `;
+                    dateContainer.insertAdjacentElement('afterend', row);
                 }
-                span.textContent = formatTanggalCetakLK(input.value) || '-';
-            });
+                const cal = document.getElementById('dlk-tglcal');
+                const exp = document.getElementById('dlk-nokal');
+                row.querySelector('.lk-print-cal-date-1').textContent = formatTanggalCetakLK(cal?.value) || '-';
+                row.querySelector('.lk-print-cal-date-2').textContent = formatTanggalCetakLK(exp?.value) || '-';
+            }
 
             const pj = document.getElementById('dlk-nama-pj');
             if (pj) pj.textContent = 'Arrief Nurcahyo, S.Tr.Em.';
@@ -7201,6 +7208,7 @@ function renderMaintenanceHistory() {
             document.querySelectorAll('.lk-print-date-row').forEach(el => el.remove());
             document.querySelectorAll('.lk-print-date-value').forEach(el => el.remove());
             document.querySelectorAll('.lk-print-date-value-inline').forEach(el => el.remove());
+            document.querySelectorAll('.lk-print-date-singleline').forEach(el => el.remove());
             document.querySelectorAll('.lk-print-calibration-card').forEach(el => el.classList.remove('lk-print-calibration-card'));
             document.querySelectorAll('.lk-print-calibration-dates').forEach(el => { el.classList.remove('lk-print-calibration-dates'); el.style.removeProperty('overflow'); });
             document.body.classList.remove('medix-lk-printing');
@@ -9110,6 +9118,74 @@ body { overflow-x: hidden !important; }
     #area-lembar-kerja-resmi .lk-date-label { font-size:7px !important; }
     #area-lembar-kerja-resmi .lk-print-date-value-inline { font-size:7px !important; }
   }
+}
+</style>
+
+<style id="medix-lk-date-single-line-v13">
+/* V13: PREVIEW/CETAK — dua tanggal LK wajib berada dalam SATU BARIS */
+#area-lembar-kerja-resmi .lk-print-date-singleline {
+  display:none !important;
+}
+@media print {
+  #area-lembar-kerja-resmi .lk-calibration-dates {
+    display:none !important;
+  }
+  #area-lembar-kerja-resmi .lk-print-date-singleline {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    width:100% !important;
+    height:18px !important;
+    min-height:18px !important;
+    max-height:18px !important;
+    margin:1px 0 2px !important;
+    padding:0 !important;
+    gap:10px !important;
+    align-items:center !important;
+    box-sizing:border-box !important;
+    overflow:visible !important;
+  }
+  #area-lembar-kerja-resmi .lk-print-date-item {
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:4px !important;
+    min-width:0 !important;
+    width:100% !important;
+    height:18px !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+    box-sizing:border-box !important;
+  }
+  #area-lembar-kerja-resmi .lk-print-date-item > span {
+    display:inline-block !important;
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+    font-size:8px !important;
+    line-height:12px !important;
+    font-weight:700 !important;
+    color:#0f172a !important;
+  }
+  #area-lembar-kerja-resmi .lk-print-date-item > strong {
+    display:inline-block !important;
+    flex:1 1 auto !important;
+    min-width:0 !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+    font-size:8px !important;
+    line-height:12px !important;
+    font-weight:800 !important;
+    color:#0f172a !important;
+    border-bottom:1px solid #94a3b8 !important;
+    padding:0 2px !important;
+    box-sizing:border-box !important;
+  }
+}
+@media print and (max-width:767px) {
+  #area-lembar-kerja-resmi .lk-print-date-singleline { gap:5px !important; }
+  #area-lembar-kerja-resmi .lk-print-date-item { gap:2px !important; }
+  #area-lembar-kerja-resmi .lk-print-date-item > span,
+  #area-lembar-kerja-resmi .lk-print-date-item > strong { font-size:7px !important; }
 }
 </style>
 </head>
