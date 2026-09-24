@@ -8997,7 +8997,122 @@ body { overflow-x: hidden !important; }
 
 </style>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-                </head>
+                
+<style id="medix-lk-date-same-row-v12-final">
+/* LK V12 — tanggal kalibrasi pada preview benar-benar satu baris seperti input */
+#area-lembar-kerja-resmi .lk-calibration-dates {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:6px !important;
+  width:100% !important;
+  min-width:0 !important;
+  height:20px !important;
+  min-height:20px !important;
+  max-height:20px !important;
+  align-items:center !important;
+  overflow:visible !important;
+}
+#area-lembar-kerja-resmi .lk-date-field {
+  display:grid !important;
+  grid-template-columns:max-content minmax(0,1fr) !important;
+  align-items:center !important;
+  column-gap:4px !important;
+  width:100% !important;
+  min-width:0 !important;
+  height:20px !important;
+  min-height:20px !important;
+  max-height:20px !important;
+  overflow:visible !important;
+}
+#area-lembar-kerja-resmi .lk-date-label {
+  display:block !important;
+  width:auto !important;
+  min-width:max-content !important;
+  white-space:nowrap !important;
+  overflow:visible !important;
+  font-size:8px !important;
+  line-height:12px !important;
+}
+#area-lembar-kerja-resmi .lk-date-input {
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  height:18px !important;
+  min-height:18px !important;
+  max-height:18px !important;
+  box-sizing:border-box !important;
+}
+@media print {
+  #area-lembar-kerja-resmi .lk-calibration-dates {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:6px !important;
+    height:20px !important;
+    min-height:20px !important;
+    max-height:20px !important;
+    margin:2px 0 0 !important;
+    align-items:center !important;
+    overflow:visible !important;
+  }
+  #area-lembar-kerja-resmi .lk-date-field {
+    display:grid !important;
+    grid-template-columns:max-content minmax(0,1fr) !important;
+    grid-template-rows:20px !important;
+    column-gap:4px !important;
+    align-items:center !important;
+    width:100% !important;
+    height:20px !important;
+    min-height:20px !important;
+    max-height:20px !important;
+    overflow:visible !important;
+  }
+  #area-lembar-kerja-resmi .lk-date-label {
+    grid-column:1 !important;
+    grid-row:1 !important;
+    display:block !important;
+    width:auto !important;
+    min-width:max-content !important;
+    white-space:nowrap !important;
+    font-size:8px !important;
+    line-height:12px !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  #area-lembar-kerja-resmi .lk-date-input {
+    display:none !important;
+  }
+  #area-lembar-kerja-resmi .lk-print-date-value-inline {
+    grid-column:2 !important;
+    grid-row:1 !important;
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    height:16px !important;
+    min-height:16px !important;
+    line-height:16px !important;
+    box-sizing:border-box !important;
+    margin:0 !important;
+    padding:0 2px !important;
+    border-bottom:1px solid #94a3b8 !important;
+    background:#fff !important;
+    color:#0f172a !important;
+    font-size:8px !important;
+    font-weight:800 !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+  }
+}
+@media (max-width:767px) {
+  #area-lembar-kerja-resmi .lk-calibration-dates { gap:4px !important; }
+  #area-lembar-kerja-resmi .lk-date-field { column-gap:3px !important; }
+  #area-lembar-kerja-resmi .lk-date-label { font-size:7px !important; }
+  @media print {
+    #area-lembar-kerja-resmi .lk-date-label { font-size:7px !important; }
+    #area-lembar-kerja-resmi .lk-print-date-value-inline { font-size:7px !important; }
+  }
+}
+</style>
+</head>
                 <body>
                     <div class="no-print" style="text-align: center; margin-bottom: 15px; background: #f1f5f9; padding: 12px; border-radius: 6px;">
                         <button onclick="window.print()" style="background: #2563eb; color: #fff; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px;">🖨️ Cetak / Simpan sebagai PDF</button>
