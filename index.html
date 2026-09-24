@@ -7175,30 +7175,23 @@ function renderMaintenanceHistory() {
             const area = document.getElementById('area-lembar-kerja-resmi');
             if (!area) return;
 
-            const pairs = [
-                { inputId: 'dlk-tglcal', label: 'Tgl Kalibrasi' },
-                { inputId: 'dlk-nokal', label: 'Tgl Berakhir Kalibrasi' }
-            ];
-            // Buat satu baris khusus untuk PRINT/PREVIEW agar kedua tanggal
-            // selalu berada pada satu garis horizontal. Jangan mengandalkan
-            // layout input/grid lama karena label kedua cukup panjang.
-            const dateContainer = area.querySelector('.lk-calibration-dates');
-            if (dateContainer) {
-                let row = area.querySelector('.lk-print-date-singleline');
-                if (!row) {
-                    row = document.createElement('div');
-                    row.className = 'lk-print-date-singleline';
-                    row.innerHTML = `
-                        <div class="lk-print-date-item"><span>Tgl Kalibrasi:</span><strong class="lk-print-cal-date-1">-</strong></div>
-                        <div class="lk-print-date-item"><span>Tgl Berakhir Kalibrasi:</span><strong class="lk-print-cal-date-2">-</strong></div>
-                    `;
-                    dateContainer.insertAdjacentElement('afterend', row);
+            // PRINT/PREVIEW memakai struktur DATA ALAT KESEHATAN yang sama
+            // dengan form input. Jangan membuat baris tanggal baru di luar
+            // .lk-calibration-dates karena itu menyebabkan tulisan menjadi double.
+            const fields = area.querySelectorAll('.lk-calibration-dates .lk-date-field');
+            const cal = document.getElementById('dlk-tglcal');
+            const exp = document.getElementById('dlk-nokal');
+            const values = [cal?.value || '', exp?.value || ''];
+
+            fields.forEach((field, index) => {
+                let value = field.querySelector('.lk-print-date-value-inline');
+                if (!value) {
+                    value = document.createElement('span');
+                    value.className = 'lk-print-date-value-inline';
+                    field.appendChild(value);
                 }
-                const cal = document.getElementById('dlk-tglcal');
-                const exp = document.getElementById('dlk-nokal');
-                row.querySelector('.lk-print-cal-date-1').textContent = formatTanggalCetakLK(cal?.value) || '-';
-                row.querySelector('.lk-print-cal-date-2').textContent = formatTanggalCetakLK(exp?.value) || '-';
-            }
+                value.textContent = formatTanggalCetakLK(values[index]) || '-';
+            });
 
             const pj = document.getElementById('dlk-nama-pj');
             if (pj) pj.textContent = 'Arrief Nurcahyo, S.Tr.Em.';
@@ -9186,6 +9179,71 @@ body { overflow-x: hidden !important; }
   #area-lembar-kerja-resmi .lk-print-date-item { gap:2px !important; }
   #area-lembar-kerja-resmi .lk-print-date-item > span,
   #area-lembar-kerja-resmi .lk-print-date-item > strong { font-size:7px !important; }
+}
+</style>
+
+<style id="medix-lk-date-preview-match-input">
+/* FINAL DATE FIX: preview memakai struktur yang SAMA dengan input Data Alat Kesehatan. */
+.lk-print-date-singleline { display:none !important; }
+@media print {
+  #area-lembar-kerja-resmi .lk-print-date-singleline { display:none !important; }
+  #area-lembar-kerja-resmi .lk-calibration-dates {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:6px !important;
+    width:100% !important;
+    height:20px !important;
+    min-height:20px !important;
+    max-height:20px !important;
+    margin:2px 0 0 !important;
+    align-items:center !important;
+    overflow:visible !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-field {
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    gap:4px !important;
+    width:100% !important;
+    height:20px !important;
+    min-height:20px !important;
+    max-height:20px !important;
+    min-width:0 !important;
+    overflow:visible !important;
+    box-sizing:border-box !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-label {
+    flex:0 0 auto !important;
+    width:auto !important;
+    min-width:max-content !important;
+    white-space:nowrap !important;
+    font-size:8px !important;
+    line-height:12px !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-input {
+    display:none !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-print-date-value-inline {
+    display:block !important;
+    flex:1 1 auto !important;
+    width:auto !important;
+    min-width:0 !important;
+    height:16px !important;
+    min-height:16px !important;
+    line-height:16px !important;
+    margin:0 !important;
+    padding:0 2px !important;
+    box-sizing:border-box !important;
+    border-bottom:1px solid #94a3b8 !important;
+    background:#fff !important;
+    color:#0f172a !important;
+    font-size:8px !important;
+    font-weight:800 !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+  }
 }
 </style>
 </head>
