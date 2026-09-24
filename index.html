@@ -1828,9 +1828,19 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 #dashboard-stat-grid > * { width:100% !important; min-width:0 !important; min-height:92px !important; box-sizing:border-box !important; }
 #dashboard-stat-grid > button { appearance:none !important; -webkit-appearance:none !important; }
 #dashboard-equipment-stat { width:100% !important; height:100% !important; }
-@media (min-width:1024px) { #dashboard-stat-grid { grid-template-columns:repeat(5,minmax(0,1fr)) !important; } }
+@media (min-width:1024px) {
+  /* Dashboard desktop: 6 kartu dibagi 2 baris, masing-masing 3 kartu. */
+  #dashboard-stat-grid {
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:1rem !important;
+  }
+}
 @media (max-width:767px) { #dashboard-stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:.75rem !important; } }
 #dlk-kepala-ruangan-nama { min-width:0 !important; }
+@media (min-width:1024px) {
+  #dashboard-stat-grid > * { min-height:116px !important; }
+  #dashboard-stat-grid > button { min-height:116px !important; }
+}
 
 
 /* MEDIX FINAL V3 — LK calibration dates and cross-device role parity */
@@ -3553,17 +3563,19 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
         }
 
         function renderSidebarByPermission() {
+            const bhpAllowed = (canonicalRole(currentActiveRole) === 'Admin' || canonicalRole(currentActiveRole) === 'Teknisi') && izinMenu('equipment', 'read');
             const checks = {
                 dashboard: izinMenu('dashboard', 'read'),
                 master: izinMenu('master', 'read'),
                 ticket: canonicalRole(currentActiveRole) === 'User' ? true : izinMenu('ticket', 'read'),
                 riwayat: izinMenu('riwayat', 'read'),
                 equipment: izinMenu('equipment', 'read'),
+                bhp: bhpAllowed,
                 akun: izinMenu('akun', 'read')
             };
             const ids = {
                 dashboard: 'btn-dashboard', master: 'btn-data-alat', ticket: 'btn-ticket-system',
-                riwayat: 'btn-kalibrasi', equipment: 'btn-equipment', akun: 'btn-kelola-akun'
+                riwayat: 'btn-kalibrasi', equipment: 'btn-equipment', bhp: 'btn-bhp', akun: 'btn-kelola-akun'
             };
             Object.entries(ids).forEach(([menu, id]) => {
                 const el = document.getElementById(id);
@@ -3577,8 +3589,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 el.classList.toggle('hidden', !izinMenu('ticket', 'kerjakan'));
             });
 
-            const activeTab = ['dashboard','data-alat','ticket-system','kalibrasi','equipment','kelola-akun']
+            const activeTab = ['dashboard','data-alat','ticket-system','kalibrasi','equipment','bhp','kelola-akun']
                 .find(tab => {
+                    if (tab === 'bhp') return bhpAllowed;
                     const menu = tab === 'data-alat' ? 'master' : tab === 'ticket-system' ? 'ticket' : tab === 'kalibrasi' ? 'riwayat' : tab === 'kelola-akun' ? 'akun' : tab;
                     return izinMenu(menu, 'read');
                 });
