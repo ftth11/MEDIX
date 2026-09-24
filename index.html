@@ -2253,6 +2253,83 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 }
 </style>
 
+
+<style id="medix-lk-date-horizontal-final">
+/* FINAL: preview/cetak mengikuti baris tanggal pada form input.
+   Label dan nilai tanggal WAJIB berada pada satu garis yang sama. */
+@media print {
+  #area-lembar-kerja-resmi .lk-calibration-dates {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    column-gap:6px !important;
+    row-gap:0 !important;
+    width:100% !important;
+    height:20px !important;
+    min-height:20px !important;
+    max-height:20px !important;
+    margin:2px 0 0 !important;
+    padding:0 !important;
+    align-items:center !important;
+    overflow:visible !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-field {
+    position:relative !important;
+    display:grid !important;
+    grid-template-columns:max-content minmax(0,1fr) !important;
+    grid-template-rows:20px !important;
+    column-gap:4px !important;
+    align-items:center !important;
+    width:100% !important;
+    height:20px !important;
+    min-height:20px !important;
+    max-height:20px !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:visible !important;
+    box-sizing:border-box !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-label {
+    grid-column:1 !important;
+    grid-row:1 !important;
+    display:block !important;
+    width:auto !important;
+    min-width:max-content !important;
+    margin:0 !important;
+    padding:0 !important;
+    white-space:nowrap !important;
+    line-height:12px !important;
+    font-size:8px !important;
+    font-weight:700 !important;
+    overflow:visible !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-input {
+    display:none !important;
+    visibility:hidden !important;
+  }
+  #area-lembar-kerja-resmi .lk-calibration-dates .lk-print-date-value-inline {
+    grid-column:2 !important;
+    grid-row:1 !important;
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    height:16px !important;
+    min-height:16px !important;
+    max-height:16px !important;
+    margin:0 !important;
+    padding:0 2px !important;
+    line-height:16px !important;
+    border-bottom:1px solid #94a3b8 !important;
+    background:#fff !important;
+    color:#0f172a !important;
+    font-size:8px !important;
+    font-weight:800 !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+    box-sizing:border-box !important;
+  }
+}
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
