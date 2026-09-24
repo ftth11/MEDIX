@@ -1,10 +1,10 @@
-<!-- MEDIX FINAL BUILD: 2026-09-14 -->
+<!-- MEDIX KTI READY BUILD: 2026-09-24 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="medix-version" content="MEDIX-2026.09-FINAL-STABLE-6">
+    <meta name="medix-version" content="MEDIX-2026.09-KTI-READY-1">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -2330,6 +2330,10 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   }
 }
 </style>
+<style>
+#dashboard-stat-grid > button { min-width:0; }
+#table-bhp-body td { vertical-align:middle; }
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -2465,6 +2469,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                         <button onclick="switchTab('equipment')" id="btn-equipment" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
                             <i class="fa-solid fa-hospital w-5 text-rose-500"></i><span>Equipment Management</span>
                         </button>
+                        <button onclick="switchTab('bhp')" id="btn-bhp" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
+                            <i class="fa-solid fa-boxes-stacked w-5 text-emerald-600"></i><span>Monitoring BHP & Aksesori</span>
+                        </button>
                         
                         <div id="btn-aksi-cepat-container" class="pt-4 mt-4 border-t border-slate-100 space-y-2 menu-akses-teknisi hidden">
                             <span class="block px-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Aksi Cepat</span>
@@ -2547,6 +2554,16 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
                             </div>
                         </button>
+                        <button id="dashboard-bhp-stat" type="button" onclick="switchTab('bhp')" aria-label="Buka Monitoring BHP dan Aksesori" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                            <div class="min-w-0">
+                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">BHP & Aksesori</p>
+                                <h3 id="dash-bhp-total" class="text-2xl sm:text-3xl font-black text-emerald-700 mt-1 leading-none">0</h3>
+                                <p id="dash-bhp-warning" class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-1">0 perlu perhatian</p>
+                            </div>
+                            <div class="p-2.5 sm:p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100 shrink-0">
+                                <i class="fa-solid fa-boxes-stacked text-base sm:text-lg"></i>
+                            </div>
+                        </button>
                     </div>
                 
                     <!-- Bagian Grafik Bawah -->
@@ -2574,10 +2591,10 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                         </div>
                     </div>
 
-                    <!-- FITUR TAMBAHAN: Grafik Tren Kerusakan & Perbaikan (Predictive Maintenance) -->
+                    <!-- FITUR TAMBAHAN: Grafik Tren Kerusakan & Perbaikan -->
                     <div class="glass-panel p-4 rounded-2xl shadow-sm flex flex-col justify-between lg:col-span-3 h-[320px] mt-4">
                         <h4 class="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center">
-                            <i class="fa-solid fa-chart-line mr-2 text-rose-500"></i> Tren Frekuensi Kerusakan & Perbaikan (Predictive Maintenance)
+                            <i class="fa-solid fa-chart-line mr-2 text-rose-500"></i> Tren Frekuensi Kerusakan & Perbaikan
                         </h4>
                         <div class="w-full flex-1 relative overflow-hidden">
                             <canvas id="chartTrenKerusakan"></canvas>
@@ -2797,6 +2814,44 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
                 </div>
                 
+                <div id="tab-bhp" class="tab-content hidden space-y-6">
+                    <div class="flex justify-between items-center flex-wrap gap-3 no-print">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesori</h2>
+                            <p class="text-[10px] text-slate-500 mt-1">Master item diinput manual. Pengeluaran dapat dicatat otomatis dari pemakaian pada Lembar Kerja (LK).</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="bukaModalBHP()" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow hover:bg-emerald-700"><i class="fa-solid fa-plus mr-1"></i>Tambah Item</button>
+                            <button type="button" onclick="bukaModalTransaksiBHP('IN')" class="px-3 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow hover:bg-blue-700"><i class="fa-solid fa-arrow-down mr-1"></i>Stok Masuk</button>
+                            <button type="button" onclick="bukaModalTransaksiBHP('OUT')" class="px-3 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold shadow hover:bg-amber-700"><i class="fa-solid fa-arrow-up mr-1"></i>Stok Keluar</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div class="glass-panel p-4 rounded-2xl border border-slate-200"><p class="text-[10px] font-bold uppercase text-slate-500">Total Item</p><h3 id="bhp-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3></div>
+                        <div class="glass-panel p-4 rounded-2xl border border-emerald-200"><p class="text-[10px] font-bold uppercase text-emerald-600">Stok Aman</p><h3 id="bhp-stat-aman" class="text-2xl font-black text-emerald-700 mt-1">0</h3></div>
+                        <div class="glass-panel p-4 rounded-2xl border border-amber-200"><p class="text-[10px] font-bold uppercase text-amber-600">Stok Menipis</p><h3 id="bhp-stat-menipis" class="text-2xl font-black text-amber-700 mt-1">0</h3></div>
+                        <div class="glass-panel p-4 rounded-2xl border border-rose-200"><p class="text-[10px] font-bold uppercase text-rose-600">Stok Habis</p><h3 id="bhp-stat-habis" class="text-2xl font-black text-rose-700 mt-1">0</h3></div>
+                    </div>
+
+                    <div class="glass-panel p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+                            <input id="bhp-filter-search" oninput="renderBHPTable()" type="search" placeholder="🔍 Cari alkes / item / spesifikasi..." class="md:col-span-2 border border-slate-300 rounded-xl p-2.5 text-xs outline-none">
+                            <select id="bhp-filter-jenis" onchange="renderBHPTable()" class="border border-slate-300 rounded-xl p-2.5 text-xs bg-white"><option value="">Semua Jenis</option><option>AKSESORIS</option><option>DISPOSABLE</option><option>SUKU CADANG</option></select>
+                            <select id="bhp-filter-status" onchange="renderBHPTable()" class="border border-slate-300 rounded-xl p-2.5 text-xs bg-white"><option value="">Semua Status</option><option value="aman">Aman</option><option value="menipis">Menipis</option><option value="habis">Habis</option></select>
+                            <select id="bhp-filter-alkes" onchange="renderBHPTable()" class="border border-slate-300 rounded-xl p-2.5 text-xs bg-white"><option value="">Semua Alkes</option></select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-100 text-slate-700 font-bold"><tr>
+                                    <th class="p-3">Nama Alkes</th><th class="p-3">Nama Item</th><th class="p-3">Jenis</th><th class="p-3">Spesifikasi</th><th class="p-3">Satuan</th><th class="p-3 text-center">Stok Awal</th><th class="p-3 text-center">Masuk</th><th class="p-3 text-center">Keluar</th><th class="p-3 text-center">Stok Saat Ini</th><th class="p-3 text-center">Status</th><th class="p-3 text-center">Aksi</th>
+                                </tr></thead>
+                                <tbody id="table-bhp-body" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="tab-equipment" class="tab-content hidden space-y-6">
                     <!-- EQUIPMENT MANAGEMENT SEKARANG MENJADI PROYEKSI OTOMATIS DARI MASTER DATA ASET -->
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
@@ -2887,6 +2942,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                         <th class="p-3">SN</th>
                                         <th class="p-3">Ruangan</th>
                                         <th class="p-3">Periode PM</th>
+                                        <th class="p-3">Status Jadwal</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-rekapan-pm-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -3106,6 +3162,21 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 </div>
             </div>
 
+            <div class="border border-emerald-200 p-2.5 rounded-lg text-[11px] bg-emerald-50/40 shadow-sm no-print">
+                <div class="flex items-center justify-between gap-2 mb-2">
+                    <span class="font-bold text-slate-800 text-[10px]"><i class="fa-solid fa-boxes-stacked mr-1.5 text-emerald-600"></i>Penggunaan BHP / Aksesori</span>
+                    <span class="text-[9px] text-slate-500">Pilih manual sesuai alat yang sedang dikerjakan.</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
+                    <select id="dlk-bhp-item" class="md:col-span-7 border border-slate-300 rounded-lg p-2 text-[10px] bg-white"><option value="">-- Pilih BHP / Aksesori --</option></select>
+                    <input id="dlk-bhp-qty" type="number" min="0.01" step="0.01" value="1" class="md:col-span-2 border border-slate-300 rounded-lg p-2 text-[10px] text-center" placeholder="Qty">
+                    <button type="button" onclick="tambahBHPKeLK()" class="md:col-span-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg p-2 font-bold text-[10px]"><i class="fa-solid fa-plus mr-1"></i>Tambahkan</button>
+                </div>
+                <div class="overflow-x-auto mt-2">
+                    <table class="w-full text-[10px]"><thead class="bg-white border border-emerald-100"><tr><th class="p-2 text-left">Item</th><th class="p-2">Jenis</th><th class="p-2">Qty</th><th class="p-2">Satuan</th><th class="p-2">Aksi</th></tr></thead><tbody id="dlk-bhp-list" class="bg-white divide-y divide-emerald-100"></tbody></table>
+                </div>
+            </div>
+
             <div class="border border-slate-200 p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
                 <span class="font-bold block mb-1 text-slate-800 text-[10px]"><i class="fa-solid fa-square-poll-vertical mr-1.5 text-indigo-600"></i>3. Hasil Pemeriksaan Akhir:</span>
                 <div class="flex flex-wrap gap-4 pt-0.5 font-bold text-[10px]">
@@ -3160,6 +3231,20 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 <div><label class="block mb-0.5 font-bold text-slate-600">Nomor Seri (SN)</label><input type="text" id="form-alat-seri" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
                 <div><label class="block mb-0.5 font-bold text-slate-600">Izin Edar</label><input type="text" id="form-alat-izin" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
                 <div><label class="block mb-1 font-bold text-slate-600">Instalasi / Ruangan *</label><input type="text" id="form-alat-lokasi" required class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
+                <div class="border-t border-slate-200 pt-3 mt-2">
+                    <div class="font-black text-cyan-700 mb-2">Penilaian Equipment Management & PM</div>
+                    <p class="text-[10px] text-slate-500 mb-2">Jika profil alat tersedia, nilai dapat terisi otomatis. Untuk alat yang belum memiliki profil, lakukan penilaian manual. Sistem tidak lagi menggunakan nilai fallback.</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="block mb-1 font-bold text-slate-600">Fungsi (0–10)</label><input type="number" min="0" max="10" step="1" id="form-alat-em-fungsi" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
+                        <div><label class="block mb-1 font-bold text-slate-600">Risiko (1–5)</label><input type="number" min="1" max="5" step="1" id="form-alat-em-risiko" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
+                        <div><label class="block mb-1 font-bold text-slate-600">Perawatan (1–5)</label><input type="number" min="1" max="5" step="1" id="form-alat-em-perawatan" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
+                        <div><label class="block mb-1 font-bold text-slate-600">Insiden (-2–2)</label><input type="number" min="-2" max="2" step="1" id="form-alat-em-insiden" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-2 mt-2">
+                        <div><label class="block mb-1 font-bold text-slate-600">Tanggal Acuan PM</label><input type="date" id="form-alat-tanggal-acuan-pm" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
+                    </div>
+                    <div id="form-alat-em-preview" class="mt-2 p-2 rounded-xl bg-slate-50 border border-slate-200 text-[10px] font-semibold text-slate-600">Nilai EM dan periode PM akan dihitung setelah data lengkap.</div>
+                </div>
             </div>
             <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex justify-end space-x-2"><button type="button" onclick="toggleModal('modal-alat', false)" class="px-4 py-1.5 border border-slate-300 rounded-xl text-slate-700">Batal</button><button type="submit" class="px-5 py-1.5 bg-blue-600 font-semibold rounded-xl text-white">Simpan Aset</button></div>
         </form>
@@ -3739,8 +3824,48 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     renderGrafikTrenKerusakan();
                     renderRekapanEMTable();
                     jadwalkanRekonsiliasiStatusAset();
+                    firestoreUnsubscribers.push(db.collection('bhpItems').onSnapshot(
+                (querySnapshot) => {
+                    dataBHPItems = [];
+                    querySnapshot.forEach(doc => dataBHPItems.push({ id: doc.id, ...doc.data() }));
+                    dataBHPItems.sort((a,b) => String(a.namaItem||'').localeCompare(String(b.namaItem||''), 'id', {sensitivity:'base'}));
+                    renderBHPTable();
+                    populasikanDropdownBHPDiLK();
+                    updateStats();
                 },
+                (error) => console.error('Listener bhpItems gagal:', error)
+            ));
+            firestoreUnsubscribers.push(db.collection('bhpTransactions').onSnapshot(
+                (querySnapshot) => {
+                    dataBHPTransactions = [];
+                    querySnapshot.forEach(doc => dataBHPTransactions.push({ id: doc.id, ...doc.data() }));
+                    renderBHPTable();
+                    updateStats();
+                },
+                (error) => console.error('Listener bhpTransactions gagal:', error)
+            ));
+        },
                 (error) => console.error("Listener lembarKerja gagal:", error)
+            ));
+            firestoreUnsubscribers.push(db.collection('bhpItems').onSnapshot(
+                (querySnapshot) => {
+                    dataBHPItems = [];
+                    querySnapshot.forEach(doc => dataBHPItems.push({ id: doc.id, ...doc.data() }));
+                    dataBHPItems.sort((a,b) => String(a.namaItem||'').localeCompare(String(b.namaItem||''), 'id', {sensitivity:'base'}));
+                    renderBHPTable();
+                    populasikanDropdownBHPDiLK();
+                    updateStats();
+                },
+                (error) => console.error('Listener bhpItems gagal:', error)
+            ));
+            firestoreUnsubscribers.push(db.collection('bhpTransactions').onSnapshot(
+                (querySnapshot) => {
+                    dataBHPTransactions = [];
+                    querySnapshot.forEach(doc => dataBHPTransactions.push({ id: doc.id, ...doc.data() }));
+                    renderBHPTable();
+                    updateStats();
+                },
+                (error) => console.error('Listener bhpTransactions gagal:', error)
             ));
         }
 
@@ -3920,12 +4045,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             }
         };
 
-        const NILAI_EM_FALLBACK = {
-            fungsi: 10,
-            risiko: 2,
-            perawatan: 5,
-            insiden: -2
-        };
+        // Tidak ada nilai fallback untuk penilaian EM.
+        // Jika profil alat belum tersedia dan nilai manual belum diisi lengkap,
+        // sistem menandai alat sebagai "Belum Dinilai" dan tidak membuat jadwal PM.
 
         function angkaAtauNull(...values) {
             for (const value of values) {
@@ -3996,30 +4118,44 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             return 'bg-slate-600';
         }
 
+        function tanggalValidDariAsset(asset = {}) {
+            const raw = asset.tanggalAcuanPM || asset.tanggalPMTerakhir || asset.lastPMDate || '';
+            if (!raw) return null;
+            const d = new Date(raw);
+            return isNaN(d.getTime()) ? null : d;
+        }
+
+        function tambahBulanTanggal(baseDate, months) {
+            const d = new Date(baseDate);
+            const originalDay = d.getDate();
+            d.setDate(1);
+            d.setMonth(d.getMonth() + months);
+            const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+            d.setDate(Math.min(originalDay, lastDay));
+            return d;
+        }
+
+        function formatTanggalISO(date) {
+            if (!(date instanceof Date) || isNaN(date.getTime())) return '';
+            return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        }
+
         function jadwalOtomatisDariPeriode(periode, assetIndex = 0, asset = {}) {
-            // Jika master aset memiliki bulan awal PM, gunakan itu; jika tidak,
-            // gunakan Januari sebagai titik awal yang konsisten.
-            const bulanAwal = Math.min(12, Math.max(1, parseInt(asset.bulanAwalPM || asset.bulanPM || 1) || 1));
+            const acuan = tanggalValidDariAsset(asset);
+            if (!acuan) return [];
 
-            if (periode === 'Setiap 4 Bulan') {
-                return [0, 4, 8].map(offset => ({
-                    hari: 1,
-                    bulan: ((bulanAwal - 1 + offset) % 12) + 1
-                }));
-            }
+            const interval = periode === 'Setiap 4 Bulan' ? 4 : periode === 'Setiap 6 Bulan' ? 6 : periode === 'Satu Kali Per Tahun' ? 12 : 0;
+            if (!interval) return [];
 
-            if (periode === 'Setiap 6 Bulan') {
-                return [0, 6].map(offset => ({
-                    hari: 1,
-                    bulan: ((bulanAwal - 1 + offset) % 12) + 1
-                }));
-            }
-
-            if (periode === 'Satu Kali Per Tahun') {
-                return [{ hari: 1, bulan: bulanAwal }];
-            }
-
-            return [];
+            return Array.from({ length: Math.floor(12 / interval) }, (_, i) => {
+                const tanggal = tambahBulanTanggal(acuan, interval * (i + 1));
+                return {
+                    tanggal: formatTanggalISO(tanggal),
+                    hari: tanggal.getDate(),
+                    bulan: tanggal.getMonth() + 1,
+                    tahun: tanggal.getFullYear()
+                };
+            });
         }
 
         function normalisasiAssetUntukEquipment(asset, index = 0, existing = {}) {
@@ -4033,12 +4169,13 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             const status = asset.status || existing.status || 'Siap Digunakan';
             const profilWHO = cariProfilEM(namaAlat);
 
-            // Prioritas sumber nilai: field EM di Master Aset -> profil WHO berdasarkan
-            // nama alat -> penilaian lama di equipment -> fallback lama.
-            const fungsi = angkaAtauNull(asset.emFungsi, asset.kategoriFungsi, asset.KATEGORIFUNGSI, profilWHO?.fungsi, existing.emFungsi, NILAI_EM_FALLBACK.fungsi);
-            const risiko = angkaAtauNull(asset.emRisiko, asset.tingkatRisiko, asset.TINGKATRISIKO, profilWHO?.risiko, existing.emRisiko, NILAI_EM_FALLBACK.risiko);
-            const perawatan = angkaAtauNull(asset.emPerawatan, asset.levelPerawatan, asset.LEVELPERAWATAN, profilWHO?.perawatan, existing.emPerawatan, NILAI_EM_FALLBACK.perawatan);
-            const insiden = angkaAtauNull(asset.emInsiden, asset.riwayatInsiden, asset.RIWAYATINSIDEN, profilWHO?.insiden, existing.emInsiden, NILAI_EM_FALLBACK.insiden);
+            // Prioritas sumber nilai: nilai manual pada Master Aset -> profil alat -> data lama.
+            // Tidak ada nilai fallback; alat tanpa penilaian lengkap tidak boleh
+            // mendapatkan rekomendasi periode PM secara otomatis.
+            const fungsi = angkaAtauNull(asset.emFungsi, asset.kategoriFungsi, asset.KATEGORIFUNGSI, profilWHO?.fungsi, existing.emFungsi);
+            const risiko = angkaAtauNull(asset.emRisiko, asset.tingkatRisiko, asset.TINGKATRISIKO, profilWHO?.risiko, existing.emRisiko);
+            const perawatan = angkaAtauNull(asset.emPerawatan, asset.levelPerawatan, asset.LEVELPERAWATAN, profilWHO?.perawatan, existing.emPerawatan);
+            const insiden = angkaAtauNull(asset.emInsiden, asset.riwayatInsiden, asset.RIWAYATINSIDEN, profilWHO?.insiden, existing.emInsiden);
 
             const komponenLengkap = [fungsi, risiko, perawatan, insiden].every(v => v !== null);
             const nilaiEM = komponenLengkap ? fungsi + risiko + perawatan + insiden : null;
@@ -4050,7 +4187,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             return {
                 assetId: asset.id,
                 sumberData: 'dataAlat',
-                sumberEM: profilWHO ? 'EM WHO Rules' : 'Master Aset / data lama',
+                sumberEM: profilWHO ? 'Profil EM bawaan aplikasi' : (komponenLengkap ? 'Penilaian manual / data lama' : 'Belum Dinilai'),
                 kodeAlat,
                 namaAlat,
                 merk,
@@ -4069,7 +4206,10 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 emInsiden: insiden,
                 nilaiEM,
                 rekomendasiPeriode,
+                tanggalAcuanPM: asset.tanggalAcuanPM || asset.tanggalPMTerakhir || '',
                 jadwalPM,
+                jadwalBerbasisTanggal: jadwalPM.length > 0,
+                statusJadwalPM: !komponenLengkap ? 'Belum Dinilai' : (jadwalPM.length ? 'Terjadwal' : 'Belum Ada Tanggal Acuan'),
                 hari: jadwalPertama.hari || null,
                 bulan: jadwalPertama.bulan || null,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -4294,7 +4434,8 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             // sudah menjadi informasi utama yang dibutuhkan teknisi.
             const rows = dataEquipment.map(item => ({
                 item,
-                periode: item.rekomendasiPeriode || 'Inspeksi Sesuai Kebutuhan'
+                periode: item.rekomendasiPeriode || 'Belum Ditentukan',
+                statusJadwalPM: item.statusJadwalPM || (item.nilaiEM == null ? 'Belum Dinilai' : 'Belum Ada Tanggal Acuan')
             }));
 
             rows.sort((a, b) =>
@@ -4305,7 +4446,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
 const filtered = rows;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal PM dari Master Data Aset.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal PM dari Master Data Aset.</td></tr>`;
                 return;
             }
 
@@ -4323,6 +4464,7 @@ const filtered = rows;
                         <td class="p-3 font-mono text-[10px]" data-label="SN">${escapeHtmlEquipment(sn)}</td>
                         <td class="p-3" data-label="Ruangan">${escapeHtmlEquipment(lokasi)}</td>
                         <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold medix-period-badge ${kelasBadgePeriodeEM(row.periode)} ${row.periode === 'Setiap 4 Bulan' ? 'period-4' : row.periode === 'Setiap 6 Bulan' ? 'period-6' : row.periode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(row.periode)}</span></td>
+                        <td class="p-3" data-label="Status Jadwal"><span class="px-2 py-1 rounded-full text-[9px] font-bold ${row.statusJadwalPM === 'Terjadwal' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${escapeHtmlEquipment(row.statusJadwalPM || '-')}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -6133,7 +6275,7 @@ function renderMaintenanceHistory() {
             } catch (error) {}
         }
 
-        // FITUR TAMBAHAN: Fungsi Render Grafik Tren Kerusakan (Predictive Maintenance)
+        // FITUR TAMBAHAN: Fungsi Render Grafik Tren Kerusakan
         function renderGrafikTrenKerusakan() {
             const ctxEl = document.getElementById('chartTrenKerusakan');
             if (!ctxEl) return;
@@ -6841,7 +6983,7 @@ function renderMaintenanceHistory() {
         }
 
         function renderAll() {
-            updateStats(); populasikanDropdownAlatDiKalibrasi(); populasikanDropdownAlatDiWorksheet(); populasikanDropdownEtiketAlat();
+            updateStats(); renderBHPTable(); populasikanDropdownBHPDiLK(); populasikanDropdownAlatDiKalibrasi(); populasikanDropdownAlatDiWorksheet(); populasikanDropdownEtiketAlat();
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
             let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
             
@@ -6943,6 +7085,7 @@ function renderMaintenanceHistory() {
                 paramAlatKerja: JSON.stringify(terpakaiAlatKerja),
                 paramFisik: JSON.stringify(terpakaiFisik),
                 paramFungsi: JSON.stringify(terpakaiFungsi),
+                bhpUsage: Array.isArray(bhpUsageLK) ? bhpUsageLK.map(u => ({...u, qty: angkaBHP(u.qty)})) : [],
                 tglKalibrasi: tglKalibrasiInput,
                 tglExpKalibrasi: tglExpKalibrasiInput,
                 isLocked: true,
@@ -6988,6 +7131,8 @@ function renderMaintenanceHistory() {
                     status: newStatus,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+
+                await sinkronkanTransaksiBHPUntukLK(existingFirebaseId || lkRef.id, payload.bhpUsage || [], batch, payload.noLk, alatIdRaw, tglText);
 
                 if (ticketSnap) {
                     ticketSnap.forEach(docT => {
@@ -7055,7 +7200,7 @@ function renderMaintenanceHistory() {
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); if(!areaLK) return;
             document.getElementById('dlk-firebase-id').value = ""; stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
             resetFotoAfterDisplay();
-            terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; 
+            terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; bhpUsageLK = []; renderBHPUsageLK();
             const now = new Date();
             const offsetMs = now.getTimezoneOffset() * 60 * 1000;
             const localIso = new Date(now.getTime() - offsetMs).toISOString().substring(0, 16);
@@ -7798,8 +7943,85 @@ function renderMaintenanceHistory() {
             }).join('');
         }
 
+
+        // ================================================================
+        // MONITORING BHP & AKSESORI — terintegrasi dengan Lembar Kerja (LK)
+        // Master item sengaja manual karena satu jenis alat dapat memakai
+        // BHP yang sama atau berbeda. Stok dihitung dari transaksi IN/OUT.
+        // ================================================================
+        let dataBHPItems = [];
+        let dataBHPTransactions = [];
+        let bhpUsageLK = [];
+
+        function escBHP(v) {
+            return String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+        }
+        function angkaBHP(v) { const n = Number(v); return Number.isFinite(n) ? n : 0; }
+        function getStokBHP(itemId) {
+            const item = dataBHPItems.find(x => String(x.id) === String(itemId));
+            if (!item) return { awal:0, masuk:0, keluar:0, stok:0 };
+            let masuk=0, keluar=0;
+            dataBHPTransactions.filter(t => String(t.itemId) === String(itemId)).forEach(t => {
+                const q=angkaBHP(t.qty); if (String(t.tipe).toUpperCase()==='IN') masuk += q; else if (String(t.tipe).toUpperCase()==='OUT') keluar += q;
+            });
+            return { awal:angkaBHP(item.stokAwal), masuk, keluar, stok:angkaBHP(item.stokAwal)+masuk-keluar };
+        }
+        function statusStokBHP(item) {
+            const s=getStokBHP(item.id).stok, min=angkaBHP(item.stokMinimum);
+            if (s <= 0) return 'habis';
+            if (min > 0 && s <= min) return 'menipis';
+            return 'aman';
+        }
+        function hitungRingkasanBHP() {
+            const r={total:dataBHPItems.length, aman:0, menipis:0, habis:0};
+            dataBHPItems.forEach(i => r[statusStokBHP(i)]++); return r;
+        }
+        function badgeStatusBHP(status) {
+            const m={aman:['Aman','bg-emerald-50 text-emerald-700 border-emerald-200'],menipis:['Menipis','bg-amber-50 text-amber-700 border-amber-200'],habis:['Habis','bg-rose-50 text-rose-700 border-rose-200']};
+            const x=m[status]||m.aman; return `<span class="px-2 py-1 rounded-full border text-[9px] font-black ${x[1]}">${x[0]}</span>`;
+        }
+        function renderBHPTable() {
+            const body=document.getElementById('table-bhp-body'); if(!body) return;
+            const q=(document.getElementById('bhp-filter-search')?.value||'').toLowerCase().trim();
+            const jenis=document.getElementById('bhp-filter-jenis')?.value||'';
+            const status=document.getElementById('bhp-filter-status')?.value||'';
+            const alkes=document.getElementById('bhp-filter-alkes')?.value||'';
+            const sel=document.getElementById('bhp-filter-alkes');
+            if(sel){ const old=sel.value; const names=[...new Set(dataBHPItems.map(x=>x.namaAlkes).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'id')); sel.innerHTML='<option value="">Semua Alkes</option>'+names.map(x=>`<option value="${escBHP(x)}">${escBHP(x)}</option>`).join(''); if(names.includes(old)) sel.value=old; }
+            const rows=dataBHPItems.filter(i=>{
+                const hay=[i.namaAlkes,i.namaItem,i.jenisItem,i.spesifikasi].join(' ').toLowerCase();
+                return (!q||hay.includes(q))&&(!jenis||i.jenisItem===jenis)&&(!status||statusStokBHP(i)===status)&&(!alkes||i.namaAlkes===alkes);
+            });
+            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
+        }
+        function bukaModalBHP(id='') {
+            let m=document.getElementById('modal-bhp'); if(!m){
+                m=document.createElement('div'); m.id='modal-bhp'; m.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100000] flex items-center justify-center p-4 no-print'; document.body.appendChild(m);
+            }
+            const item=dataBHPItems.find(x=>String(x.id)===String(id));
+            m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesori</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
+        }
+        function tutupModalBHP(){document.getElementById('modal-bhp')?.remove();}
+        async function simpanMasterBHP(e){e.preventDefault(); if(!izinMenu('equipment','edit')){showToast('Akses edit BHP tidak diberikan.','error');return;} const id=document.getElementById('bhp-form-id').value; const payload={namaAlkes:document.getElementById('bhp-form-alkes').value.trim(),namaItem:document.getElementById('bhp-form-item').value.trim(),jenisItem:document.getElementById('bhp-form-jenis').value,satuan:document.getElementById('bhp-form-satuan').value.trim(),spesifikasi:document.getElementById('bhp-form-spesifikasi').value.trim(),stokAwal:angkaBHP(document.getElementById('bhp-form-stok-awal').value),stokMinimum:angkaBHP(document.getElementById('bhp-form-min').value),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; try{if(id) await db.collection('bhpItems').doc(id).set(payload,{merge:true});else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('bhpItems').add(payload);} tutupModalBHP();showToast('Master BHP berhasil disimpan.','success');}catch(err){console.error(err);showToast('Gagal menyimpan master BHP: '+(err.message||err),'error');}}
+        function bukaModalTransaksiBHP(tipe='IN', itemId=''){
+            let m=document.getElementById('modal-bhp-tx'); if(!m){m=document.createElement('div');m.id='modal-bhp-tx';m.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100000] flex items-center justify-center p-4 no-print';document.body.appendChild(m);}
+            const opts=dataBHPItems.map(i=>`<option value="${escBHP(i.id)}" ${String(i.id)===String(itemId)?'selected':''}>${escBHP(i.namaAlkes)} — ${escBHP(i.namaItem)} (${escBHP(i.satuan)})</option>`).join('');
+            m.innerHTML=`<form onsubmit="simpanTransaksiBHP(event)" class="bg-white w-full max-w-md rounded-2xl shadow-2xl"><div class="p-4 border-b font-black">${tipe==='IN'?'Stok Masuk':'Stok Keluar'}</div><div class="p-5 space-y-3 text-xs"><input type="hidden" id="bhp-tx-tipe" value="${tipe}"><label class="font-bold block">Item<select required id="bhp-tx-item" class="w-full border rounded-xl p-2.5 mt-1 bg-white"><option value="">-- Pilih Item --</option>${opts}</select></label><label class="font-bold block">Jumlah<input required min="0.01" step="0.01" type="number" id="bhp-tx-qty" value="1" class="w-full border rounded-xl p-2.5 mt-1"></label><label class="font-bold block">Tanggal<input required type="date" id="bhp-tx-tgl" value="${new Date().toISOString().slice(0,10)}" class="w-full border rounded-xl p-2.5 mt-1"></label><label class="font-bold block">Keterangan<input id="bhp-tx-ket" placeholder="Contoh: pembelian / pemakaian umum" class="w-full border rounded-xl p-2.5 mt-1"></label></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="document.getElementById('modal-bhp-tx').remove()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold">Simpan</button></div></form>`;
+        }
+        async function simpanTransaksiBHP(e){e.preventDefault(); if(!izinMenu('equipment','edit')){showToast('Akses transaksi BHP tidak diberikan.','error');return;} const tipe=document.getElementById('bhp-tx-tipe').value,itemId=document.getElementById('bhp-tx-item').value,qty=angkaBHP(document.getElementById('bhp-tx-qty').value); if(!itemId||qty<=0)return; const ref=db.collection('bhpTransactions').doc(); try{await ref.set({itemId,tipe,qty,tanggal:document.getElementById('bhp-tx-tgl').value,keterangan:document.getElementById('bhp-tx-ket').value.trim(),sumber:'Manual',createdByUid:auth.currentUser?.uid||'',createdByNama:currentUserNama||'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('modal-bhp-tx')?.remove();showToast('Transaksi stok berhasil disimpan.','success');}catch(err){showToast('Gagal menyimpan transaksi: '+(err.message||err),'error');}}
+        function populasikanDropdownBHPDiLK(){const s=document.getElementById('dlk-bhp-item');if(!s)return;const old=s.value;s.innerHTML='<option value="">-- Pilih BHP / Aksesori --</option>'+dataBHPItems.map(i=>`<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} [${escBHP(i.satuan)}]</option>`).join('');if(dataBHPItems.some(i=>String(i.id)===old))s.value=old;renderBHPUsageLK();}
+        function renderBHPUsageLK(){const body=document.getElementById('dlk-bhp-list');if(!body)return;body.innerHTML=bhpUsageLK.length?bhpUsageLK.map((u,i)=>{const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||{};return `<tr><td class="p-2 font-semibold">${escBHP(item.namaItem||u.namaItem||'-')} <span class="text-slate-400">(${escBHP(item.namaAlkes||u.namaAlkes||'-')})</span></td><td class="p-2 text-center">${escBHP(item.jenisItem||u.jenisItem||'-')}</td><td class="p-2 text-center font-black">${u.qty}</td><td class="p-2 text-center">${escBHP(item.satuan||u.satuan||'-')}</td><td class="p-2 text-center"><button type="button" onclick="hapusBHPDariLK(${i})" class="text-rose-600 font-bold">Hapus</button></td></tr>`}).join(''):`<tr><td colspan="5" class="p-3 text-center text-slate-400 italic">Belum ada BHP yang dipilih pada LK ini.</td></tr>`;}
+        function tambahBHPKeLK(){const itemId=document.getElementById('dlk-bhp-item')?.value,qty=angkaBHP(document.getElementById('dlk-bhp-qty')?.value);if(!itemId||qty<=0){showToast('Pilih BHP dan isi jumlah terlebih dahulu.','error');return;}const item=dataBHPItems.find(x=>String(x.id)===String(itemId));if(!item)return;const ex=bhpUsageLK.find(x=>String(x.itemId)===String(itemId));if(ex)ex.qty=angkaBHP(ex.qty)+qty;else bhpUsageLK.push({itemId,qty,namaItem:item.namaItem,namaAlkes:item.namaAlkes,jenisItem:item.jenisItem,satuan:item.satuan});renderBHPUsageLK();document.getElementById('dlk-bhp-qty').value=1;}
+        function hapusBHPDariLK(i){bhpUsageLK.splice(i,1);renderBHPUsageLK();}
+        function hitungStokTersediaBHP(itemId, excludeLkId=''){const s=getStokBHP(itemId);let out=0;dataBHPTransactions.filter(t=>String(t.itemId)===String(itemId)&&String(t.lkId||'')===String(excludeLkId)).forEach(t=>{if(String(t.tipe)==='OUT')out+=angkaBHP(t.qty);});return s.stok+out;}
+        function siapkanTransaksiBHPUntukLK(batch, lkId, noLk, alatId, tanggal, usage){usage.forEach(u=>{if(angkaBHP(u.qty)<=0)return;const ref=db.collection('bhpTransactions').doc();batch.set(ref,{itemId:u.itemId,tipe:'OUT',qty:angkaBHP(u.qty),tanggal,tanggalLk:tanggal,lkId,noLk,alatId,sumber:'LK',keterangan:`Pemakaian BHP pada ${noLk}`,createdByUid:auth.currentUser?.uid||'',createdByNama:currentUserNama||'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});});}
+        async function sinkronkanTransaksiBHPUntukLK(existingLkId, newUsage, batch, noLk, alatId, tanggal){
+            if(existingLkId){const oldSnap=await db.collection('bhpTransactions').where('lkId','==',existingLkId).get();oldSnap.forEach(d=>batch.delete(d.ref));}
+            siapkanTransaksiBHPUntukLK(batch, existingLkId||'TEMP', noLk, alatId, tanggal, newUsage);
+        }
+
         function switchTab(tId) {
-            const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'riwayat', equipment: 'equipment', 'kelola-akun': 'akun' };
+            const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'riwayat', equipment: 'equipment', bhp: 'equipment', 'kelola-akun': 'akun' };
             const menu = menuMap[tId];
             if (menu && !(menu === 'ticket' && canonicalRole(currentActiveRole) === 'User') && !izinMenu(menu, 'read')) {
                 showToast('Akses menu ini tidak diberikan untuk akun Anda.', 'error');
@@ -7808,7 +8030,8 @@ function renderMaintenanceHistory() {
             document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden')); 
             const targetTab = document.getElementById('tab-' + tId);
             if(targetTab) targetTab.classList.remove('hidden');
-            if (tId === 'ticket-system') { ensureUserEticketForm(); requestAnimationFrame(() => ensureUserEticketForm()); } 
+            if (tId === 'ticket-system') { ensureUserEticketForm(); requestAnimationFrame(() => ensureUserEticketForm()); }
+            if (tId === 'bhp') { renderBHPTable(); } 
             document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); 
             const btnEl = document.getElementById('btn-' + tId);
             if(btnEl) btnEl.classList.add('active'); 
@@ -7888,6 +8111,33 @@ function renderMaintenanceHistory() {
             renderAll(); 
         }
 
+        function parseOptionalNumber(id) {
+            const el = document.getElementById(id);
+            if (!el || el.value === '') return null;
+            const n = Number(el.value);
+            return Number.isFinite(n) ? n : null;
+        }
+
+        function updateFormAlatEMPreview() {
+            const box = document.getElementById('form-alat-em-preview');
+            if (!box) return;
+            const vals = ['form-alat-em-fungsi','form-alat-em-risiko','form-alat-em-perawatan','form-alat-em-insiden'].map(parseOptionalNumber);
+            if (vals.every(v => v !== null)) {
+                const total = vals.reduce((a,b) => a+b, 0);
+                const periode = hitungRekomendasiPeriodeWHO(total);
+                box.innerHTML = `<b>Nilai EM:</b> ${total} &nbsp; | &nbsp; <b>Rekomendasi:</b> ${periode}`;
+            } else {
+                box.textContent = 'Nilai EM dan periode PM akan dihitung setelah 4 komponen lengkap. Jika belum dinilai, sistem tidak membuat jadwal PM otomatis.';
+            }
+        }
+
+        function pasangListenerFormEM() {
+            ['form-alat-em-fungsi','form-alat-em-risiko','form-alat-em-perawatan','form-alat-em-insiden'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateFormAlatEMPreview);
+            });
+        }
+
         function openModalAlatManual() { 
             if (currentActiveRole !== 'Admin' || !izinMenu('master', 'tambah')) { showToast('Anda tidak memiliki izin menambah aset.', 'error'); return; }
             document.getElementById('form-alat-id').value = ""; 
@@ -7896,7 +8146,9 @@ function renderMaintenanceHistory() {
             document.getElementById('form-alat-tipe').value = ""; 
             document.getElementById('form-alat-seri').value = ""; 
             document.getElementById('form-alat-izin').value = ""; 
-            document.getElementById('form-alat-lokasi').value = ""; 
+            document.getElementById('form-alat-lokasi').value = "";
+            ['form-alat-em-fungsi','form-alat-em-risiko','form-alat-em-perawatan','form-alat-em-insiden','form-alat-tanggal-acuan-pm'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+            updateFormAlatEMPreview();
             toggleModal('modal-alat', true); 
         }
         
@@ -7909,7 +8161,13 @@ function renderMaintenanceHistory() {
             document.getElementById('form-alat-tipe').value = a.tipe || ''; 
             document.getElementById('form-alat-seri').value = a.seri || ''; 
             document.getElementById('form-alat-izin').value = a.izinEdar || a.edar || ''; 
-            document.getElementById('form-alat-lokasi').value = a.ruangan || a.lokasi || ''; 
+            document.getElementById('form-alat-lokasi').value = a.ruangan || a.lokasi || '';
+            document.getElementById('form-alat-em-fungsi').value = a.emFungsi ?? '';
+            document.getElementById('form-alat-em-risiko').value = a.emRisiko ?? '';
+            document.getElementById('form-alat-em-perawatan').value = a.emPerawatan ?? '';
+            document.getElementById('form-alat-em-insiden').value = a.emInsiden ?? '';
+            document.getElementById('form-alat-tanggal-acuan-pm').value = a.tanggalAcuanPM || a.tanggalPMTerakhir || '';
+            updateFormAlatEMPreview();
             toggleModal('modal-alat', true); 
         }
 
@@ -7917,11 +8175,27 @@ function renderMaintenanceHistory() {
             e.preventDefault();
             const idAsetForm = document.getElementById('form-alat-id').value;
             if (currentActiveRole !== 'Admin' || !(idAsetForm ? izinMenu('master', 'edit') : izinMenu('master', 'tambah'))) { showToast('Anda tidak memiliki izin untuk menyimpan perubahan aset.', 'error'); return; } 
-            const id = document.getElementById('form-alat-id').value; 
+            const id = document.getElementById('form-alat-id').value;
+            const namaForm = document.getElementById('form-alat-nama').value.trim();
+            const seriForm = document.getElementById('form-alat-seri').value.trim();
+            if (!namaForm) { showToast('Nama alat wajib diisi.', 'error'); return; }
+            if (seriForm) {
+                const duplicate = dataAlat.find(a => String(a.seri || '').trim().toLowerCase() === seriForm.toLowerCase() && String(a.id) !== String(id));
+                if (duplicate) { showToast('Nomor seri sudah digunakan oleh aset lain.', 'error'); return; }
+            }
+            const emValues = ['form-alat-em-fungsi','form-alat-em-risiko','form-alat-em-perawatan','form-alat-em-insiden'].map(id => document.getElementById(id)?.value);
+            const anyEM = emValues.some(v => v !== '');
+            const completeEM = emValues.every(v => v !== '');
+            if (anyEM && !completeEM) { showToast('Jika penilaian EM diisi, semua 4 komponen harus lengkap.', 'error'); return; }
             const payload = { 
                 nama: document.getElementById('form-alat-nama').value, merk: document.getElementById('form-alat-merk').value, 
                 tipe: document.getElementById('form-alat-tipe').value, seri: document.getElementById('form-alat-seri').value, 
-                izinEdar: document.getElementById('form-alat-izin').value, ruangan: document.getElementById('form-alat-lokasi').value 
+                izinEdar: document.getElementById('form-alat-izin').value, ruangan: document.getElementById('form-alat-lokasi').value,
+                emFungsi: parseOptionalNumber('form-alat-em-fungsi'),
+                emRisiko: parseOptionalNumber('form-alat-em-risiko'),
+                emPerawatan: parseOptionalNumber('form-alat-em-perawatan'),
+                emInsiden: parseOptionalNumber('form-alat-em-insiden'),
+                tanggalAcuanPM: document.getElementById('form-alat-tanggal-acuan-pm').value || ''
             }; 
             if(id) { 
                 db.collection("dataAlat").doc(id).update(payload).then(() => { 
@@ -8240,7 +8514,17 @@ function renderMaintenanceHistory() {
                     const izinEdar = pick(row, ['IZIN EDAR','NOMOR IZIN EDAR','IZIN']);
                     const ruangan = pick(row, ['UNIT/RUANGAN','RUANGAN','UNIT','LOKASI']);
                     const status = pick(row, ['STATUS OPERASIONAL','STATUS']) || 'Siap Digunakan';
-                    const payload = { nama, merk, tipe, seri, izinEdar, ruangan, status, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                    const emFungsi = pick(row, ['FUNGSI EM','EM FUNGSI','FUNGSI']);
+                    const emRisiko = pick(row, ['RISIKO EM','EM RISIKO','RISIKO']);
+                    const emPerawatan = pick(row, ['PERAWATAN EM','EM PERAWATAN','PERAWATAN']);
+                    const emInsiden = pick(row, ['INSIDEN EM','EM INSIDEN','INSIDEN']);
+                    const tanggalAcuanPM = pick(row, ['TANGGAL ACUAN PM','TANGGAL PM TERAKHIR','TANGGAL PM']);
+                    const payload = { nama, merk, tipe, seri, izinEdar, ruangan, status,
+                        emFungsi: emFungsi === '' ? null : Number(emFungsi),
+                        emRisiko: emRisiko === '' ? null : Number(emRisiko),
+                        emPerawatan: emPerawatan === '' ? null : Number(emPerawatan),
+                        emInsiden: emInsiden === '' ? null : Number(emInsiden),
+                        tanggalAcuanPM, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
                     const keySeri = norm(seri);
                     const keyFull = [nama,merk,tipe,ruangan].map(norm).join('|');
                     const existing = (keySeri && existingByKey.get('seri|' + keySeri)) || existingByKey.get('key|' + keyFull);
@@ -8463,6 +8747,22 @@ function renderMaintenanceHistory() {
                 dashEquipment.setAttribute('aria-hidden', equipmentAllowed ? 'false' : 'true');
             }
             if(dashEquipmentTotal) dashEquipmentTotal.textContent = dataAlat.length;
+            const bhpAllowed = typeof izinMenu === 'function' && izinMenu('equipment', 'read');
+            const dashBhp = document.getElementById('dashboard-bhp-stat');
+            if (dashBhp) { dashBhp.classList.toggle('hidden', !bhpAllowed); dashBhp.setAttribute('aria-hidden', bhpAllowed ? 'false' : 'true'); }
+            const bhpSummary = hitungRingkasanBHP();
+            const dashBhpTotal = document.getElementById('dash-bhp-total');
+            const dashBhpWarn = document.getElementById('dash-bhp-warning');
+            if (dashBhpTotal) dashBhpTotal.textContent = bhpSummary.total;
+            if (dashBhpWarn) dashBhpWarn.textContent = `${bhpSummary.menipis + bhpSummary.habis} perlu perhatian`;
+            const bhpTotal = document.getElementById('bhp-stat-total');
+            const bhpAman = document.getElementById('bhp-stat-aman');
+            const bhpMenipis = document.getElementById('bhp-stat-menipis');
+            const bhpHabis = document.getElementById('bhp-stat-habis');
+            if (bhpTotal) bhpTotal.textContent = bhpSummary.total;
+            if (bhpAman) bhpAman.textContent = bhpSummary.aman;
+            if (bhpMenipis) bhpMenipis.textContent = bhpSummary.menipis;
+            if (bhpHabis) bhpHabis.textContent = bhpSummary.habis;
         }
         
         function previewFotoDipilih(input) {
@@ -9935,6 +10235,23 @@ body { overflow-x: hidden !important; }
   const mo=new MutationObserver(()=>init());
   document.addEventListener('DOMContentLoaded',()=>mo.observe(document.body,{childList:true,subtree:true}),{once:true});
 })();
+
+        try { pasangListenerFormEM(); } catch (e) { console.warn('Listener form EM belum terpasang:', e); }
+
+        // ============================================================
+        // KTI / VALIDASI: fungsi bantu untuk verifikasi algoritma EM
+        // ============================================================
+        function jalankanUjiAlgoritmaEM() {
+            const cases = [
+                {nama:'Kasus 1', f:10, r:5, p:5, i:-2, expected:'Setiap 4 Bulan'},
+                {nama:'Kasus 2', f:8, r:5, p:5, i:-2, expected:'Setiap 6 Bulan'},
+                {nama:'Kasus 3', f:6, r:3, p:5, i:-2, expected:'Satu Kali Per Tahun'},
+                {nama:'Kasus 4', f:4, r:2, p:1, i:-2, expected:'Inspeksi Sesuai Kebutuhan'}
+            ];
+            return cases.map(c => { const total=c.f+c.r+c.p+c.i; const actual=hitungRekomendasiPeriodeWHO(total); return {...c,total,actual,lulus:actual===c.expected}; });
+        }
+        window.MEDIX_KTI_TEST = { runEM: jalankanUjiAlgoritmaEM, hitungPeriode: hitungRekomendasiPeriodeWHO, jadwalPM: jadwalOtomatisDariPeriode };
+
 </script>
 
 </body>
