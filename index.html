@@ -6150,7 +6150,7 @@ function renderMaintenanceHistory() {
                     if (masterExport) buttons.push(`<button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>`);
                     if (masterImport) buttons.push(`<label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"><i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel<input type="file" id="file-excel-input" accept=".xlsx,.xls,.csv" onchange="importDataDariExcel(event)" class="hidden"></label>`);
                     if (masterTambah) buttons.push(`<button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
-                    if (masterRead && (role === 'Admin')) {
+                    if (masterRead && canonicalRole(currentActiveRole) === 'Admin') {
                         buttons.push(`<button onclick="downloadLabelBarcodeMassalPdf()" class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Download seluruh label barcode aset"><i class="fa-solid fa-download mr-1.5"></i> Download Barcode</button>`);
                         buttons.push(`<button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label Massal</button>`);
                     }
@@ -9013,44 +9013,54 @@ function renderMaintenanceHistory() {
             const alat = dataAlat.find(a => a.id == globalSelectedAlatIdForLog);
             if(!alat) return;
             const qrContainer = document.getElementById('qrcode-container');
-            const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
+            const qrImg = qrContainer?.querySelector('img') || qrContainer?.querySelector('canvas');
             if(!qrImg) return showToast("QR Code sedang dimuat.", "info");
 
-            const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-            canvas.width = 600; canvas.height = 285;
-            ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = "#000000"; ctx.lineWidth = 4; ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+            // Label individual dibuat persegi agar proporsional saat dicetak sebagai stiker.
+            const canvas = document.createElement('canvas');
+            canvas.width = 600; canvas.height = 600;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,600,600);
+            ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 5; ctx.strokeRect(10,10,580,580);
+            ctx.textAlign = 'center'; ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 18px sans-serif';
+            ctx.fillText('UPTD RSUD PONDOKGEDE - IPSRS',300,38);
 
-            ctx.fillStyle = "#000000"; ctx.font = "bold 16px sans-serif"; ctx.textAlign = "center";
-            ctx.fillText("UPTD RSUD PONDOKGEDE - IPSRS", canvas.width / 2, 45);
-            let imgQr = new Image(); imgQr.crossOrigin = "anonymous"; imgQr.src = qrImg.src || qrImg.toDataURL();
+            const imgQr = new Image(); imgQr.crossOrigin = 'anonymous';
+            imgQr.src = qrImg.src || qrImg.toDataURL();
             imgQr.onload = function() {
-                ctx.drawImage(imgQr, 38, 78, 145, 145);
-                ctx.font = "bold 10px sans-serif"; ctx.fillStyle = "#000000"; ctx.textAlign = "center";
-                ctx.fillText("SCAN KARTU ASET", 110, 238);
-
-                ctx.textAlign = "left"; let startX = 215; let startY = 82;
-                ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#64748b"; ctx.fillText("NAMA ASET:", startX, startY);
-                ctx.font = "bold 16px sans-serif"; ctx.fillStyle = "#000000"; ctx.fillText(alat.nama || "-", startX, startY + 20);
-
-                ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#64748b"; ctx.fillText("MERK / MODEL:", startX, startY + 50);
-                ctx.font = "bold 14px sans-serif"; ctx.fillStyle = "#1e293b"; ctx.fillText(alat.merk || "-", startX, startY + 70);
-
-                ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#64748b"; ctx.fillText("NOMOR SERI (SN):", startX, startY + 100);
-                ctx.font = "bold 14px monospace"; ctx.fillStyle = "#1e293b"; ctx.fillText(alat.seri || alat.tipe || "-", startX, startY + 120);
-
-                ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#64748b"; ctx.fillText("UNIT / RUANGAN:", startX, startY + 150);
-                ctx.font = "bold 14px sans-serif"; ctx.fillStyle = "#2563eb"; ctx.fillText(alat.ruangan || alat.lokasi || "-", startX, startY + 170);
+                ctx.drawImage(imgQr,190,52,220,220);
+                ctx.textAlign='left';
+                const x=42;
+                let y=305;
+                const maxW=516;
+                const drawField=(label,value,font='bold 22px sans-serif',color='#0f172a')=>{
+                    ctx.fillStyle='#64748b'; ctx.font='bold 13px sans-serif'; ctx.fillText(label,x,y);
+                    ctx.fillStyle=color; ctx.font=font;
+                    const text=String(value||'-');
+                    const lines=[]; let line='';
+                    for(const word of text.split(/\s+/)){
+                        const test=line?line+' '+word:word;
+                        if(ctx.measureText(test).width>maxW && line){lines.push(line);line=word;}else line=test;
+                    }
+                    if(line) lines.push(line);
+                    lines.slice(0,2).forEach((ln,i)=>ctx.fillText(ln,x,y+21+(i*20)));
+                    y += 54 + Math.max(0,lines.length-1)*18;
+                };
+                drawField('NAMA ASET:', alat.nama || '-', 'bold 21px sans-serif');
+                drawField('MERK / MODEL:', [alat.merk,alat.tipe].filter(Boolean).join(' / ') || '-', 'bold 18px sans-serif');
+                drawField('NOMOR SERI (SN):', alat.seri || alat.tipe || '-', 'bold 18px monospace');
+                drawField('UNIT / RUANGAN:', alat.ruangan || alat.lokasi || '-', 'bold 18px sans-serif','#2563eb');
 
                 canvas.toBlob(function(blob) {
-                    const blobUrl = URL.createObjectURL(blob);
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = blobUrl;
-                    downloadLink.download = `Label_${(alat.nama || 'Alat').replace(/\s+/g, '_')}_${alat.seri || 'SN'}.png`;
+                    const blobUrl=URL.createObjectURL(blob);
+                    const downloadLink=document.createElement('a');
+                    downloadLink.href=blobUrl;
+                    downloadLink.download=`Label_${(alat.nama||'Alat').replace(/\s+/g,'_')}_${alat.seri||'SN'}.png`;
                     document.body.appendChild(downloadLink); downloadLink.click(); document.body.removeChild(downloadLink);
-                    setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
-                    showToast("Label berhasil diunduh ke HP Anda!", "success");
-                }, 'image/png');
+                    setTimeout(()=>URL.revokeObjectURL(blobUrl),100);
+                    showToast('Label persegi berhasil diunduh ke HP Anda!','success');
+                },'image/png');
             };
         }
         
@@ -9201,592 +9211,102 @@ function renderMaintenanceHistory() {
             if(!dataAlat||!dataAlat.length){showToast('Data aset medis sedang dimuat atau kosong.','error');return;}
             if(!window.jspdf?.jsPDF){showToast('Mesin PDF belum termuat. Muat ulang halaman lalu coba lagi.','error');return;}
             if(!await showConfirmDialog(`Download ${dataAlat.length} label barcode aset ke satu file PDF?`,{title:'Download Barcode Massal',okText:'Ya, Download',variant:'safe',icon:'fa-download'}))return;
-            const {jsPDF}=window.jspdf; const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-            const margin=7, cols=3, rowsPerPage=5, gap=3; const labelW=(210-margin*2-gap*(cols-1))/cols, labelH=(297-margin*2-gap*(rowsPerPage-1))/rowsPerPage;
+            const {jsPDF}=window.jspdf;
+            const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+            // A4: 3 kolom x 5 baris, setiap label 55 x 55 mm (persegi).
+            const cols=3, rowsPerPage=5, labelW=55, labelH=55, gap=4;
+            const pageW=210, pageH=297;
+            const marginX=(pageW-(cols*labelW+(cols-1)*gap))/2;
+            const marginY=(pageH-(rowsPerPage*labelH+(rowsPerPage-1)*gap))/2;
             const originUrl=window.location.origin+window.location.pathname;
-            const qrHost=document.createElement('div'); qrHost.style.cssText='position:fixed;left:-99999px;top:-99999px;width:120px;height:120px;background:#fff;'; document.body.appendChild(qrHost);
+            const qrHost=document.createElement('div');
+            qrHost.style.cssText='position:fixed;left:-99999px;top:-99999px;width:120px;height:120px;background:#fff;';
+            document.body.appendChild(qrHost);
             const escPdf=v=>String(v??'-').replace(/[<>]/g,'');
+            const fitLines=(pdf,text,width,maxLines=2)=>pdf.splitTextToSize(escPdf(text||'-'),width).slice(0,maxLines);
             try{
                 for(let idx=0;idx<dataAlat.length;idx++){
                     if(idx>0 && idx%(cols*rowsPerPage)===0)pdf.addPage();
-                    const pos=idx%(cols*rowsPerPage), col=pos%cols, row=Math.floor(pos/cols); const x=margin+col*(labelW+gap), y=margin+row*(labelH+gap); const a=dataAlat[idx];
-                    pdf.setDrawColor(148,163,184); pdf.roundedRect(x,y,labelW,labelH,3,3);
-                    pdf.setFont('helvetica','bold'); pdf.setFontSize(6); pdf.setTextColor(15,23,42); pdf.text('UPTD RSUD PONDOKGEDE - IPSRS',x+labelW/2,y+5,{align:'center'});
-                    qrHost.innerHTML=''; new QRCode(qrHost,{text:originUrl+'?alat='+a.id,width:110,height:110,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
-                    await new Promise(r=>setTimeout(r,10)); const qr=qrHost.querySelector('canvas')||qrHost.querySelector('img'); if(qr){const src=qr.tagName==='CANVAS'?qr.toDataURL('image/png'):qr.src; pdf.addImage(src,'PNG',x+3,y+9,24,24);}
-                    const tx=x+30, max=labelW-33; pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NAMA ASET',tx,y+11); pdf.setTextColor(15,23,42); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf(a.nama||'-'),max).slice(0,2),tx,y+15);
-                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('MERK / MODEL',tx,y+23); pdf.setTextColor(15,23,42); pdf.setFontSize(5.5); pdf.text(pdf.splitTextToSize(escPdf((a.merk||'-')+' / '+(a.tipe||'-')),max).slice(0,2),tx,y+27);
-                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NOMOR SERI',tx,y+35); pdf.setTextColor(15,23,42); pdf.setFont('courier','bold'); pdf.setFontSize(5.5); pdf.text(pdf.splitTextToSize(escPdf(a.seri||'-'),max).slice(0,2),tx,y+39);
-                    pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('UNIT / RUANGAN',tx,y+47); pdf.setTextColor(29,78,216); pdf.setFontSize(5.5); pdf.text(pdf.splitTextToSize(escPdf(a.ruangan||a.lokasi||'-'),max).slice(0,2),tx,y+51);
-                    pdf.setDrawColor(203,213,225); pdf.line(x+3,y+labelH-6,x+labelW-3,y+labelH-6); pdf.setFontSize(4); pdf.setTextColor(100,116,139); pdf.text('Scan untuk melihat rekam jejak, SOP, & kalibrasi alat.',x+labelW/2,y+labelH-3,{align:'center'});
+                    const pos=idx%(cols*rowsPerPage), col=pos%cols, row=Math.floor(pos/cols);
+                    const x=marginX+col*(labelW+gap), y=marginY+row*(labelH+gap), a=dataAlat[idx];
+                    pdf.setDrawColor(15,23,42); pdf.setLineWidth(0.5); pdf.roundedRect(x,y,labelW,labelH,2,2);
+                    pdf.setFont('helvetica','bold'); pdf.setFontSize(4.6); pdf.setTextColor(15,23,42);
+                    pdf.text('UPTD RSUD PONDOKGEDE - IPSRS',x+labelW/2,y+4.3,{align:'center'});
+                    qrHost.innerHTML='';
+                    new QRCode(qrHost,{text:originUrl+'?alat='+a.id,width:120,height:120,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
+                    await new Promise(r=>setTimeout(r,10));
+                    const qr=qrHost.querySelector('canvas')||qrHost.querySelector('img');
+                    if(qr){
+                        const src=qr.tagName==='CANVAS'?qr.toDataURL('image/png'):qr.src;
+                        pdf.addImage(src,'PNG',x+15.5,y+6.2,24,24);
+                    }
+                    let yy=y+33;
+                    const tx=x+3, tw=labelW-6;
+                    const field=(label,val,size=4.1,mono=false)=>{
+                        pdf.setFont('helvetica','bold'); pdf.setFontSize(3.4); pdf.setTextColor(100,116,139); pdf.text(label,tx,yy);
+                        pdf.setFont(mono?'courier':'helvetica','bold'); pdf.setFontSize(size); pdf.setTextColor(15,23,42);
+                        const lines=fitLines(pdf,val,tw,1); pdf.text(lines,tx,yy+3.2); yy+=5.2;
+                    };
+                    field('NAMA ASET',a.nama||'-',4.0);
+                    field('MERK / MODEL',[a.merk,a.tipe].filter(Boolean).join(' / ')||'-',3.7);
+                    field('NOMOR SERI',a.seri||'-',3.7,true);
+                    field('UNIT / RUANGAN',a.ruangan||a.lokasi||'-',3.7);
                     if(idx%10===0) await new Promise(r=>setTimeout(r,0));
                 }
-                const safeName=('MEDIX_Label_Barcode_Aset_'+new Date().toISOString().slice(0,10)+'.pdf'); pdf.save(safeName); showToast(`${dataAlat.length} label barcode berhasil diunduh.`,'success');
+                const safeName=('MEDIX_Label_Barcode_Aset_'+new Date().toISOString().slice(0,10)+'.pdf');
+                pdf.save(safeName); showToast(`${dataAlat.length} label barcode berhasil diunduh.`,'success');
             }catch(err){console.error('Download barcode massal gagal:',err);showToast('Gagal membuat PDF barcode: '+(err.message||err),'error');}
             finally{qrHost.remove();}
         }
 
         async function cetakLabelBarcodeMassalPdf() {
             if (!izinMenu('master', 'read')) { showToast('Anda tidak memiliki izin melihat Master Data Aset.', 'error'); return; }
-            if (!dataAlat || dataAlat.length === 0) { showToast("Data aset medis sedang dimuat atau kosong.", "error"); return; }
-            if (!await showConfirmDialog(`Akan menyiapkan ${dataAlat.length} label barcode aset untuk dicetak/disimpan ke PDF. Lanjutkan?`, { title: "Siapkan Label Barcode", okText: "Ya, Siapkan", variant: "safe", icon: "fa-print" })) return;
+            if (!dataAlat || dataAlat.length === 0) { showToast('Data aset medis sedang dimuat atau kosong.', 'error'); return; }
+            if (!await showConfirmDialog(`Akan menyiapkan ${dataAlat.length} label barcode aset untuk dicetak/disimpan ke PDF. Lanjutkan?`, { title: 'Siapkan Label Barcode', okText: 'Ya, Siapkan', variant: 'safe', icon: 'fa-print' })) return;
 
-            let htmlContent = `
-                <!DOCTYPE html>
-                <html lang="id">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Cetak Label Barcode Massal - UPTD RSUD Pondokgede</title>
-                    <style>
-                        body { font-family: sans-serif; margin: 0; padding: 15px; background: #fff; color: #000; }
-                        .grid-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
-                        .label-card { width: 240px; height: 150px; border: 2px solid #000; border-radius: 6px; padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; page-break-inside: avoid; background: #fff; }
-                        .header-label { text-align: center; border-bottom: 1.5px solid #333; padding-bottom: 4px; }
-                        .header-label h3 { margin: 0; font-size: 8px; font-weight: bold; color: #000; }
-                        .header-label p { display:none; margin: 0; font-size: 0; color: #333; font-weight: bold; }
-                        .content-body { display: flex; align-items: center; margin-top: 3px; gap: 7px; }
-                        .qr-box { width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-                        .info-box { flex: 1; font-size: 9px; overflow: hidden; }
-                        .info-row { margin-bottom: 2px; }
-                        .info-row span.label-title { font-size: 6.5px; color: #555; font-weight: bold; display: block; text-transform: uppercase; }
-                        .info-row span.label-val { font-size: 8px; font-weight: bold; color: #000; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-                        .info-row span.label-val.sn { font-family: monospace; font-size: 8px; }
-                        .info-row span.label-val.ruang { color: #1d4ed8; }
-                        .footer-label { text-align: center; font-size: 6px; color: #666; border-top: 1px dotted #ccc; padding-top: 2px; font-style: italic; }
-                        @media print { body { padding: 0; } .no-print { display: none; } }
-                    
-/* ============================================================
-   MEDIX v14 - E-TICKET DETAIL WORKFLOW / APP POLISH
-   ============================================================ */
-.ticket-detail-sheet{position:fixed;inset:0;z-index:10050;display:flex;align-items:flex-end;justify-content:center;background:rgba(15,23,42,.42);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .22s ease}
-.ticket-detail-sheet.show{opacity:1;pointer-events:auto}
-.ticket-detail-card{width:min(760px,100%);max-height:min(86vh,760px);overflow:auto;background:rgba(255,255,255,.98);border:1px solid rgba(148,163,184,.25);border-radius:24px 24px 0 0;box-shadow:0 -18px 55px rgba(15,23,42,.22);transform:translateY(28px);transition:transform .25s ease}
-.ticket-detail-sheet.show .ticket-detail-card{transform:translateY(0)}
-.ticket-detail-handle{width:42px;height:4px;border-radius:99px;background:#cbd5e1;margin:10px auto 2px}
-.ticket-step{display:flex;align-items:center;gap:9px;min-width:0}
-.ticket-step-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 30px;border:2px solid #cbd5e1;background:#fff;color:#94a3b8;font-size:11px}
-.ticket-step.done .ticket-step-dot{border-color:#10b981;background:#ecfdf5;color:#059669}
-.ticket-step.current .ticket-step-dot{border-color:#f59e0b;background:#fffbeb;color:#d97706;box-shadow:0 0 0 4px rgba(245,158,11,.10)}
-.ticket-step-line{height:2px;flex:1;background:#e2e8f0;margin:0 4px}.ticket-step-line.done{background:#10b981}
-
-@media (min-width:768px){.ticket-detail-sheet{align-items:center;padding:20px}.ticket-detail-card{border-radius:24px;max-height:88vh}}
-
-/* ============================================================
-   MEDIX v13 - E-TICKET MOBILE APP POLISH
-   ============================================================ */
-.ticket-report-intro{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #fde68a;background:linear-gradient(135deg,#fffbeb,#fff7ed);border-radius:14px;margin-bottom:2px}
-.ticket-report-icon{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#fef3c7;color:#d97706;border:1px solid #fde68a}
-@media (max-width:767px){
-  #tab-ticket-system .glass-panel{padding:14px!important;border-radius:18px}
-  #box-form-buat-ticket form{grid-template-columns:1fr!important}
-  #box-form-buat-ticket .md\:col-span-2{grid-column:span 1!important}
-  #tab-ticket-system .overflow-x-auto{overflow:visible!important}
-  #tab-ticket-system table,#tab-ticket-system tbody{display:block;width:100%!important;min-width:0!important}
-  #tab-ticket-system thead{display:none}
-  #tab-ticket-system tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;margin-bottom:12px;padding:12px;border:1px solid #dbe4ef;border-radius:16px;background:rgba(255,255,255,.78);box-shadow:0 5px 18px rgba(15,23,42,.05)}
-  #tab-ticket-system tbody td{display:flex!important;flex-direction:column;align-items:flex-start!important;gap:4px;padding:8px 2px!important;border:0!important;min-width:0!important;word-break:break-word}
-  #tab-ticket-system tbody td::before{content:attr(data-label);font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#64748b}
-  #tab-ticket-system tbody td:first-child,#tab-ticket-system tbody td:nth-child(2){grid-column:1/-1}
-  #tab-ticket-system tbody td[data-label="Foto Before"],#tab-ticket-system tbody td[data-label="Status Tiket"]{align-items:flex-start!important}
-  #tab-ticket-system tbody td[data-label="Tindakan"]{grid-column:1/-1;align-items:stretch!important;border-top:1px solid #e2e8f0!important;margin-top:4px;padding-top:10px!important}
-  #tab-ticket-system tbody td[data-label="Tindakan"]>div{display:flex;flex-wrap:wrap;gap:6px;width:100%}
-}
-
-/* =========================================================
-   MEDIX v15 — PROFESSIONAL RESPONSIVE SCROLL LAYER
-   Page scroll = vertical. Dense data = local horizontal scroll.
-   ========================================================= */
-html, body {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(71,85,105,.52) transparent;
-}
-html::-webkit-scrollbar, body::-webkit-scrollbar { width: 9px; height: 9px; }
-html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: transparent; }
-html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: rgba(71,85,105,.48); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
-body::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover { background: rgba(51,65,85,.68); background-clip: padding-box; }
-body { overflow-x: hidden !important; }
-
-/* Dense data containers are the only places allowed to scroll horizontally. */
-.master-table-scroll, .table-scroll, .overflow-x-auto {
-  scrollbar-width: thin !important;
-  scrollbar-color: rgba(71,85,105,.58) transparent !important;
-  -ms-overflow-style: auto !important;
-}
-.master-table-scroll::-webkit-scrollbar,
-.table-scroll::-webkit-scrollbar,
-.overflow-x-auto::-webkit-scrollbar { display:block !important; width:8px; height:8px; }
-.master-table-scroll::-webkit-scrollbar-track,
-.table-scroll::-webkit-scrollbar-track,
-.overflow-x-auto::-webkit-scrollbar-track { background:rgba(148,163,184,.08); border-radius:999px; }
-.master-table-scroll::-webkit-scrollbar-thumb,
-.table-scroll::-webkit-scrollbar-thumb,
-.overflow-x-auto::-webkit-scrollbar-thumb { background:rgba(71,85,105,.48); border-radius:999px; }
-.master-table-scroll::-webkit-scrollbar-thumb:hover,
-.table-scroll::-webkit-scrollbar-thumb:hover,
-.overflow-x-auto::-webkit-scrollbar-thumb:hover { background:rgba(51,65,85,.68); }
-
-/* Do not let generic no-scrollbar hide an intentionally scrollable data surface. */
-.master-table-scroll.no-scrollbar,
-.table-scroll.no-scrollbar,
-.overflow-x-auto.no-scrollbar {
-  scrollbar-width: thin !important;
-  -ms-overflow-style: auto !important;
-}
-.master-table-scroll.no-scrollbar::-webkit-scrollbar,
-.table-scroll.no-scrollbar::-webkit-scrollbar,
-.overflow-x-auto.no-scrollbar::-webkit-scrollbar { display:block !important; }
-
-/* Equipment EM: card mode on small screens; monthly Rekapan EM remains a dense table. */
-@media (max-width:767px) {
-  #em-content-database > .overflow-x-auto {
-    overflow-x:hidden !important;
-    overflow-y:visible !important;
-  }
-  #em-content-database table {
-    min-width:0 !important;
-    width:100% !important;
-    display:block !important;
-  }
-  #em-content-database thead { display:none !important; }
-  #em-content-database tbody,
-  #em-content-database tr { display:block !important; width:100% !important; }
-  #em-content-database tr {
-    margin:0 0 .7rem !important;
-    padding:.75rem !important;
-    border:1px solid rgba(20,184,166,.20) !important;
-    border-radius:16px !important;
-    background:rgba(255,255,255,.90) !important;
-    box-shadow:0 5px 18px rgba(15,23,42,.06) !important;
-  }
-  #em-content-database td {
-    display:grid !important;
-    grid-template-columns:7.4rem minmax(0,1fr) !important;
-    gap:.5rem !important;
-    align-items:start !important;
-    width:100% !important;
-    padding:.36rem .15rem !important;
-    border-bottom:1px solid rgba(148,163,184,.14) !important;
-    font-size:10px !important;
-    text-align:left !important;
-    overflow-wrap:anywhere !important;
-  }
-  #em-content-database td:last-child { border-bottom:0 !important; }
-  #em-content-database td::before {
-    font-size:8px !important;
-    text-transform:uppercase !important;
-    letter-spacing:.06em !important;
-    color:#64748b !important;
-    font-weight:800 !important;
-  }
-  #em-content-database td:nth-child(1)::before { content:'Nama Alkes'; }
-  #em-content-database td:nth-child(2)::before { content:'Populasi'; }
-  #em-content-database td:nth-child(3)::before { content:'Satuan'; }
-  #em-content-database td:nth-child(4)::before { content:'Fungsi'; }
-  #em-content-database td:nth-child(5)::before { content:'Risiko'; }
-  #em-content-database td:nth-child(6)::before { content:'Perawatan'; }
-  #em-content-database td:nth-child(7)::before { content:'Insiden'; }
-  #em-content-database td:nth-child(8)::before { content:'Nilai EM'; }
-  #em-content-database td:nth-child(9)::before { content:'Periode PM'; }
-  #em-content-database td:nth-child(10)::before { content:'Ruangan / Teknisi'; }
-  #em-content-database td:nth-child(11)::before { content:'Sumber'; }
-
-  /* Jadwal PM: compact mobile cards. */
-  #em-content-jadwal > .overflow-x-auto { overflow-x:hidden !important; overflow-y:visible !important; }
-  #em-content-jadwal table { min-width:0 !important; width:100% !important; display:block !important; }
-  #em-content-jadwal thead { display:none !important; }
-  #em-content-jadwal tbody,
-  #em-content-jadwal tr { display:block !important; width:100% !important; }
-  #em-content-jadwal tr {
-    margin:0 0 .7rem !important; padding:.7rem !important;
-    border:1px solid rgba(20,184,166,.20) !important; border-radius:16px !important;
-    background:rgba(255,255,255,.90) !important; box-shadow:0 5px 18px rgba(15,23,42,.05) !important;
-  }
-  #em-content-jadwal td {
-    display:grid !important; grid-template-columns:7.4rem minmax(0,1fr) !important;
-    gap:.5rem !important; width:100% !important; padding:.36rem .15rem !important;
-    border-bottom:1px solid rgba(148,163,184,.14) !important; font-size:10px !important;
-    text-align:left !important; overflow-wrap:anywhere !important;
-  }
-  #em-content-jadwal td:last-child { border-bottom:0 !important; }
-  #em-content-jadwal td::before { font-size:8px !important; text-transform:uppercase !important; letter-spacing:.06em !important; color:#64748b !important; font-weight:800 !important; }
-  #em-content-jadwal td:nth-child(1)::before { content:'Hari'; }
-  #em-content-jadwal td:nth-child(2)::before { content:'Bulan'; }
-  #em-content-jadwal td:nth-child(3)::before { content:'Nama Alat'; }
-  #em-content-jadwal td:nth-child(4)::before { content:'Nomor Seri'; }
-  #em-content-jadwal td:nth-child(5)::before { content:'Ruangan'; }
-  #em-content-jadwal td:nth-child(6)::before { content:'Periode'; }
-
-  /* Rekapan EM is intentionally dense: keep horizontal scroll discoverable. */
-  #em-content-rekapan > .overflow-x-auto {
-    overflow-x:auto !important;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-x:contain;
-  }
-}
-
-/* App-like data surface: subtle edge cue when a table is wider than its viewport. */
-.master-table-scroll, .table-scroll, #em-content-database > .overflow-x-auto, #em-content-jadwal > .overflow-x-auto, #em-content-rekapan > .overflow-x-auto {
-  overscroll-behavior:contain;
-  -webkit-overflow-scrolling:touch;
-}
-
-@media print {
-  html, body { scrollbar-width:none !important; }
-  html::-webkit-scrollbar, body::-webkit-scrollbar { display:none !important; }
-}
-
-
-/* MEDIX v17 — Responsive Master Asset Surface */
-@media (max-width:767px){
-  #master-table-nav{display:none!important;}
-  #master-table-scroll{max-height:none!important;overflow:visible!important;}
-  #master-table-scroll table{min-width:0!important;width:100%!important;display:block!important;}
-  #master-table-scroll thead{display:none!important;}
-  #master-table-scroll tbody{display:block!important;width:100%!important;}
-  #master-table-scroll tbody tr{
-    display:block!important;width:100%!important;margin:0 0 12px!important;padding:12px!important;
-    border:1px solid #dbe4ef!important;border-radius:18px!important;background:rgba(255,255,255,.94)!important;
-    box-shadow:0 6px 20px rgba(15,23,42,.055)!important;
-  }
-  #master-table-scroll tbody td{
-    display:grid!important;grid-template-columns:6.8rem minmax(0,1fr)!important;gap:10px!important;
-    width:100%!important;min-width:0!important;padding:7px 2px!important;border:0!important;
-    border-bottom:1px solid rgba(148,163,184,.13)!important;text-align:left!important;
-    overflow-wrap:anywhere!important;font-size:10px!important;
-  }
-  #master-table-scroll tbody td::before{
-    font-size:8px!important;line-height:1.25!important;text-transform:uppercase!important;
-    letter-spacing:.06em!important;color:#64748b!important;font-weight:800!important;
-  }
-  #master-table-scroll tbody td:nth-child(1)::before{content:'Nama Alat';}
-  #master-table-scroll tbody td:nth-child(2)::before{content:'Merk';}
-  #master-table-scroll tbody td:nth-child(3)::before{content:'Tipe / Model';}
-  #master-table-scroll tbody td:nth-child(4)::before{content:'Nomor Seri';}
-  #master-table-scroll tbody td:nth-child(5)::before{content:'Izin Edar';}
-  #master-table-scroll tbody td:nth-child(6)::before{content:'Ruangan';}
-  #master-table-scroll tbody td:nth-child(7)::before{content:'Status';}
-  #master-table-scroll tbody td:nth-child(8)::before{content:'Aksi';}
-  #master-table-scroll tbody td:nth-child(1){font-size:11px!important;font-weight:800!important;color:#0f172a!important;}
-  #master-table-scroll tbody td:nth-child(7){align-items:center!important;}
-  #master-table-scroll tbody td:nth-child(8){
-    grid-template-columns:6.8rem minmax(0,1fr)!important;border-bottom:0!important;padding-top:10px!important;
-  }
-  #master-table-scroll tbody td:nth-child(8)>div{justify-self:start!important;}
-  #master-table-scroll tbody td:nth-child(7) br{display:block;}
-}
-@media (min-width:768px){
-  #master-table-scroll{overflow-x:auto!important;overflow-y:auto!important;}
-}
-
-</style>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-                
-<style id="medix-lk-date-same-row-v12-final">
-/* LK V12 — tanggal kalibrasi pada preview benar-benar satu baris seperti input */
-#area-lembar-kerja-resmi .lk-calibration-dates {
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  gap:6px !important;
-  width:100% !important;
-  min-width:0 !important;
-  height:20px !important;
-  min-height:20px !important;
-  max-height:20px !important;
-  align-items:center !important;
-  overflow:visible !important;
-}
-#area-lembar-kerja-resmi .lk-date-field {
-  display:grid !important;
-  grid-template-columns:max-content minmax(0,1fr) !important;
-  align-items:center !important;
-  column-gap:4px !important;
-  width:100% !important;
-  min-width:0 !important;
-  height:20px !important;
-  min-height:20px !important;
-  max-height:20px !important;
-  overflow:visible !important;
-}
-#area-lembar-kerja-resmi .lk-date-label {
-  display:block !important;
-  width:auto !important;
-  min-width:max-content !important;
-  white-space:nowrap !important;
-  overflow:visible !important;
-  font-size:8px !important;
-  line-height:12px !important;
-}
-#area-lembar-kerja-resmi .lk-date-input {
-  display:block !important;
-  width:100% !important;
-  min-width:0 !important;
-  height:18px !important;
-  min-height:18px !important;
-  max-height:18px !important;
-  box-sizing:border-box !important;
-}
-@media print {
-  #area-lembar-kerja-resmi .lk-calibration-dates {
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    gap:6px !important;
-    height:20px !important;
-    min-height:20px !important;
-    max-height:20px !important;
-    margin:2px 0 0 !important;
-    align-items:center !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-date-field {
-    display:grid !important;
-    grid-template-columns:max-content minmax(0,1fr) !important;
-    grid-template-rows:20px !important;
-    column-gap:4px !important;
-    align-items:center !important;
-    width:100% !important;
-    height:20px !important;
-    min-height:20px !important;
-    max-height:20px !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-date-label {
-    grid-column:1 !important;
-    grid-row:1 !important;
-    display:block !important;
-    width:auto !important;
-    min-width:max-content !important;
-    white-space:nowrap !important;
-    font-size:8px !important;
-    line-height:12px !important;
-    margin:0 !important;
-    padding:0 !important;
-  }
-  #area-lembar-kerja-resmi .lk-date-input {
-    display:none !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-date-value-inline {
-    grid-column:2 !important;
-    grid-row:1 !important;
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    height:16px !important;
-    min-height:16px !important;
-    line-height:16px !important;
-    box-sizing:border-box !important;
-    margin:0 !important;
-    padding:0 2px !important;
-    border-bottom:1px solid #94a3b8 !important;
-    background:#fff !important;
-    color:#0f172a !important;
-    font-size:8px !important;
-    font-weight:800 !important;
-    white-space:nowrap !important;
-    overflow:visible !important;
-  }
-}
-@media (max-width:767px) {
-  #area-lembar-kerja-resmi .lk-calibration-dates { gap:4px !important; }
-  #area-lembar-kerja-resmi .lk-date-field { column-gap:3px !important; }
-  #area-lembar-kerja-resmi .lk-date-label { font-size:7px !important; }
-  @media print {
-    #area-lembar-kerja-resmi .lk-date-label { font-size:7px !important; }
-    #area-lembar-kerja-resmi .lk-print-date-value-inline { font-size:7px !important; }
-  }
-}
-</style>
-
-<style id="medix-lk-date-single-line-v13">
-/* V13: PREVIEW/CETAK — dua tanggal LK wajib berada dalam SATU BARIS */
-#area-lembar-kerja-resmi .lk-print-date-singleline {
-  display:none !important;
-}
-@media print {
-  #area-lembar-kerja-resmi .lk-calibration-dates {
-    display:none !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-date-singleline {
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    width:100% !important;
-    height:18px !important;
-    min-height:18px !important;
-    max-height:18px !important;
-    margin:1px 0 2px !important;
-    padding:0 !important;
-    gap:10px !important;
-    align-items:center !important;
-    box-sizing:border-box !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-date-item {
-    display:flex !important;
-    flex-direction:row !important;
-    align-items:center !important;
-    justify-content:flex-start !important;
-    gap:4px !important;
-    min-width:0 !important;
-    width:100% !important;
-    height:18px !important;
-    white-space:nowrap !important;
-    overflow:visible !important;
-    box-sizing:border-box !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-date-item > span {
-    display:inline-block !important;
-    flex:0 0 auto !important;
-    white-space:nowrap !important;
-    font-size:8px !important;
-    line-height:12px !important;
-    font-weight:700 !important;
-    color:#0f172a !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-date-item > strong {
-    display:inline-block !important;
-    flex:1 1 auto !important;
-    min-width:0 !important;
-    white-space:nowrap !important;
-    overflow:visible !important;
-    font-size:8px !important;
-    line-height:12px !important;
-    font-weight:800 !important;
-    color:#0f172a !important;
-    border-bottom:1px solid #94a3b8 !important;
-    padding:0 2px !important;
-    box-sizing:border-box !important;
-  }
-}
-@media print and (max-width:767px) {
-  #area-lembar-kerja-resmi .lk-print-date-singleline { gap:5px !important; }
-  #area-lembar-kerja-resmi .lk-print-date-item { gap:2px !important; }
-  #area-lembar-kerja-resmi .lk-print-date-item > span,
-  #area-lembar-kerja-resmi .lk-print-date-item > strong { font-size:7px !important; }
-}
-</style>
-
-<style id="medix-lk-date-preview-match-input">
-/* FINAL DATE FIX: preview memakai struktur yang SAMA dengan input Data Alat Kesehatan. */
-.lk-print-date-singleline { display:none !important; }
-@media print {
-  #area-lembar-kerja-resmi .lk-print-date-singleline { display:none !important; }
-  #area-lembar-kerja-resmi .lk-calibration-dates {
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    gap:6px !important;
-    width:100% !important;
-    height:20px !important;
-    min-height:20px !important;
-    max-height:20px !important;
-    margin:2px 0 0 !important;
-    align-items:center !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-field {
-    display:flex !important;
-    flex-direction:row !important;
-    align-items:center !important;
-    gap:4px !important;
-    width:100% !important;
-    height:20px !important;
-    min-height:20px !important;
-    max-height:20px !important;
-    min-width:0 !important;
-    overflow:visible !important;
-    box-sizing:border-box !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-label {
-    flex:0 0 auto !important;
-    width:auto !important;
-    min-width:max-content !important;
-    white-space:nowrap !important;
-    font-size:8px !important;
-    line-height:12px !important;
-    margin:0 !important;
-    padding:0 !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates .lk-date-input {
-    display:none !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates .lk-print-date-value-inline {
-    display:block !important;
-    flex:1 1 auto !important;
-    width:auto !important;
-    min-width:0 !important;
-    height:16px !important;
-    min-height:16px !important;
-    line-height:16px !important;
-    margin:0 !important;
-    padding:0 2px !important;
-    box-sizing:border-box !important;
-    border-bottom:1px solid #94a3b8 !important;
-    background:#fff !important;
-    color:#0f172a !important;
-    font-size:8px !important;
-    font-weight:800 !important;
-    white-space:nowrap !important;
-    overflow:visible !important;
-  }
-}
-</style>
-</head>
-                <body>
-                    <div class="no-print" style="text-align: center; margin-bottom: 15px; background: #f1f5f9; padding: 12px; border-radius: 6px;">
-                        <button onclick="window.print()" style="background: #2563eb; color: #fff; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px;">🖨️ Cetak / Simpan sebagai PDF</button>
-                    </div>
-                    <div class="grid-container">
-            `;
+            let htmlContent = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
+                <title>Cetak Label Barcode Massal - UPTD RSUD Pondokgede</title>
+                <style>
+                    @page { size: A4 portrait; margin: 3mm; }
+                    * { box-sizing:border-box; }
+                    body { font-family:Arial,sans-serif; margin:0; padding:0; background:#fff; color:#000; }
+                    .no-print { margin:0 0 8px; text-align:center; }
+                    .grid-container { display:grid; grid-template-columns:repeat(3,55mm); grid-auto-rows:55mm; gap:4mm; justify-content:center; }
+                    .label-card { width:55mm; height:55mm; border:0.5mm solid #000; border-radius:2mm; padding:2.2mm; display:flex; flex-direction:column; background:#fff; page-break-inside:avoid; overflow:hidden; }
+                    .header-label { text-align:center; font-size:4.6mm; font-weight:700; line-height:1; height:4.5mm; }
+                    .content-body { display:flex; flex-direction:column; align-items:center; flex:1; min-height:0; }
+                    .qr-box { width:24mm; height:24mm; display:flex; align-items:center; justify-content:center; margin-top:1.5mm; flex-shrink:0; }
+                    .qr-box canvas,.qr-box img { width:24mm!important; height:24mm!important; }
+                    .info-box { width:100%; margin-top:1.4mm; overflow:hidden; }
+                    .info-row { margin-bottom:0.8mm; line-height:1; overflow:hidden; }
+                    .info-row span.label-title { font-size:2.9mm; color:#555; font-weight:700; display:block; text-transform:uppercase; }
+                    .info-row span.label-val { font-size:3.2mm; font-weight:700; color:#000; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+                    .info-row span.label-val.sn { font-family:monospace; font-size:3.1mm; }
+                    .info-row span.label-val.ruang { color:#1d4ed8; }
+                    @media print { .no-print { display:none!important; } body { padding:0; } }
+                </style></head><body>
+                <div class="no-print"><button onclick="window.print()" style="background:#2563eb;color:#fff;border:0;padding:9px 18px;font-weight:700;border-radius:6px;cursor:pointer;font-size:13px;">🖨️ Cetak / Simpan sebagai PDF</button></div>
+                <div class="grid-container">`;
 
             dataAlat.forEach((alat, index) => {
-                let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; 
-                let sSeri = alat.seri || alat.tipe || '-';
-                htmlContent += `
-                    <div class="label-card">
-                        <div class="header-label">
-                            <h3>UPTD RSUD PONDOKGEDE - IPSRS</h3>
-                            
-                        </div>
-                        <div class="content-body">
-                            <div class="qr-box" id="qrcode-${index}"></div>
-                            <div class="info-box">
-                                <div class="info-row"><span class="label-title">Nama Aset:</span><span class="label-val">${alat.nama || '-'}</span></div>
-                                <div class="info-row"><span class="label-title">Merk / Model:</span><span class="label-val">${alat.merk || '-'}</span></div>
-                                <div class="info-row"><span class="label-title">Nomor Seri (SN):</span><span class="label-val sn">${sSeri}</span></div>
-                                <div class="info-row"><span class="label-title">Unit / Ruangan:</span><span class="label-val ruang">${sLokasi}</span></div>
-                            </div>
-                        </div>
-                        <div class="footer-label">Scan untuk melihat rekam jejak, SOP, & kalibrasi alat.</div>
-                    </div>
-                `;
+                const sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-';
+                const sSeri = alat.seri || alat.tipe || '-';
+                htmlContent += `<div class="label-card"><div class="header-label">UPTD RSUD PONDOKGEDE - IPSRS</div>
+                    <div class="content-body"><div class="qr-box" id="qrcode-${index}"></div><div class="info-box">
+                    <div class="info-row"><span class="label-title">Nama Aset</span><span class="label-val">${alat.nama || '-'}</span></div>
+                    <div class="info-row"><span class="label-title">Merk / Model</span><span class="label-val">${[alat.merk,alat.tipe].filter(Boolean).join(' / ') || '-'}</span></div>
+                    <div class="info-row"><span class="label-title">Nomor Seri</span><span class="label-val sn">${sSeri}</span></div>
+                    <div class="info-row"><span class="label-title">Unit / Ruangan</span><span class="label-val ruang">${sLokasi}</span></div>
+                    </div></div></div>`;
             });
-
-            htmlContent += `
-                    </div>
-                    <script>
-                        const listAlat = ${JSON.stringify(dataAlat)};
-                        const originUrl = "${window.location.origin + window.location.pathname}";
-                        window.onload = function() {
-                            listAlat.forEach((alat, idx) => {
-                                const container = document.getElementById("qrcode-" + idx);
-                                if(container) {
-                                    new QRCode(container, {
-                                        text: originUrl + "?alat=" + alat.id,
-                                        width: 80, height: 80, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H
-                                    });
-                                }
-                            });
-                            setTimeout(() => { window.print(); }, 1000);
-                        };
-                    <\/script>
-                </body>
-                </html>
-            `;
-
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const blobUrl = URL.createObjectURL(blob);
-            const printWindow = window.open(blobUrl, '_blank');
-            if (!printWindow) showToast("Pop-up diblokir oleh browser Anda.", "error");
+            htmlContent += `</div><script>const listAlat=${JSON.stringify(dataAlat)};window.onload=function(){listAlat.forEach((alat,idx)=>{const c=document.getElementById('qrcode-'+idx);if(c)new QRCode(c,{text:'${window.location.origin+window.location.pathname}?alat='+alat.id,width:120,height:120,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});});};<\/script>`;
+            htmlContent += '<scr' + 'ipt src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></scr' + 'ipt></body></html>';
+            const printWindow=window.open('','_blank','width=900,height=900');
+            if(!printWindow){showToast('Popup diblokir browser. Izinkan popup untuk mencetak label.','error');return;}
+            printWindow.document.open(); printWindow.document.write(htmlContent); printWindow.document.close();
         }
-        
+
+
         function mundurKeMenuSebelumnya() {
             const modalKartu = document.getElementById('modal-kartu');
             const areaLk = document.getElementById('area-lembar-kerja-resmi');
