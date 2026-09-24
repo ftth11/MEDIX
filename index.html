@@ -1817,9 +1817,30 @@ body.dark-mode .medix-filter-footer { border-color:#263449; }
 }
 body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; border-color:#334155; }
 @media (max-width:767px) {
-  .medix-mobile-filter-bar { display:flex; justify-content:flex-end; padding:0 0 8px; }
+  .medix-mobile-filter-bar { display:flex; align-items:center; gap:7px; padding:0 0 10px; position:sticky; top:0; z-index:20; }
+  .medix-mobile-filter-bar select { flex:1 1 auto; min-width:0; height:38px; border:1px solid #dbe5ec; border-radius:12px; background:#fff; color:#334155; padding:0 10px; font-size:11px; font-weight:800; outline:none; box-shadow:0 4px 14px rgba(15,23,42,.05); }
+  .medix-mobile-filter-btn { min-height:38px; padding:0 13px; border-radius:12px; background:linear-gradient(135deg,#0f766e,#0ea5a4); color:#fff; border:0; box-shadow:0 5px 14px rgba(13,148,136,.20); white-space:nowrap; }
   .medix-filter-th { padding-right:.6rem !important; }
   .medix-filter-btn { display:none; }
+}
+
+/* MEDIX v18 — App-like filters for mobile/tablet */
+.medix-smart-filter-panel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px;border:1px solid #dbe5ec;border-radius:16px;background:linear-gradient(180deg,#ffffff,#f8fafc);box-shadow:0 6px 20px rgba(15,23,42,.045);}
+.medix-smart-filter-panel .medix-smart-search{flex:1 1 240px;min-width:180px;height:40px;border:1px solid #dbe5ec;border-radius:12px;background:#fff;padding:0 12px;font-size:11px;font-weight:700;outline:none;color:#0f172a;}
+.medix-smart-filter-panel select{height:40px;border:1px solid #dbe5ec;border-radius:12px;background:#fff;padding:0 11px;font-size:11px;font-weight:800;color:#334155;outline:none;min-width:130px;}
+.medix-smart-filter-reset{height:40px;padding:0 12px;border:1px solid #fecaca;border-radius:12px;background:#fff1f2;color:#be123c;font-size:11px;font-weight:800;white-space:nowrap;}
+.medix-filter-count-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:9px;font-weight:900;}
+.lk-bhp-usage-card #dlk-bhp-list > .lk-bhp-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:9px 10px;border:1px solid #d1fae5;border-radius:14px;background:rgba(255,255,255,.88);box-shadow:0 3px 10px rgba(15,118,110,.05);}
+.lk-bhp-usage-card .lk-bhp-item-name{font-weight:900;color:#0f172a;min-width:0;}
+.lk-bhp-usage-card .lk-bhp-meta{font-size:8px;color:#64748b;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lk-bhp-usage-card .lk-bhp-qty-pill{display:inline-flex;align-items:center;justify-content:center;min-width:58px;padding:5px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:9px;font-weight:900;}
+.lk-bhp-usage-card .lk-bhp-stock-pill{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;background:#f0fdfa;color:#0f766e;font-size:8px;font-weight:800;}
+@media(max-width:767px){.lk-bhp-usage-card #dlk-bhp-list > .lk-bhp-row{grid-template-columns:minmax(0,1fr) auto;gap:7px}.lk-bhp-usage-card .lk-bhp-row .lk-bhp-stock-pill{grid-column:1}.lk-bhp-usage-card .lk-bhp-row .lk-bhp-remove{grid-column:2;grid-row:1 / span 2}.lk-bhp-usage-card .lk-bhp-qty-pill{grid-column:2;grid-row:1;}.lk-bhp-usage-card .lk-bhp-meta{white-space:normal;}.lk-bhp-usage-card #dlk-bhp-stock-info{font-size:9px;}}
+@media(max-width:767px){
+  .medix-smart-filter-panel{padding:9px;border-radius:16px;gap:7px;}
+  .medix-smart-filter-panel .medix-smart-search{flex:1 1 100%;width:100%;height:42px;min-width:0;font-size:12px;}
+  .medix-smart-filter-panel select{flex:1 1 calc(50% - 7px);min-width:0;height:40px;}
+  .medix-smart-filter-reset{height:40px;flex:0 0 auto;}
 }
 </style>
 
@@ -2344,6 +2365,21 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 #dashboard-stat-grid > button { min-width:0; }
 #table-bhp-body td { vertical-align:middle; }
 </style>
+<style id="medix-final-mobile-ui-patch">
+@media(max-width:767px){
+  #bhp-filter-panel select,#bhp-filter-panel button{min-height:40px;}
+  #filter-rekapan-em-tahun{min-height:40px;width:100%;}
+  #tab-bhp .overflow-x-auto{border-radius:14px;}
+}
+</style>
+<style id="medix-final-action-mobile-patch">
+@media(max-width:767px){
+ #master-action-buttons-container{width:100%;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px!important;}
+ #master-action-buttons-container>*{width:100%;justify-content:center!important;min-height:38px;}
+ #tab-kalibrasi > div:first-child .flex.items-center.space-x-2{width:100%;display:grid!important;grid-template-columns:1fr;gap:7px;}
+ #btn-upload-pdf-baru,#tab-kalibrasi > div:first-child button{width:100%;justify-content:center;}
+}
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -2480,7 +2516,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                             <i class="fa-solid fa-hospital w-5 text-rose-500"></i><span>Equipment Management</span>
                         </button>
                         <button onclick="switchTab('bhp')" id="btn-bhp" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
-                            <i class="fa-solid fa-boxes-stacked w-5 text-emerald-600"></i><span>Monitoring BHP & Aksesori</span>
+                            <i class="fa-solid fa-boxes-stacked w-5 text-emerald-600"></i><span>Monitoring BHP & Aksesoris</span>
                         </button>
                         
                         <div id="btn-aksi-cepat-container" class="pt-4 mt-4 border-t border-slate-100 space-y-2 menu-akses-teknisi hidden">
@@ -2564,9 +2600,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
                             </div>
                         </button>
-                        <button id="dashboard-bhp-stat" type="button" onclick="switchTab('bhp')" aria-label="Buka Monitoring BHP dan Aksesori" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                        <button id="dashboard-bhp-stat" type="button" onclick="switchTab('bhp')" aria-label="Buka Monitoring BHP dan Aksesoris" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
                             <div class="min-w-0">
-                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">BHP & Aksesori</p>
+                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">BHP & Aksesoris</p>
                                 <h3 id="dash-bhp-total" class="text-2xl sm:text-3xl font-black text-emerald-700 mt-1 leading-none">0</h3>
                                 <p id="dash-bhp-warning" class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-1">0 perlu perhatian</p>
                             </div>
@@ -2827,8 +2863,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 <div id="tab-bhp" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
-                            <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesori</h2>
-                            <p class="text-[10px] text-slate-500 mt-1">Master item diinput manual. Pengeluaran dapat dicatat otomatis dari pemakaian pada Lembar Kerja (LK).</p>
+                            <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesoris</h2>
                         </div>
                         <div class="flex gap-2">
                             <button type="button" onclick="bukaModalBHP()" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow hover:bg-emerald-700"><i class="fa-solid fa-plus mr-1"></i>Tambah Item</button>
@@ -2845,11 +2880,13 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     </div>
 
                     <div class="glass-panel p-4 rounded-2xl border border-slate-200 space-y-3">
-                        <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
-                            <input id="bhp-filter-search" oninput="renderBHPTable()" type="search" placeholder="🔍 Cari alkes / item / spesifikasi..." class="md:col-span-2 border border-slate-300 rounded-xl p-2.5 text-xs outline-none">
-                            <select id="bhp-filter-jenis" onchange="renderBHPTable()" class="border border-slate-300 rounded-xl p-2.5 text-xs bg-white"><option value="">Semua Jenis</option><option>AKSESORIS</option><option>DISPOSABLE</option><option>SUKU CADANG</option></select>
-                            <select id="bhp-filter-status" onchange="renderBHPTable()" class="border border-slate-300 rounded-xl p-2.5 text-xs bg-white"><option value="">Semua Status</option><option value="aman">Aman</option><option value="menipis">Menipis</option><option value="habis">Habis</option></select>
-                            <select id="bhp-filter-alkes" onchange="renderBHPTable()" class="border border-slate-300 rounded-xl p-2.5 text-xs bg-white"><option value="">Semua Alkes</option></select>
+                        <div class="medix-smart-filter-panel" id="bhp-filter-panel">
+                            <input id="bhp-filter-search" oninput="renderBHPTable()" type="search" placeholder="🔍 Cari nama alkes, item, spesifikasi..." class="medix-smart-search">
+                            <select id="bhp-filter-jenis" onchange="renderBHPTable()"><option value="">Semua Jenis</option><option>AKSESORIS</option><option>DISPOSABLE</option><option>SUKU CADANG</option></select>
+                            <select id="bhp-filter-status" onchange="renderBHPTable()"><option value="">Semua Status</option><option value="aman">Aman</option><option value="menipis">Menipis</option><option value="habis">Habis</option></select>
+                            <select id="bhp-filter-alkes" onchange="renderBHPTable()"><option value="">Semua Alkes</option></select>
+                            <button type="button" class="medix-smart-filter-reset" onclick="resetFilterBHP()"><i class="fa-solid fa-rotate-left mr-1"></i>Reset</button>
+                            <span id="bhp-filter-count" class="medix-filter-count-badge">0 item</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs">
@@ -3172,18 +3209,27 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 </div>
             </div>
 
-            <div class="border border-emerald-200 p-2.5 rounded-lg text-[11px] bg-emerald-50/40 shadow-sm no-print">
-                <div class="flex items-center justify-between gap-2 mb-2">
-                    <span class="font-bold text-slate-800 text-[10px]"><i class="fa-solid fa-boxes-stacked mr-1.5 text-emerald-600"></i>Penggunaan BHP / Aksesori</span>
-                    <span class="text-[9px] text-slate-500">Pilih manual sesuai alat yang sedang dikerjakan.</span>
+            <div class="lk-bhp-usage-card border border-emerald-200 rounded-2xl text-[11px] bg-gradient-to-br from-emerald-50 via-white to-cyan-50 shadow-sm no-print overflow-hidden">
+                <div class="px-3.5 py-3 border-b border-emerald-100 flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        <div class="min-w-0"><div class="font-black text-slate-800 text-[11px]">Penggunaan BHP / Aksesoris</div><div class="text-[9px] text-slate-500 truncate">Pilih manual sesuai kebutuhan alat yang sedang dikerjakan.</div></div>
+                    </div>
+                    <div class="text-right shrink-0"><div id="dlk-bhp-count" class="text-[11px] font-black text-emerald-700">0 item</div><div class="text-[8px] text-slate-400 uppercase font-bold tracking-wider">digunakan</div></div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
-                    <select id="dlk-bhp-item" class="md:col-span-7 border border-slate-300 rounded-lg p-2 text-[10px] bg-white"><option value="">-- Pilih BHP / Aksesori --</option></select>
-                    <input id="dlk-bhp-qty" type="number" min="0.01" step="0.01" value="1" class="md:col-span-2 border border-slate-300 rounded-lg p-2 text-[10px] text-center" placeholder="Qty">
-                    <button type="button" onclick="tambahBHPKeLK()" class="md:col-span-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg p-2 font-bold text-[10px]"><i class="fa-solid fa-plus mr-1"></i>Tambahkan</button>
-                </div>
-                <div class="overflow-x-auto mt-2">
-                    <table class="w-full text-[10px]"><thead class="bg-white border border-emerald-100"><tr><th class="p-2 text-left">Item</th><th class="p-2">Jenis</th><th class="p-2">Qty</th><th class="p-2">Satuan</th><th class="p-2">Aksi</th></tr></thead><tbody id="dlk-bhp-list" class="bg-white divide-y divide-emerald-100"></tbody></table>
+                <div class="p-3 space-y-2.5">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
+                        <div class="md:col-span-7 relative">
+                            <label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">BHP / Aksesoris</label>
+                            <input id="dlk-bhp-search" oninput="filterDropdownBHPDiLK(this.value)" type="search" placeholder="🔍 Cari item atau nama alkes..." class="w-full border border-emerald-200 rounded-xl p-2.5 text-[10px] bg-white outline-none focus:border-emerald-500">
+                            <select id="dlk-bhp-item" onchange="updateStokInfoBHPDiLK()" class="w-full mt-1.5 border border-slate-300 rounded-xl p-2.5 text-[10px] bg-white font-semibold"><option value="">-- Pilih BHP / Aksesoris --</option></select>
+                            <div id="dlk-bhp-stock-info" class="mt-1.5 min-h-[18px] text-[9px] font-bold text-slate-500"></div>
+                        </div>
+                        <div class="md:col-span-2"><label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">Jumlah</label><input id="dlk-bhp-qty" type="number" min="0.01" step="0.01" value="1" class="w-full border border-slate-300 rounded-xl p-2.5 text-[10px] text-center font-black bg-white" placeholder="Qty"></div>
+                        <div class="md:col-span-3 flex items-end"><button type="button" onclick="tambahBHPKeLK()" class="w-full min-h-[39px] bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl px-3 py-2 font-black text-[10px] shadow-sm"><i class="fa-solid fa-plus mr-1"></i>Tambahkan ke LK</button></div>
+                    </div>
+                    <div id="dlk-bhp-list" class="space-y-2"></div>
+                    <div id="dlk-bhp-empty" class="rounded-xl border border-dashed border-emerald-200 bg-white/70 p-4 text-center text-slate-400"><i class="fa-solid fa-box-open text-xl mb-1 text-emerald-300"></i><div class="font-bold text-[9px]">Belum ada BHP yang digunakan</div><div class="text-[8px] mt-0.5">Pilih item di atas lalu tambahkan jumlah pemakaian.</div></div>
                 </div>
             </div>
 
@@ -6089,7 +6135,7 @@ function renderMaintenanceHistory() {
                 const masterImport = izinMenu('master', 'import');
                 const masterExport = izinMenu('master', 'export');
                 const ticketLapor = canonicalRole(currentActiveRole) === 'User' ? true : izinMenu('ticket', 'lapor');
-                const riwayatUpload = izinMenu('riwayat', 'upload');
+                const riwayatUpload = ['Admin','Teknisi'].includes(canonicalRole(currentActiveRole)) || izinMenu('riwayat', 'upload');
 
                 // Container tombol Master Data harus diambil di dalam scope login handler.
                 // Sebelumnya variabel ini dipakai tanpa deklarasi sehingga setiap login
@@ -6103,7 +6149,10 @@ function renderMaintenanceHistory() {
                     if (masterExport) buttons.push(`<button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>`);
                     if (masterImport) buttons.push(`<label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"><i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel<input type="file" id="file-excel-input" accept=".xlsx,.xls,.csv" onchange="importDataDariExcel(event)" class="hidden"></label>`);
                     if (masterTambah) buttons.push(`<button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
-                    if (masterRead && (role === 'Admin')) buttons.push(`<button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-pdf mr-1.5"></i> Cetak Label Massal</button>`);
+                    if (masterRead && (role === 'Admin')) {
+                        buttons.push(`<button onclick="downloadLabelBarcodeMassalPdf()" class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Download seluruh label barcode aset"><i class="fa-solid fa-download mr-1.5"></i> Download Barcode</button>`);
+                        buttons.push(`<button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label Massal</button>`);
+                    }
                     containerMasterAction.innerHTML = buttons.join('');
                 }
 
@@ -7938,7 +7987,7 @@ function renderMaintenanceHistory() {
 
 
         // ================================================================
-        // MONITORING BHP & AKSESORI — terintegrasi dengan Lembar Kerja (LK)
+        // MONITORING BHP & AKSESORIS — terintegrasi dengan Lembar Kerja (LK)
         // Master item sengaja manual karena satu jenis alat dapat memakai
         // BHP yang sama atau berbeda. Stok dihitung dari transaksi IN/OUT.
         // ================================================================
@@ -7973,6 +8022,11 @@ function renderMaintenanceHistory() {
             const m={aman:['Aman','bg-emerald-50 text-emerald-700 border-emerald-200'],menipis:['Menipis','bg-amber-50 text-amber-700 border-amber-200'],habis:['Habis','bg-rose-50 text-rose-700 border-rose-200']};
             const x=m[status]||m.aman; return `<span class="px-2 py-1 rounded-full border text-[9px] font-black ${x[1]}">${x[0]}</span>`;
         }
+        function resetFilterBHP(){
+            ['bhp-filter-search','bhp-filter-jenis','bhp-filter-status','bhp-filter-alkes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+            renderBHPTable();
+        }
+
         function renderBHPTable() {
             const body=document.getElementById('table-bhp-body'); if(!body) return;
             const q=(document.getElementById('bhp-filter-search')?.value||'').toLowerCase().trim();
@@ -7985,14 +8039,15 @@ function renderMaintenanceHistory() {
                 const hay=[i.namaAlkes,i.namaItem,i.jenisItem,i.spesifikasi].join(' ').toLowerCase();
                 return (!q||hay.includes(q))&&(!jenis||i.jenisItem===jenis)&&(!status||statusStokBHP(i)===status)&&(!alkes||i.namaAlkes===alkes);
             });
-            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
+            const count=document.getElementById('bhp-filter-count'); if(count) count.textContent=`${rows.length} item${rows.length===1?'':'s'}`;
+            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesoris. Tambahkan secara manual.</td></tr>`;
         }
         function bukaModalBHP(id='') {
             let m=document.getElementById('modal-bhp'); if(!m){
                 m=document.createElement('div'); m.id='modal-bhp'; m.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100000] flex items-center justify-center p-4 no-print'; document.body.appendChild(m);
             }
             const item=dataBHPItems.find(x=>String(x.id)===String(id));
-            m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesori</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
+            m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesoris</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
         }
         function tutupModalBHP(){document.getElementById('modal-bhp')?.remove();}
         async function simpanMasterBHP(e){e.preventDefault(); if(!izinMenu('equipment','edit')){showToast('Akses edit BHP tidak diberikan.','error');return;} const id=document.getElementById('bhp-form-id').value; const payload={namaAlkes:document.getElementById('bhp-form-alkes').value.trim(),namaItem:document.getElementById('bhp-form-item').value.trim(),jenisItem:document.getElementById('bhp-form-jenis').value,satuan:document.getElementById('bhp-form-satuan').value.trim(),spesifikasi:document.getElementById('bhp-form-spesifikasi').value.trim(),stokAwal:angkaBHP(document.getElementById('bhp-form-stok-awal').value),stokMinimum:angkaBHP(document.getElementById('bhp-form-min').value),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; try{if(id) await db.collection('bhpItems').doc(id).set(payload,{merge:true});else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('bhpItems').add(payload);} tutupModalBHP();showToast('Master BHP berhasil disimpan.','success');}catch(err){console.error('Simpan master BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpItems. Tambahkan izin read/write untuk Admin/Teknisi pada collection bhpItems.' : ('Gagal menyimpan master BHP: '+(err.message||err)); showToast(msg,'error');}}
@@ -8002,9 +8057,38 @@ function renderMaintenanceHistory() {
             m.innerHTML=`<form onsubmit="simpanTransaksiBHP(event)" class="bg-white w-full max-w-md rounded-2xl shadow-2xl"><div class="p-4 border-b font-black">${tipe==='IN'?'Stok Masuk':'Stok Keluar'}</div><div class="p-5 space-y-3 text-xs"><input type="hidden" id="bhp-tx-tipe" value="${tipe}"><label class="font-bold block">Item<select required id="bhp-tx-item" class="w-full border rounded-xl p-2.5 mt-1 bg-white"><option value="">-- Pilih Item --</option>${opts}</select></label><label class="font-bold block">Jumlah<input required min="0.01" step="0.01" type="number" id="bhp-tx-qty" value="1" class="w-full border rounded-xl p-2.5 mt-1"></label><label class="font-bold block">Tanggal<input required type="date" id="bhp-tx-tgl" value="${new Date().toISOString().slice(0,10)}" class="w-full border rounded-xl p-2.5 mt-1"></label><label class="font-bold block">Keterangan<input id="bhp-tx-ket" placeholder="Contoh: pembelian / pemakaian umum" class="w-full border rounded-xl p-2.5 mt-1"></label></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="document.getElementById('modal-bhp-tx').remove()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold">Simpan</button></div></form>`;
         }
         async function simpanTransaksiBHP(e){e.preventDefault(); if(!izinMenu('equipment','edit')){showToast('Akses transaksi BHP tidak diberikan.','error');return;} const tipe=document.getElementById('bhp-tx-tipe').value,itemId=document.getElementById('bhp-tx-item').value,qty=angkaBHP(document.getElementById('bhp-tx-qty').value); if(!itemId||qty<=0)return; const ref=db.collection('bhpTransactions').doc(); try{await ref.set({itemId,tipe,qty,tanggal:document.getElementById('bhp-tx-tgl').value,keterangan:document.getElementById('bhp-tx-ket').value.trim(),sumber:'Manual',createdByUid:auth.currentUser?.uid||'',createdByNama:currentUserNama||'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('modal-bhp-tx')?.remove();showToast('Transaksi stok berhasil disimpan.','success');}catch(err){console.error('Simpan transaksi BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpTransactions. Tambahkan izin read/write untuk Admin/Teknisi.' : ('Gagal menyimpan transaksi: '+(err.message||err)); showToast(msg,'error');}}
-        function populasikanDropdownBHPDiLK(){const s=document.getElementById('dlk-bhp-item');if(!s)return;const old=s.value;s.innerHTML='<option value="">-- Pilih BHP / Aksesori --</option>'+dataBHPItems.map(i=>`<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} [${escBHP(i.satuan)}]</option>`).join('');if(dataBHPItems.some(i=>String(i.id)===old))s.value=old;renderBHPUsageLK();}
-        function renderBHPUsageLK(){const body=document.getElementById('dlk-bhp-list');if(!body)return;body.innerHTML=bhpUsageLK.length?bhpUsageLK.map((u,i)=>{const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||{};return `<tr><td class="p-2 font-semibold">${escBHP(item.namaItem||u.namaItem||'-')} <span class="text-slate-400">(${escBHP(item.namaAlkes||u.namaAlkes||'-')})</span></td><td class="p-2 text-center">${escBHP(item.jenisItem||u.jenisItem||'-')}</td><td class="p-2 text-center font-black">${u.qty}</td><td class="p-2 text-center">${escBHP(item.satuan||u.satuan||'-')}</td><td class="p-2 text-center"><button type="button" onclick="hapusBHPDariLK(${i})" class="text-rose-600 font-bold">Hapus</button></td></tr>`}).join(''):`<tr><td colspan="5" class="p-3 text-center text-slate-400 italic">Belum ada BHP yang dipilih pada LK ini.</td></tr>`;}
-        function tambahBHPKeLK(){const itemId=document.getElementById('dlk-bhp-item')?.value,qty=angkaBHP(document.getElementById('dlk-bhp-qty')?.value);if(!itemId||qty<=0){showToast('Pilih BHP dan isi jumlah terlebih dahulu.','error');return;}const item=dataBHPItems.find(x=>String(x.id)===String(itemId));if(!item)return;const ex=bhpUsageLK.find(x=>String(x.itemId)===String(itemId));if(ex)ex.qty=angkaBHP(ex.qty)+qty;else bhpUsageLK.push({itemId,qty,namaItem:item.namaItem,namaAlkes:item.namaAlkes,jenisItem:item.jenisItem,satuan:item.satuan});renderBHPUsageLK();document.getElementById('dlk-bhp-qty').value=1;}
+        function populasikanDropdownBHPDiLK(filterText=''){
+            const s=document.getElementById('dlk-bhp-item'); if(!s)return;
+            const old=s.value; const q=String(filterText||document.getElementById('dlk-bhp-search')?.value||'').toLowerCase().trim();
+            const rows=dataBHPItems.filter(i=>!q||[i.namaItem,i.namaAlkes,i.spesifikasi,i.jenisItem].some(v=>String(v||'').toLowerCase().includes(q)));
+            s.innerHTML='<option value="">-- Pilih BHP / Aksesoris --</option>'+rows.map(i=>{const st=getStokBHP(i.id);return `<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} · ${st.stok} ${escBHP(i.satuan||'')}</option>`}).join('');
+            if(rows.some(i=>String(i.id)===old))s.value=old;
+            updateStokInfoBHPDiLK(); renderBHPUsageLK();
+        }
+        function filterDropdownBHPDiLK(q){ populasikanDropdownBHPDiLK(q); }
+        function updateStokInfoBHPDiLK(){
+            const box=document.getElementById('dlk-bhp-stock-info'), sel=document.getElementById('dlk-bhp-item'); if(!box||!sel)return;
+            const item=dataBHPItems.find(x=>String(x.id)===String(sel.value));
+            if(!item){box.innerHTML='<span class="text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i>Pilih item untuk melihat stok tersedia.</span>';return;}
+            const st=getStokBHP(item.id); const status=statusStokBHP(item);
+            const cls=status==='habis'?'text-rose-600':status==='menipis'?'text-amber-600':'text-emerald-700';
+            box.innerHTML=`<span class="${cls}"><i class="fa-solid fa-box mr-1"></i>Stok tersedia: <b>${st.stok} ${escBHP(item.satuan||'')}</b> · Minimum ${angkaBHP(item.stokMinimum)}</span>`;
+        }
+        function renderBHPUsageLK(){
+            const body=document.getElementById('dlk-bhp-list'), empty=document.getElementById('dlk-bhp-empty'), count=document.getElementById('dlk-bhp-count'); if(!body)return;
+            if(count)count.innerText=`${bhpUsageLK.length} item${bhpUsageLK.length===1?'':'s'}`;
+            if(empty)empty.classList.toggle('hidden',bhpUsageLK.length>0);
+            body.innerHTML=bhpUsageLK.map((u,i)=>{const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||{}; const st=getStokBHP(u.itemId); return `<div class="lk-bhp-row"><div class="min-w-0"><div class="lk-bhp-item-name truncate">${escBHP(item.namaItem||u.namaItem||'-')}</div><div class="lk-bhp-meta">${escBHP(item.namaAlkes||u.namaAlkes||'-')} · ${escBHP(item.jenisItem||u.jenisItem||'-')}</div></div><span class="lk-bhp-qty-pill">${angkaBHP(u.qty)} ${escBHP(item.satuan||u.satuan||'')}</span><span class="lk-bhp-stock-pill">Sisa ${st.stok}</span><button type="button" onclick="hapusBHPDariLK(${i})" class="lk-bhp-remove w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold" title="Hapus"><i class="fa-solid fa-trash-can"></i></button></div>`;}).join('');
+        }
+        function tambahBHPKeLK(){
+            const itemId=document.getElementById('dlk-bhp-item')?.value,qty=angkaBHP(document.getElementById('dlk-bhp-qty')?.value);
+            if(!itemId||qty<=0){showToast('Pilih BHP dan isi jumlah terlebih dahulu.','error');return;}
+            const item=dataBHPItems.find(x=>String(x.id)===String(itemId)); if(!item)return;
+            const available=hitungStokTersediaBHP(itemId, window._medixEditingLkId||''); const existing=bhpUsageLK.find(x=>String(x.itemId)===String(itemId)); const currentQty=existing?angkaBHP(existing.qty):0;
+            if(qty+currentQty>available){showToast(`Jumlah pemakaian melebihi stok tersedia (${available} ${item.satuan||''}).`,'error');return;}
+            if(existing)existing.qty=currentQty+qty; else bhpUsageLK.push({itemId,qty,namaItem:item.namaItem,namaAlkes:item.namaAlkes,jenisItem:item.jenisItem,satuan:item.satuan});
+            renderBHPUsageLK(); document.getElementById('dlk-bhp-qty').value=1; document.getElementById('dlk-bhp-item').value=''; updateStokInfoBHPDiLK();
+        }
         function hapusBHPDariLK(i){bhpUsageLK.splice(i,1);renderBHPUsageLK();}
         function hitungStokTersediaBHP(itemId, excludeLkId=''){const s=getStokBHP(itemId);let out=0;dataBHPTransactions.filter(t=>String(t.itemId)===String(itemId)&&String(t.lkId||'')===String(excludeLkId)).forEach(t=>{if(String(t.tipe)==='OUT')out+=angkaBHP(t.qty);});return s.stok+out;}
         function siapkanTransaksiBHPUntukLK(batch, lkId, noLk, alatId, tanggal, usage){usage.forEach(u=>{if(angkaBHP(u.qty)<=0)return;const ref=db.collection('bhpTransactions').doc();batch.set(ref,{itemId:u.itemId,tipe:'OUT',qty:angkaBHP(u.qty),tanggal,tanggalLk:tanggal,lkId,noLk,alatId,sumber:'LK',keterangan:`Pemakaian BHP pada ${noLk}`,createdByUid:auth.currentUser?.uid||'',createdByNama:currentUserNama||'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});});}
@@ -9114,6 +9198,37 @@ function renderMaintenanceHistory() {
             }, 100);
         }
 
+        async function downloadLabelBarcodeMassalPdf(){
+            if(!izinMenu('master','read')){showToast('Anda tidak memiliki izin melihat Master Data Aset.','error');return;}
+            if(!dataAlat||!dataAlat.length){showToast('Data aset medis sedang dimuat atau kosong.','error');return;}
+            if(!window.jspdf?.jsPDF){showToast('Mesin PDF belum termuat. Muat ulang halaman lalu coba lagi.','error');return;}
+            if(!await showConfirmDialog(`Download ${dataAlat.length} label barcode aset ke satu file PDF?`,{title:'Download Barcode Massal',okText:'Ya, Download',variant:'safe',icon:'fa-download'}))return;
+            const {jsPDF}=window.jspdf; const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+            const margin=8, cols=2, rowsPerPage=4, gap=4; const labelW=(210-margin*2-gap)/cols, labelH=(297-margin*2-gap*3)/rowsPerPage;
+            const originUrl=window.location.origin+window.location.pathname;
+            const qrHost=document.createElement('div'); qrHost.style.cssText='position:fixed;left:-99999px;top:-99999px;width:120px;height:120px;background:#fff;'; document.body.appendChild(qrHost);
+            const escPdf=v=>String(v??'-').replace(/[<>]/g,'');
+            try{
+                for(let idx=0;idx<dataAlat.length;idx++){
+                    if(idx>0 && idx%(cols*rowsPerPage)===0)pdf.addPage();
+                    const pos=idx%(cols*rowsPerPage), col=pos%cols, row=Math.floor(pos/cols); const x=margin+col*(labelW+gap), y=margin+row*(labelH+gap); const a=dataAlat[idx];
+                    pdf.setDrawColor(148,163,184); pdf.roundedRect(x,y,labelW,labelH,3,3);
+                    pdf.setFont('helvetica','bold'); pdf.setFontSize(7); pdf.text('UPTD RSUD PONDOKGEDE - IPSRS',x+labelW/2,y+6,{align:'center'});
+                    pdf.setFontSize(5.5); pdf.setTextColor(71,85,105); pdf.text('LABEL REKAM JEJAK & AKREDITASI ASET',x+labelW/2,y+10,{align:'center'}); pdf.setTextColor(15,23,42);
+                    qrHost.innerHTML=''; new QRCode(qrHost,{text:originUrl+'?alat='+a.id,width:120,height:120,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
+                    await new Promise(r=>setTimeout(r,10)); const qr=qrHost.querySelector('canvas')||qrHost.querySelector('img'); if(qr){const src=qr.tagName==='CANVAS'?qr.toDataURL('image/png'):qr.src; pdf.addImage(src,'PNG',x+4,y+16,29,29);}
+                    const tx=x+37, max=labelW-41; pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NAMA ASET',tx,y+18); pdf.setTextColor(15,23,42); pdf.setFontSize(7); pdf.text(pdf.splitTextToSize(escPdf(a.nama||'-'),max).slice(0,2),tx,y+22);
+                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('MERK / MODEL',tx,y+31); pdf.setTextColor(15,23,42); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf((a.merk||'-')+' / '+(a.tipe||'-')),max).slice(0,2),tx,y+35);
+                    pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('NOMOR SERI',tx,y+44); pdf.setTextColor(15,23,42); pdf.setFont('courier','bold'); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf(a.seri||'-'),max).slice(0,2),tx,y+48);
+                    pdf.setFont('helvetica','bold'); pdf.setFontSize(5); pdf.setTextColor(100,116,139); pdf.text('UNIT / RUANGAN',tx,y+57); pdf.setTextColor(29,78,216); pdf.setFontSize(6); pdf.text(pdf.splitTextToSize(escPdf(a.ruangan||a.lokasi||'-'),max).slice(0,2),tx,y+61);
+                    pdf.setDrawColor(203,213,225); pdf.line(x+4,y+labelH-9,x+labelW-4,y+labelH-9); pdf.setFontSize(4.5); pdf.setTextColor(100,116,139); pdf.text('Scan untuk melihat rekam jejak, SOP, & kalibrasi alat.',x+labelW/2,y+labelH-5,{align:'center'});
+                    if(idx%10===0) await new Promise(r=>setTimeout(r,0));
+                }
+                const safeName=('MEDIX_Label_Barcode_Aset_'+new Date().toISOString().slice(0,10)+'.pdf'); pdf.save(safeName); showToast(`${dataAlat.length} label barcode berhasil diunduh.`,'success');
+            }catch(err){console.error('Download barcode massal gagal:',err);showToast('Gagal membuat PDF barcode: '+(err.message||err),'error');}
+            finally{qrHost.remove();}
+        }
+
         async function cetakLabelBarcodeMassalPdf() {
             if (!izinMenu('master', 'read')) { showToast('Anda tidak memiliki izin melihat Master Data Aset.', 'error'); return; }
             if (!dataAlat || dataAlat.length === 0) { showToast("Data aset medis sedang dimuat atau kosong.", "error"); return; }
@@ -9941,7 +10056,7 @@ body { overflow-x: hidden !important; }
 
         async function submitUploadBerkasUniversal(e) {
             e.preventDefault();
-            if (!izinMenu('riwayat', 'upload') || currentActiveRole === 'User') {
+            if (!(['Admin','Teknisi'].includes(canonicalRole(currentActiveRole)) || izinMenu('riwayat', 'upload')) || currentActiveRole === 'User') {
                 return showToast('Akses upload dokumen hanya tersedia untuk Admin/Teknisi.', 'error');
             }
 
