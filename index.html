@@ -27,6 +27,7 @@
     
     <!-- QR Code & Scanner Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <!-- PDF compression/optimization (client-side) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -2380,6 +2381,28 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
  #btn-upload-pdf-baru,#tab-kalibrasi > div:first-child button{width:100%;justify-content:center;}
 }
 </style>
+<style id="medix-print-engine-css">
+/* MEDIX PRINT ENGINE — flexible paper, preview, mobile friendly */
+.medix-print-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(15,23,42,.62);backdrop-filter:blur(7px)}
+.medix-print-modal.show{display:flex}
+.medix-print-card{width:min(960px,96vw);max-height:94vh;overflow:auto;background:#fff;color:#0f172a;border:1px solid #dbe5ec;border-radius:22px;box-shadow:0 24px 80px rgba(15,23,42,.28)}
+.medix-print-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid #e2e8f0}
+.medix-print-head h3{margin:0;font-size:16px;font-weight:900}.medix-print-close{width:34px;height:34px;border:0;border-radius:10px;background:#f1f5f9;color:#475569;cursor:pointer;font-size:16px}
+.medix-print-body{display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;padding:18px}
+.medix-print-controls{display:grid;gap:10px;align-content:start}.medix-print-field{display:grid;gap:6px}.medix-print-field label{font-size:10px;font-weight:900;color:#475569;text-transform:uppercase;letter-spacing:.04em}
+.medix-print-field select,.medix-print-field input{width:100%;height:40px;border:1px solid #dbe5ec;border-radius:11px;background:#fff;color:#0f172a;padding:0 11px;font-size:12px;font-weight:800;outline:none}
+.medix-print-field input[type=number]{appearance:textfield}.medix-print-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.medix-print-orientation{display:grid;grid-template-columns:1fr 1fr;gap:7px}.medix-print-orientation button{height:38px;border:1px solid #dbe5ec;background:#f8fafc;color:#475569;border-radius:10px;font-weight:800;font-size:11px;cursor:pointer}.medix-print-orientation button.active{background:#ccfbf1;border-color:#5eead4;color:#0f766e}
+.medix-print-note{padding:9px 10px;border:1px dashed #cbd5e1;border-radius:11px;background:#f8fafc;color:#64748b;font-size:10px;line-height:1.45}.medix-print-preview-wrap{display:flex;flex-direction:column;min-width:0}.medix-print-preview-title{font-size:11px;font-weight:900;color:#475569;margin-bottom:8px}.medix-print-preview-stage{min-height:430px;border:1px solid #e2e8f0;border-radius:16px;background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 8px,#f1f5f9 8px,#f1f5f9 16px);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:20px}.medix-paper-preview{background:#fff;border:1px solid #cbd5e1;box-shadow:0 18px 40px rgba(15,23,42,.15);position:relative;display:flex;align-items:center;justify-content:center;transition:width .18s,height .18s}.medix-paper-preview.landscape{transform:none}.medix-paper-preview-inner{width:82%;height:82%;border:1px dashed #cbd5e1;border-radius:4px;display:flex;align-items:center;justify-content:center;text-align:center;color:#94a3b8;font-size:11px;font-weight:800;line-height:1.5}.medix-label-preview{position:absolute;width:70%;height:38%;border:1px solid #cbd5e1;border-radius:7px;background:#fff;box-shadow:0 4px 12px rgba(15,23,42,.08);padding:7px;display:flex;gap:7px;text-align:left}.medix-label-preview .q{width:42px;height:42px;border:5px solid #111;display:grid;place-items:center;font-size:7px;font-weight:900}.medix-label-preview .t{min-width:0;font-size:8px}.medix-label-preview .t b{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.medix-label-preview .t span{display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.medix-print-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid #e2e8f0}.medix-print-btn{border:0;border-radius:11px;padding:10px 15px;font-size:11px;font-weight:900;cursor:pointer}.medix-print-btn.cancel{background:#f1f5f9;color:#475569}.medix-print-btn.primary{background:linear-gradient(135deg,#0f766e,#0ea5a4);color:#fff;box-shadow:0 7px 18px rgba(13,148,136,.22)}
+.medix-print-hidden-root{display:none}
+@media(max-width:767px){.medix-print-modal{padding:7px}.medix-print-card{max-height:96vh;border-radius:18px}.medix-print-body{grid-template-columns:1fr;padding:12px;gap:12px}.medix-print-preview-stage{min-height:250px;padding:12px}.medix-print-footer{padding:11px 12px;position:sticky;bottom:0;background:#fff}.medix-print-head{padding:12px}.medix-print-head h3{font-size:14px}.medix-print-note{font-size:9px}}
+@media print{
+  .medix-print-modal{display:none!important}
+  body.medix-generic-printing > *{display:none!important}
+  body.medix-generic-printing > #medix-print-clone-root{display:block!important;position:static!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
+  body.medix-generic-printing > #medix-print-clone-root .no-print{display:none!important}
+  body.medix-lk-printing > #area-lembar-kerja-resmi{width:var(--medix-lk-width,194mm)!important;max-width:var(--medix-lk-width,194mm)!important}
+}
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -3009,7 +3032,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                 <button type="button" onclick="exportRekapanEMExcel()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm no-print">
                                     <i class="fa-solid fa-file-excel mr-1"></i> Export Excel
                                 </button>
-                                <button type="button" onclick="window.print()" class="px-3 py-2 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold shadow-sm no-print">
+                                <button type="button" onclick="medixCetakElemen('#em-content-rekapan', 'Rekapan EM')" class="px-3 py-2 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold shadow-sm no-print">
                                     <i class="fa-solid fa-print mr-1"></i> Cetak
                                 </button>
                             </div>
@@ -6150,7 +6173,7 @@ function renderMaintenanceHistory() {
                     if (masterExport) buttons.push(`<button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>`);
                     if (masterImport) buttons.push(`<label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"><i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel<input type="file" id="file-excel-input" accept=".xlsx,.xls,.csv" onchange="importDataDariExcel(event)" class="hidden"></label>`);
                     if (masterTambah) buttons.push(`<button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
-                    if (masterRead && canonicalRole(currentActiveRole) === 'Admin') {
+                    if (masterRead && ['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) {
                         buttons.push(`<button onclick="downloadLabelBarcodeMassalPdf()" class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Download seluruh label barcode aset"><i class="fa-solid fa-download mr-1.5"></i> Download Barcode</button>`);
                         buttons.push(`<button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label Massal</button>`);
                     }
@@ -6391,7 +6414,7 @@ function renderMaintenanceHistory() {
                 </head>
                 <body>
                     <div class="no-print" style="margin-bottom: 20px; text-align: right;">
-                        <button onclick="window.print()" style="background: #2563eb; color: #white; border: none; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer;">🖨️ Cetak / Simpan PDF</button>
+                        <button onclick="if(window.opener&&window.opener.medixOpenPrintSettings){window.opener.medixOpenPrintSettings(window,{title:'Laporan Rekapitulasi Pemeliharaan',mode:'child-print',defaultPreset:'A4',defaultOrientation:'landscape',defaultMargin:8})}else{window.print()}" style="background: #2563eb; color: #fff; border: none; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer;">🖨️ Cetak / Simpan PDF</button>
                     </div>
                     <div class="kop">
                         <h2>Pemerintah Kota Bekasi • Dinas Kesehatan</h2>
@@ -7382,37 +7405,16 @@ function renderMaintenanceHistory() {
                 console.error('Area LK tidak ditemukan.');
                 return;
             }
-
-            // Pastikan modal LK terlihat dan DOM sudah siap sebelum print.
             area.classList.remove('hidden');
-            area.classList.add('medix-lk-print-ready');
-            document.body.classList.add('medix-lk-printing');
-
-            // Siapkan nilai tanggal/PJ tanpa membiarkan error kecil menghentikan print.
             try { siapkanLKUntukCetak(); } catch (err) { console.warn('Persiapan print LK:', err); }
-
-            const mulaiCetak = () => {
-                try {
-                    window.focus();
-                    // window.print() adalah API browser, bukan popup/window.open,
-                    // sehingga tetap bekerja di desktop maupun Android/Chrome.
-                    window.print();
-                } catch (err) {
-                    console.error('Print LK gagal:', err);
-                    document.body.classList.remove('medix-lk-printing');
-                    area.classList.remove('medix-lk-print-ready');
-                    if (typeof showToast === 'function') {
-                        showToast('Cetak tidak dapat dibuka pada browser ini. Gunakan menu Cetak/Print browser.', 'error');
-                    }
-                }
-            };
-
-            // Dua frame memberi browser kesempatan menyelesaikan perubahan CSS print.
-            if (typeof requestAnimationFrame === 'function') {
-                requestAnimationFrame(() => requestAnimationFrame(mulaiCetak));
-            } else {
-                setTimeout(mulaiCetak, 100);
-            }
+            medixOpenPrintSettings(window, {
+                title: 'Lembar Kerja Pemeliharaan',
+                mode: 'lk',
+                defaultPreset: 'A4',
+                defaultOrientation: 'portrait',
+                defaultMargin: 6,
+                targetSelector: '#area-lembar-kerja-resmi'
+            });
         }
 
         // Fallback: pastikan tombol LK tetap memiliki handler meskipun inline
@@ -9208,104 +9210,136 @@ function renderMaintenanceHistory() {
 
         async function downloadLabelBarcodeMassalPdf(){
             if(!izinMenu('master','read')){showToast('Anda tidak memiliki izin melihat Master Data Aset.','error');return;}
+            if(!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))){showToast('Download label hanya tersedia untuk Admin dan Teknisi.','error');return;}
             if(!dataAlat||!dataAlat.length){showToast('Data aset medis sedang dimuat atau kosong.','error');return;}
             if(!window.jspdf?.jsPDF){showToast('Mesin PDF belum termuat. Muat ulang halaman lalu coba lagi.','error');return;}
-            if(!await showConfirmDialog(`Download ${dataAlat.length} label barcode aset ke satu file PDF?`,{title:'Download Barcode Massal',okText:'Ya, Download',variant:'safe',icon:'fa-download'}))return;
+            medixOpenPrintSettings(window,{
+                title:'Download Label Aset Medis',
+                mode:'download-label-pdf',
+                defaultPreset:'A4',
+                defaultOrientation:'landscape',
+                defaultMargin:5,
+                labelWidth:70,
+                labelHeight:45,
+                labelGap:4
+            });
+        }
+
+        async function medixGenerateLabelPdf(settings){
+            if(!dataAlat||!dataAlat.length) throw new Error('Data aset medis kosong.');
+            if(!window.jspdf?.jsPDF) throw new Error('Mesin PDF belum termuat.');
             const {jsPDF}=window.jspdf;
-            const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-            // A4: 3 kolom x 5 baris, setiap label 55 x 55 mm (persegi).
-            const cols=3, rowsPerPage=5, labelW=55, labelH=55, gap=4;
-            const pageW=210, pageH=297;
-            const marginX=(pageW-(cols*labelW+(cols-1)*gap))/2;
-            const marginY=(pageH-(rowsPerPage*labelH+(rowsPerPage-1)*gap))/2;
-            const originUrl=window.location.origin+window.location.pathname;
+            const pageW=Number(settings.width), pageH=Number(settings.height);
+            const margin=Number(settings.margin)||0;
+            const gap=Number(settings.labelGap)||4;
+            const labelW=70, labelH=45;
+            const usableW=pageW-(margin*2), usableH=pageH-(margin*2);
+            const cols=Math.floor((usableW+gap)/(labelW+gap));
+            const rows=Math.floor((usableH+gap)/(labelH+gap));
+            if(cols<1||rows<1) throw new Error(`Ukuran kertas ${pageW} × ${pageH} mm terlalu kecil untuk label 70 × 45 mm.`);
+            const perPage=cols*rows;
+            const contentW=cols*labelW+(cols-1)*gap;
+            const contentH=rows*labelH+(rows-1)*gap;
+            const offsetX=Math.max(margin,(pageW-contentW)/2);
+            const offsetY=Math.max(margin,(pageH-contentH)/2);
+            const orientation=pageW>=pageH?'landscape':'portrait';
+            const pdf=new jsPDF({orientation,unit:'mm',format:[pageW,pageH],compress:true,putOnlyUsedFonts:true});
             const qrHost=document.createElement('div');
-            qrHost.style.cssText='position:fixed;left:-99999px;top:-99999px;width:120px;height:120px;background:#fff;';
-            document.body.appendChild(qrHost);
-            const escPdf=v=>String(v??'-').replace(/[<>]/g,'');
-            const fitLines=(pdf,text,width,maxLines=2)=>pdf.splitTextToSize(escPdf(text||'-'),width).slice(0,maxLines);
+            qrHost.style.cssText='position:fixed;left:-99999px;top:-99999px;width:180px;height:180px;background:#fff;';
+            const qrCanvas=document.createElement('canvas'); qrCanvas.width=180; qrCanvas.height=180;
+            const barCanvas=document.createElement('canvas'); barCanvas.width=500; barCanvas.height=120;
+            document.body.append(qrHost);
+            const esc=v=>String(v??'-').replace(/[<>]/g,'');
+            const drawFit=(text,x,y,maxW,fontSize=3.4,style='bold',align='left')=>{
+                pdf.setFont('helvetica',style); pdf.setFontSize(fontSize);
+                const lines=pdf.splitTextToSize(esc(text||'-'),maxW).slice(0,2);
+                pdf.text(lines,x,y,{align}); return lines.length;
+            };
             try{
                 for(let idx=0;idx<dataAlat.length;idx++){
-                    if(idx>0 && idx%(cols*rowsPerPage)===0)pdf.addPage();
-                    const pos=idx%(cols*rowsPerPage), col=pos%cols, row=Math.floor(pos/cols);
-                    const x=marginX+col*(labelW+gap), y=marginY+row*(labelH+gap), a=dataAlat[idx];
-                    pdf.setDrawColor(15,23,42); pdf.setLineWidth(0.5); pdf.roundedRect(x,y,labelW,labelH,2,2);
-                    pdf.setFont('helvetica','bold'); pdf.setFontSize(4.6); pdf.setTextColor(15,23,42);
-                    pdf.text('UPTD RSUD PONDOKGEDE - IPSRS',x+labelW/2,y+4.3,{align:'center'});
+                    if(idx>0 && idx%perPage===0) pdf.addPage([pageW,pageH],orientation);
+                    const pos=idx%perPage, col=pos%cols, row=Math.floor(pos/cols);
+                    const x=offsetX+col*(labelW+gap), y=offsetY+row*(labelH+gap), a=dataAlat[idx]||{};
+                    pdf.setDrawColor(203,213,225); pdf.setLineWidth(.35); pdf.roundedRect(x,y,labelW,labelH,2,2,'S');
+                    pdf.setFillColor(15,118,110); pdf.roundedRect(x,y,labelW,6,2,2,'F');
+                    pdf.setFillColor(15,118,110); pdf.rect(x,y+3.5,labelW,2.5,'F');
+                    pdf.setTextColor(255,255,255); pdf.setFont('helvetica','bold'); pdf.setFontSize(4.2); pdf.text('MEDIX',x+3,y+4.1);
+                    pdf.setFontSize(2.8); pdf.text('ASET MEDIS',x+labelW-3,y+4.0,{align:'right'});
+
                     qrHost.innerHTML='';
-                    new QRCode(qrHost,{text:originUrl+'?alat='+a.id,width:120,height:120,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
-                    await new Promise(r=>setTimeout(r,10));
+                    new QRCode(qrHost,{text:window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||''),width:180,height:180,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
+                    await new Promise(r=>setTimeout(r,8));
                     const qr=qrHost.querySelector('canvas')||qrHost.querySelector('img');
                     if(qr){
                         const src=qr.tagName==='CANVAS'?qr.toDataURL('image/png'):qr.src;
-                        pdf.addImage(src,'PNG',x+15.5,y+6.2,24,24);
+                        pdf.addImage(src,'PNG',x+3,y+9,24,24);
                     }
-                    let yy=y+33;
-                    const tx=x+3, tw=labelW-6;
-                    const field=(label,val,size=4.1,mono=false)=>{
-                        pdf.setFont('helvetica','bold'); pdf.setFontSize(3.4); pdf.setTextColor(100,116,139); pdf.text(label,tx,yy);
-                        pdf.setFont(mono?'courier':'helvetica','bold'); pdf.setFontSize(size); pdf.setTextColor(15,23,42);
-                        const lines=fitLines(pdf,val,tw,1); pdf.text(lines,tx,yy+3.2); yy+=5.2;
-                    };
-                    field('NAMA ASET',a.nama||'-',4.0);
-                    field('MERK / MODEL',[a.merk,a.tipe].filter(Boolean).join(' / ')||'-',3.7);
-                    field('NOMOR SERI',a.seri||'-',3.7,true);
-                    field('UNIT / RUANGAN',a.ruangan||a.lokasi||'-',3.7);
-                    if(idx%10===0) await new Promise(r=>setTimeout(r,0));
+
+                    const tx=x+30, tw=labelW-33;
+                    pdf.setTextColor(15,23,42); pdf.setFont('helvetica','bold'); pdf.setFontSize(5.0);
+                    drawFit(a.nama||'-',tx,y+11,tw,5.0,'bold');
+                    pdf.setTextColor(71,85,105);
+                    drawFit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+17,tw,3.5,'normal');
+                    pdf.setTextColor(15,23,42); pdf.setFont('courier','bold'); pdf.setFontSize(3.7);
+                    pdf.text('SN  '+esc(a.seri||a.tipe||'-'),tx,y+23,{maxWidth:tw});
+                    pdf.setTextColor(37,99,235); pdf.setFont('helvetica','bold'); pdf.setFontSize(3.4);
+                    drawFit(a.ruangan||a.lokasi||'-',tx,y+28,tw,3.4,'bold');
+
+                    // Code 128 menggunakan Asset ID bila tersedia, fallback ke serial.
+                    const barcodeValue=String(a.id||a.seri||a.tipe||'MEDIX');
+                    if(window.JsBarcode){
+                        JsBarcode(barCanvas,barcodeValue,{format:'CODE128',displayValue:false,lineColor:'#000',background:'#fff',margin:0,width:1.35,height:34});
+                        pdf.addImage(barCanvas.toDataURL('image/png'),'PNG',x+3,y+32,64,8);
+                        pdf.setTextColor(15,23,42); pdf.setFont('courier','bold'); pdf.setFontSize(2.8); pdf.text(barcodeValue.slice(0,34),x+labelW/2,y+43,{align:'center'});
+                    }
+                    if(idx%12===0) await new Promise(r=>setTimeout(r,0));
                 }
-                const safeName=('MEDIX_Label_Barcode_Aset_'+new Date().toISOString().slice(0,10)+'.pdf');
-                pdf.save(safeName); showToast(`${dataAlat.length} label barcode berhasil diunduh.`,'success');
-            }catch(err){console.error('Download barcode massal gagal:',err);showToast('Gagal membuat PDF barcode: '+(err.message||err),'error');}
-            finally{qrHost.remove();}
+                const safe='MEDIX_Label_Aset_'+new Date().toISOString().slice(0,10)+'.pdf';
+                pdf.save(safe);
+                showToast(`${dataAlat.length} label berhasil diunduh (${cols} × ${rows} label/halaman).`,'success');
+            }finally{ qrHost.remove(); }
         }
 
         async function cetakLabelBarcodeMassalPdf() {
             if (!izinMenu('master', 'read')) { showToast('Anda tidak memiliki izin melihat Master Data Aset.', 'error'); return; }
+            if (!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) { showToast('Cetak label hanya tersedia untuk Admin dan Teknisi.', 'error'); return; }
             if (!dataAlat || dataAlat.length === 0) { showToast('Data aset medis sedang dimuat atau kosong.', 'error'); return; }
-            if (!await showConfirmDialog(`Akan menyiapkan ${dataAlat.length} label barcode aset untuk dicetak/disimpan ke PDF. Lanjutkan?`, { title: 'Siapkan Label Barcode', okText: 'Ya, Siapkan', variant: 'safe', icon: 'fa-print' })) return;
-
-            let htmlContent = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
-                <title>Cetak Label Barcode Massal - UPTD RSUD Pondokgede</title>
-                <style>
-                    @page { size: A4 portrait; margin: 3mm; }
-                    * { box-sizing:border-box; }
-                    body { font-family:Arial,sans-serif; margin:0; padding:0; background:#fff; color:#000; }
-                    .no-print { margin:0 0 8px; text-align:center; }
-                    .grid-container { display:grid; grid-template-columns:repeat(3,55mm); grid-auto-rows:55mm; gap:4mm; justify-content:center; }
-                    .label-card { width:55mm; height:55mm; border:0.5mm solid #000; border-radius:2mm; padding:2.2mm; display:flex; flex-direction:column; background:#fff; page-break-inside:avoid; overflow:hidden; }
-                    .header-label { text-align:center; font-size:4.6mm; font-weight:700; line-height:1; height:4.5mm; }
-                    .content-body { display:flex; flex-direction:column; align-items:center; flex:1; min-height:0; }
-                    .qr-box { width:24mm; height:24mm; display:flex; align-items:center; justify-content:center; margin-top:1.5mm; flex-shrink:0; }
-                    .qr-box canvas,.qr-box img { width:24mm!important; height:24mm!important; }
-                    .info-box { width:100%; margin-top:1.4mm; overflow:hidden; }
-                    .info-row { margin-bottom:0.8mm; line-height:1; overflow:hidden; }
-                    .info-row span.label-title { font-size:2.9mm; color:#555; font-weight:700; display:block; text-transform:uppercase; }
-                    .info-row span.label-val { font-size:3.2mm; font-weight:700; color:#000; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-                    .info-row span.label-val.sn { font-family:monospace; font-size:3.1mm; }
-                    .info-row span.label-val.ruang { color:#1d4ed8; }
-                    @media print { .no-print { display:none!important; } body { padding:0; } }
-                </style></head><body>
-                <div class="no-print"><button onclick="window.print()" style="background:#2563eb;color:#fff;border:0;padding:9px 18px;font-weight:700;border-radius:6px;cursor:pointer;font-size:13px;">🖨️ Cetak / Simpan sebagai PDF</button></div>
-                <div class="grid-container">`;
-
-            dataAlat.forEach((alat, index) => {
-                const sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-';
-                const sSeri = alat.seri || alat.tipe || '-';
-                htmlContent += `<div class="label-card"><div class="header-label">UPTD RSUD PONDOKGEDE - IPSRS</div>
-                    <div class="content-body"><div class="qr-box" id="qrcode-${index}"></div><div class="info-box">
-                    <div class="info-row"><span class="label-title">Nama Aset</span><span class="label-val">${alat.nama || '-'}</span></div>
-                    <div class="info-row"><span class="label-title">Merk / Model</span><span class="label-val">${[alat.merk,alat.tipe].filter(Boolean).join(' / ') || '-'}</span></div>
-                    <div class="info-row"><span class="label-title">Nomor Seri</span><span class="label-val sn">${sSeri}</span></div>
-                    <div class="info-row"><span class="label-title">Unit / Ruangan</span><span class="label-val ruang">${sLokasi}</span></div>
-                    </div></div></div>`;
+            medixOpenPrintSettings(window,{
+                title:'Cetak Label Aset Medis',
+                mode:'label-popup',
+                defaultPreset:'A4',
+                defaultOrientation:'landscape',
+                defaultMargin:5,
+                labelWidth:70,
+                labelHeight:45,
+                labelGap:4
             });
-            htmlContent += `</div><script>const listAlat=${JSON.stringify(dataAlat)};window.onload=function(){listAlat.forEach((alat,idx)=>{const c=document.getElementById('qrcode-'+idx);if(c)new QRCode(c,{text:'${window.location.origin+window.location.pathname}?alat='+alat.id,width:120,height:120,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});});};<\/script>`;
-            htmlContent += '<scr' + 'ipt src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></scr' + 'ipt></body></html>';
-            const printWindow=window.open('','_blank','width=900,height=900');
-            if(!printWindow){showToast('Popup diblokir browser. Izinkan popup untuk mencetak label.','error');return;}
-            printWindow.document.open(); printWindow.document.write(htmlContent); printWindow.document.close();
         }
 
+        async function medixOpenLabelPrintWindow(settings){
+            const pageW=Number(settings.width), pageH=Number(settings.height), margin=Number(settings.margin)||0, gap=Number(settings.labelGap)||4;
+            const labelW=70,labelH=45;
+            const cols=Math.floor((pageW-2*margin+gap)/(labelW+gap));
+            const rows=Math.floor((pageH-2*margin+gap)/(labelH+gap));
+            if(cols<1||rows<1){showToast('Ukuran kertas terlalu kecil untuk label 70 × 45 mm.','error');return;}
+            const contentW=cols*labelW+(cols-1)*gap, contentH=rows*labelH+(rows-1)*gap;
+            const ox=Math.max(margin,(pageW-contentW)/2), oy=Math.max(margin,(pageH-contentH)/2);
+            const pageSize=`${pageW}mm ${pageH}mm`;
+            const labels=dataAlat.map((alat,index)=>{
+                const esc=v=>String(v??'-').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+                return `<div class="label-card"><div class="label-top"><b>MEDIX</b><span>ASET MEDIS</span></div><div class="label-main"><div class="qr-box" id="qr-${index}"></div><div class="label-info"><div class="asset-name">${esc(alat.nama||'-')}</div><div class="asset-model">${esc([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-')}</div><div class="asset-sn">SN ${esc(alat.seri||alat.tipe||'-')}</div><div class="asset-room">${esc(alat.ruangan||alat.lokasi||'-')}</div></div></div><div class="barcode-wrap"><svg id="bc-${index}"></svg><div class="barcode-text">${esc(alat.id||alat.seri||alat.tipe||'MEDIX')}</div></div></div>`;
+            }).join('');
+            const html=`<!doctype html><html lang="id"><head><meta charset="UTF-8"><title>Label Aset Medis - MEDIX</title><style>
+                @page{size:${pageSize};margin:${margin}mm;}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#0f172a;font-family:Arial,sans-serif}.print-tools{position:sticky;top:0;z-index:5;text-align:center;padding:10px;background:#f8fafc;border-bottom:1px solid #e2e8f0}.print-tools button{border:0;background:#0f766e;color:#fff;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(${cols},70mm);grid-auto-rows:45mm;gap:${gap}mm;width:${contentW}mm;margin:${oy}mm auto ${oy}mm;}.label-card{width:70mm;height:45mm;border:.35mm solid #cbd5e1;border-radius:2mm;overflow:hidden;padding:0;background:#fff;page-break-inside:avoid;display:flex;flex-direction:column}.label-top{height:6mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 3mm;font-size:4.2mm;line-height:1}.label-top span{font-size:2.7mm;letter-spacing:.2mm}.label-main{display:flex;gap:2.5mm;padding:2.5mm 3mm 0;min-height:26mm}.qr-box{width:24mm;height:24mm;display:flex;align-items:center;justify-content:center;flex:0 0 24mm}.qr-box img,.qr-box canvas{width:24mm!important;height:24mm!important}.label-info{min-width:0;overflow:hidden;padding-top:.5mm}.asset-name{font-size:5mm;font-weight:800;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-model{font-size:3.3mm;color:#475569;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1mm}.asset-sn{font:700 3.3mm/1.1 monospace;margin-top:2mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-room{font-size:3.1mm;color:#2563eb;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1.3mm}.barcode-wrap{margin:0 3mm 1.2mm;text-align:center;height:10mm;overflow:hidden}.barcode-wrap svg{width:100%;height:7.2mm}.barcode-text{font:700 2.5mm/1 monospace;margin-top:.4mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.no-print{display:block}@media print{.no-print,.print-tools{display:none!important}.grid{margin:${oy}mm auto ${oy}mm}}
+            </style>
+
+</head><body><div class="print-tools"><button onclick="if(window.opener&&window.opener.medixOpenPrintSettings){window.opener.medixOpenPrintSettings(window,{title:'Cetak Label Aset Medis',mode:'child-print',defaultPreset:'A4',defaultOrientation:'landscape',defaultMargin:${margin}})}else{window.print()}">🖨️ Pengaturan Cetak / Print</button></div><div class="grid">${labels}</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script><script>window.addEventListener('load',function(){const list=${JSON.stringify(dataAlat).replace('</','<\/')};list.forEach((a,i)=>{const q=document.getElementById('qr-'+i);if(q)new QRCode(q,{text:window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||''),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});const b=document.getElementById('bc-'+i);if(b&&window.JsBarcode)JsBarcode(b,String(a.id||a.seri||a.tipe||'MEDIX'),{format:'CODE128',displayValue:false,lineColor:'#000',background:'#fff',margin:0,width:1.1,height:34});});});<\/script></body></html>`;
+            const win=window.open('','_blank','width=1100,height=900');
+            if(!win){showToast('Popup diblokir browser. Izinkan popup untuk mencetak label.','error');return;}
+            win.document.open();win.document.write(html);win.document.close();
+            const tryOpen=()=>{if(win.document.readyState==='complete'){if(typeof win.medixAutoPrintReady==='function')win.medixAutoPrintReady();else if(window.medixOpenPrintSettings)window.medixOpenPrintSettings(win,{title:'Cetak Label Aset Medis',mode:'child-print',defaultPreset:settings.preset||'A4',defaultOrientation:settings.orientation,defaultMargin:settings.margin});}};
+            setTimeout(tryOpen,700);
+        }
 
         function mundurKeMenuSebelumnya() {
             const modalKartu = document.getElementById('modal-kartu');
@@ -9787,9 +9821,13 @@ function renderMaintenanceHistory() {
   }
   function closePopup(){ if(popup){popup.remove();popup=null;} activeTable=null; activeCol=-1; }
   function positionPopup(btn){
-    const r=btn.getBoundingClientRect(), w=Math.min(300,window.innerWidth-20), h=Math.min(440,window.innerHeight-20);
-    let left=Math.min(Math.max(10,r.left),window.innerWidth-w-10), top=r.bottom+6;
-    if(top+h>window.innerHeight-10) top=Math.max(10,r.top-h-6);
+    if(!btn||!popup)return;
+    const r=btn.getBoundingClientRect(), w=Math.min(320,Math.max(260,window.innerWidth-20)), h=Math.min(470,Math.max(260,window.innerHeight-20));
+    let left=Math.min(Math.max(10,r.left),Math.max(10,window.innerWidth-w-10));
+    let top=r.bottom+7;
+    if(top+h>window.innerHeight-10) top=Math.max(10,r.top-h-7);
+    if(window.innerWidth<768){ left=Math.max(10,(window.innerWidth-w)/2); top=Math.min(Math.max(10,top),Math.max(10,window.innerHeight-h-10)); }
+    popup.style.width=Math.min(320,window.innerWidth-20)+'px';
     popup.style.left=left+'px'; popup.style.top=top+'px';
   }
   function openPopup(table,col,btn){
@@ -9842,7 +9880,21 @@ function renderMaintenanceHistory() {
       const options=Array.from(table.tHead.rows[0].cells).map((th,i)=>isFilterableHeader(th.innerText)?`<option value="${i}">${escapeHtml(norm(th.innerText))}</option>`:'').join('');
       bar.innerHTML=`<select class="medix-mobile-filter-select" aria-label="Pilih kolom filter"><option value="">Pilih kolom...</option>${options}</select><button type="button" class="medix-mobile-filter-btn"><i class="fa-solid fa-filter"></i> Buka Filter</button>`;
       const sel=bar.querySelector('select');
-      bar.querySelector('button').onclick=()=>{ const col=Number(sel.value); if(Number.isInteger(col) && col>=0){const btn=table.tHead.rows[0].cells[col]?.querySelector('.medix-filter-btn'); if(btn)openPopup(table,col,btn);} };
+      const mobileBtn=bar.querySelector('button');
+      mobileBtn.onclick=(event)=>{
+        event.preventDefault(); event.stopPropagation();
+        const raw=sel.value;
+        if(raw===''){
+          showToast('Silakan pilih kolom filter terlebih dahulu.','info');
+          sel.focus();
+          return;
+        }
+        const col=Number(raw);
+        if(Number.isInteger(col) && col>=0){
+          openPopup(table,col,mobileBtn);
+        }
+      };
+      sel.addEventListener('change',()=>{ mobileBtn.classList.toggle('ready',sel.value!==''); });
       host.insertBefore(bar,table);
     }
     observeBody(table); apply(table);
@@ -9852,9 +9904,9 @@ function renderMaintenanceHistory() {
     Array.from(table.tBodies||[]).forEach(tb=>new MutationObserver(()=>{clearTimeout(tb._medixTimer);tb._medixTimer=setTimeout(()=>apply(table),0);}).observe(tb,{childList:true}));
   }
   function init(){ document.querySelectorAll('table').forEach(decorateTable); }
-  document.addEventListener('click',e=>{if(popup&&!popup.contains(e.target)&&!e.target.closest('.medix-filter-btn'))closePopup();});
+  document.addEventListener('click',e=>{if(popup&&!popup.contains(e.target)&&!e.target.closest('.medix-filter-btn')&&!e.target.closest('.medix-mobile-filter-btn'))closePopup();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup();});
-  window.addEventListener('resize',()=>{if(popup&&activeTable){const btn=activeTable.tHead.rows[0].cells[activeCol]?.querySelector('.medix-filter-btn');if(btn)positionPopup(btn);}});
+  window.addEventListener('resize',()=>{if(popup&&activeTable){const bar=activeTable.parentElement?.querySelector(':scope > .medix-mobile-filter-bar');const anchor=window.innerWidth<768?(bar?.querySelector('.medix-mobile-filter-btn')||activeTable.tHead.rows[0].cells[activeCol]?.querySelector('.medix-filter-btn')):activeTable.tHead.rows[0].cells[activeCol]?.querySelector('.medix-filter-btn');if(anchor)positionPopup(anchor);}});
   window.medixInitTableFilters=init;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   const mo=new MutationObserver(()=>init());
@@ -9877,7 +9929,150 @@ function renderMaintenanceHistory() {
         }
         window.MEDIX_KTI_TEST = { runEM: jalankanUjiAlgoritmaEM, hitungPeriode: hitungRekomendasiPeriodeWHO, jadwalPM: jadwalOtomatisDariPeriode };
 
+
+
+/* ============================================================
+   MEDIX PRINT ENGINE — unified flexible printing
+   ============================================================ */
+(function(){
+  const PAPERS={
+    A4:{label:'A4 — 210 × 297 mm',w:210,h:297},
+    A5:{label:'A5 — 148 × 210 mm',w:148,h:210},
+    A6:{label:'A6 — 105 × 148 mm',w:105,h:148},
+    B5:{label:'B5 — 176 × 250 mm',w:176,h:250},
+    F4:{label:'F4 / Folio — 215 × 330 mm',w:215,h:330},
+    Letter:{label:'Letter — 216 × 279 mm',w:216,h:279},
+    Legal:{label:'Legal — 216 × 356 mm',w:216,h:356},
+    Custom:{label:'Custom — tentukan sendiri',w:210,h:297}
+  };
+  const KEY='medix.print.settings.v1';
+  const state={targetWindow:window,mode:'print-current',targetSelector:null,element:null,title:'Pengaturan Cetak',preset:'A4',orientation:'portrait',margin:6,scale:100,fit:'actual',labelWidth:70,labelHeight:45,labelGap:4,cleanup:null};
+  const $=id=>document.getElementById(id);
+  function loadSaved(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
+  function saveSaved(){try{localStorage.setItem(KEY,JSON.stringify({preset:state.preset,orientation:state.orientation,margin:state.margin,scale:state.scale,fit:state.fit}))}catch(e){}}
+  function getDims(){
+    let p=PAPERS[state.preset]||PAPERS.A4,w=Number(p.w),h=Number(p.h);
+    if(state.preset==='Custom'){w=Number($('medix-print-custom-w')?.value)||210;h=Number($('medix-print-custom-h')?.value)||297;}
+    if(state.orientation==='landscape' && w<h) [w,h]=[h,w];
+    if(state.orientation==='portrait' && w>h) [w,h]=[h,w];
+    return {w,h};
+  }
+  function populate(){
+    const sel=$('medix-print-paper'); if(!sel)return;
+    sel.innerHTML=Object.entries(PAPERS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+    sel.value=state.preset;
+    $('medix-print-margin').value=state.margin;
+    $('medix-print-scale').value=state.scale;
+    $('medix-print-fit').value=state.fit;
+    $('medix-print-custom-w').value=PAPERS.Custom.w; $('medix-print-custom-h').value=PAPERS.Custom.h;
+    document.querySelectorAll('.medix-print-orientation button').forEach(b=>b.classList.toggle('active',b.dataset.orient===state.orientation));
+    $('medix-print-custom-box').style.display=state.preset==='Custom'?'grid':'none';
+    $('medix-print-label-note').style.display=(state.mode==='download-label-pdf'||state.mode==='label-popup')?'block':'none';
+    $('medix-print-action').textContent=state.mode==='download-label-pdf'?'⬇️ Download PDF':'🖨️ Cetak';
+    $('medix-print-title').textContent=state.title||'Pengaturan Cetak';
+    updatePreview();
+  }
+  function updatePreview(){
+    const d=getDims(), stage=$('medix-print-preview-stage'), paper=$('medix-print-paper-preview'), inner=$('medix-print-preview-inner'); if(!paper||!stage)return;
+    const maxW=Math.max(120,stage.clientWidth-40),maxH=Math.max(170,stage.clientHeight-40),ratio=d.w/d.h;
+    let pw=maxW,ph=pw/ratio;if(ph>maxH){ph=maxH;pw=ph*ratio;}
+    paper.style.width=Math.max(80,pw)+'px';paper.style.height=Math.max(110,ph)+'px';
+    inner.style.width=Math.max(40,pw*(1-(2*state.margin/d.w)))+'px';inner.style.height=Math.max(50,ph*(1-(2*state.margin/d.h)))+'px';
+    if(state.mode==='download-label-pdf'||state.mode==='label-popup'){
+      inner.innerHTML='<div class="medix-label-preview"><div class="q">QR</div><div class="t"><b>AED</b><span>HEART GUARDIAN · HR-501</span><span>SN D01222033031</span><span>AMBULANCE HIACE</span></div></div>';
+    }else inner.textContent='Konten akan dicetak pada area kertas ini.\nUkuran dan orientasi mengikuti pilihan Anda.';
+    const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||4,lw=70,lh=45;
+    const cols=Math.floor((usableW+gap)/(lw+gap)),rows=Math.floor((usableH+gap)/(lh+gap));
+    $('medix-print-summary').textContent=(state.mode==='download-label-pdf'||state.mode==='label-popup')?`Kertas ${d.w} × ${d.h} mm • ${cols>0&&rows>0?cols+' × '+rows+' label/halaman':'label tidak muat'} • Margin ${state.margin} mm`:`Kertas ${d.w} × ${d.h} mm • Margin ${state.margin} mm • Skala ${state.fit==='fit'?'Fit to Paper':state.scale+'%'} `;
+  }
+  function collect(){
+    state.preset=$('medix-print-paper').value; state.margin=Math.max(0,Math.min(30,Number($('medix-print-margin').value)||0)); state.scale=Math.max(50,Math.min(150,Number($('medix-print-scale').value)||100)); state.fit=$('medix-print-fit').value; saveSaved(); updatePreview();
+  }
+  function open(targetWin,opts={}){
+    const saved=loadSaved(); Object.assign(state,{targetWindow:targetWin||window,mode:opts.mode||'print-current',targetSelector:opts.targetSelector||null,element:opts.element||null,title:opts.title||'Pengaturan Cetak',preset:opts.defaultPreset||saved.preset||'A4',orientation:opts.defaultOrientation||saved.orientation||'portrait',margin:opts.defaultMargin??saved.margin??6,scale:saved.scale||100,fit:saved.fit||'actual',labelWidth:opts.labelWidth||70,labelHeight:opts.labelHeight||45,labelGap:opts.labelGap||4,cleanup:opts.cleanup||null});
+    populate(); const modal=$('medix-print-settings-modal'); if(modal){modal.classList.add('show');modal.setAttribute('aria-hidden','false');setTimeout(()=>$('medix-print-paper')?.focus(),30);}
+  }
+  function close(){const modal=$('medix-print-settings-modal');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}}
+  function injectPrintStyle(win,d){
+    if(!win||win.closed)return null; const doc=win.document; let st=doc.getElementById('medix-print-dynamic-style');if(!st){st=doc.createElement('style');st.id='medix-print-dynamic-style';doc.head.appendChild(st)}
+    const margin=Math.max(0,Number(state.margin)||0),scale=Number(state.fit==='fit'?100:state.scale)||100;
+    st.textContent=`@page{size:${d.w}mm ${d.h}mm;margin:${margin}mm;}html,body{background:#fff!important;}body{--medix-print-scale:${scale/100};}`;
+    if(state.mode==='lk') st.textContent+=`@media print{#area-lembar-kerja-resmi{width:${Math.max(20,d.w-2*margin)}mm!important;max-width:${Math.max(20,d.w-2*margin)}mm!important;}}`;
+    return st;
+  }
+  function prepareElementPrint(el){
+    if(!el)return null; const root=document.createElement('div');root.id='medix-print-clone-root';root.className='medix-print-hidden-root'; const clone=el.cloneNode(true); clone.classList.remove('hidden'); clone.querySelectorAll('.no-print,button,input,select,textarea').forEach(n=>n.remove()); root.appendChild(clone); document.body.appendChild(root); document.body.classList.add('medix-generic-printing'); return root;
+  }
+  function applyChildLabelLayout(win,d){
+    try{
+      const grid=win?.document?.querySelector('.grid'); if(!grid)return;
+      const gap=state.labelGap||4,lw=70,lh=45,margin=Number(state.margin)||0;
+      const cols=Math.floor((d.w-2*margin+gap)/(lw+gap));
+      const rows=Math.floor((d.h-2*margin+gap)/(lh+gap));
+      if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 70 × 45 mm.');
+      const contentW=cols*lw+(cols-1)*gap, contentH=rows*lh+(rows-1)*gap;
+      const ox=Math.max(margin,(d.w-contentW)/2), oy=Math.max(margin,(d.h-contentH)/2);
+      grid.style.gridTemplateColumns=`repeat(${cols},70mm)`;
+      grid.style.gridAutoRows='45mm'; grid.style.gap=`${gap}mm`; grid.style.width=`${contentW}mm`; grid.style.margin=`${oy}mm auto ${oy}mm`;
+      win.document.querySelectorAll('.label-card').forEach(el=>{el.style.width='70mm';el.style.height='45mm';});
+      return {cols,rows};
+    }catch(err){console.warn('Layout label popup:',err);return null;}
+  }
+  function cleanupGeneric(root){document.body.classList.remove('medix-generic-printing');root?.remove();}
+  async function execute(){
+    collect(); close(); const d=getDims();
+    try{
+      if(state.mode==='download-label-pdf'){ await medixGenerateLabelPdf({width:d.w,height:d.h,margin:state.margin,labelGap:state.labelGap}); return; }
+      if(state.mode==='label-popup'){ await medixOpenLabelPrintWindow({width:d.w,height:d.h,margin:state.margin,labelGap:state.labelGap,preset:state.preset,orientation:state.orientation}); return; }
+      let win=state.targetWindow||window; let root=null;
+      if(state.mode==='print-current' && state.targetSelector && win===window){root=prepareElementPrint(document.querySelector(state.targetSelector));}
+      if(state.mode==='child-print' && win===window) win=window;
+      if(state.mode==='lk') document.body.classList.add('medix-lk-printing');
+      injectPrintStyle(win,d);
+      if(state.mode==='child-print' && win!==window){
+        const hasLabelGrid=!!win.document?.querySelector('.grid .label-card');
+        if(hasLabelGrid){
+          const layout=applyChildLabelLayout(win,d);
+          if(!layout) throw new Error('Ukuran kertas tidak cukup untuk label 70 × 45 mm.');
+        }
+      }
+      if(root) window.scrollTo(0,0);
+      await new Promise(r=>setTimeout(r,180));
+      try{win.focus();win.print();}catch(err){throw err;}
+      const finish=()=>{if(root)cleanupGeneric(root);if(state.mode==='lk'){document.body.classList.remove('medix-lk-printing');document.getElementById('area-lembar-kerja-resmi')?.classList.remove('medix-lk-print-ready');}if(state.cleanup)try{state.cleanup()}catch(e){}};
+      if(win===window){setTimeout(finish,600);}else{try{win.onafterprint=finish}catch(e){setTimeout(finish,600);}}
+    }catch(err){console.error('MEDIX Print Engine:',err);showToast('Proses cetak gagal: '+(err.message||err),'error');}
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    $('medix-print-paper')?.addEventListener('change',collect);$('medix-print-margin')?.addEventListener('input',collect);$('medix-print-scale')?.addEventListener('input',collect);$('medix-print-fit')?.addEventListener('change',collect);$('medix-print-custom-w')?.addEventListener('input',updatePreview);$('medix-print-custom-h')?.addEventListener('input',updatePreview);
+    document.querySelectorAll('.medix-print-orientation button').forEach(b=>b.addEventListener('click',()=>{state.orientation=b.dataset.orient;document.querySelectorAll('.medix-print-orientation button').forEach(x=>x.classList.toggle('active',x===b));updatePreview();}));
+    $('medix-print-action')?.addEventListener('click',execute);
+    $('medix-print-settings-modal')?.addEventListener('click',e=>{if(e.target.id==='medix-print-settings-modal')close();});
+  });
+  window.medixOpenPrintSettings=open; window.medixClosePrintSettings=close; window.medixPrintExecute=execute;
+  window.medixCetakElemen=function(selector,title){open(window,{title:title||'Cetak',mode:'print-current',targetSelector:selector,defaultPreset:'A4',defaultOrientation:'landscape',defaultMargin:6});};
+  window.medixOpenPrintSettingsChild=function(win,opts){open(win,opts||{});};
+})();
 </script>
 
+
+<div id="medix-print-settings-modal" class="medix-print-modal no-print" aria-hidden="true">
+  <div class="medix-print-card" role="dialog" aria-modal="true" aria-labelledby="medix-print-title">
+    <div class="medix-print-head"><h3 id="medix-print-title">Pengaturan Cetak</h3><button type="button" class="medix-print-close" onclick="medixClosePrintSettings()" aria-label="Tutup">×</button></div>
+    <div class="medix-print-body">
+      <div class="medix-print-controls">
+        <div class="medix-print-field"><label>Ukuran Kertas</label><select id="medix-print-paper"></select></div>
+        <div id="medix-print-custom-box" class="medix-print-row" style="display:none"><div class="medix-print-field"><label>Lebar (mm)</label><input id="medix-print-custom-w" type="number" min="30" step="1" value="210"></div><div class="medix-print-field"><label>Tinggi (mm)</label><input id="medix-print-custom-h" type="number" min="30" step="1" value="297"></div></div>
+        <div class="medix-print-field"><label>Orientasi</label><div class="medix-print-orientation"><button type="button" data-orient="portrait">▯ Portrait</button><button type="button" data-orient="landscape">▭ Landscape</button></div></div>
+        <div class="medix-print-row"><div class="medix-print-field"><label>Margin (mm)</label><input id="medix-print-margin" type="number" min="0" max="30" step="1" value="6"></div><div class="medix-print-field"><label>Skala (%)</label><input id="medix-print-scale" type="number" min="50" max="150" step="1" value="100"></div></div>
+        <div class="medix-print-field"><label>Mode Skala</label><select id="medix-print-fit"><option value="actual">Actual Size</option><option value="fit">Fit to Paper</option></select></div>
+        <div id="medix-print-label-note" class="medix-print-note" style="display:none">Label aset: <b>70 × 45 mm</b>. Sistem menghitung jumlah label yang muat otomatis berdasarkan ukuran kertas, margin, orientasi, dan jarak antarlabel.</div>
+        <div id="medix-print-summary" class="medix-print-note">-</div>
+      </div>
+      <div class="medix-print-preview-wrap"><div class="medix-print-preview-title">Preview Proporsi Kertas</div><div id="medix-print-preview-stage" class="medix-print-preview-stage"><div id="medix-print-paper-preview" class="medix-paper-preview"><div id="medix-print-preview-inner" class="medix-paper-preview-inner">Preview akan mengikuti ukuran kertas, orientasi, dan margin yang dipilih.</div></div></div></div>
+    </div>
+    <div class="medix-print-footer"><button type="button" class="medix-print-btn cancel" onclick="medixClosePrintSettings()">Batal</button><button id="medix-print-action" type="button" class="medix-print-btn primary">🖨️ Cetak</button></div>
+  </div>
+</div>
 </body>
 </html>
