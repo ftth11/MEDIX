@@ -9627,10 +9627,47 @@ function renderMaintenanceHistory() {
         async function bukaKartuPemeliharaanPublik(alatId, embeddedAsset=null) {
             const raw=String(alatId||'').trim();
             if(!raw) return;
-            const clean=decodeURIComponent(raw.split('?alat=').pop().split('&')[0]);
+
+            // QR Rekam Jejak dapat berisi URL MEDIX dengan hash #asset=<payload-v3>,
+            // QR lama #assetid=<id>, atau URL lama ?alat=<id>. Jangan pernah meneruskan
+            // seluruh URL/hash sebagai ID Firestore karena itu menyebabkan "aset tidak ditemukan".
+            let clean='';
+            let decodedPayload=null;
+            try {
+                const parsed = new URL(raw, window.location.href);
+                const hash = String(parsed.hash || '');
+                const queryAlat = parsed.searchParams.get('alat');
+                const hashMatch = hash.match(/^#asset=([^&]+)$/i);
+                const hashIdMatch = hash.match(/^#assetid=([^&]+)$/i);
+                if(hashMatch){
+                    decodedPayload = medixDecodeBase64Url(decodeURIComponent(hashMatch[1]));
+                    clean = String(decodedPayload?.id || decodedPayload?.sn || '').trim();
+                } else if(hashIdMatch){
+                    clean = decodeURIComponent(hashIdMatch[1]).trim();
+                } else if(queryAlat){
+                    clean = String(queryAlat).trim();
+                } else if(!parsed.protocol || parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                    clean = raw.replace(/^#assetid=/i,'').replace(/^#asset=/i,'').trim();
+                }
+            } catch(e) {
+                clean = raw.replace(/^#assetid=/i,'').replace(/^#asset=/i,'').replace(/^.*\?alat=/i,'').split('&')[0].trim();
+            }
+            if(!clean && decodedPayload?.id) clean=String(decodedPayload.id).trim();
             let alat=null;
             try{
-                if(embeddedAsset && (embeddedAsset.id||embeddedAsset.sn)) {
+                // Payload v3 sudah membawa identitas aset. Gunakan sebagai FAST PATH sehingga
+                // scan tidak perlu menunggu listener Master Data atau query Firestore.
+                if(decodedPayload && (decodedPayload.id || decodedPayload.sn)) {
+                    alat={
+                        id:String(decodedPayload.id||''),
+                        seri:String(decodedPayload.sn||''),
+                        nama:String(decodedPayload.nama||''),
+                        merk:String(decodedPayload.merk||''),
+                        tipe:String(decodedPayload.tipe||''),
+                        ruangan:String(decodedPayload.ruangan||'')
+                    };
+                }
+                if(!alat && embeddedAsset && (embeddedAsset.id||embeddedAsset.sn)) {
                     alat={id:String(embeddedAsset.id||''),seri:String(embeddedAsset.sn||''),nama:String(embeddedAsset.nama||''),merk:String(embeddedAsset.merk||''),tipe:String(embeddedAsset.tipe||''),ruangan:String(embeddedAsset.ruangan||'')};
                 }
 
