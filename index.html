@@ -1,3 +1,4 @@
+<!-- MEDIX KTI READY BUILD: 2026-09-24 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -465,6 +466,23 @@
                 overflow:visible !important;
             }
             #area-lembar-kerja-resmi > div > * { box-sizing:border-box !important; }
+
+            /* LK cetak dipaksa masuk satu halaman A4. Zoom hanya pada area LK
+               sehingga proporsi tetap, sementara browser mendapat ruang vertikal
+               yang cukup untuk seluruh form. Lebar layout diperbesar balik agar
+               ukuran visual tetap memenuhi lebar A4 setelah zoom. */
+            #area-lembar-kerja-resmi {
+                zoom:0.78 !important;
+                width:248mm !important;
+                max-width:248mm !important;
+                transform:none !important;
+                page-break-after:avoid !important;
+                break-after:avoid-page !important;
+            }
+            #area-lembar-kerja-resmi > div {
+                page-break-after:avoid !important;
+                break-after:avoid-page !important;
+            }
             .no-print, button, input[type="file"], .absolute.top-4.right-4 { display:none !important; }
 
             /* Kop dibuat ringkas supaya seluruh LK masuk satu A4. */
@@ -3614,7 +3632,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 <div class="flex items-center bg-white px-3 py-2 rounded-xl border border-slate-200 shrink-0 shadow-sm">
                     <div class="flex flex-col items-center">
                         <canvas id="canvas-label-print" class="hidden"></canvas>
-                        <div id="qrcode-container" onclick="downloadLabelBarcodeFisik()" class="w-[176px] h-[176px] min-w-[176px] min-h-[176px] flex items-center justify-center bg-white p-1 rounded shadow cursor-pointer transition hover:scale-105" title="Klik untuk download label barcode"></div>
+                        <div id="qrcode-container" onclick="downloadLabelBarcodeFisik()" class="w-[112px] h-[112px] min-w-[112px] min-h-[112px] flex items-center justify-center bg-white p-1 rounded shadow cursor-pointer transition" title="Klik untuk download label barcode"></div>
                     </div>
                 </div>
             </div>
