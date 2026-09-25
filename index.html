@@ -2674,7 +2674,15 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Master Data Aset Medis</h2>
-                        <div class="flex space-x-2" id="master-action-buttons-container"></div>
+                        <div class="flex space-x-2 flex-wrap items-center" id="master-action-buttons-container"></div>
+                        <div id="master-label-action-buttons" class="flex space-x-2 flex-wrap items-center" data-master-label-actions>
+                            <button type="button" id="btn-download-label-master" onclick="downloadLabelBarcodeMassalPdf()" class="hidden bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold items-center shadow transition" title="Download seluruh label aset medis sebagai satu PDF">
+                                <i class="fa-solid fa-download mr-1.5"></i> Download Label
+                            </button>
+                            <button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="hidden bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold items-center shadow transition" title="Cetak seluruh label aset medis">
+                                <i class="fa-solid fa-print mr-1.5"></i> Cetak Label
+                            </button>
+                        </div>
                     </div>
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         
@@ -6173,10 +6181,19 @@ function renderMaintenanceHistory() {
                     if (masterExport) buttons.push(`<button onclick="exportKeExcelMassal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-file-excel mr-1.5"></i> Export Excel</button>`);
                     if (masterImport) buttons.push(`<label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"><i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel<input type="file" id="file-excel-input" accept=".xlsx,.xls,.csv" onchange="importDataDariExcel(event)" class="hidden"></label>`);
                     if (masterTambah) buttons.push(`<button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
-                    if (masterRead && ['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) {
-                        buttons.push(`<button onclick="downloadLabelBarcodeMassalPdf()" class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Download seluruh label barcode aset"><i class="fa-solid fa-download mr-1.5"></i> Download Barcode</button>`);
-                        buttons.push(`<button onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label Massal</button>`);
-                    }
+                    // Tombol label berada di container terpisah agar tidak ikut terhapus saat
+                    // tombol Master Data lain dirender ulang. Ini juga membuat tombol tetap
+                    // konsisten terlihat untuk Admin/Teknisi.
+                    const isLabelOperator = masterRead && ['Admin','Teknisi'].includes(canonicalRole(currentActiveRole));
+                    const labelActionBox = document.getElementById('master-label-action-buttons');
+                    const btnDownloadLabel = document.getElementById('btn-download-label-master');
+                    const btnPrintLabel = document.getElementById('btn-print-label-master');
+                    if (labelActionBox) labelActionBox.classList.toggle('hidden', !isLabelOperator);
+                    [btnDownloadLabel, btnPrintLabel].forEach(btn => {
+                        if (!btn) return;
+                        btn.classList.toggle('hidden', !isLabelOperator);
+                        btn.classList.toggle('flex', isLabelOperator);
+                    });
                     containerMasterAction.innerHTML = buttons.join('');
                 }
 
@@ -9317,6 +9334,10 @@ function renderMaintenanceHistory() {
         }
 
         async function medixOpenLabelPrintWindow(settings){
+            // Cetak label langsung dari halaman yang sama. Tidak lagi membuka
+            // jendela preview kedua; preview ukuran kertas cukup dilakukan pada
+            // modal Pengaturan Cetak MEDIX. Setelah tombol Cetak ditekan, browser
+            // hanya membuka dialog/print preview bawaan satu kali.
             const pageW=Number(settings.width), pageH=Number(settings.height), margin=Number(settings.margin)||0, gap=Number(settings.labelGap)||4;
             const labelW=70,labelH=45;
             const cols=Math.floor((pageW-2*margin+gap)/(labelW+gap));
@@ -9325,20 +9346,29 @@ function renderMaintenanceHistory() {
             const contentW=cols*labelW+(cols-1)*gap, contentH=rows*labelH+(rows-1)*gap;
             const ox=Math.max(margin,(pageW-contentW)/2), oy=Math.max(margin,(pageH-contentH)/2);
             const pageSize=`${pageW}mm ${pageH}mm`;
-            const labels=dataAlat.map((alat,index)=>{
-                const esc=v=>String(v??'-').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
-                return `<div class="label-card"><div class="label-top"><b>MEDIX</b><span>ASET MEDIS</span></div><div class="label-main"><div class="qr-box" id="qr-${index}"></div><div class="label-info"><div class="asset-name">${esc(alat.nama||'-')}</div><div class="asset-model">${esc([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-')}</div><div class="asset-sn">SN ${esc(alat.seri||alat.tipe||'-')}</div><div class="asset-room">${esc(alat.ruangan||alat.lokasi||'-')}</div></div></div><div class="barcode-wrap"><svg id="bc-${index}"></svg><div class="barcode-text">${esc(alat.id||alat.seri||alat.tipe||'MEDIX')}</div></div></div>`;
-            }).join('');
+            const esc=v=>String(v??'-').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+            const labels=dataAlat.map((alat,index)=>`<div class="label-card"><div class="label-top"><b>MEDIX</b><span>ASET MEDIS</span></div><div class="label-main"><div class="qr-box" id="qr-${index}"></div><div class="label-info"><div class="asset-name">${esc(alat.nama||'-')}</div><div class="asset-model">${esc([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-')}</div><div class="asset-sn">SN ${esc(alat.seri||'-')}</div><div class="asset-room">${esc(alat.ruangan||alat.lokasi||'-')}</div></div></div><div class="barcode-wrap"><svg id="bc-${index}"></svg><div class="barcode-text">${esc(alat.id||alat.seri||alat.tipe||'MEDIX')}</div></div></div>`).join('');
             const html=`<!doctype html><html lang="id"><head><meta charset="UTF-8"><title>Label Aset Medis - MEDIX</title><style>
-                @page{size:${pageSize};margin:${margin}mm;}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#0f172a;font-family:Arial,sans-serif}.print-tools{position:sticky;top:0;z-index:5;text-align:center;padding:10px;background:#f8fafc;border-bottom:1px solid #e2e8f0}.print-tools button{border:0;background:#0f766e;color:#fff;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(${cols},70mm);grid-auto-rows:45mm;gap:${gap}mm;width:${contentW}mm;margin:${oy}mm auto ${oy}mm;}.label-card{width:70mm;height:45mm;border:.35mm solid #cbd5e1;border-radius:2mm;overflow:hidden;padding:0;background:#fff;page-break-inside:avoid;display:flex;flex-direction:column}.label-top{height:6mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 3mm;font-size:4.2mm;line-height:1}.label-top span{font-size:2.7mm;letter-spacing:.2mm}.label-main{display:flex;gap:2.5mm;padding:2.5mm 3mm 0;min-height:26mm}.qr-box{width:24mm;height:24mm;display:flex;align-items:center;justify-content:center;flex:0 0 24mm}.qr-box img,.qr-box canvas{width:24mm!important;height:24mm!important}.label-info{min-width:0;overflow:hidden;padding-top:.5mm}.asset-name{font-size:5mm;font-weight:800;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-model{font-size:3.3mm;color:#475569;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1mm}.asset-sn{font:700 3.3mm/1.1 monospace;margin-top:2mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-room{font-size:3.1mm;color:#2563eb;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1.3mm}.barcode-wrap{margin:0 3mm 1.2mm;text-align:center;height:10mm;overflow:hidden}.barcode-wrap svg{width:100%;height:7.2mm}.barcode-text{font:700 2.5mm/1 monospace;margin-top:.4mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.no-print{display:block}@media print{.no-print,.print-tools{display:none!important}.grid{margin:${oy}mm auto ${oy}mm}}
-            </style>
+                @page{size:${pageSize};margin:${margin}mm;}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#0f172a;font-family:Arial,sans-serif}.grid{display:grid;grid-template-columns:repeat(${cols},70mm);grid-auto-rows:45mm;gap:${gap}mm;width:${contentW}mm;margin:${oy}mm auto ${oy}mm;}.label-card{width:70mm;height:45mm;border:.35mm solid #cbd5e1;border-radius:2mm;overflow:hidden;padding:0;background:#fff;page-break-inside:avoid;display:flex;flex-direction:column}.label-top{height:6mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 3mm;font-size:4.2mm;line-height:1}.label-top span{font-size:2.7mm;letter-spacing:.2mm}.label-main{display:flex;gap:2.5mm;padding:2.5mm 3mm 0;min-height:26mm}.qr-box{width:24mm;height:24mm;display:flex;align-items:center;justify-content:center;flex:0 0 24mm}.qr-box img,.qr-box canvas{width:24mm!important;height:24mm!important}.label-info{min-width:0;overflow:hidden;padding-top:.5mm}.asset-name{font-size:5mm;font-weight:800;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-model{font-size:3.3mm;color:#475569;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1mm}.asset-sn{font:700 3.3mm/1.1 monospace;margin-top:2mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-room{font-size:3.1mm;color:#2563eb;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1.3mm}.barcode-wrap{margin:0 3mm 1.2mm;text-align:center;height:10mm;overflow:hidden}.barcode-wrap svg{width:100%;height:7.2mm}.barcode-text{font:700 2.5mm/1 monospace;margin-top:.4mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style></head><body><div class="grid">${labels}</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script><script>window.addEventListener('load',function(){const list=${JSON.stringify(dataAlat).replace('</','<\\/')};list.forEach((a,i)=>{const q=document.getElementById('qr-'+i);if(q&&window.QRCode)new QRCode(q,{text:window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||''),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});const b=document.getElementById('bc-'+i);if(b&&window.JsBarcode)JsBarcode(b,String(a.id||a.seri||a.tipe||'MEDIX'),{format:'CODE128',displayValue:false,lineColor:'#000',background:'#fff',margin:0,width:1.1,height:34});});});<\/script></body></html>`;
 
-</head><body><div class="print-tools"><button onclick="if(window.opener&&window.opener.medixOpenPrintSettings){window.opener.medixOpenPrintSettings(window,{title:'Cetak Label Aset Medis',mode:'child-print',defaultPreset:'A4',defaultOrientation:'landscape',defaultMargin:${margin}})}else{window.print()}">🖨️ Pengaturan Cetak / Print</button></div><div class="grid">${labels}</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script><script>window.addEventListener('load',function(){const list=${JSON.stringify(dataAlat).replace('</','<\/')};list.forEach((a,i)=>{const q=document.getElementById('qr-'+i);if(q)new QRCode(q,{text:window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||''),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});const b=document.getElementById('bc-'+i);if(b&&window.JsBarcode)JsBarcode(b,String(a.id||a.seri||a.tipe||'MEDIX'),{format:'CODE128',displayValue:false,lineColor:'#000',background:'#fff',margin:0,width:1.1,height:34});});});<\/script></body></html>`;
-            const win=window.open('','_blank','width=1100,height=900');
-            if(!win){showToast('Popup diblokir browser. Izinkan popup untuk mencetak label.','error');return;}
-            win.document.open();win.document.write(html);win.document.close();
-            const tryOpen=()=>{if(win.document.readyState==='complete'){if(typeof win.medixAutoPrintReady==='function')win.medixAutoPrintReady();else if(window.medixOpenPrintSettings)window.medixOpenPrintSettings(win,{title:'Cetak Label Aset Medis',mode:'child-print',defaultPreset:settings.preset||'A4',defaultOrientation:settings.orientation,defaultMargin:settings.margin});}};
-            setTimeout(tryOpen,700);
+            const iframe=document.createElement('iframe');
+            iframe.setAttribute('aria-hidden','true');
+            iframe.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
+            document.body.appendChild(iframe);
+            let finished=false;
+            const cleanup=()=>{if(finished)return;finished=true;try{iframe.remove();}catch(e){};};
+            try{
+                const doc=iframe.contentDocument;
+                doc.open(); doc.write(html); doc.close();
+                await new Promise(resolve=>setTimeout(resolve,900));
+                const win=iframe.contentWindow;
+                if(!win) throw new Error('Frame cetak tidak tersedia.');
+                win.focus();
+                win.onafterprint=cleanup;
+                win.print();
+                // Beberapa browser mobile tidak memicu afterprint.
+                setTimeout(cleanup,5000);
+            }catch(err){cleanup();throw err;}
         }
 
         function mundurKeMenuSebelumnya() {
