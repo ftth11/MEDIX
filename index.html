@@ -2586,6 +2586,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
   min-height:100px !important;
   max-width:100px !important;
   max-height:100px !important;
+  background:#fff !important;
+  visibility:visible !important;
+  opacity:1 !important;
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
@@ -2604,20 +2607,26 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
   display:block !important;
   margin:0 auto !important;
   transform:none !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  background:#fff !important;
 }
 #qrcode-container canvas + img{display:none !important;}
+#qrcode-container img:first-child,
+#qrcode-container canvas:first-child{visibility:visible !important;opacity:1 !important;}
 
 /* LK cetak: HTML asli, bukan efek "gambar ditempel". Satu A4 portrait,
    ukuran natural dan kompak tanpa zoom/transform. */
 @media print {
+  @page{size:A4 portrait !important;margin:5mm !important;}
   html, body{background:#fff !important;}
   body.medix-lk-printing > *{display:none !important;}
   body.medix-lk-printing > #area-lembar-kerja-resmi{display:block !important;}
   body > #area-lembar-kerja-resmi{
     display:block !important;
     position:static !important;
-    width:198mm !important;
-    max-width:198mm !important;
+    width:200mm !important;
+    max-width:200mm !important;
     min-height:0 !important;
     height:auto !important;
     margin:0 auto !important;
@@ -7840,7 +7849,7 @@ function renderMaintenanceHistory() {
                 mode: 'lk',
                 defaultPreset: 'A4',
                 defaultOrientation: 'portrait',
-                defaultMargin: 6,
+                defaultMargin: 5,
                 targetSelector: '#area-lembar-kerja-resmi'
             });
         }
@@ -10818,7 +10827,7 @@ function renderMaintenanceHistory() {
     if(!win||win.closed)return null; const doc=win.document; let st=doc.getElementById('medix-print-dynamic-style');if(!st){st=doc.createElement('style');st.id='medix-print-dynamic-style';doc.head.appendChild(st)}
     const margin=Math.max(0,Number(state.margin)||0),scale=Number(state.fit==='fit'?100:state.scale)||100;
     st.textContent=`@page{margin:${margin}mm;}html,body{background:#fff!important;}body{--medix-print-scale:${scale/100};}`;
-    if(state.mode==='lk') st.textContent+=`@media print{#area-lembar-kerja-resmi{width:${Math.max(20,d.w-2*margin)}mm!important;max-width:${Math.max(20,d.w-2*margin)}mm!important;}}`;
+    if(state.mode==='lk') st.textContent+=`@page{size:A4 portrait !important;margin:${margin}mm !important;}@media print{body.medix-lk-printing > #area-lembar-kerja-resmi{width:${Math.max(20,d.w-2*margin)}mm!important;max-width:${Math.max(20,d.w-2*margin)}mm!important;margin:0 auto!important;zoom:1!important;transform:none!important;}}`;
     return st;
   }
   function prepareElementPrint(el){
