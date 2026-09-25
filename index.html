@@ -9341,13 +9341,14 @@ function renderMaintenanceHistory() {
             const qrContainer = document.getElementById('qrcode-container');
             if (qrContainer && window.QRCode) {
                 qrContainer.innerHTML = "";
-                // Gunakan payload QR yang sama persis dengan label massal.
-                // Dengan begitu QR di Rekam Jejak tidak lagi memakai format lama ?alat=ID.
-                const targetUrl = medixBuildQrValue(alat);
+                // QR Rekam Jejak dibuat sangat ringkas agar kamera mudah membaca.
+                // Payload massal tetap memakai payload lengkap, sedangkan QR di kartu
+                // cukup membawa ID dokumen aset. Scanner MEDIX mendukung keduanya.
+                const targetUrl = window.location.origin + window.location.pathname + '#assetid=' + encodeURIComponent(String(alat.id || ''));
                 new QRCode(qrContainer, {
                     text: targetUrl,
-                    width: 90,
-                    height: 90,
+                    width: 104,
+                    height: 104,
                     colorDark: '#000000',
                     colorLight: '#ffffff',
                     correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.L) || 1
@@ -9575,6 +9576,12 @@ function renderMaintenanceHistory() {
                         try {
                             const u=new URL(decodedText,window.location.href);
                             const hash=String(u.hash||'');
+                            // QR Rekam Jejak: #assetid=ID (payload paling ringkas dan mudah dipindai).
+                            const directId=hash.startsWith('#assetid=')?decodeURIComponent(hash.slice(9)):'';
+                            if(directId){
+                                bukaKartuPemeliharaanPublik(directId);
+                                return;
+                            }
                             const packed=hash.startsWith('#asset=')?hash.slice(7):'';
                             const payload=packed?medixDecodeBase64Url(packed):null;
                             if(payload && (payload.id||payload.sn)){
@@ -9589,6 +9596,13 @@ function renderMaintenanceHistory() {
                             }
                             // Jika scanner mengembalikan URL dengan #asset tetapi parser URL gagal,
                             // coba decode bagian hash secara langsung.
+                            if(hash.startsWith('#assetid=')){
+                                const fallbackId=decodeURIComponent(hash.slice(9));
+                                if(fallbackId){
+                                    bukaKartuPemeliharaanPublik(fallbackId);
+                                    return;
+                                }
+                            }
                             if(hash.startsWith('#asset=')){
                                 const fallback=medixDecodeBase64Url(hash.slice(7));
                                 if(fallback && (fallback.id||fallback.sn)){
