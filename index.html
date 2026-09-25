@@ -2390,7 +2390,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 }
 </style>
 <style id="medix-master-action-layout-final">
-#master-action-buttons-container{max-width:100%;}
+#master-action-buttons-container{max-width:100%;gap:6px!important;}
 #master-action-buttons-container > *{white-space:nowrap;}
 @media(max-width:767px){#master-action-buttons-container{width:100%!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;}#master-action-buttons-container > *{width:100%!important;min-width:0!important;}#master-action-buttons-container button,#master-action-buttons-container label{overflow:hidden;text-overflow:ellipsis;} }
 </style>
@@ -2686,7 +2686,29 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
   #area-lembar-kerja-resmi .lk-info-top-card,
   #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{break-inside:avoid !important;page-break-inside:avoid !important;}
   #area-lembar-kerja-resmi .lk-bhp-print-only{display:block !important;}
+  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{
+    height:130px !important;
+    min-height:130px !important;
+    max-height:130px !important;
+    overflow:hidden !important;
+    align-self:stretch !important;
+  }
+  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper #dlk-txt-deskripsi-tunggal{
+    flex:1 1 auto !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:hidden !important;
+  }
+  #area-lembar-kerja-resmi .grid.items-stretch > .uraian-pekerjaan-wrapper{
+    align-self:stretch !important;
+  }
 }
+</style>
+<style id="medix-qr-rekam-jejak-final">
+#qrcode-container{width:104px!important;height:104px!important;min-width:104px!important;min-height:104px!important;max-width:104px!important;max-height:104px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:#fff!important;padding:4px!important;box-sizing:border-box!important;}
+#qrcode-container img{width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;max-width:96px!important;max-height:96px!important;display:block!important;visibility:visible!important;opacity:1!important;object-fit:contain!important;transform:none!important;background:#fff!important;}
+#qrcode-container canvas{display:none!important;}
 </style>
 </head>
     
@@ -2959,7 +2981,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 <div id="tab-data-alat" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Master Data Aset Medis</h2>
-                        <div class="flex flex-wrap gap-2 items-center justify-end w-full lg:w-auto" id="master-action-buttons-container"></div>
+                        <div class="flex flex-wrap gap-1.5 items-center justify-end w-full lg:w-auto" id="master-action-buttons-container"></div>
                     </div>
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         
@@ -3974,7 +3996,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             if (masterImport) buttons.push(`<label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"><i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel<input type="file" id="file-excel-input" accept=".xlsx,.xls,.csv" onchange="importDataDariExcel(event)" class="hidden"></label>`);
             if (masterTambah) buttons.push(`<button type="button" onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
             if (canLabel) {
-                buttons.push(`<button type="button" id="btn-download-label-master" onclick="downloadLabelBarcodeMassalPdf()" class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Download seluruh label aset medis sebagai PDF"><i class="fa-solid fa-download mr-1.5"></i> Download Label</button>`);
                 buttons.push(`<button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Preview dan cetak seluruh label aset medis"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label</button>`);
             }
             container.innerHTML = buttons.join('');
@@ -9503,43 +9524,23 @@ function renderMaintenanceHistory() {
             
             const qrContainer = document.getElementById('qrcode-container');
             if (qrContainer && window.QRCode) {
-                qrContainer.innerHTML = "";
-                // QR Rekam Jejak dibuat SAMA dengan QR pada label massal.
-                // Payload v3 membawa ID + nomor seri + identitas singkat aset, sehingga
-                // hasil scan tidak bergantung pada cache dataAlat untuk mengenali aset.
-                // QR Rekam Jejak dibuat memakai URL pendek agar kamera bawaan HP lebih cepat mengenali.
-                // Format ?alat=ID juga langsung dikenali saat URL dibuka oleh browser HP.
+                // Gunakan satu <img> final dari dataURL. Ini menghindari canvas/img
+                // qrcodejs yang pada sebagian browser dapat bertumpuk atau tertutup CSS.
+                qrContainer.innerHTML = '';
                 const targetUrl = window.location.origin + window.location.pathname + '?alat=' + encodeURIComponent(String(alat.id || ''));
-                new QRCode(qrContainer, {
-                    text: targetUrl,
-                    width: 92,
-                    height: 92,
-                    colorDark: '#000000',
-                    colorLight: '#ffffff',
-                    correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.L) || 1
-                });
-                // qrcodejs pada beberapa browser dapat menyisakan lebih dari satu
-                // renderer (canvas/img). Rekam Jejak hanya boleh menampilkan SATU QR.
-                requestAnimationFrame(() => {
-                    const canvases = Array.from(qrContainer.querySelectorAll('canvas'));
-                    const imgs = Array.from(qrContainer.querySelectorAll('img'));
-                    if (canvases.length) {
-                        imgs.forEach(el => el.remove());
-                        canvases.slice(1).forEach(el => el.remove());
-                        const qr = canvases[0];
-                        qr.width = 92; qr.height = 92;
-                        qr.style.width = '92px'; qr.style.height = '92px';
-                        qr.style.display = 'block';
-                        qr.style.margin = '0 auto';
-                    } else if (imgs.length) {
-                        imgs.slice(1).forEach(el => el.remove());
-                        const qr = imgs[0];
-                        qr.width = 92; qr.height = 92;
-                        qr.style.width = '92px'; qr.style.height = '92px';
-                        qr.style.display = 'block';
-                        qr.style.margin = '0 auto';
-                    }
-                });
+                try {
+                    const qrDataUrl = medixGetQrDataUrl(targetUrl, 96);
+                    const qrImg = document.createElement('img');
+                    qrImg.src = qrDataUrl;
+                    qrImg.alt = 'QR Rekam Jejak ' + String(alat.nama || 'Aset Medis');
+                    qrImg.width = 96;
+                    qrImg.height = 96;
+                    qrImg.style.cssText = 'display:block!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;max-width:96px!important;max-height:96px!important;opacity:1!important;visibility:visible!important;background:#fff!important;object-fit:contain!important;transform:none!important;margin:0!important;';
+                    qrContainer.appendChild(qrImg);
+                } catch(e) {
+                    console.error('QR Rekam Jejak gagal dibuat:', e);
+                    qrContainer.innerHTML = '<span style="font:700 9px Arial;color:#94a3b8;text-align:center">QR belum tersedia</span>';
+                }
             }
             
             switchKartuTab('tab-k-semua'); toggleModal('modal-kartu', true);
