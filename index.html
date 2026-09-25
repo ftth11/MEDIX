@@ -2478,6 +2478,15 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 }
 .medix-modal-open{overflow:hidden!important;}
 </style>
+<style id="medix-qr-scan-readability">
+/* QR Rekam Jejak dibuat lebih besar agar kamera dapat membaca tanpa perlu zoom layar. */
+#qrcode-container canvas,#qrcode-container img{width:168px!important;height:168px!important;display:block!important;image-rendering:auto;}
+#reader-scanner-div video{width:100%!important;height:auto!important;object-fit:cover!important;}
+@media(max-width:767px){
+  #qrcode-container{width:154px!important;height:154px!important;min-width:154px!important;min-height:154px!important;}
+  #qrcode-container canvas,#qrcode-container img{width:146px!important;height:146px!important;}
+}
+</style>
 <style id="medix-label-layout-final">
 /* MEDIX LABEL ENGINE — canonical compact layout, 3 x 7 per A4 landscape */
 .medix-label-printing{background:#fff!important;}
@@ -3596,7 +3605,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                 <div class="flex items-center bg-white px-3 py-2 rounded-xl border border-slate-200 shrink-0 shadow-sm">
                     <div class="flex flex-col items-center">
                         <canvas id="canvas-label-print" class="hidden"></canvas>
-                        <div id="qrcode-container" onclick="downloadLabelBarcodeFisik()" class="w-[80px] h-[80px] flex items-center justify-center bg-white p-1 rounded shadow cursor-pointer transition hover:scale-105" title="Klik untuk download label barcode"></div>
+                        <div id="qrcode-container" onclick="downloadLabelBarcodeFisik()" class="w-[176px] h-[176px] min-w-[176px] min-h-[176px] flex items-center justify-center bg-white p-1 rounded shadow cursor-pointer transition hover:scale-105" title="Klik untuk download label barcode"></div>
                     </div>
                 </div>
             </div>
@@ -9347,8 +9356,8 @@ function renderMaintenanceHistory() {
                 const targetUrl = medixBuildQrValue(alat);
                 new QRCode(qrContainer, {
                     text: targetUrl,
-                    width: 104,
-                    height: 104,
+                    width: 168,
+                    height: 168,
                     colorDark: '#000000',
                     colorLight: '#ffffff',
                     correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.L) || 1
@@ -9569,7 +9578,10 @@ function renderMaintenanceHistory() {
             document.getElementById('modal-scanner-publik').classList.remove('hidden');
             if (!html5QrCodeScanner) { html5QrCodeScanner = new Html5Qrcode("reader-scanner-div"); }
                 html5QrCodeScanner.start(
-                    { facingMode: "environment" }, { fps: 10, qrbox: { width: 200, height: 200 } },
+                    { facingMode: "environment" }, { fps: 15, qrbox: (viewfinderWidth, viewfinderHeight) => {
+                        const side = Math.max(180, Math.min(320, Math.floor(Math.min(viewfinderWidth, viewfinderHeight) * 0.72)));
+                        return { width: side, height: side };
+                    }, aspectRatio: 1.7777778, disableFlip: false },
                     (decodedText) => {
                         tutupModalScanQrPublik();
                         let targetAlatId = decodedText.trim();
