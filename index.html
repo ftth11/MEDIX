@@ -2377,8 +2377,20 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 @media(max-width:767px){
  #master-action-buttons-container{width:100%;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px!important;}
  #master-action-buttons-container>*{width:100%;justify-content:center!important;min-height:38px;}
+ #master-label-action-buttons{width:100%!important;display:flex;gap:7px!important;margin-top:2px;}
+ #master-label-action-buttons>*{flex:1 1 0;justify-content:center!important;min-height:38px;}
  #tab-kalibrasi > div:first-child .flex.items-center.space-x-2{width:100%;display:grid!important;grid-template-columns:1fr;gap:7px;}
  #btn-upload-pdf-baru,#tab-kalibrasi > div:first-child button{width:100%;justify-content:center;}
+}
+</style>
+<style id="medix-bhp-print-patch">
+.lk-bhp-print-only{display:none;}
+.lk-bhp-print-table{width:100%;border-collapse:collapse;font-size:8px;}
+.lk-bhp-print-table th,.lk-bhp-print-table td{border:1px solid #cbd5e1;padding:3px 4px;text-align:left;vertical-align:top;}
+.lk-bhp-print-table th{background:#ecfdf5;color:#065f46;font-weight:900;}
+.lk-bhp-print-empty{border:1px dashed #cbd5e1;padding:5px;color:#64748b;font-size:8px;}
+@media print{.lk-bhp-print-only{display:block!important;break-inside:avoid;page-break-inside:avoid;}
+  #medix-label-print-root{display:block!important;}
 }
 </style>
 <style id="medix-print-engine-css">
@@ -2401,6 +2413,8 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   body.medix-generic-printing > #medix-print-clone-root{display:block!important;position:static!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
   body.medix-generic-printing > #medix-print-clone-root .no-print{display:none!important}
   body.medix-lk-printing > #area-lembar-kerja-resmi{width:var(--medix-lk-width,194mm)!important;max-width:var(--medix-lk-width,194mm)!important}
+  body.medix-label-printing > *{display:none!important}
+  body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;width:auto!important;max-width:none!important;min-height:0!important;margin:0!important;padding:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
 }
 </style>
 </head>
@@ -2675,11 +2689,11 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <div class="flex justify-between items-center flex-wrap gap-4 no-print">
                         <h2 class="text-lg font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Master Data Aset Medis</h2>
                         <div class="flex space-x-2 flex-wrap items-center" id="master-action-buttons-container"></div>
-                        <div id="master-label-action-buttons" class="flex space-x-2 flex-wrap items-center" data-master-label-actions>
-                            <button type="button" id="btn-download-label-master" onclick="downloadLabelBarcodeMassalPdf()" class="hidden bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold items-center shadow transition" title="Download seluruh label aset medis sebagai satu PDF">
+                        <div id="master-label-action-buttons" class="flex space-x-2 flex-wrap items-center" data-master-label-actions style="display:none">
+                            <button type="button" id="btn-download-label-master" onclick="downloadLabelBarcodeMassalPdf()" class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Download seluruh label aset medis sebagai satu PDF">
                                 <i class="fa-solid fa-download mr-1.5"></i> Download Label
                             </button>
-                            <button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="hidden bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold items-center shadow transition" title="Cetak seluruh label aset medis">
+                            <button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Cetak seluruh label aset medis">
                                 <i class="fa-solid fa-print mr-1.5"></i> Cetak Label
                             </button>
                         </div>
@@ -2926,6 +2940,27 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                                     <th class="p-3">Nama Alkes</th><th class="p-3">Nama Item</th><th class="p-3">Jenis</th><th class="p-3">Spesifikasi</th><th class="p-3">Satuan</th><th class="p-3 text-center">Stok Awal</th><th class="p-3 text-center">Masuk</th><th class="p-3 text-center">Keluar</th><th class="p-3 text-center">Stok Saat Ini</th><th class="p-3 text-center">Status</th><th class="p-3 text-center">Aksi</th>
                                 </tr></thead>
                                 <tbody id="table-bhp-body" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-4 rounded-2xl border border-emerald-200 space-y-3">
+                        <div class="flex items-center justify-between gap-3 flex-wrap">
+                            <div>
+                                <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-link mr-1.5 text-emerald-600"></i>Rekapan Pemakaian BHP dari LK</h3>
+                                <p class="text-[9px] text-slate-500 mt-0.5">Setiap BHP yang disimpan melalui LK otomatis menjadi transaksi <b>OUT</b> dan tetap terhubung ke nomor LK.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input id="bhp-rekap-lk-search" oninput="renderBHPRecapLK()" type="search" placeholder="Cari No LK / item / alkes..." class="border border-emerald-200 rounded-xl px-3 py-2 text-[10px] w-56 outline-none focus:border-emerald-500">
+                                <span id="bhp-rekap-lk-count" class="medix-filter-count-badge">0 transaksi</span>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-emerald-50 text-emerald-900 font-bold"><tr>
+                                    <th class="p-3">Tanggal</th><th class="p-3">No LK</th><th class="p-3">Alat Kesehatan</th><th class="p-3">BHP / Aksesori</th><th class="p-3 text-center">Qty</th><th class="p-3">Teknisi</th><th class="p-3 text-center">LK</th>
+                                </tr></thead>
+                                <tbody id="table-bhp-rekap-lk-body" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
                     </div>
@@ -3263,6 +3298,14 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     <div id="dlk-bhp-list" class="space-y-2"></div>
                     <div id="dlk-bhp-empty" class="rounded-xl border border-dashed border-emerald-200 bg-white/70 p-4 text-center text-slate-400"><i class="fa-solid fa-box-open text-xl mb-1 text-emerald-300"></i><div class="font-bold text-[9px]">Belum ada BHP yang digunakan</div><div class="text-[8px] mt-0.5">Pilih item di atas lalu tambahkan jumlah pemakaian.</div></div>
                 </div>
+            </div>
+
+            <div id="dlk-bhp-print-summary" class="lk-bhp-print-only border border-emerald-200 p-2 rounded-lg bg-white shadow-sm">
+                <div class="flex items-center justify-between gap-2 mb-1">
+                    <div class="font-black text-slate-800 text-[9px] uppercase tracking-wide"><i class="fa-solid fa-boxes-stacked mr-1 text-emerald-600"></i>Penggunaan BHP / Aksesori</div>
+                    <div id="dlk-bhp-print-count" class="text-[8px] font-black text-emerald-700">0 item</div>
+                </div>
+                <div id="dlk-bhp-print-body"><div class="lk-bhp-print-empty">Tidak ada BHP / aksesori yang digunakan pada LK ini.</div></div>
             </div>
 
             <div class="border border-slate-200 p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
@@ -3630,6 +3673,23 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
             return true;
         }
 
+        function syncMasterHeaderActions() {
+            const role = canonicalRole(currentActiveRole);
+            const isLabelOperator = ['Admin', 'Teknisi'].includes(role);
+            const box = document.getElementById('master-label-action-buttons');
+            const btnDownload = document.getElementById('btn-download-label-master');
+            const btnPrint = document.getElementById('btn-print-label-master');
+            if (box) {
+                box.style.display = isLabelOperator ? 'flex' : 'none';
+                box.setAttribute('aria-hidden', isLabelOperator ? 'false' : 'true');
+            }
+            [btnDownload, btnPrint].forEach(btn => {
+                if (!btn) return;
+                btn.style.display = isLabelOperator ? 'flex' : 'none';
+                btn.disabled = !isLabelOperator;
+            });
+        }
+
         function ensureUserEticketForm() {
             const box = document.getElementById('box-form-buat-ticket');
             if (!box) return;
@@ -3924,6 +3984,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     querySnapshot.forEach(doc => dataBHPItems.push({ id: doc.id, ...doc.data() }));
                     dataBHPItems.sort((a,b) => String(a.namaItem||'').localeCompare(String(b.namaItem||''), 'id', {sensitivity:'base'}));
                     renderBHPTable();
+                    renderBHPRecapLK();
                     populasikanDropdownBHPDiLK();
                     updateStats();
                 },
@@ -3934,6 +3995,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
                     dataBHPTransactions = [];
                     querySnapshot.forEach(doc => dataBHPTransactions.push({ id: doc.id, ...doc.data() }));
                     renderBHPTable();
+                    renderBHPRecapLK();
                     updateStats();
                 },
                 (error) => console.error('Listener bhpTransactions gagal:', error)
@@ -6182,19 +6244,10 @@ function renderMaintenanceHistory() {
                     if (masterImport) buttons.push(`<label class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition cursor-pointer"><i class="fa-solid fa-file-arrow-up mr-1.5"></i> Import Excel<input type="file" id="file-excel-input" accept=".xlsx,.xls,.csv" onchange="importDataDariExcel(event)" class="hidden"></label>`);
                     if (masterTambah) buttons.push(`<button onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
                     // Tombol label berada di container terpisah agar tidak ikut terhapus saat
-                    // tombol Master Data lain dirender ulang. Ini juga membuat tombol tetap
-                    // konsisten terlihat untuk Admin/Teknisi.
-                    const isLabelOperator = masterRead && ['Admin','Teknisi'].includes(canonicalRole(currentActiveRole));
-                    const labelActionBox = document.getElementById('master-label-action-buttons');
-                    const btnDownloadLabel = document.getElementById('btn-download-label-master');
-                    const btnPrintLabel = document.getElementById('btn-print-label-master');
-                    if (labelActionBox) labelActionBox.classList.toggle('hidden', !isLabelOperator);
-                    [btnDownloadLabel, btnPrintLabel].forEach(btn => {
-                        if (!btn) return;
-                        btn.classList.toggle('hidden', !isLabelOperator);
-                        btn.classList.toggle('flex', isLabelOperator);
-                    });
+                    // tombol Master Data lain dirender ulang. Sinkronisasi dilakukan terpisah
+                    // agar tetap bekerja walaupun callback login berjalan sebelum DOM selesai.
                     containerMasterAction.innerHTML = buttons.join('');
+                    syncMasterHeaderActions();
                 }
 
                 const btnUploadPdf = document.getElementById('btn-upload-pdf-baru');
@@ -7066,6 +7119,7 @@ function renderMaintenanceHistory() {
         }
 
         function renderAll() {
+            syncMasterHeaderActions();
             updateStats(); renderBHPTable(); populasikanDropdownBHPDiLK(); populasikanDropdownAlatDiKalibrasi(); populasikanDropdownAlatDiWorksheet(); populasikanDropdownEtiketAlat();
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
             let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
@@ -7380,6 +7434,11 @@ function renderMaintenanceHistory() {
             try { terpakaiAlatKerja = JSON.parse(record.paramAlatKerja || '[]').map(i => typeof i === 'string' ? {nama: i} : i); } catch(e){ terpakaiAlatKerja = []; }
             try { terpakaiFisik = JSON.parse(record.paramFisik || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); } catch(e){ terpakaiFisik = []; }
             try { terpakaiFungsi = JSON.parse(record.paramFungsi || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); } catch(e){ terpakaiFungsi = []; }
+            bhpUsageLK = Array.isArray(record.bhpUsage) ? record.bhpUsage.map(u => ({
+                ...u,
+                qty: angkaBHP(u.qty)
+            })) : [];
+            renderBHPUsageLK();
             
             aktualisasikanTampilanKotakTabel('alatkerja'); 
             aktualisasikanTampilanKotakTabel('fisik'); 
@@ -8062,6 +8121,33 @@ function renderMaintenanceHistory() {
             const count=document.getElementById('bhp-filter-count'); if(count) count.textContent=`${rows.length} item${rows.length===1?'':'s'}`;
             body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
         }
+        function renderBHPRecapLK(){
+            const body=document.getElementById('table-bhp-rekap-lk-body');
+            if(!body)return;
+            const q=(document.getElementById('bhp-rekap-lk-search')?.value||'').toLowerCase().trim();
+            const rows=dataBHPTransactions.filter(t=>String(t.sumber||'').toUpperCase()==='LK').map(t=>{
+                const item=dataBHPItems.find(i=>String(i.id)===String(t.itemId))||{};
+                return {t,item};
+            }).filter(({t,item})=>{
+                const hay=[t.noLk,t.alatId,t.keterangan,t.createdByNama,item.namaItem,item.namaAlkes,item.jenisItem].join(' ').toLowerCase();
+                return !q||hay.includes(q);
+            }).sort((a,b)=>String(b.t.tanggal||'').localeCompare(String(a.t.tanggal||'')));
+            const count=document.getElementById('bhp-rekap-lk-count');
+            if(count)count.textContent=`${rows.length} transaksi`;
+            if(!rows.length){
+                body.innerHTML='<tr><td colspan="7" class="p-8 text-center text-slate-400 italic">Belum ada pemakaian BHP yang berasal dari LK.</td></tr>';
+                return;
+            }
+            body.innerHTML=rows.slice(0,200).map(({t,item})=>{
+                const alat=dataAlat.find(a=>String(a.id)===String(t.alatId))||{};
+                const canOpen=!!t.lkId && (dataLembarKerja||[]).some(l=>String(l.id)===String(t.lkId));
+                return `<tr class="hover:bg-emerald-50/50"><td class="p-3 font-mono text-[10px]">${escBHP(t.tanggal||t.tanggalLk||'-')}</td><td class="p-3 font-mono font-bold text-indigo-700">${escBHP(t.noLk||'-')}</td><td class="p-3">${escBHP(alat.nama||t.alatId||'-')}<br><span class="text-[9px] text-slate-400">SN ${escBHP(alat.seri||'-')}</span></td><td class="p-3 font-bold">${escBHP(item.namaItem||'-')}<br><span class="text-[9px] text-slate-500">${escBHP(item.namaAlkes||'-')}</span></td><td class="p-3 text-center font-black">${angkaBHP(t.qty)} ${escBHP(item.satuan||'')}</td><td class="p-3">${escBHP(t.createdByNama||'-')}</td><td class="p-3 text-center">${canOpen?`<button type="button" onclick="bukaLembarKerjaDinamisDarlLog('${String(t.lkId).replace(/'/g,'&#39;')}')" class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 font-bold text-[9px]">Lihat LK</button>`:'-'}</td></tr>`;
+            }).join('');
+            if(rows.length>200){
+                body.insertAdjacentHTML('beforeend','<tr><td colspan="7" class="p-2 text-center text-[9px] text-slate-400">Menampilkan 200 transaksi terbaru. Gunakan pencarian untuk mempersempit hasil.</td></tr>');
+            }
+        }
+
         function bukaModalBHP(id='') {
             let m=document.getElementById('modal-bhp'); if(!m){
                 m=document.createElement('div'); m.id='modal-bhp'; m.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100000] flex items-center justify-center p-4 no-print'; document.body.appendChild(m);
@@ -8094,11 +8180,27 @@ function renderMaintenanceHistory() {
             const cls=status==='habis'?'text-rose-600':status==='menipis'?'text-amber-600':'text-emerald-700';
             box.innerHTML=`<span class="${cls}"><i class="fa-solid fa-box mr-1"></i>Stok tersedia: <b>${st.stok} ${escBHP(item.satuan||'')}</b> · Minimum ${angkaBHP(item.stokMinimum)}</span>`;
         }
+        function renderBHPUsageLKPrint(){
+            const body=document.getElementById('dlk-bhp-print-body');
+            const count=document.getElementById('dlk-bhp-print-count');
+            if(count) count.textContent=`${bhpUsageLK.length} item${bhpUsageLK.length===1?'':'s'}`;
+            if(!body) return;
+            if(!bhpUsageLK.length){
+                body.innerHTML='<div class="lk-bhp-print-empty">Tidak ada BHP / aksesori yang digunakan pada LK ini.</div>';
+                return;
+            }
+            body.innerHTML=`<table class="lk-bhp-print-table"><thead><tr><th style="width:34%">BHP / Aksesori</th><th style="width:28%">Alkes</th><th style="width:16%">Jenis</th><th style="width:10%">Qty</th><th style="width:12%">Satuan</th></tr></thead><tbody>${bhpUsageLK.map(u=>{
+                const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||{};
+                return `<tr><td><b>${escBHP(item.namaItem||u.namaItem||'-')}</b>${item.spesifikasi?`<br><span style="color:#64748b">${escBHP(item.spesifikasi)}</span>`:''}</td><td>${escBHP(item.namaAlkes||u.namaAlkes||'-')}</td><td>${escBHP(item.jenisItem||u.jenisItem||'-')}</td><td style="text-align:center;font-weight:900">${angkaBHP(u.qty)}</td><td>${escBHP(item.satuan||u.satuan||'-')}</td></tr>`;
+            }).join('')}</tbody></table>`;
+        }
+
         function renderBHPUsageLK(){
             const body=document.getElementById('dlk-bhp-list'), empty=document.getElementById('dlk-bhp-empty'), count=document.getElementById('dlk-bhp-count'); if(!body)return;
             if(count)count.innerText=`${bhpUsageLK.length} item${bhpUsageLK.length===1?'':'s'}`;
             if(empty)empty.classList.toggle('hidden',bhpUsageLK.length>0);
             body.innerHTML=bhpUsageLK.map((u,i)=>{const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||{}; const st=getStokBHP(u.itemId); return `<div class="lk-bhp-row"><div class="min-w-0"><div class="lk-bhp-item-name truncate">${escBHP(item.namaItem||u.namaItem||'-')}</div><div class="lk-bhp-meta">${escBHP(item.namaAlkes||u.namaAlkes||'-')} · ${escBHP(item.jenisItem||u.jenisItem||'-')}</div></div><span class="lk-bhp-qty-pill">${angkaBHP(u.qty)} ${escBHP(item.satuan||u.satuan||'')}</span><span class="lk-bhp-stock-pill">Sisa ${st.stok}</span><button type="button" onclick="hapusBHPDariLK(${i})" class="lk-bhp-remove w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold" title="Hapus"><i class="fa-solid fa-trash-can"></i></button></div>`;}).join('');
+            renderBHPUsageLKPrint();
         }
         function tambahBHPKeLK(){
             const itemId=document.getElementById('dlk-bhp-item')?.value,qty=angkaBHP(document.getElementById('dlk-bhp-qty')?.value);
@@ -8118,6 +8220,7 @@ function renderMaintenanceHistory() {
         }
 
         function switchTab(tId) {
+            syncMasterHeaderActions();
             const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'riwayat', equipment: 'equipment', bhp: 'equipment', 'kelola-akun': 'akun' };
             const menu = menuMap[tId];
             if (menu && !(menu === 'ticket' && canonicalRole(currentActiveRole) === 'User') && !izinMenu(menu, 'read')) {
@@ -8128,7 +8231,7 @@ function renderMaintenanceHistory() {
             const targetTab = document.getElementById('tab-' + tId);
             if(targetTab) targetTab.classList.remove('hidden');
             if (tId === 'ticket-system') { ensureUserEticketForm(); requestAnimationFrame(() => ensureUserEticketForm()); }
-            if (tId === 'bhp') { renderBHPTable(); } 
+            if (tId === 'bhp') { renderBHPTable(); renderBHPRecapLK(); } 
             document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('active')); 
             const btnEl = document.getElementById('btn-' + tId);
             if(btnEl) btnEl.classList.add('active'); 
@@ -9334,10 +9437,9 @@ function renderMaintenanceHistory() {
         }
 
         async function medixOpenLabelPrintWindow(settings){
-            // Cetak label langsung dari halaman yang sama. Tidak lagi membuka
-            // jendela preview kedua; preview ukuran kertas cukup dilakukan pada
-            // modal Pengaturan Cetak MEDIX. Setelah tombol Cetak ditekan, browser
-            // hanya membuka dialog/print preview bawaan satu kali.
+            // Cetak label menggunakan satu dokumen/print context yang sama.
+            // Tidak membuka window/iframe print kedua, sehingga alurnya hanya:
+            // Pengaturan Kertas + Preview MEDIX -> Print Preview browser.
             const pageW=Number(settings.width), pageH=Number(settings.height), margin=Number(settings.margin)||0, gap=Number(settings.labelGap)||4;
             const labelW=70,labelH=45;
             const cols=Math.floor((pageW-2*margin+gap)/(labelW+gap));
@@ -9345,30 +9447,30 @@ function renderMaintenanceHistory() {
             if(cols<1||rows<1){showToast('Ukuran kertas terlalu kecil untuk label 70 × 45 mm.','error');return;}
             const contentW=cols*labelW+(cols-1)*gap, contentH=rows*labelH+(rows-1)*gap;
             const ox=Math.max(margin,(pageW-contentW)/2), oy=Math.max(margin,(pageH-contentH)/2);
-            const pageSize=`${pageW}mm ${pageH}mm`;
             const esc=v=>String(v??'-').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-            const labels=dataAlat.map((alat,index)=>`<div class="label-card"><div class="label-top"><b>MEDIX</b><span>ASET MEDIS</span></div><div class="label-main"><div class="qr-box" id="qr-${index}"></div><div class="label-info"><div class="asset-name">${esc(alat.nama||'-')}</div><div class="asset-model">${esc([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-')}</div><div class="asset-sn">SN ${esc(alat.seri||'-')}</div><div class="asset-room">${esc(alat.ruangan||alat.lokasi||'-')}</div></div></div><div class="barcode-wrap"><svg id="bc-${index}"></svg><div class="barcode-text">${esc(alat.id||alat.seri||alat.tipe||'MEDIX')}</div></div></div>`).join('');
-            const html=`<!doctype html><html lang="id"><head><meta charset="UTF-8"><title>Label Aset Medis - MEDIX</title><style>
-                @page{size:${pageSize};margin:${margin}mm;}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#0f172a;font-family:Arial,sans-serif}.grid{display:grid;grid-template-columns:repeat(${cols},70mm);grid-auto-rows:45mm;gap:${gap}mm;width:${contentW}mm;margin:${oy}mm auto ${oy}mm;}.label-card{width:70mm;height:45mm;border:.35mm solid #cbd5e1;border-radius:2mm;overflow:hidden;padding:0;background:#fff;page-break-inside:avoid;display:flex;flex-direction:column}.label-top{height:6mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 3mm;font-size:4.2mm;line-height:1}.label-top span{font-size:2.7mm;letter-spacing:.2mm}.label-main{display:flex;gap:2.5mm;padding:2.5mm 3mm 0;min-height:26mm}.qr-box{width:24mm;height:24mm;display:flex;align-items:center;justify-content:center;flex:0 0 24mm}.qr-box img,.qr-box canvas{width:24mm!important;height:24mm!important}.label-info{min-width:0;overflow:hidden;padding-top:.5mm}.asset-name{font-size:5mm;font-weight:800;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-model{font-size:3.3mm;color:#475569;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1mm}.asset-sn{font:700 3.3mm/1.1 monospace;margin-top:2mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset-room{font-size:3.1mm;color:#2563eb;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1.3mm}.barcode-wrap{margin:0 3mm 1.2mm;text-align:center;height:10mm;overflow:hidden}.barcode-wrap svg{width:100%;height:7.2mm}.barcode-text{font:700 2.5mm/1 monospace;margin-top:.4mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style></head><body><div class="grid">${labels}</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script><script>window.addEventListener('load',function(){const list=${JSON.stringify(dataAlat).replace('</','<\\/')};list.forEach((a,i)=>{const q=document.getElementById('qr-'+i);if(q&&window.QRCode)new QRCode(q,{text:window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||''),width:180,height:180,colorDark:'#000',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});const b=document.getElementById('bc-'+i);if(b&&window.JsBarcode)JsBarcode(b,String(a.id||a.seri||a.tipe||'MEDIX'),{format:'CODE128',displayValue:false,lineColor:'#000',background:'#fff',margin:0,width:1.1,height:34});});});<\/script></body></html>`;
-
-            const iframe=document.createElement('iframe');
-            iframe.setAttribute('aria-hidden','true');
-            iframe.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
-            document.body.appendChild(iframe);
-            let finished=false;
-            const cleanup=()=>{if(finished)return;finished=true;try{iframe.remove();}catch(e){};};
+            let root=document.getElementById('medix-label-print-root');
+            if(root) root.remove();
+            root=document.createElement('div'); root.id='medix-label-print-root';
+            root.style.cssText=`width:${pageW}mm;min-height:${pageH}mm;background:#fff;position:static;padding:0;margin:0 auto;color:#0f172a;`;
+            root.innerHTML=`<div class="medix-label-print-grid" style="display:grid;grid-template-columns:repeat(${cols},70mm);grid-auto-rows:45mm;gap:${gap}mm;width:${contentW}mm;margin:${oy}mm auto ${oy}mm;">${dataAlat.map((alat,index)=>`<div class="label-card" style="width:70mm;height:45mm;border:.35mm solid #cbd5e1;border-radius:2mm;overflow:hidden;padding:0;background:#fff;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;"><div class="label-top" style="height:6mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 3mm;font-size:4.2mm;line-height:1;"><b>MEDIX</b><span style="font-size:2.7mm;letter-spacing:.2mm">ASET MEDIS</span></div><div class="label-main" style="display:flex;gap:2.5mm;padding:2.5mm 3mm 0;min-height:26mm"><div class="qr-box" id="medix-label-qr-${index}" style="width:24mm;height:24mm;display:flex;align-items:center;justify-content:center;flex:0 0 24mm"></div><div class="label-info" style="min-width:0;overflow:hidden;padding-top:.5mm"><div style="font-size:5mm;font-weight:800;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(alat.nama||'-')}</div><div style="font-size:3.3mm;color:#475569;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1mm">${esc([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-')}</div><div style="font:700 3.3mm/1.1 monospace;margin-top:2mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SN ${esc(alat.seri||'-')}</div><div style="font-size:3.1mm;color:#2563eb;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1.3mm">${esc(alat.ruangan||alat.lokasi||'-')}</div></div></div><div style="margin:0 3mm 1.2mm;text-align:center;height:10mm;overflow:hidden"><svg id="medix-label-bc-${index}" style="width:100%;height:7.2mm"></svg><div style="font:700 2.5mm/1 monospace;margin-top:.4mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(alat.id||alat.seri||alat.tipe||'MEDIX')}</div></div></div>`).join('')}</div>`;
+            document.body.appendChild(root);
+            document.body.classList.add('medix-label-printing');
             try{
-                const doc=iframe.contentDocument;
-                doc.open(); doc.write(html); doc.close();
-                await new Promise(resolve=>setTimeout(resolve,900));
-                const win=iframe.contentWindow;
-                if(!win) throw new Error('Frame cetak tidak tersedia.');
-                win.focus();
-                win.onafterprint=cleanup;
-                win.print();
-                // Beberapa browser mobile tidak memicu afterprint.
+                for(let i=0;i<dataAlat.length;i++){
+                    const a=dataAlat[i]||{};
+                    const q=document.getElementById(`medix-label-qr-${i}`);
+                    if(q && window.QRCode){new QRCode(q,{text:window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||''),width:180,height:180,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});}
+                    const b=document.getElementById(`medix-label-bc-${i}`);
+                    if(b && window.JsBarcode){JsBarcode(b,String(a.id||a.seri||a.tipe||'MEDIX'),{format:'CODE128',displayValue:false,lineColor:'#000',background:'#fff',margin:0,width:1.1,height:34});}
+                }
+                await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+                window.focus();
+                window.print();
+            }finally{
+                const cleanup=()=>{document.body.classList.remove('medix-label-printing');document.getElementById('medix-label-print-root')?.remove();};
+                window.addEventListener('afterprint',cleanup,{once:true});
                 setTimeout(cleanup,5000);
-            }catch(err){cleanup();throw err;}
+            }
         }
 
         function mundurKeMenuSebelumnya() {
@@ -9409,7 +9511,14 @@ function renderMaintenanceHistory() {
             mundurKeMenuSebelumnya();
         });
     
+        window.addEventListener('DOMContentLoaded', () => {
+            syncMasterHeaderActions();
+            setTimeout(syncMasterHeaderActions, 250);
+            setTimeout(syncMasterHeaderActions, 1000);
+        }, { once: true });
+
         window.onload = function() { 
+             syncMasterHeaderActions();
              renderOpsiDropdownAwal(); 
              gantiSubTabDokumen('all'); 
              setTimeout(() => {
@@ -10008,13 +10117,27 @@ function renderMaintenanceHistory() {
     let pw=maxW,ph=pw/ratio;if(ph>maxH){ph=maxH;pw=ph*ratio;}
     paper.style.width=Math.max(80,pw)+'px';paper.style.height=Math.max(110,ph)+'px';
     inner.style.width=Math.max(40,pw*(1-(2*state.margin/d.w)))+'px';inner.style.height=Math.max(50,ph*(1-(2*state.margin/d.h)))+'px';
-    if(state.mode==='download-label-pdf'||state.mode==='label-popup'){
-      inner.innerHTML='<div class="medix-label-preview"><div class="q">QR</div><div class="t"><b>AED</b><span>HEART GUARDIAN · HR-501</span><span>SN D01222033031</span><span>AMBULANCE HIACE</span></div></div>';
-    }else inner.textContent='Konten akan dicetak pada area kertas ini.\nUkuran dan orientasi mengikuti pilihan Anda.';
-    const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||4,lw=70,lh=45;
-    const cols=Math.floor((usableW+gap)/(lw+gap)),rows=Math.floor((usableH+gap)/(lh+gap));
-    $('medix-print-summary').textContent=(state.mode==='download-label-pdf'||state.mode==='label-popup')?`Kertas ${d.w} × ${d.h} mm • ${cols>0&&rows>0?cols+' × '+rows+' label/halaman':'label tidak muat'} • Margin ${state.margin} mm`:`Kertas ${d.w} × ${d.h} mm • Margin ${state.margin} mm • Skala ${state.fit==='fit'?'Fit to Paper':state.scale+'%'} `;
+    const isLabel=state.mode==='download-label-pdf'||state.mode==='label-popup';
+    if(isLabel){
+      const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||4,lw=70,lh=45;
+      const cols=Math.max(1,Math.floor((usableW+gap)/(lw+gap))),rows=Math.max(1,Math.floor((usableH+gap)/(lh+gap)));
+      const shown=Math.min(cols*rows,12);
+      inner.style.display='flex'; inner.style.alignItems='center'; inner.style.justifyContent='center'; inner.style.overflow='hidden';
+      inner.innerHTML=`<div style="display:grid;grid-template-columns:repeat(${Math.min(cols,4)},1fr);gap:3px;width:92%;max-height:92%;aspect-ratio:${Math.min(cols,4)}/${Math.min(rows,3)};align-content:center">${Array.from({length:shown},(_,i)=>`<div class="medix-label-preview" style="position:relative;width:auto;height:auto;min-height:28px;padding:4px;gap:4px"><div class="q" style="width:20px;height:20px;border-width:3px;font-size:5px;flex:0 0 20px">QR</div><div class="t"><b>${i===0?'AED':'ASET MEDIS'}</b><span>HEART GUARDIAN · HR-501</span><span>SN D01222033031</span></div></div>`).join('')}</div>`;
+      $('medix-print-summary').textContent=`Kertas ${d.w} × ${d.h} mm • ${cols} × ${rows} label/halaman • Margin ${state.margin} mm`;
+    }else if(state.mode==='lk'){
+      const usage=Array.isArray(bhpUsageLK)?bhpUsageLK:[];
+      const noLk=$('dlk-no')?.value||'-', alat=$('dlk-nama')?.value||'-', jenis=document.querySelector('input[name="dlk-jenis"]:checked')?.value||'-';
+      inner.style.display='block'; inner.style.overflow='hidden'; inner.style.padding='8px'; inner.style.textAlign='left';
+      const rowsHtml=usage.length?usage.slice(0,5).map(u=>{const item=(dataBHPItems||[]).find(x=>String(x.id)===String(u.itemId))||{};return `<tr><td>${String(item.namaItem||u.namaItem||'-')}</td><td>${String(item.namaAlkes||u.namaAlkes||'-')}</td><td style="text-align:center">${angkaBHP(u.qty)} ${String(item.satuan||u.satuan||'')}</td></tr>`}).join(''):`<tr><td colspan="3" style="color:#94a3b8;text-align:center">Tidak ada BHP / aksesori</td></tr>`;
+      inner.innerHTML=`<div style="font-size:7px;line-height:1.25;color:#334155"><div style="font-size:10px;font-weight:900;text-align:center;margin-bottom:5px">LEMBAR KERJA PEMELIHARAAN</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:5px"><div><b>No LK:</b> ${noLk}</div><div><b>Jenis:</b> ${jenis}</div><div style="grid-column:1/-1"><b>Alat:</b> ${alat}</div></div><div style="font-weight:900;margin:3px 0">Penggunaan BHP / Aksesori (${usage.length} item)</div><table style="width:100%;border-collapse:collapse;font-size:6px"><thead><tr><th style="border:1px solid #cbd5e1;padding:2px;text-align:left">Item</th><th style="border:1px solid #cbd5e1;padding:2px;text-align:left">Alkes</th><th style="border:1px solid #cbd5e1;padding:2px">Qty</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
+      $('medix-print-summary').textContent=`Kertas ${d.w} × ${d.h} mm • LK ${noLk} • ${usage.length} item BHP/Aksesori • Margin ${state.margin} mm`;
+    }else{
+      inner.style.display='flex'; inner.style.alignItems='center'; inner.style.justifyContent='center'; inner.style.overflow='hidden'; inner.style.padding='0'; inner.textContent='Konten akan dicetak pada area kertas ini.\nUkuran dan orientasi mengikuti pilihan Anda.';
+      $('medix-print-summary').textContent=`Kertas ${d.w} × ${d.h} mm • Margin ${state.margin} mm • Skala ${state.fit==='fit'?'Fit to Paper':state.scale+'%'}`;
+    }
   }
+
   function collect(){
     state.preset=$('medix-print-paper').value; state.margin=Math.max(0,Math.min(30,Number($('medix-print-margin').value)||0)); state.scale=Math.max(50,Math.min(150,Number($('medix-print-scale').value)||100)); state.fit=$('medix-print-fit').value; saveSaved(); updatePreview();
   }
