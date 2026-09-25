@@ -2483,27 +2483,27 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-label-printing{background:#fff!important;}
 #medix-label-print-root{display:none;}
 .medix-label-printing #medix-label-print-root{display:block;width:207mm;margin:0 auto;background:#fff;color:#0f172a;}
-.medix-label-print-page{display:grid;grid-template-columns:repeat(3,62mm);grid-template-rows:repeat(6,31mm);grid-auto-rows:31mm;gap:2.5mm;width:191mm;height:210mm;margin:0 auto;padding:0;box-sizing:border-box;align-content:center;justify-content:start;page-break-after:always;break-after:page;}
+.medix-label-print-page{display:grid;grid-template-columns:repeat(3,88mm);grid-template-rows:repeat(8,23mm);grid-auto-rows:23mm;gap:2mm;width:268mm;height:198mm;margin:0 auto;padding:0;box-sizing:border-box;align-content:center;justify-content:start;page-break-after:always;break-after:page;}
 .medix-label-print-page:last-child{page-break-after:auto;break-after:auto;}
-.medix-label-card-print{width:62mm;height:31mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
-.medix-label-top{height:4mm;min-height:4mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 2mm;font-size:3mm;line-height:1;}
-.medix-label-top span{font-size:1.7mm;letter-spacing:.1mm;}
-.medix-label-body{display:flex;align-items:center;gap:1.5mm;padding:1mm 1.8mm 0;height:22.5mm;min-height:22.5mm;box-sizing:border-box;}
-.medix-label-qr{width:15.5mm;height:15.5mm;flex:0 0 15.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.medix-label-qr img,.medix-label-qr canvas{width:15.5mm!important;height:15.5mm!important;display:block;image-rendering:auto;}
-.medix-label-info{min-width:0;width:39.5mm;overflow:hidden;line-height:1.02;}
-.medix-label-name{font-size:2.9mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sub{font-size:2mm;color:#475569;font-weight:700;margin-top:.8mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sn{font:700 2mm/1.05 monospace;color:#0f172a;margin-top:1mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-room{font-size:2mm;color:#2563eb;font-weight:800;margin-top:.8mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-scan{text-align:center;height:4.5mm;min-height:4.5mm;font:700 1.45mm/1 monospace;color:#64748b;padding-top:.8mm;}
+.medix-label-card-print{width:88mm;height:23mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
+.medix-label-top{height:3mm;min-height:3mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 2mm;font-size:2.6mm;line-height:1;}
+.medix-label-top span{font-size:1.4mm;letter-spacing:.1mm;}
+.medix-label-body{display:flex;align-items:center;gap:2mm;padding:.6mm 1.8mm 0;height:16.5mm;min-height:16.5mm;box-sizing:border-box;}
+.medix-label-qr{width:18.5mm;height:18.5mm;flex:0 0 18.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.medix-label-qr img,.medix-label-qr canvas{width:18.5mm!important;height:18.5mm!important;display:block;image-rendering:auto;}
+.medix-label-info{min-width:0;width:64mm;overflow:hidden;line-height:1.02;}
+.medix-label-name{font-size:2.8mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sub{font-size:1.8mm;color:#475569;font-weight:700;margin-top:.8mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sn{font:700 1.7mm/1.05 monospace;color:#0f172a;margin-top:1mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-room{font-size:1.8mm;color:#2563eb;font-weight:800;margin-top:.8mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-scan{text-align:center;height:3mm;min-height:3mm;font:700 1.25mm/1 monospace;color:#64748b;padding-top:.35mm;}
 @media print{
-  @page{margin:0;}
+  @page{size:A4 landscape;margin:0;}
   body.medix-label-printing > *{display:none!important;}
   body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;width:207mm!important;margin:0 auto!important;padding:0!important;box-sizing:border-box!important;background:#fff!important;color:#0f172a!important;overflow:visible!important;}
-  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,62mm)!important;grid-template-rows:repeat(6,31mm)!important;gap:2.5mm!important;width:191mm!important;height:210mm!important;margin:0 auto!important;padding:0!important;box-sizing:border-box!important;align-content:center!important;justify-content:start!important;page-break-after:always!important;break-after:page!important;}
+  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,88mm)!important;grid-template-rows:repeat(8,23mm)!important;gap:2mm!important;width:268mm!important;height:198mm!important;margin:0 auto!important;padding:0!important;box-sizing:border-box!important;align-content:center!important;justify-content:start!important;page-break-after:always!important;break-after:page!important;}
   body.medix-label-printing .medix-label-print-page:last-child{page-break-after:auto!important;break-after:auto!important;}
-  body.medix-label-printing .medix-label-card-print{width:62mm!important;height:31mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
+  body.medix-label-printing .medix-label-card-print{width:88mm!important;height:23mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
 }
 </style>
 <style id="medix-label-print-isolation-final">
@@ -9408,44 +9408,27 @@ function renderMaintenanceHistory() {
             if(!alat) return showToast('Data aset tidak ditemukan.', 'error');
             if(!window.QRCode) return showToast('Mesin QR belum termuat. Muat ulang halaman.', 'error');
 
-            // LABEL SATUAN memakai engine visual yang sama dengan label massal: 62 × 31 mm.
-            const W=1240, H=620, scale=20;
-            const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
+            // Label satuan = layout yang sama persis dengan label massal (88 × 23 mm).
+            const W=1760,H=460,canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
             const ctx=canvas.getContext('2d',{alpha:false});
             ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
             ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=6; ctx.strokeRect(6,6,W-12,H-12);
-            ctx.fillStyle='#0f766e'; ctx.fillRect(6,6,W-12,80);
-            ctx.fillStyle='#fff'; ctx.textAlign='left'; ctx.font='900 48px Arial,sans-serif'; ctx.fillText('MEDIX',36,59);
-            ctx.textAlign='right'; ctx.font='700 26px Arial,sans-serif'; ctx.fillText('ASET MEDIS',W-36,56);
-
+            ctx.fillStyle='#0f766e'; ctx.fillRect(6,6,W-12,60);
+            ctx.fillStyle='#fff'; ctx.textAlign='left'; ctx.font='900 42px Arial,sans-serif'; ctx.fillText('MEDIX',36,45);
+            ctx.textAlign='right'; ctx.font='700 22px Arial,sans-serif'; ctx.fillText('ASET MEDIS',W-36,43);
             const qrValue=medixBuildQrValue(alat);
-            let qrData;
-            try{ qrData=medixGetQrDataUrl(qrValue,320); }catch(e){ return showToast('QR Code gagal dibuat: '+(e.message||e),'error'); }
-            const drawFit=(text,x,y,maxW,font,color='#0f172a')=>{
-                ctx.fillStyle=color;ctx.font=font;ctx.textAlign='left';let v=String(text||'-');
-                if(ctx.measureText(v).width<=maxW){ctx.fillText(v,x,y);return;}
-                while(v.length>3&&ctx.measureText(v+'…').width>maxW)v=v.slice(0,-1);
-                ctx.fillText(v+'…',x,y);
-            };
-            const img=new Image();
-            img.onload=()=>{
-                ctx.drawImage(img,36,120,310,310);
-                const x=380,maxW=820;
-                drawFit(alat.nama||'-',x,178,maxW,'900 54px Arial,sans-serif');
-                drawFit([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-',x,244,maxW,'700 32px Arial,sans-serif','#475569');
-                drawFit(alat.seri||'-',x,302,maxW,'700 30px monospace');
-                drawFit(alat.ruangan||alat.lokasi||'-',x,360,maxW,'800 30px Arial,sans-serif','#2563eb');
-                ctx.textAlign='center';ctx.fillStyle='#64748b';ctx.font='700 20px Arial,sans-serif';ctx.fillText('SCAN UNTUK REKAM JEJAK',W/2,548);
-                ctx.fillStyle='#0f766e';ctx.font='800 18px Arial,sans-serif';ctx.fillText('QR AKSES ASET MEDIS',W/2,580);
-                canvas.toBlob(blob=>{
-                    if(!blob)return showToast('Gagal membuat file label.','error');
-                    const url=URL.createObjectURL(blob),link=document.createElement('a');
-                    link.href=url;link.download=`Label_${String(alat.nama||'Alat').replace(/[^a-z0-9_-]+/gi,'_')}_${String(alat.seri||'SN').replace(/[^a-z0-9_-]+/gi,'_')}.jpg`;
-                    document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-                    showToast('Label aset berhasil diunduh.','success');
-                },'image/jpeg',0.95);
-            };
-            img.onerror=()=>showToast('QR Code gagal dimuat.','error'); img.src=qrData;
+            let qrData; try{qrData=medixGetQrDataUrl(qrValue,96);}catch(e){return showToast('QR Code gagal dibuat: '+(e.message||e),'error');}
+            const drawFit=(text,x,y,maxW,font,color='#0f172a')=>{ctx.fillStyle=color;ctx.font=font;ctx.textAlign='left';let v=String(text||'-');if(ctx.measureText(v).width<=maxW){ctx.fillText(v,x,y);return;}while(v.length>3&&ctx.measureText(v+'…').width>maxW)v=v.slice(0,-1);ctx.fillText(v+'…',x,y);};
+            const img=new Image(); img.onload=()=>{
+                ctx.drawImage(img,36,84,370,370);
+                const x=450,maxW=1260;
+                drawFit(alat.nama||'-',x,164,maxW,'900 54px Arial,sans-serif');
+                drawFit([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-',x,252,maxW,'700 34px Arial,sans-serif','#475569');
+                drawFit(alat.seri||'-',x,324,maxW,'700 31px monospace');
+                drawFit(alat.ruangan||alat.lokasi||'-',x,388,maxW,'800 31px Arial,sans-serif','#2563eb');
+                ctx.textAlign='center';ctx.fillStyle='#64748b';ctx.font='700 22px Arial,sans-serif';ctx.fillText('SCAN UNTUK REKAM JEJAK',W/2,438);
+                canvas.toBlob(blob=>{if(!blob)return showToast('Gagal membuat file label.','error');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`Label_${String(alat.nama||'Alat').replace(/[^a-z0-9_-]+/gi,'_')}_${String(alat.seri||'SN').replace(/[^a-z0-9_-]+/gi,'_')}.jpg`;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);showToast('Label aset berhasil diunduh.','success');},'image/jpeg',0.95);
+            }; img.onerror=()=>showToast('QR Code gagal dimuat.','error'); img.src=qrData;
         }
 
         function initSignatures() {
@@ -9550,8 +9533,7 @@ function renderMaintenanceHistory() {
 
         function bukaModalScanQrPublik() {
             document.getElementById('modal-scanner-publik').classList.remove('hidden');
-            setTimeout(() => {
-                if (!html5QrCodeScanner) { html5QrCodeScanner = new Html5Qrcode("reader-scanner-div"); }
+            if (!html5QrCodeScanner) { html5QrCodeScanner = new Html5Qrcode("reader-scanner-div"); }
                 html5QrCodeScanner.start(
                     { facingMode: "environment" }, { fps: 10, qrbox: { width: 200, height: 200 } },
                     (decodedText) => {
@@ -9571,7 +9553,6 @@ function renderMaintenanceHistory() {
                     },
                     (errorMessage) => {}
                 ).catch(err => { showToast("Tidak dapat mengakses kamera perangkat.", "error"); });
-            }, 300);
         }
         
         function tutupModalScanQrPublik() {
@@ -9593,12 +9574,13 @@ function renderMaintenanceHistory() {
                 // FAST PATH: jika listener Master Data sudah memiliki aset, buka Rekam Jejak
                 // segera tanpa menunggu listener/rekap lain selesai.
                 if(Array.isArray(dataAlat)){
-                    alat=dataAlat.find(a=>String(a.id)===clean||String(a.seri||'')===clean)||null;
+                    const localAlat=dataAlat.find(a=>String(a.id)===clean||String(a.seri||'')===clean)||null;
+                    if(localAlat) alat=localAlat;
                 }
 
                 // Jika belum ada di cache lokal, ambil dokumen aset langsung berdasarkan ID QR.
                 // Tidak lagi menunggu timer 2.5 detik atau menunggu seluruh dataAlat selesai.
-                if(!alat && db){
+                if(!alat?.id && db){
                     try{
                         const snap=await db.collection('dataAlat').doc(clean).get();
                         if(snap.exists) alat={id:snap.id,...snap.data()};
@@ -9608,7 +9590,7 @@ function renderMaintenanceHistory() {
                 }
 
                 // Fallback nomor seri jika QR berisi SN.
-                if(!alat && db){
+                if(!alat?.id && db){
                     try{
                         const q=await db.collection('dataAlat').where('seri','==',clean).limit(1).get();
                         if(!q.empty){const d=q.docs[0];alat={id:d.id,...d.data()};}
@@ -9619,7 +9601,7 @@ function renderMaintenanceHistory() {
 
                 // Bila Firestore meminta autentikasi dan auth belum siap, tunggu sekali secara
                 // diam-diam lalu ulangi lookup. Tidak ada toast/loading yang menghalangi pengguna.
-                if(!alat && !auth.currentUser && auth){
+                if(!alat?.id && !auth.currentUser && auth){
                     await new Promise(resolve=>{
                         let selesai=false;
                         const finish=()=>{if(selesai)return;selesai=true;try{unsub&&unsub()}catch(e){};resolve();};
@@ -9692,13 +9674,20 @@ function renderMaintenanceHistory() {
             try{
                 let s=String(value||'').replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4)s+='=';
                 const bin=atob(s),bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
-                return JSON.parse(new TextDecoder().decode(bytes));
+                const raw=JSON.parse(new TextDecoder().decode(bytes));
+                if(raw&&Array.isArray(raw.a)){
+                    const [id,sn,nama,merk,tipe,ruangan]=raw.a;
+                    return {v:raw.v||3,id:String(id||''),sn:String(sn||''),nama:String(nama||''),merk:String(merk||''),tipe:String(tipe||''),ruangan:String(ruangan||'')};
+                }
+                return raw;
             }catch(e){ return null; }
         }
         function medixBuildQrValue(alat){
-            const payload={v:2,id:String(alat?.id||''),sn:String(alat?.seri||''),nama:String(alat?.nama||''),merk:String(alat?.merk||''),tipe:String(alat?.tipe||''),ruangan:String(alat?.ruangan||alat?.lokasi||'')};
+            // QR v3: payload ringkas agar lebih mudah dipindai, tetapi tetap cukup untuk
+            // membuka Rekam Jejak tanpa harus menunggu query Firestore.
+            const payload={v:3,a:[String(alat?.id||''),String(alat?.seri||''),String(alat?.nama||''),String(alat?.merk||''),String(alat?.tipe||''),String(alat?.ruangan||alat?.lokasi||'')]};
             const packed=medixEncodeBase64Url(payload);
-            return window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(alat?.id||alat?.seri||'')+'#asset='+packed;
+            return window.location.origin+window.location.pathname+'#asset='+packed;
         }
 
         function downloadLabelBarcodeMassalPdf(){
@@ -9709,7 +9698,7 @@ function renderMaintenanceHistory() {
 
             // DOWNLOAD LABEL = langsung menghasilkan PDF tanpa preview aplikasi/browser.
             // Ukuran PDF download dibuat tetap A4 landscape; pengaturan kertas printer dilakukan di browser saat CETAK.
-            const width=297,height=210,margin=5,labelGap=4;
+            const width=297,height=210,margin=3,labelGap=2;
 
             const btn=document.getElementById('btn-download-label-master');
             if(btn){btn.disabled=true;btn.dataset.originalText=btn.innerHTML;btn.setAttribute('aria-busy','true');}
@@ -9736,7 +9725,7 @@ function renderMaintenanceHistory() {
             host.style.cssText=`position:fixed;left:-100000px;top:-100000px;width:${size}px;height:${size}px;background:#fff;overflow:hidden;opacity:0;pointer-events:none;`;
             document.body.appendChild(host);
             try{
-                new QRCode(host,{text:key,width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:(QRCode.CorrectLevel&&QRCode.CorrectLevel.M)||0});
+                new QRCode(host,{text:key,width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:(QRCode.CorrectLevel&&QRCode.CorrectLevel.L)||0});
                 const canvas=host.querySelector('canvas');
                 if(canvas){const url=canvas.toDataURL('image/png');medixQrCache.set(cacheKey,url);return url;}
                 const img=host.querySelector('img');
@@ -9752,9 +9741,9 @@ function renderMaintenanceHistory() {
             if(!window.QRCode) throw new Error('Mesin QR Code belum termuat.');
             const {jsPDF}=window.jspdf;
             const pageW=Number(settings.width)||210,pageH=Number(settings.height)||297,margin=Math.max(0,Number(settings.margin)||0),gap=Math.max(1,Number(settings.labelGap)||4);
-            const labelW=62,labelH=31,usableW=pageW-2*margin,usableH=pageH-2*margin;
-            const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(6,Math.floor((usableH+gap)/(labelH+gap)));
-            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 64 × 39 mm.');
+            const labelW=88,labelH=23,usableW=pageW-2*margin,usableH=pageH-2*margin;
+            const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(8,Math.floor((usableH+gap)/(labelH+gap)));
+            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 88 × 23 mm.');
             const perPage=cols*rows,contentW=cols*labelW+(cols-1)*gap,contentH=rows*labelH+(rows-1)*gap,ox=Math.max(margin,(pageW-contentW)/2),oy=Math.max(margin,(pageH-contentH)/2);
             const orientation=pageW>=pageH?'landscape':'portrait';
             const pdf=new jsPDF({orientation,unit:'mm',format:[pageW,pageH],compress:true,putOnlyUsedFonts:true});
@@ -9785,7 +9774,7 @@ function renderMaintenanceHistory() {
             const old=document.getElementById('medix-label-print-root'); if(old) old.remove();
             const root=document.createElement('div'); root.id='medix-label-print-root';
             const esc=v=>String(v??'-').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-            const perPage=18;
+            const perPage=24;
             const pages=[];
             for(let start=0; start<dataAlat.length; start+=perPage){
                 const pageItems=dataAlat.slice(start,start+perPage);
@@ -9811,8 +9800,8 @@ function renderMaintenanceHistory() {
                     if(!host) continue;
                     try{
                         const url=medixBuildQrValue(a);
-                        const dataUrl=medixGetQrDataUrl(url,64);
-                        const img=document.createElement('img'); img.src=dataUrl; img.alt='QR Aset'; img.width=72; img.height=72; host.appendChild(img);
+                        const dataUrl=medixGetQrDataUrl(url,96);
+                        const img=document.createElement('img'); img.src=dataUrl; img.alt='QR Aset'; img.width=96; img.height=96; host.appendChild(img);
                     }catch(qrErr){ console.warn('QR label gagal dibuat:',a.id,qrErr); }
                 }
                 await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
@@ -10444,7 +10433,7 @@ function renderMaintenanceHistory() {
     Custom:{label:'Custom — tentukan sendiri',w:210,h:297}
   };
   const KEY='medix.print.settings.v1';
-  const state={targetWindow:window,mode:'print-current',targetSelector:null,element:null,title:'Pengaturan Cetak',preset:'A4',orientation:'portrait',margin:6,scale:100,fit:'actual',labelWidth:70,labelHeight:45,labelGap:4,cleanup:null};
+  const state={targetWindow:window,mode:'print-current',targetSelector:null,element:null,title:'Pengaturan Cetak',preset:'A4',orientation:'portrait',margin:6,scale:100,fit:'actual',labelWidth:88,labelHeight:23,labelGap:2,cleanup:null};
   const $=id=>document.getElementById(id);
   function loadSaved(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
   function saveSaved(){try{localStorage.setItem(KEY,JSON.stringify({preset:state.preset,orientation:state.orientation,margin:state.margin,scale:state.scale,fit:state.fit}))}catch(e){}}
@@ -10478,7 +10467,7 @@ function renderMaintenanceHistory() {
     inner.style.width=Math.max(40,pw*(1-(2*state.margin/d.w)))+'px';inner.style.height=Math.max(50,ph*(1-(2*state.margin/d.h)))+'px';
     const isLabel=state.mode==='download-label-pdf'||state.mode==='label-popup';
     if(isLabel){
-      const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||4,lw=70,lh=45;
+      const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||2,lw=88,lh=23;
       const cols=Math.max(1,Math.floor((usableW+gap)/(lw+gap))),rows=Math.max(1,Math.floor((usableH+gap)/(lh+gap)));
       const perPage=cols*rows,total=Array.isArray(dataAlat)?dataAlat.length:0,pages=Math.max(1,Math.ceil(total/perPage));
       const shown=Math.min(perPage,Math.min(total||1,12));
@@ -10524,15 +10513,15 @@ function renderMaintenanceHistory() {
   function applyChildLabelLayout(win,d){
     try{
       const grid=win?.document?.querySelector('.grid'); if(!grid)return;
-      const gap=state.labelGap||4,lw=70,lh=45,margin=Number(state.margin)||0;
+      const gap=state.labelGap||2,lw=88,lh=23,margin=Number(state.margin)||0;
       const cols=Math.floor((d.w-2*margin+gap)/(lw+gap));
       const rows=Math.floor((d.h-2*margin+gap)/(lh+gap));
-      if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 64 × 39 mm.');
+      if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 88 × 23 mm.');
       const contentW=cols*lw+(cols-1)*gap, contentH=rows*lh+(rows-1)*gap;
       const ox=Math.max(margin,(d.w-contentW)/2), oy=Math.max(margin,(d.h-contentH)/2);
-      grid.style.gridTemplateColumns=`repeat(${cols},70mm)`;
-      grid.style.gridAutoRows='45mm'; grid.style.gap=`${gap}mm`; grid.style.width=`${contentW}mm`; grid.style.margin=`${oy}mm auto ${oy}mm`;
-      win.document.querySelectorAll('.label-card').forEach(el=>{el.style.width='70mm';el.style.height='45mm';});
+      grid.style.gridTemplateColumns=`repeat(${cols},88mm)`;
+      grid.style.gridAutoRows='23mm'; grid.style.gap=`${gap}mm`; grid.style.width=`${contentW}mm`; grid.style.margin=`${oy}mm auto ${oy}mm`;
+      win.document.querySelectorAll('.label-card').forEach(el=>{el.style.width='88mm';el.style.height='23mm';});
       return {cols,rows};
     }catch(err){console.warn('Layout label popup:',err);return null;}
   }
