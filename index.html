@@ -1,4 +1,3 @@
-<!-- MEDIX KTI READY BUILD: 2026-09-24 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -2548,6 +2547,16 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   body.medix-label-printing > *{display:none!important}
   body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;min-height:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
 }
+</style>
+
+<style id="medix-public-rekam-mode">
+body.medix-public-rekam #app-sidebar,
+body.medix-public-rekam #main-content-area > header,
+body.medix-public-rekam #main-content-area > main { display:none !important; }
+body.medix-public-rekam #main-content-area { width:100% !important; min-height:100vh !important; overflow:hidden !important; }
+body.medix-public-rekam #modal-kartu { display:flex !important; position:fixed !important; inset:0 !important; z-index:99999 !important; }
+body.medix-public-rekam #modal-kartu > div { width:100vw !important; max-width:none !important; height:100vh !important; max-height:none !important; border-radius:0 !important; margin:0 !important; }
+body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px) !important; }
 </style>
 </head>
     
@@ -9336,7 +9345,22 @@ function renderMaintenanceHistory() {
             if(contentBox) contentBox.classList.remove('hidden'); 
         }
         
+        // Mode publik Rekam Jejak: URL hasil scan kamera HP langsung membuka hanya kartu aset.
+        let medixPublicRekamMode = false;
+        let medixPublicRekamAssetId = '';
+        function medixAktifkanModeRekamJejakPublik(assetId){
+            medixPublicRekamMode = true;
+            medixPublicRekamAssetId = String(assetId || medixPublicRekamAssetId || '').trim();
+            document.body.classList.add('medix-public-rekam');
+            // Tambahkan satu state khusus agar tombol Back tidak pernah membocorkan dashboard utama.
+            try { window.history.pushState({ page:'rekam-jejak-public', assetId:medixPublicRekamAssetId }, '', window.location.href); } catch(e) {}
+        }
+
         function bukaKartuPemeliharaan(alatId) {
+            if (medixPublicRekamMode) {
+                medixPublicRekamAssetId = String(alatId || medixPublicRekamAssetId || '').trim();
+                document.body.classList.add('medix-public-rekam');
+            }
             globalSelectedAlatIdForLog = alatId; globalSelectedAlatIdUntukLog = alatId; 
             const alat = dataAlat.find(a => a.id == alatId); if(!alat) return;
             let sLokasi = alat.ruangan || alat.lokasi || alat.edar || '-'; let sSeri = alat.seri || alat.tipe || '-';
@@ -9353,11 +9377,13 @@ function renderMaintenanceHistory() {
                 // QR Rekam Jejak dibuat SAMA dengan QR pada label massal.
                 // Payload v3 membawa ID + nomor seri + identitas singkat aset, sehingga
                 // hasil scan tidak bergantung pada cache dataAlat untuk mengenali aset.
-                const targetUrl = medixBuildQrValue(alat);
+                // QR Rekam Jejak dibuat memakai URL pendek agar kamera bawaan HP lebih cepat mengenali.
+                // Format ?alat=ID juga langsung dikenali saat URL dibuka oleh browser HP.
+                const targetUrl = window.location.origin + window.location.pathname + '?alat=' + encodeURIComponent(String(alat.id || ''));
                 new QRCode(qrContainer, {
                     text: targetUrl,
-                    width: 168,
-                    height: 168,
+                    width: 96,
+                    height: 96,
                     colorDark: '#000000',
                     colorLight: '#ffffff',
                     correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.L) || 1
@@ -9657,6 +9683,8 @@ function renderMaintenanceHistory() {
         async function bukaKartuPemeliharaanPublik(alatId, embeddedAsset=null) {
             const raw=String(alatId||'').trim();
             if(!raw) return;
+            // Semua hasil scan publik diarahkan ke satu halaman Rekam Jejak, bukan dashboard.
+            medixAktifkanModeRekamJejakPublik(raw);
 
             // QR Rekam Jejak dapat berisi URL MEDIX dengan hash #asset=<payload-v3>,
             // QR lama #assetid=<id>, atau URL lama ?alat=<id>. Jangan pernah meneruskan
@@ -9760,7 +9788,9 @@ function renderMaintenanceHistory() {
                 const authGate=document.getElementById('auth-gate-screen');if(authGate)authGate.classList.add('hidden');
                 const sidebar=document.getElementById('app-sidebar');if(sidebar)sidebar.style.display='none';
                 currentActiveRole='User';
-                bukaKartuPemeliharaan(alat.id);
+                medixPublicRekamAssetId = String(alat.id || medixPublicRekamAssetId || '').trim();
+            document.body.classList.add('medix-public-rekam');
+            bukaKartuPemeliharaan(alat.id);
                 const modalKartuHeader=document.querySelector('#modal-kartu .bg-slate-100');
                 const tombolTutup=modalKartuHeader?.querySelector('button');if(tombolTutup)tombolTutup.style.display='none';
 
@@ -9977,6 +10007,15 @@ function renderMaintenanceHistory() {
     
         window.history.pushState({ page: 'main' }, '', '');
         window.addEventListener('popstate', function(event) {
+            if (medixPublicRekamMode) {
+                // Dari URL QR, Back tidak boleh membuka dashboard. Tetap di halaman Rekam Jejak.
+                try { window.history.pushState({ page:'rekam-jejak-public', assetId:medixPublicRekamAssetId }, '', window.location.href); } catch(e) {}
+                const modalKartu=document.getElementById('modal-kartu');
+                if (modalKartu && modalKartu.classList.contains('hidden') && medixPublicRekamAssetId) {
+                    bukaKartuPemeliharaan(medixPublicRekamAssetId);
+                }
+                return;
+            }
             window.history.pushState({ page: 'main' }, '', '');
             mundurKeMenuSebelumnya();
         });
@@ -9999,8 +10038,10 @@ function renderMaintenanceHistory() {
              const scanAlatId = urlParams.get('alat');
              const packedAsset = window.location.hash.startsWith('#asset=') ? medixDecodeBase64Url(window.location.hash.slice(7)) : null;
              if (packedAsset && (packedAsset.id || packedAsset.sn)) {
+                 medixAktifkanModeRekamJejakPublik(packedAsset.id || packedAsset.sn);
                  bukaKartuPemeliharaanPublik(packedAsset.id || packedAsset.sn, packedAsset);
              } else if (scanAlatId && scanAlatId.trim() !== "") {
+                 medixAktifkanModeRekamJejakPublik(scanAlatId);
                  bukaKartuPemeliharaanPublik(scanAlatId);
              }
         };
