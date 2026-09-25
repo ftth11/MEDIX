@@ -2495,10 +2495,38 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-label-room{font-size:2.45mm;color:#2563eb;font-weight:800;margin-top:1mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-scan{text-align:center;height:5mm;min-height:5mm;font:700 1.9mm/1 monospace;color:#64748b;padding-top:.8mm;}
 @media print{
+  @page{margin:0;}
   body.medix-label-printing > *{display:none!important;}
-  body.medix-label-printing > #medix-label-print-root{display:grid!important;position:static!important;width:144mm!important;margin:0 auto!important;background:#fff!important;}
+  body.medix-label-printing > #medix-label-print-root{
+    display:grid!important;
+    grid-template-columns:repeat(2,70mm)!important;
+    grid-auto-rows:45mm!important;
+    grid-auto-flow:row!important;
+    gap:4mm!important;
+    width:144mm!important;
+    margin:0 auto!important;
+    padding:3.5mm 0!important;
+    box-sizing:border-box!important;
+    background:#fff!important;
+    color:#0f172a!important;
+    align-content:start!important;
+    justify-content:center!important;
+  }
+  body.medix-label-printing .medix-label-card-print{
+    width:70mm!important;height:45mm!important;
+    margin:0!important;
+    page-break-inside:avoid!important;break-inside:avoid!important;
+  }
 }
-@media print and (orientation:landscape){body.medix-label-printing > #medix-label-print-root{grid-template-columns:repeat(4,70mm)!important;width:292mm!important;gap:4mm!important;}}
+@media print and (orientation:landscape){
+  body.medix-label-printing > #medix-label-print-root{
+    grid-template-columns:repeat(4,70mm)!important;
+    grid-auto-rows:45mm!important;
+    width:292mm!important;
+    gap:4mm!important;
+    padding:9mm 0!important;
+  }
+}
 </style>
 <style id="medix-label-print-isolation-final">
 @media print {
@@ -2529,8 +2557,9 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   body.medix-generic-printing > #medix-print-clone-root{display:block!important;position:static!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
   body.medix-generic-printing > #medix-print-clone-root .no-print{display:none!important}
   body.medix-lk-printing > #area-lembar-kerja-resmi{width:var(--medix-lk-width,194mm)!important;max-width:var(--medix-lk-width,194mm)!important}
+  /* Label layout is defined by medix-label-layout-final above. Do not override its grid with display:block. */
   body.medix-label-printing > *{display:none!important}
-  body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;width:auto!important;max-width:none!important;min-height:0!important;margin:0!important;padding:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
+  body.medix-label-printing > #medix-label-print-root{display:grid!important;position:static!important;min-height:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
 }
 </style>
 </head>
@@ -9395,61 +9424,68 @@ function renderMaintenanceHistory() {
         }
 
         function downloadLabelBarcodeFisik() {
-            if(!globalSelectedAlatIdForLog) return;
-            const alat = dataAlat.find(a => a.id == globalSelectedAlatIdForLog);
-            if(!alat) return;
-            const qrContainer = document.getElementById('qrcode-container');
-            const qrImg = qrContainer?.querySelector('img') || qrContainer?.querySelector('canvas');
-            if(!qrImg) return showToast("QR Code sedang dimuat.", "info");
+            const alatId = globalSelectedAlatIdForLog || globalSelectedAlatIdUntukLog;
+            if(!alatId) return showToast('Aset belum dipilih.', 'info');
+            const alat = (dataAlat || []).find(a => String(a.id) === String(alatId));
+            if(!alat) return showToast('Data aset tidak ditemukan.', 'error');
+            if(!window.QRCode) return showToast('Mesin QR belum termuat. Muat ulang halaman.', 'error');
 
-            // Label individual dibuat persegi agar proporsional saat dicetak sebagai stiker.
+            // Label individual harus sama dengan label massal: 70 × 45 mm, QR tanpa barcode garis.
             const canvas = document.createElement('canvas');
-            canvas.width = 600; canvas.height = 600;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,600,600);
-            ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 5; ctx.strokeRect(10,10,580,580);
-            ctx.textAlign = 'center'; ctx.fillStyle = '#0f172a';
-            ctx.font = 'bold 18px sans-serif';
-            ctx.fillText('UPTD RSUD PONDOKGEDE - IPSRS',300,38);
+            canvas.width = 1400; canvas.height = 900;
+            const ctx = canvas.getContext('2d', { alpha:false });
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,1400,900);
+            ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 6; ctx.strokeRect(10,10,1380,880);
 
-            const imgQr = new Image(); imgQr.crossOrigin = 'anonymous';
-            imgQr.src = qrImg.src || qrImg.toDataURL();
-            imgQr.onload = function() {
-                ctx.drawImage(imgQr,190,52,220,220);
-                ctx.textAlign='left';
-                const x=42;
-                let y=305;
-                const maxW=516;
-                const drawField=(label,value,font='bold 22px sans-serif',color='#0f172a')=>{
-                    ctx.fillStyle='#64748b'; ctx.font='bold 13px sans-serif'; ctx.fillText(label,x,y);
-                    ctx.fillStyle=color; ctx.font=font;
-                    const text=String(value||'-');
-                    const lines=[]; let line='';
-                    for(const word of text.split(/\s+/)){
-                        const test=line?line+' '+word:word;
-                        if(ctx.measureText(test).width>maxW && line){lines.push(line);line=word;}else line=test;
-                    }
-                    if(line) lines.push(line);
-                    lines.slice(0,2).forEach((ln,i)=>ctx.fillText(ln,x,y+21+(i*20)));
-                    y += 54 + Math.max(0,lines.length-1)*18;
-                };
-                drawField('NAMA ASET:', alat.nama || '-', 'bold 21px sans-serif');
-                drawField('MERK / MODEL:', [alat.merk,alat.tipe].filter(Boolean).join(' / ') || '-', 'bold 18px sans-serif');
-                drawField('NOMOR SERI (SN):', alat.seri || alat.tipe || '-', 'bold 18px monospace');
-                drawField('UNIT / RUANGAN:', alat.ruangan || alat.lokasi || '-', 'bold 18px sans-serif','#2563eb');
+            // Header
+            ctx.fillStyle = '#0f766e'; ctx.fillRect(10,10,1380,100);
+            ctx.fillStyle = '#ffffff'; ctx.textAlign = 'left';
+            ctx.font = '900 52px Arial, sans-serif'; ctx.fillText('MEDIX',50,78);
+            ctx.textAlign = 'right'; ctx.font = '700 30px Arial, sans-serif'; ctx.fillText('ASET MEDIS',1350,75);
 
-                canvas.toBlob(function(blob) {
-                    const blobUrl=URL.createObjectURL(blob);
-                    const downloadLink=document.createElement('a');
-                    downloadLink.href=blobUrl;
-                    downloadLink.download=`Label_${(alat.nama||'Alat').replace(/\s+/g,'_')}_${alat.seri||'SN'}.png`;
-                    document.body.appendChild(downloadLink); downloadLink.click(); document.body.removeChild(downloadLink);
-                    setTimeout(()=>URL.revokeObjectURL(blobUrl),100);
-                    showToast('Label persegi berhasil diunduh ke HP Anda!','success');
-                },'image/png');
+            const qrValue = window.location.origin + window.location.pathname + '?alat=' + encodeURIComponent(alat.id || alat.seri || '');
+            let qrData;
+            try { qrData = medixGetQrDataUrl(qrValue, 400); }
+            catch(e) { return showToast('QR Code gagal dibuat: '+(e.message||e), 'error'); }
+
+            const drawTextFit = (text, x, y, maxWidth, font, color='#0f172a') => {
+                ctx.fillStyle = color; ctx.font = font; ctx.textAlign = 'left';
+                let value = String(text || '-');
+                if(ctx.measureText(value).width <= maxWidth){ ctx.fillText(value,x,y); return; }
+                while(value.length > 3 && ctx.measureText(value+'…').width > maxWidth) value=value.slice(0,-1);
+                ctx.fillText(value+'…',x,y);
             };
+
+            const imgQr = new Image();
+            imgQr.onload = function(){
+                ctx.drawImage(imgQr,50,150,400,400);
+                const x=500, maxW=830;
+                drawTextFit(alat.nama || '-', x, 245, maxW, '900 58px Arial, sans-serif');
+                drawTextFit([alat.merk,alat.tipe].filter(Boolean).join(' · ') || '-', x, 330, maxW, '700 36px Arial, sans-serif', '#475569');
+                drawTextFit('SN ' + (alat.seri || '-'), x, 405, maxW, '700 34px monospace');
+                drawTextFit(alat.ruangan || alat.lokasi || '-', x, 480, maxW, '800 34px Arial, sans-serif', '#2563eb');
+
+                ctx.fillStyle='#64748b'; ctx.textAlign='center'; ctx.font='700 24px Arial, sans-serif';
+                ctx.fillText('SCAN UNTUK REKAM JEJAK',700,820);
+                ctx.fillStyle='#0f766e'; ctx.font='800 20px Arial, sans-serif';
+                ctx.fillText('QR AKSES ASET MEDIS',700,855);
+
+                canvas.toBlob(function(blob){
+                    if(!blob) return showToast('Gagal membuat file label.', 'error');
+                    const blobUrl=URL.createObjectURL(blob);
+                    const link=document.createElement('a');
+                    link.href=blobUrl;
+                    link.download=`Label_${String(alat.nama||'Alat').replace(/[^a-z0-9_-]+/gi,'_')}_${String(alat.seri||'SN').replace(/[^a-z0-9_-]+/gi,'_')}.jpg`;
+                    link.style.display='none';
+                    document.body.appendChild(link); link.click(); link.remove();
+                    setTimeout(()=>URL.revokeObjectURL(blobUrl),1500);
+                    showToast('Label aset berhasil diunduh.', 'success');
+                }, 'image/jpeg', 0.95);
+            };
+            imgQr.onerror=()=>showToast('QR Code gagal dimuat.', 'error');
+            imgQr.src=qrData;
         }
-        
+
         function initSignatures() {
             try {
                 ['sig-teknisi', 'sig-user', 'sig-pj'].forEach(id => {
