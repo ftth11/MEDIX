@@ -2479,53 +2479,31 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-modal-open{overflow:hidden!important;}
 </style>
 <style id="medix-label-layout-final">
+/* MEDIX LABEL ENGINE — compact, cut-friendly, consistent pagination */
 .medix-label-printing{background:#fff!important;}
 #medix-label-print-root{display:none;}
-.medix-label-printing #medix-label-print-root{display:grid;grid-template-columns:repeat(2,70mm);grid-auto-rows:45mm;gap:4mm;width:144mm;margin:0 auto;background:#fff;color:#0f172a;}
-.medix-label-card-print{width:70mm;height:45mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.5mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
-.medix-label-top{height:5mm;min-height:5mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 2.5mm;font-size:3.5mm;line-height:1;}
-.medix-label-top span{font-size:2.1mm;letter-spacing:.15mm;}
-.medix-label-body{display:flex;align-items:center;gap:2mm;padding:2.2mm 2.5mm 0;height:32mm;min-height:32mm;box-sizing:border-box;}
-.medix-label-qr{width:20mm;height:20mm;flex:0 0 20mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.medix-label-qr img,.medix-label-qr canvas{width:20mm!important;height:20mm!important;display:block;}
-.medix-label-info{min-width:0;width:42mm;overflow:hidden;line-height:1.05;}
-.medix-label-name{font-size:3.5mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sub{font-size:2.45mm;color:#475569;font-weight:700;margin-top:1mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sn{font:700 2.55mm/1.1 monospace;color:#0f172a;margin-top:1.5mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-room{font-size:2.45mm;color:#2563eb;font-weight:800;margin-top:1mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-scan{text-align:center;height:5mm;min-height:5mm;font:700 1.9mm/1 monospace;color:#64748b;padding-top:.8mm;}
+.medix-label-printing #medix-label-print-root{display:block;width:207mm;margin:0 auto;background:#fff;color:#0f172a;}
+.medix-label-print-page{display:grid;grid-template-columns:repeat(3,64mm);grid-template-rows:repeat(5,39mm);grid-auto-rows:39mm;gap:3mm;width:198mm;height:207mm;margin:0 auto;padding:0;box-sizing:border-box;align-content:start;justify-content:start;page-break-after:always;break-after:page;}
+.medix-label-print-page:last-child{page-break-after:auto;break-after:auto;}
+.medix-label-card-print{width:64mm;height:39mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
+.medix-label-top{height:4.5mm;min-height:4.5mm;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 2mm;font-size:3.1mm;line-height:1;}
+.medix-label-top span{font-size:1.8mm;letter-spacing:.12mm;}
+.medix-label-body{display:flex;align-items:center;gap:1.8mm;padding:1.5mm 2mm 0;height:29mm;min-height:29mm;box-sizing:border-box;}
+.medix-label-qr{width:17.5mm;height:17.5mm;flex:0 0 17.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.medix-label-qr img,.medix-label-qr canvas{width:17.5mm!important;height:17.5mm!important;display:block;image-rendering:auto;}
+.medix-label-info{min-width:0;width:40.5mm;overflow:hidden;line-height:1.02;}
+.medix-label-name{font-size:3.15mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sub{font-size:2.2mm;color:#475569;font-weight:700;margin-top:.8mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sn{font:700 2.25mm/1.05 monospace;color:#0f172a;margin-top:1mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-room{font-size:2.2mm;color:#2563eb;font-weight:800;margin-top:.8mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-scan{text-align:center;height:5.5mm;min-height:5.5mm;font:700 1.65mm/1 monospace;color:#64748b;padding-top:.8mm;}
 @media print{
   @page{margin:0;}
   body.medix-label-printing > *{display:none!important;}
-  body.medix-label-printing > #medix-label-print-root{
-    display:grid!important;
-    grid-template-columns:repeat(2,70mm)!important;
-    grid-auto-rows:45mm!important;
-    grid-auto-flow:row!important;
-    gap:4mm!important;
-    width:144mm!important;
-    margin:0 auto!important;
-    padding:3.5mm 0!important;
-    box-sizing:border-box!important;
-    background:#fff!important;
-    color:#0f172a!important;
-    align-content:start!important;
-    justify-content:center!important;
-  }
-  body.medix-label-printing .medix-label-card-print{
-    width:70mm!important;height:45mm!important;
-    margin:0!important;
-    page-break-inside:avoid!important;break-inside:avoid!important;
-  }
-}
-@media print and (orientation:landscape){
-  body.medix-label-printing > #medix-label-print-root{
-    grid-template-columns:repeat(4,70mm)!important;
-    grid-auto-rows:45mm!important;
-    width:292mm!important;
-    gap:4mm!important;
-    padding:9mm 0!important;
-  }
+  body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;width:207mm!important;margin:0 auto!important;padding:0!important;box-sizing:border-box!important;background:#fff!important;color:#0f172a!important;overflow:visible!important;}
+  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,64mm)!important;grid-template-rows:repeat(5,39mm)!important;gap:3mm!important;width:198mm!important;height:207mm!important;margin:0 auto!important;padding:0!important;box-sizing:border-box!important;align-content:start!important;justify-content:start!important;page-break-after:always!important;break-after:page!important;}
+  body.medix-label-printing .medix-label-print-page:last-child{page-break-after:auto!important;break-after:auto!important;}
+  body.medix-label-printing .medix-label-card-print{width:64mm!important;height:39mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
 }
 </style>
 <style id="medix-label-print-isolation-final">
@@ -2534,7 +2512,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   body.medix-label-printing #modal-kartu,
   body.medix-label-printing #medix-print-settings-modal { display:none !important; }
   body.medix-label-printing > * { display:none !important; }
-  body.medix-label-printing > #medix-label-print-root { display:grid !important; }
+  body.medix-label-printing > #medix-label-print-root { display:block !important; }
 }
 </style>
 <style id="medix-print-engine-css">
@@ -2559,7 +2537,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   body.medix-lk-printing > #area-lembar-kerja-resmi{width:var(--medix-lk-width,194mm)!important;max-width:var(--medix-lk-width,194mm)!important}
   /* Label layout is defined by medix-label-layout-final above. Do not override its grid with display:block. */
   body.medix-label-printing > *{display:none!important}
-  body.medix-label-printing > #medix-label-print-root{display:grid!important;position:static!important;min-height:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
+  body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;min-height:0!important;background:#fff!important;color:#0f172a!important;overflow:visible!important}
 }
 </style>
 </head>
@@ -9613,52 +9591,97 @@ function renderMaintenanceHistory() {
             const raw=String(alatId||'').trim();
             if(!raw) return;
             const clean=decodeURIComponent(raw.split('?alat=').pop().split('&')[0]);
+            let alat=null;
             try{
-                if(!auth.currentUser){
-                    await new Promise(resolve=>{
-                        let done=false;
-                        const unsub=auth.onAuthStateChanged(()=>{if(done)return;done=true;try{unsub()}catch(e){};resolve();});
-                        setTimeout(()=>{if(done)return;done=true;try{unsub()}catch(e){};resolve();},2500);
-                    });
+                // FAST PATH: jika listener Master Data sudah memiliki aset, buka Rekam Jejak
+                // segera tanpa menunggu listener/rekap lain selesai.
+                if(Array.isArray(dataAlat)){
+                    alat=dataAlat.find(a=>String(a.id)===clean||String(a.seri||'')===clean)||null;
                 }
-                let alat=Array.isArray(dataAlat)?dataAlat.find(a=>String(a.id)===clean||String(a.seri||'')===clean):null;
+
+                // Jika belum ada di cache lokal, ambil dokumen aset langsung berdasarkan ID QR.
+                // Tidak lagi menunggu timer 2.5 detik atau menunggu seluruh dataAlat selesai.
                 if(!alat && db){
-                    const snap=await db.collection('dataAlat').doc(clean).get();
-                    if(snap.exists) alat={id:snap.id,...snap.data()};
-                    if(!alat){
+                    try{
+                        const snap=await db.collection('dataAlat').doc(clean).get();
+                        if(snap.exists) alat={id:snap.id,...snap.data()};
+                    }catch(err){
+                        console.warn('Lookup aset langsung berdasarkan ID gagal:',err?.code||err?.message||err);
+                    }
+                }
+
+                // Fallback nomor seri jika QR berisi SN.
+                if(!alat && db){
+                    try{
                         const q=await db.collection('dataAlat').where('seri','==',clean).limit(1).get();
                         if(!q.empty){const d=q.docs[0];alat={id:d.id,...d.data()};}
+                    }catch(err){
+                        console.warn('Lookup aset berdasarkan SN gagal:',err?.code||err?.message||err);
                     }
                 }
-                if(!alat){showToast('ID / Seri alat tidak ditemukan di dalam database.','error');return;}
-                if(!Array.isArray(dataAlat))dataAlat=[];
-                const existingIndex=dataAlat.findIndex(a=>String(a.id)===String(alat.id));
-                if(existingIndex>=0)dataAlat[existingIndex]=alat;else dataAlat.push(alat);
 
-                // Ambil riwayat aset langsung bila listener global belum selesai.
-                if(db){
-                    const [lkSnap,kalSnap,bukuSnap]=await Promise.all([
-                        db.collection('lembarKerja').where('alatId','==',alat.id).get().catch(()=>null),
-                        db.collection('dataKalibrasi').where('alatId','==',alat.id).get().catch(()=>null),
-                        db.collection('bukuPetunjukAlat').where('alatId','==',alat.id).get().catch(()=>null)
-                    ]);
-                    if(lkSnap && (dataLembarKerja?.length===0 || !dataLembarKerja.some(x=>String(x.alatId)===String(alat.id)))){
-                        const rows=lkSnap.docs.map(d=>({id:d.id,...d.data()}));
-                        dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows];
-                        dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                        dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                        dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
+                // Bila Firestore meminta autentikasi dan auth belum siap, tunggu sekali secara
+                // diam-diam lalu ulangi lookup. Tidak ada toast/loading yang menghalangi pengguna.
+                if(!alat && !auth.currentUser && auth){
+                    await new Promise(resolve=>{
+                        let selesai=false;
+                        const finish=()=>{if(selesai)return;selesai=true;try{unsub&&unsub()}catch(e){};resolve();};
+                        let unsub=null;
+                        try{unsub=auth.onAuthStateChanged(()=>finish());}catch(e){finish();}
+                        setTimeout(finish,1200);
+                    });
+                    if(db){
+                        try{
+                            const snap=await db.collection('dataAlat').doc(clean).get();
+                            if(snap.exists) alat={id:snap.id,...snap.data()};
+                        }catch(e){}
                     }
-                    if(kalSnap && !dataKalibrasi.some(x=>String(x.alatId)===String(alat.id)))dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==String(alat.id)),...kalSnap.docs.map(d=>({id:d.id,...d.data()}))];
-                    if(bukuSnap && !dataBukuPetunjuk.some(x=>String(x.alatId)===String(alat.id)))dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==String(alat.id)),...bukuSnap.docs.map(d=>({id:d.id,...d.data()}))];
                 }
+
+                if(!alat){
+                    showToast('Aset tidak ditemukan. Pastikan QR/nomor seri masih terdaftar.','error');
+                    return;
+                }
+
+                if(!Array.isArray(dataAlat)) dataAlat=[];
+                const existingIndex=dataAlat.findIndex(a=>String(a.id)===String(alat.id));
+                if(existingIndex>=0) dataAlat[existingIndex]=alat; else dataAlat.push(alat);
+
+                // Buka Rekam Jejak terlebih dahulu. Data riwayat dilengkapi di background.
                 const authGate=document.getElementById('auth-gate-screen');if(authGate)authGate.classList.add('hidden');
                 const sidebar=document.getElementById('app-sidebar');if(sidebar)sidebar.style.display='none';
                 currentActiveRole='User';
                 bukaKartuPemeliharaan(alat.id);
                 const modalKartuHeader=document.querySelector('#modal-kartu .bg-slate-100');
                 const tombolTutup=modalKartuHeader?.querySelector('button');if(tombolTutup)tombolTutup.style.display='none';
-            }catch(err){console.error('Scan QR langsung gagal:',err);showToast('Aset tidak dapat dibuka. Periksa koneksi atau izin database.','error');}
+
+                // Riwayat tidak menghambat pembukaan. Setelah selesai, tabel Rekam Jejak diperbarui.
+                if(db){
+                    Promise.all([
+                        db.collection('lembarKerja').where('alatId','==',alat.id).get().catch(()=>null),
+                        db.collection('dataKalibrasi').where('alatId','==',alat.id).get().catch(()=>null),
+                        db.collection('bukuPetunjukAlat').where('alatId','==',alat.id).get().catch(()=>null)
+                    ]).then(([lkSnap,kalSnap,bukuSnap])=>{
+                        if(lkSnap){
+                            const rows=lkSnap.docs.map(d=>({id:d.id,...d.data()}));
+                            dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows];
+                            dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
+                        }
+                        if(kalSnap){dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==String(alat.id)),...kalSnap.docs.map(d=>({id:d.id,...d.data()}))];}
+                        if(bukuSnap){dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==String(alat.id)),...bukuSnap.docs.map(d=>({id:d.id,...d.data()}))];}
+                        if(document.getElementById('modal-kartu') && !document.getElementById('modal-kartu').classList.contains('hidden')){
+                            bukaKartuPemeliharaan(alat.id);
+                            const header=document.querySelector('#modal-kartu .bg-slate-100');
+                            const closeBtn=header?.querySelector('button');if(closeBtn)closeBtn.style.display='none';
+                        }
+                    }).catch(err=>console.warn('Pemuatan riwayat background gagal:',err));
+                }
+            }catch(err){
+                console.error('Scan QR langsung gagal:',err);
+                showToast('Aset tidak dapat dibuka. Periksa koneksi atau izin database.','error');
+            }
         }
 
         function downloadLabelBarcodeMassalPdf(){
@@ -9712,9 +9735,9 @@ function renderMaintenanceHistory() {
             if(!window.QRCode) throw new Error('Mesin QR Code belum termuat.');
             const {jsPDF}=window.jspdf;
             const pageW=Number(settings.width)||210,pageH=Number(settings.height)||297,margin=Math.max(0,Number(settings.margin)||0),gap=Math.max(1,Number(settings.labelGap)||4);
-            const labelW=70,labelH=45,usableW=pageW-2*margin,usableH=pageH-2*margin;
-            const cols=Math.floor((usableW+gap)/(labelW+gap)),rows=Math.floor((usableH+gap)/(labelH+gap));
-            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 70 × 45 mm.');
+            const labelW=64,labelH=39,usableW=pageW-2*margin,usableH=pageH-2*margin;
+            const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(5,Math.floor((usableH+gap)/(labelH+gap)));
+            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 64 × 39 mm.');
             const perPage=cols*rows,contentW=cols*labelW+(cols-1)*gap,contentH=rows*labelH+(rows-1)*gap,ox=Math.max(margin,(pageW-contentW)/2),oy=Math.max(margin,(pageH-contentH)/2);
             const orientation=pageW>=pageH?'landscape':'portrait';
             const pdf=new jsPDF({orientation,unit:'mm',format:[pageW,pageH],compress:true,putOnlyUsedFonts:true});
@@ -9723,12 +9746,12 @@ function renderMaintenanceHistory() {
             for(let idx=0;idx<dataAlat.length;idx++){
                 if(idx&&idx%perPage===0)pdf.addPage([pageW,pageH],orientation);
                 const pos=idx%perPage,col=pos%cols,row=Math.floor(pos/cols),x=ox+col*(labelW+gap),y=oy+row*(labelH+gap),a=dataAlat[idx]||{};
-                pdf.setDrawColor(203,213,225);pdf.setLineWidth(.3);pdf.roundedRect(x,y,labelW,labelH,2,2,'S');
-                pdf.setFillColor(15,118,110);pdf.rect(x,y,labelW,5,'F');pdf.setTextColor(255,255,255);pdf.setFont('helvetica','bold');pdf.setFontSize(3.6);pdf.text('MEDIX',x+2.5,y+3.5);pdf.setFontSize(2.3);pdf.text('ASET MEDIS',x+labelW-2.5,y+3.4,{align:'right'});
-                const qrValue=window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||a.seri||''),qrData=medixGetQrDataUrl(qrValue,82);
-                pdf.addImage(qrData,'PNG',x+2.5,y+7,20,20);
-                const tx=x+25,tw=42;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+11,tw,3.7);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+18,tw,2.7);pdf.setTextColor(15,23,42);pdf.setFont('courier','bold');pdf.setFontSize(2.8);pdf.text('SN '+esc(a.seri||'-'),tx,y+24,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+29,tw,2.7);
-                pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(2.1);pdf.text('SCAN UNTUK REKAM JEJAK',x+labelW/2,y+40,{align:'center'});
+                pdf.setDrawColor(203,213,225);pdf.setLineWidth(.3);pdf.roundedRect(x,y,labelW,labelH,1.6,1.6,'S');
+                pdf.setFillColor(15,118,110);pdf.rect(x,y,labelW,4.5,'F');pdf.setTextColor(255,255,255);pdf.setFont('helvetica','bold');pdf.setFontSize(3.1);pdf.text('MEDIX',x+2,y+3.15);pdf.setFontSize(1.8);pdf.text('ASET MEDIS',x+labelW-2,y+3.05,{align:'right'});
+                const qrValue=window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||a.seri||''),qrData=medixGetQrDataUrl(qrValue,72);
+                pdf.addImage(qrData,'PNG',x+2,y+6.2,17.5,17.5);
+                const tx=x+21.5,tw=40;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+11,tw,3.25);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+17,tw,2.25);pdf.setTextColor(15,23,42);pdf.setFont('courier','bold');pdf.setFontSize(2.25);pdf.text('SN '+esc(a.seri||'-'),tx,y+22.5,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+27.5,tw,2.25);
+                pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(1.65);pdf.text('SCAN UNTUK REKAM JEJAK',x+labelW/2,y+35.2,{align:'center'});
             }
             const blob=pdf.output('blob'),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`MEDIX_Label_Aset_${new Date().toISOString().slice(0,10)}.pdf`;link.style.display='none';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
             showToast(`${dataAlat.length} label berhasil diunduh.`,'success');
@@ -9745,23 +9768,37 @@ function renderMaintenanceHistory() {
             const old=document.getElementById('medix-label-print-root'); if(old) old.remove();
             const root=document.createElement('div'); root.id='medix-label-print-root';
             const esc=v=>String(v??'-').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-            root.innerHTML=dataAlat.map((a,i)=>`<div class="medix-label-card-print">
-              <div class="medix-label-top"><b>MEDIX</b><span>ASET MEDIS</span></div>
-              <div class="medix-label-body"><div class="medix-label-qr" id="medix-browser-qr-${i}"></div><div class="medix-label-info">
-                <div class="medix-label-name">${esc(a.nama||'-')}</div>
-                <div class="medix-label-sub">${esc([a.merk,a.tipe].filter(Boolean).join(' · ')||'-')}</div>
-                <div class="medix-label-sn">SN ${esc(a.seri||'-')}</div>
-                <div class="medix-label-room">${esc(a.ruangan||a.lokasi||'-')}</div>
-              </div></div>
-              <div class="medix-label-scan">SCAN UNTUK REKAM JEJAK</div>
-            </div>`).join('');
+            const perPage=15;
+            const pages=[];
+            for(let start=0; start<dataAlat.length; start+=perPage){
+                const pageItems=dataAlat.slice(start,start+perPage);
+                const page=document.createElement('div');
+                page.className='medix-label-print-page';
+                page.innerHTML=pageItems.map((a,i)=>`<div class="medix-label-card-print">
+                  <div class="medix-label-top"><b>MEDIX</b><span>ASET MEDIS</span></div>
+                  <div class="medix-label-body"><div class="medix-label-qr" id="medix-browser-qr-${start+i}"></div><div class="medix-label-info">
+                    <div class="medix-label-name">${esc(a.nama||'-')}</div>
+                    <div class="medix-label-sub">${esc([a.merk,a.tipe].filter(Boolean).join(' · ')||'-')}</div>
+                    <div class="medix-label-sn">SN ${esc(a.seri||'-')}</div>
+                    <div class="medix-label-room">${esc(a.ruangan||a.lokasi||'-')}</div>
+                  </div></div>
+                  <div class="medix-label-scan">SCAN UNTUK REKAM JEJAK</div>
+                </div>`).join('');
+                root.appendChild(page);
+                pages.push(page);
+            }
             document.body.appendChild(root); document.body.classList.add('medix-label-printing');
             try{
                 for(let i=0;i<dataAlat.length;i++){
                     const a=dataAlat[i]||{}, host=document.getElementById(`medix-browser-qr-${i}`);
-                    if(host && window.QRCode) new QRCode(host,{text:window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||a.seri||''),width:82,height:82,colorDark:'#000',colorLight:'#fff',correctLevel:(QRCode.CorrectLevel&&QRCode.CorrectLevel.M)||0});
+                    if(!host) continue;
+                    try{
+                        const url=window.location.origin+window.location.pathname+'?alat='+encodeURIComponent(a.id||a.seri||'');
+                        const dataUrl=medixGetQrDataUrl(url,72);
+                        const img=document.createElement('img'); img.src=dataUrl; img.alt='QR Aset'; img.width=72; img.height=72; host.appendChild(img);
+                    }catch(qrErr){ console.warn('QR label gagal dibuat:',a.id,qrErr); }
                 }
-                await new Promise(r=>requestAnimationFrame(r));
+                await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
                 window.focus(); window.print();
             } finally {
                 const cleanup=()=>{document.body.classList.remove('medix-label-printing');root.remove();document.body.classList.remove('medix-modal-open');};
@@ -10470,7 +10507,7 @@ function renderMaintenanceHistory() {
       const gap=state.labelGap||4,lw=70,lh=45,margin=Number(state.margin)||0;
       const cols=Math.floor((d.w-2*margin+gap)/(lw+gap));
       const rows=Math.floor((d.h-2*margin+gap)/(lh+gap));
-      if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 70 × 45 mm.');
+      if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 64 × 39 mm.');
       const contentW=cols*lw+(cols-1)*gap, contentH=rows*lh+(rows-1)*gap;
       const ox=Math.max(margin,(d.w-contentW)/2), oy=Math.max(margin,(d.h-contentH)/2);
       grid.style.gridTemplateColumns=`repeat(${cols},70mm)`;
