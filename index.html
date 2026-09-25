@@ -9341,10 +9341,10 @@ function renderMaintenanceHistory() {
             const qrContainer = document.getElementById('qrcode-container');
             if (qrContainer && window.QRCode) {
                 qrContainer.innerHTML = "";
-                // QR Rekam Jejak dibuat sangat ringkas agar kamera mudah membaca.
-                // Payload massal tetap memakai payload lengkap, sedangkan QR di kartu
-                // cukup membawa ID dokumen aset. Scanner MEDIX mendukung keduanya.
-                const targetUrl = window.location.origin + window.location.pathname + '#assetid=' + encodeURIComponent(String(alat.id || ''));
+                // QR Rekam Jejak dibuat SAMA dengan QR pada label massal.
+                // Payload v3 membawa ID + nomor seri + identitas singkat aset, sehingga
+                // hasil scan tidak bergantung pada cache dataAlat untuk mengenali aset.
+                const targetUrl = medixBuildQrValue(alat);
                 new QRCode(qrContainer, {
                     text: targetUrl,
                     width: 104,
@@ -9574,6 +9574,24 @@ function renderMaintenanceHistory() {
                         tutupModalScanQrPublik();
                         let targetAlatId = decodedText.trim();
                         try {
+                            // Beberapa kamera/browser mengembalikan teks QR sedikit berbeda.
+                            // Ambil marker MEDIX langsung terlebih dahulu agar tetap bekerja
+                            // walau URL/hash dibungkus atau di-encode oleh scanner.
+                            const rawScan=String(decodedText||'').trim();
+                            const directAssetMatch=rawScan.match(/(?:#|%23)assetid=([^&\s]+)/i);
+                            if(directAssetMatch){
+                                bukaKartuPemeliharaanPublik(decodeURIComponent(directAssetMatch[1]));
+                                return;
+                            }
+                            const directPackedMatch=rawScan.match(/(?:#|%23)asset=([^&\s]+)/i);
+                            if(directPackedMatch){
+                                const packedRaw=decodeURIComponent(directPackedMatch[1]);
+                                const payload=medixDecodeBase64Url(packedRaw);
+                                if(payload && (payload.id||payload.sn)){
+                                    bukaKartuPemeliharaanPublik(payload.id||payload.sn,payload);
+                                    return;
+                                }
+                            }
                             const u=new URL(decodedText,window.location.href);
                             const hash=String(u.hash||'');
                             // QR Rekam Jejak: #assetid=ID (payload paling ringkas dan mudah dipindai).
