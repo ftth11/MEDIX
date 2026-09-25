@@ -2576,6 +2576,109 @@ body.medix-public-rekam #modal-kartu { display:flex !important; position:fixed !
 body.medix-public-rekam #modal-kartu > div { width:100vw !important; max-width:none !important; height:100vh !important; max-height:none !important; border-radius:0 !important; margin:0 !important; }
 body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px) !important; }
 </style>
+
+<style id="medix-final-qr-lk-natural-fix">
+/* QR Rekam Jejak: satu renderer saja, ukuran stabil. */
+#qrcode-container{
+  width:100px !important;
+  height:100px !important;
+  min-width:100px !important;
+  min-height:100px !important;
+  max-width:100px !important;
+  max-height:100px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  transform:none !important;
+  transition:none !important;
+}
+#qrcode-container canvas,
+#qrcode-container img{
+  width:92px !important;
+  height:92px !important;
+  min-width:92px !important;
+  min-height:92px !important;
+  max-width:92px !important;
+  max-height:92px !important;
+  display:block !important;
+  margin:0 auto !important;
+  transform:none !important;
+}
+#qrcode-container canvas + img{display:none !important;}
+
+/* LK cetak: HTML asli, bukan efek "gambar ditempel". Satu A4 portrait,
+   ukuran natural dan kompak tanpa zoom/transform. */
+@media print {
+  html, body{background:#fff !important;}
+  body.medix-lk-printing > *{display:none !important;}
+  body.medix-lk-printing > #area-lembar-kerja-resmi{display:block !important;}
+  body > #area-lembar-kerja-resmi{
+    display:block !important;
+    position:static !important;
+    width:198mm !important;
+    max-width:198mm !important;
+    min-height:0 !important;
+    height:auto !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    border:0 !important;
+    box-shadow:none !important;
+    background:#fff !important;
+    color:#0f172a !important;
+    overflow:visible !important;
+    zoom:1 !important;
+    transform:none !important;
+  }
+  #area-lembar-kerja-resmi > div{
+    width:100% !important;
+    max-width:none !important;
+    min-height:0 !important;
+    height:auto !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    background:#fff !important;
+    overflow:visible !important;
+  }
+  #area-lembar-kerja-resmi *{box-sizing:border-box !important;}
+  #area-lembar-kerja-resmi .grid{gap:2px !important;}
+  #area-lembar-kerja-resmi .space-y-3 > :not([hidden]) ~ :not([hidden]){margin-top:3px !important;}
+  #area-lembar-kerja-resmi .space-y-2 > :not([hidden]) ~ :not([hidden]){margin-top:2px !important;}
+  #area-lembar-kerja-resmi .space-y-1 > :not([hidden]) ~ :not([hidden]){margin-top:1px !important;}
+  #area-lembar-kerja-resmi .p-2,
+  #area-lembar-kerja-resmi .p-2\.5{padding:3px !important;}
+  #area-lembar-kerja-resmi h1{font-size:9px !important;line-height:1.05 !important;margin:0 !important;}
+  #area-lembar-kerja-resmi h2{font-size:14px !important;line-height:1.05 !important;margin:1px 0 !important;}
+  #area-lembar-kerja-resmi h3{font-size:9px !important;line-height:1.05 !important;margin:1px 0 !important;}
+  #area-lembar-kerja-resmi p{line-height:1.08 !important;margin:1px 0 !important;}
+  #area-lembar-kerja-resmi input,
+  #area-lembar-kerja-resmi select,
+  #area-lembar-kerja-resmi textarea{font-size:8px !important;line-height:1.05 !important;min-height:14px !important;}
+  #area-lembar-kerja-resmi .lk-info-top-card{height:auto !important;min-height:0 !important;max-height:none !important;overflow:visible !important;}
+  #area-lembar-kerja-resmi #box-preview-foto-before{flex-basis:64px !important;height:64px !important;min-height:64px !important;max-height:64px !important;}
+  #area-lembar-kerja-resmi [class*="min-h-[90px]"]{min-height:48px !important;}
+  #area-lembar-kerja-resmi #box-list-alatkerja > *,
+  #area-lembar-kerja-resmi #box-list-fisik > *,
+  #area-lembar-kerja-resmi #box-list-fungsi > *{min-height:14px !important;padding:1px 3px !important;font-size:7.5px !important;line-height:1.05 !important;}
+  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{min-height:60px !important;max-height:82px !important;height:auto !important;overflow:visible !important;}
+  #area-lembar-kerja-resmi #dlk-txt-deskripsi-tunggal{min-height:42px !important;max-height:64px !important;padding:3px !important;font-size:7.5px !important;line-height:1.1 !important;overflow:hidden !important;}
+  #area-lembar-kerja-resmi .h-16,
+  #area-lembar-kerja-resmi .print\:h-14,
+  #area-lembar-kerja-resmi .border-dashed{height:40px !important;min-height:40px !important;}
+  #area-lembar-kerja-resmi canvas{max-height:40px !important;}
+  #area-lembar-kerja-resmi .lk-calibration-dates{height:18px !important;min-height:18px !important;max-height:18px !important;overflow:visible !important;}
+  #area-lembar-kerja-resmi .lk-date-field{height:18px !important;min-height:18px !important;}
+  #area-lembar-kerja-resmi .lk-date-label{font-size:7.5px !important;}
+  #area-lembar-kerja-resmi .lk-print-date-value-inline{height:14px !important;line-height:14px !important;font-size:7.5px !important;}
+  #area-lembar-kerja-resmi > div,
+  #area-lembar-kerja-resmi .lk-info-top-card,
+  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{break-inside:avoid !important;page-break-inside:avoid !important;}
+  #area-lembar-kerja-resmi .lk-bhp-print-only{display:block !important;}
+}
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -9400,11 +9503,33 @@ function renderMaintenanceHistory() {
                 const targetUrl = window.location.origin + window.location.pathname + '?alat=' + encodeURIComponent(String(alat.id || ''));
                 new QRCode(qrContainer, {
                     text: targetUrl,
-                    width: 96,
-                    height: 96,
+                    width: 92,
+                    height: 92,
                     colorDark: '#000000',
                     colorLight: '#ffffff',
                     correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.L) || 1
+                });
+                // qrcodejs pada beberapa browser dapat menyisakan lebih dari satu
+                // renderer (canvas/img). Rekam Jejak hanya boleh menampilkan SATU QR.
+                requestAnimationFrame(() => {
+                    const canvases = Array.from(qrContainer.querySelectorAll('canvas'));
+                    const imgs = Array.from(qrContainer.querySelectorAll('img'));
+                    if (canvases.length) {
+                        imgs.forEach(el => el.remove());
+                        canvases.slice(1).forEach(el => el.remove());
+                        const qr = canvases[0];
+                        qr.width = 92; qr.height = 92;
+                        qr.style.width = '92px'; qr.style.height = '92px';
+                        qr.style.display = 'block';
+                        qr.style.margin = '0 auto';
+                    } else if (imgs.length) {
+                        imgs.slice(1).forEach(el => el.remove());
+                        const qr = imgs[0];
+                        qr.width = 92; qr.height = 92;
+                        qr.style.width = '92px'; qr.style.height = '92px';
+                        qr.style.display = 'block';
+                        qr.style.margin = '0 auto';
+                    }
                 });
             }
             
