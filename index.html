@@ -1837,6 +1837,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   .medix-mobile-filter-bar { display:flex; align-items:center; gap:7px; padding:0 0 10px; position:sticky; top:0; z-index:20; }
   .medix-mobile-filter-bar select { flex:1 1 auto; min-width:0; height:38px; border:1px solid #dbe5ec; border-radius:12px; background:#fff; color:#334155; padding:0 10px; font-size:11px; font-weight:800; outline:none; box-shadow:0 4px 14px rgba(15,23,42,.05); }
   .medix-mobile-filter-btn { min-height:38px; padding:0 13px; border-radius:12px; background:linear-gradient(135deg,#0f766e,#0ea5a4); color:#fff; border:0; box-shadow:0 5px 14px rgba(13,148,136,.20); white-space:nowrap; }
+.medix-mobile-filter-reset{min-height:38px;min-width:38px;border-radius:12px;border:1px solid #fecaca;background:#fff1f2;color:#be123c;box-shadow:0 4px 12px rgba(190,24,93,.08);}
   .medix-filter-th { padding-right:.6rem !important; }
   .medix-filter-btn { display:none; }
 }
@@ -2705,10 +2706,45 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
   }
 }
 </style>
+<style id="medix-lk-locked-view-final">
+/* LK tersimpan = read-only. Editor BHP disembunyikan, ringkasan tetap terlihat. */
+#area-lembar-kerja-resmi.medix-lk-locked .lk-bhp-usage-card{display:none !important;}
+#area-lembar-kerja-resmi.medix-lk-locked #dlk-bhp-print-summary{display:block !important;}
+#area-lembar-kerja-resmi.medix-lk-locked #btn-download-lk-pdf{display:inline-flex !important;}
+#area-lembar-kerja-resmi:not(.medix-lk-locked) #btn-download-lk-pdf{display:none !important;}
+@media print{
+  /* Nama teknisi/user/pj dicetak sebagai teks tanpa kotak dan tanpa panah select. */
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi,
+  #area-lembar-kerja-resmi #dlk-kepala-ruangan-nama,
+  #area-lembar-kerja-resmi #dlk-nama-pj{
+    border:0 !important;
+    border-bottom:0 !important;
+    outline:0 !important;
+    box-shadow:none !important;
+    background:transparent !important;
+    appearance:none !important;
+    -webkit-appearance:none !important;
+    padding:0 !important;
+    text-align:center !important;
+  }
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi::-ms-expand{display:none !important;}
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi{color:#0f172a !important;}
+  #area-lembar-kerja-resmi .lk-bhp-usage-card{display:none !important;}
+  #area-lembar-kerja-resmi #dlk-bhp-print-summary{display:block !important;}
+}
+</style>
 <style id="medix-qr-rekam-jejak-final">
 #qrcode-container{width:104px!important;height:104px!important;min-width:104px!important;min-height:104px!important;max-width:104px!important;max-height:104px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:#fff!important;padding:4px!important;box-sizing:border-box!important;}
 #qrcode-container img{width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;max-width:96px!important;max-height:96px!important;display:block!important;visibility:visible!important;opacity:1!important;object-fit:contain!important;transform:none!important;background:#fff!important;}
 #qrcode-container canvas{display:none!important;}
+</style>
+<style id="medix-lk-signature-print-final">
+@media print{
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi{border:0!important;border-bottom:0!important;background:transparent!important;appearance:none!important;-webkit-appearance:none!important;padding:0!important;box-shadow:none!important;outline:0!important;text-align:center!important;}
+  #area-lembar-kerja-resmi #dlk-kepala-ruangan-nama{border:0!important;border-bottom:0!important;background:transparent!important;box-shadow:none!important;outline:0!important;padding:0!important;text-align:center!important;}
+  #area-lembar-kerja-resmi #dlk-nama-pj{border:0!important;border-bottom:0!important;background:transparent!important;box-shadow:none!important;outline:0!important;padding:0!important;text-align:center!important;}
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi::-ms-expand{display:none!important;}
+}
 </style>
 </head>
     
@@ -3650,6 +3686,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
             <div class="no-print border-t border-slate-200 pt-2 flex justify-end space-x-2">
                 <button type="button" onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" class="bg-slate-400 hover:bg-slate-500 text-white px-4 py-1.5 rounded-lg text-xs">Tutup</button>
+                <button type="button" id="btn-download-lk-pdf" onclick="cetakLKTerKunci()" class="hidden items-center bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-xs shadow-md"><i class="fa-solid fa-file-pdf mr-1"></i>Cetak / Simpan PDF</button>
                 <button type="button" id="btn-simpan-lk-aksi" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data</button>
             </div>
         </div>
@@ -7767,6 +7804,10 @@ function renderMaintenanceHistory() {
         }
 
         function bukaKunciTotalFormWorksheetBaru() {
+            const area = document.getElementById('area-lembar-kerja-resmi');
+            if(area) area.classList.remove('medix-lk-locked');
+            const btnDownloadPdf = document.getElementById('btn-download-lk-pdf');
+            if(btnDownloadPdf) btnDownloadPdf.classList.add('hidden');
             const btnSimpanLk = document.getElementById('btn-simpan-lk-aksi');
             if(btnSimpanLk) btnSimpanLk.style.display = 'inline-block';
             ['btn-clear-sig-teknisi', 'btn-clear-sig-user', 'btn-clear-sig-pj'].forEach(id => {
@@ -7777,11 +7818,14 @@ function renderMaintenanceHistory() {
             });
             const descBox = document.getElementById('dlk-txt-deskripsi-tunggal');
             if(descBox) descBox.setAttribute('contenteditable', 'true');
-            const area = document.getElementById('area-lembar-kerja-resmi');
             if(area) area.querySelectorAll('input, select').forEach(el => el.removeAttribute('disabled'));
         }
 
         function terapkanModeLockedPermanenLk() {
+            const area = document.getElementById('area-lembar-kerja-resmi');
+            if(area) area.classList.add('medix-lk-locked');
+            const btnDownloadPdf = document.getElementById('btn-download-lk-pdf');
+            if(btnDownloadPdf) { btnDownloadPdf.classList.remove('hidden'); btnDownloadPdf.style.display = 'inline-flex'; }
             const btnSimpanLk = document.getElementById('btn-simpan-lk-aksi');
             if(btnSimpanLk) btnSimpanLk.style.display = 'none';
             ['btn-clear-sig-teknisi', 'btn-clear-sig-user', 'btn-clear-sig-pj'].forEach(id => {
@@ -7846,6 +7890,7 @@ function renderMaintenanceHistory() {
             setPenanggungJawabAlkesOtomatis();
             
             terapkanModeLockedPermanenLk();
+            renderBHPUsageLK();
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); 
             areaLK.classList.remove('hidden'); areaLK.scrollTop = 0;
 
@@ -7855,6 +7900,17 @@ function renderMaintenanceHistory() {
                 if(record.ttdUser) muatTandaTanganKeCanvas('sig-user', record.ttdUser);
                 if(record.ttdPJ) muatTandaTanganKeCanvas('sig-pj', record.ttdPJ);
             }, 300);
+        }
+
+        function cetakLKTerKunci(){
+            const area=document.getElementById('area-lembar-kerja-resmi');
+            if(!area || !area.classList.contains('medix-lk-locked')){ showToast('LK belum berada pada mode tersimpan/terkunci.','info'); return; }
+            try{ siapkanLKUntukCetak(); }catch(e){ console.warn('Persiapan LK:',e); }
+            medixOpenPrintSettings(window,{
+                title:'Lembar Kerja Pemeliharaan - '+(document.getElementById('dlk-no')?.value||''),
+                mode:'lk', defaultPreset:'A4', defaultOrientation:'portrait', defaultMargin:5,
+                targetSelector:'#area-lembar-kerja-resmi'
+            });
         }
 
         function pemicuCetakDokumen() {
@@ -8637,10 +8693,17 @@ function renderMaintenanceHistory() {
 
         function renderBHPUsageLK(){
             const body=document.getElementById('dlk-bhp-list'), empty=document.getElementById('dlk-bhp-empty'), count=document.getElementById('dlk-bhp-count'); if(!body)return;
-            if(count)count.innerText=`${bhpUsageLK.length} item${bhpUsageLK.length===1?'':'s'}`;
-            if(empty)empty.classList.toggle('hidden',bhpUsageLK.length>0);
-            body.innerHTML=bhpUsageLK.map((u,i)=>{const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||{}; const st=getStokBHP(u.itemId); return `<div class="lk-bhp-row"><div class="min-w-0"><div class="lk-bhp-item-name truncate">${escBHP(item.namaItem||u.namaItem||'-')}</div><div class="lk-bhp-meta">${escBHP(item.namaAlkes||u.namaAlkes||'-')} · ${escBHP(item.jenisItem||u.jenisItem||'-')}</div></div><span class="lk-bhp-qty-pill">${angkaBHP(u.qty)} ${escBHP(item.satuan||u.satuan||'')}</span><span class="lk-bhp-stock-pill">Sisa ${st.stok}</span><button type="button" onclick="hapusBHPDariLK(${i})" class="lk-bhp-remove w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold" title="Hapus"><i class="fa-solid fa-trash-can"></i></button></div>`;}).join('');
+            const usage=Array.isArray(bhpUsageLK)?bhpUsageLK:[];
+            body.innerHTML=usage.map((u,i)=>{const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||u;return `<div class="lk-bhp-row"><div class="min-w-0"><div class="font-black text-slate-800 text-[10px] truncate">${escBHP(item.namaItem||u.namaItem||'-')}</div><div class="lk-bhp-meta text-[8px] text-slate-500 truncate">${escBHP(item.namaAlkes||u.namaAlkes||'-')}</div></div><div class="lk-bhp-stock-pill">${angkaBHP(u.qty)} ${escBHP(item.satuan||u.satuan||'')}</div><button type="button" class="lk-bhp-remove" onclick="hapusBHPDariLK(${i})"><i class="fa-solid fa-trash"></i></button></div>`}).join('');
+            if(empty) empty.style.display=usage.length?'none':'block';
+            if(count) count.textContent=`${usage.length} item`;
             renderBHPUsageLKPrint();
+            const area=document.getElementById('area-lembar-kerja-resmi');
+            const locked=!!area?.classList.contains('medix-lk-locked');
+            const editor=document.querySelector('#area-lembar-kerja-resmi .lk-bhp-usage-card');
+            const summary=document.getElementById('dlk-bhp-print-summary');
+            if(locked){ if(editor) editor.style.display='none'; if(summary) summary.style.display='block'; }
+            else { if(editor) editor.style.display=''; if(summary) summary.style.display='none'; }
         }
         function tambahBHPKeLK(){
             const itemId=document.getElementById('dlk-bhp-item')?.value,qty=angkaBHP(document.getElementById('dlk-bhp-qty')?.value);
@@ -10689,23 +10752,19 @@ function renderMaintenanceHistory() {
     if(host && !host.querySelector(':scope > .medix-mobile-filter-bar')){
       const bar=document.createElement('div'); bar.className='medix-mobile-filter-bar no-print';
       const options=Array.from(table.tHead.rows[0].cells).map((th,i)=>isFilterableHeader(th.innerText)?`<option value="${i}">${escapeHtml(norm(th.innerText))}</option>`:'').join('');
-      bar.innerHTML=`<select class="medix-mobile-filter-select" aria-label="Pilih kolom filter"><option value="">Pilih kolom...</option>${options}</select><button type="button" class="medix-mobile-filter-btn"><i class="fa-solid fa-filter"></i> Buka Filter</button>`;
+      bar.innerHTML=`<select class="medix-mobile-filter-select" aria-label="Pilih kolom filter"><option value="">Filter kolom...</option>${options}</select><button type="button" class="medix-mobile-filter-btn"><i class="fa-solid fa-filter"></i> Filter</button><button type="button" class="medix-mobile-filter-reset" title="Hapus semua filter"><i class="fa-solid fa-xmark"></i></button>`;
       const sel=bar.querySelector('select');
-      const mobileBtn=bar.querySelector('button');
-      mobileBtn.onclick=(event)=>{
-        event.preventDefault(); event.stopPropagation();
+      const mobileBtn=bar.querySelector('button.medix-mobile-filter-btn');
+      const resetBtn=bar.querySelector('button.medix-mobile-filter-reset');
+      const openSelected=()=>{
         const raw=sel.value;
-        if(raw===''){
-          showToast('Silakan pilih kolom filter terlebih dahulu.','info');
-          sel.focus();
-          return;
-        }
+        if(raw===''){ sel.focus(); return; }
         const col=Number(raw);
-        if(Number.isInteger(col) && col>=0){
-          openPopup(table,col,mobileBtn);
-        }
+        if(Number.isInteger(col) && col>=0) openPopup(table,col,mobileBtn);
       };
-      sel.addEventListener('change',()=>{ mobileBtn.classList.toggle('ready',sel.value!==''); });
+      mobileBtn.onclick=(event)=>{ event.preventDefault(); event.stopPropagation(); openSelected(); };
+      resetBtn.onclick=(event)=>{ event.preventDefault(); event.stopPropagation(); const st=getState(table); st.filters.clear(); apply(table); sel.value=''; };
+      sel.addEventListener('change',()=>{ if(sel.value!=='') openSelected(); });
       host.insertBefore(bar,table);
     }
     observeBody(table); apply(table);
