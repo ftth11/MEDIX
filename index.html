@@ -1842,6 +1842,14 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
   .medix-filter-btn { display:none; }
 }
 
+/* MEDIX v19 — nonaktifkan filter tabel pada HP/tablet; filter tetap tersedia di desktop */
+@media (max-width:1024px){
+  .medix-mobile-filter-bar,
+  .medix-filter-btn,
+  .medix-smart-filter-panel{display:none !important;}
+  .medix-filter-th{padding-right:0 !important;}
+}
+
 /* MEDIX v18 — App-like filters for mobile/tablet */
 .medix-smart-filter-panel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px;border:1px solid #dbe5ec;border-radius:16px;background:linear-gradient(180deg,#ffffff,#f8fafc);box-shadow:0 6px 20px rgba(15,23,42,.045);}
 .medix-smart-filter-panel .medix-smart-search{flex:1 1 240px;min-width:180px;height:40px;border:1px solid #dbe5ec;border-radius:12px;background:#fff;padding:0 12px;font-size:11px;font-weight:700;outline:none;color:#0f172a;}
@@ -3464,11 +3472,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
     <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[99999] flex items-center justify-center p-2 hidden no-print overflow-y-auto no-scrollbar">
         <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border border-slate-200 max-w-4xl w-full mx-auto text-slate-900 space-y-3 print:space-y-1 relative max-h-[96vh] print:max-h-none overflow-y-auto no-scrollbar print:overflow-visible my-auto">
             
-            <div class="absolute top-4 right-4 flex items-center space-x-2 z-20 no-print">
-                <button onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" type="button" class="bg-slate-500 hover:bg-slate-600 text-white px-3 py-1.5 rounded font-bold text-xs shadow flex items-center space-x-1"><i class="fa-solid fa-xmark"></i> <span>Tutup</span></button>
-                <button onclick="pemicuCetakDokumen()" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded font-bold text-xs shadow flex items-center space-x-1"><i class="fa-solid fa-print"></i> <span>Cetak Dokumen</span></button>
-            </div>
-
             <div class="flex items-center justify-center space-x-5 border-b-2 border-slate-800 pb-2 text-slate-900 w-full pt-6 print:pt-1">
                 <div class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm bg-slate-50">
                     <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-kop').classList.remove('hidden')" class="w-full h-full object-contain" alt="Logo">
