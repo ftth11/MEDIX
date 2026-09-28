@@ -2808,6 +2808,97 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 }
 </style>
 
+
+<style id="medix-lk-uraian-print-final-fix">
+/* LK print: uraian 4 kolom/bidang harus utuh, simetris, dan tidak terpotong. */
+#area-lembar-kerja-resmi .lk-uraian-structured{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  grid-template-rows:1fr 1fr !important;
+  gap:0 !important;
+  height:64px !important;
+  min-height:64px !important;
+  max-height:64px !important;
+  border:1px solid #111 !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field{
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  overflow:visible !important;
+  border:0 !important;
+  border-right:1px solid #111 !important;
+  border-bottom:1px solid #111 !important;
+  border-radius:0 !important;
+  box-sizing:border-box !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field:nth-child(2n){border-right:0 !important;}
+#area-lembar-kerja-resmi .lk-uraian-field:nth-child(n+3){border-bottom:0 !important;}
+#area-lembar-kerja-resmi .lk-uraian-field label{
+  display:block !important;
+  flex:0 0 auto !important;
+  height:13px !important;
+  line-height:12px !important;
+  box-sizing:border-box !important;
+  margin:0 !important;
+  padding:0 3px !important;
+  border:0 !important;
+  border-bottom:1px solid #111 !important;
+  color:#000 !important;
+  font-size:6.5px !important;
+  font-weight:900 !important;
+  text-transform:uppercase !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field textarea{
+  display:block !important;
+  width:100% !important;
+  height:18px !important;
+  min-height:18px !important;
+  max-height:18px !important;
+  flex:1 1 auto !important;
+  box-sizing:border-box !important;
+  margin:0 !important;
+  padding:2px 3px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  outline:0 !important;
+  resize:none !important;
+  overflow:hidden !important;
+  background:#fff !important;
+  color:#000 !important;
+  font-size:7px !important;
+  line-height:1.1 !important;
+}
+
+/* Nama penandatangan selalu hitam dan tebal pada preview/cetak. */
+#area-lembar-kerja-resmi #dlk-select-nama-teknisi,
+#area-lembar-kerja-resmi #dlk-kepala-ruangan-nama,
+#area-lembar-kerja-resmi #dlk-nama-pj{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  font-weight:900 !important;
+  text-shadow:none !important;
+}
+@media print{
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi,
+  #area-lembar-kerja-resmi #dlk-kepala-ruangan-nama,
+  #area-lembar-kerja-resmi #dlk-nama-pj{
+    color:#000 !important;
+    -webkit-text-fill-color:#000 !important;
+    font-weight:900 !important;
+    text-shadow:none !important;
+  }
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi option{
+    color:#000 !important;
+    -webkit-text-fill-color:#000 !important;
+    font-weight:900 !important;
+    background:#fff !important;
+  }
+}
+</style>
+
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
