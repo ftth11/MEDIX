@@ -2712,10 +2712,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 /* LK tersimpan = read-only. Editor BHP disembunyikan, ringkasan tetap terlihat. */
 #area-lembar-kerja-resmi.medix-lk-locked .lk-bhp-usage-card{display:none !important;}
 #area-lembar-kerja-resmi.medix-lk-locked #dlk-bhp-print-summary{display:block !important;}
-#area-lembar-kerja-resmi.medix-lk-locked #btn-view-lk-pdf,
 #area-lembar-kerja-resmi.medix-lk-locked #btn-download-lk-pdf{display:inline-flex !important;}
-#area-lembar-kerja-resmi:not(.medix-lk-locked) #btn-view-lk-pdf,
 #area-lembar-kerja-resmi:not(.medix-lk-locked) #btn-download-lk-pdf{display:none !important;}
+#area-lembar-kerja-resmi.medix-lk-locked .lk-pfa-head button{display:none !important;}
 @media print{
   /* Nama teknisi/user/pj dicetak sebagai teks tanpa kotak dan tanpa panah select. */
   #area-lembar-kerja-resmi #dlk-select-nama-teknisi,
@@ -3768,8 +3767,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
             <div class="no-print border-t border-slate-200 pt-2 flex justify-end space-x-2">
                 <button type="button" onclick="document.getElementById('area-lembar-kerja-resmi').classList.add('hidden')" class="bg-slate-400 hover:bg-slate-500 text-white px-4 py-1.5 rounded-lg text-xs">Tutup</button>
-                <button type="button" id="btn-view-lk-pdf" onclick="lihatLkTersimpanSebagaiPdf()" class="hidden items-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-lg font-bold text-xs shadow-md"><i class="fa-solid fa-file-pdf mr-1"></i>Lihat PDF</button>
-                <button type="button" id="btn-download-lk-pdf" onclick="cetakLKTerKunci()" class="hidden items-center bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-xs shadow-md"><i class="fa-solid fa-print mr-1"></i>Cetak / Simpan PDF</button>
+                <button type="button" id="btn-download-lk-pdf" onclick="pemicuCetakDokumen()" class="hidden items-center bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-xs shadow-md"><i class="fa-solid fa-print mr-1"></i>Cetak</button>
                 <button type="button" id="btn-simpan-lk-aksi" onclick="simpanPenuhIsianWorksheetDinamis()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-lg font-bold text-xs shadow-md">Simpan Data</button>
             </div>
         </div>
@@ -3970,20 +3968,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
         </div>
     </div>
     
-    <!-- MODAL PREVIEW -->
-    <div id="modal-lk-pdf" class="fixed inset-0 bg-slate-900/85 backdrop-blur-md z-[100000] hidden no-print">
-        <div class="w-full h-full bg-white flex flex-col">
-            <div class="h-12 shrink-0 px-4 flex items-center justify-between border-b border-slate-200 bg-white">
-                <div class="font-black text-sm text-slate-800"><i class="fa-solid fa-file-pdf mr-2 text-rose-600"></i>Lembar Kerja Pemeliharaan</div>
-                <div class="flex items-center gap-2">
-                    <button type="button" id="btn-lk-pdf-download" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-[10px] font-black"><i class="fa-solid fa-download mr-1"></i>Download PDF</button>
-                    <button type="button" id="btn-lk-pdf-close" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 font-black" aria-label="Tutup">×</button>
-                </div>
-            </div>
-            <iframe id="lk-pdf-viewer" title="Lembar Kerja PDF" class="flex-1 w-full border-0 bg-slate-200"></iframe>
-        </div>
-    </div>
-
     <div id="modal-preview" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[1000] flex items-center justify-center p-4 hidden no-print">
         <div class="bg-white w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
             <div class="p-4 bg-slate-100 text-slate-800 flex justify-between items-center border-b border-slate-200"><h3 id="preview-title" class="font-bold text-sm">File Peninjau</h3><button onclick="toggleModal('modal-preview', false)" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-xmark"></i></button></div>
@@ -7983,7 +7967,7 @@ function renderMaintenanceHistory() {
             const area = document.getElementById('area-lembar-kerja-resmi');
             if(area) area.classList.remove('medix-lk-locked');
             const btnDownloadPdf = document.getElementById('btn-download-lk-pdf');
-            if(btnDownloadPdf) btnDownloadPdf.classList.add('hidden');
+            if(btnDownloadPdf) { btnDownloadPdf.classList.add('hidden'); btnDownloadPdf.style.display = 'none'; }
             const btnSimpanLk = document.getElementById('btn-simpan-lk-aksi');
             if(btnSimpanLk) btnSimpanLk.style.display = 'inline-block';
             ['btn-clear-sig-teknisi', 'btn-clear-sig-user', 'btn-clear-sig-pj'].forEach(id => {
@@ -8079,90 +8063,7 @@ function renderMaintenanceHistory() {
                 if(record.ttdTeknisi) muatTandaTanganKeCanvas('sig-teknisi', record.ttdTeknisi);
                 if(record.ttdUser) muatTandaTanganKeCanvas('sig-user', record.ttdUser);
                 if(record.ttdPJ) muatTandaTanganKeCanvas('sig-pj', record.ttdPJ);
-                setTimeout(()=>lihatLkTersimpanSebagaiPdf(),120);
             }, 300);
-        }
-
-        let medixCurrentLkPdfBlob = null;
-        let medixCurrentLkPdfUrl = '';
-
-        async function medixBuildLkPdfBlob(){
-            const area=document.getElementById('area-lembar-kerja-resmi');
-            if(!area) throw new Error('Area LK tidak ditemukan.');
-            if(!window.html2canvas || !window.jspdf?.jsPDF) throw new Error('Mesin PDF belum termuat. Muat ulang halaman lalu coba lagi.');
-            try{ siapkanLKUntukCetak(); }catch(e){ console.warn('Persiapan LK PDF:',e); }
-            const clone=area.cloneNode(true);
-            clone.classList.remove('hidden');
-            clone.classList.remove('medix-lk-locked');
-            clone.style.cssText='position:absolute;left:-100000px;top:0;width:200mm;max-width:200mm;min-height:0;height:auto;margin:0;padding:0;background:#fff;color:#000;box-shadow:none;border:0;overflow:visible;zoom:1;transform:none;';
-            clone.querySelectorAll('.no-print,button').forEach(el=>el.remove());
-            clone.querySelectorAll('textarea').forEach(el=>{const d=document.createElement('div');d.textContent=el.value||'';d.style.cssText='white-space:pre-wrap;overflow:hidden;box-sizing:border-box;width:100%;height:25px;min-height:25px;max-height:25px;padding:2px 3px;font-size:7px;line-height:1.1;color:#000;background:#fff;';el.replaceWith(d);});
-            clone.querySelectorAll('select').forEach(el=>{const d=document.createElement('div');d.textContent=el.options[el.selectedIndex]?.text||'';d.style.cssText='width:100%;min-height:14px;height:14px;line-height:14px;text-align:center;font-size:8px;font-weight:900;color:#000;background:#fff;';el.replaceWith(d);});
-            clone.querySelectorAll('input[type="text"],input[type="date"],input[type="datetime-local"]').forEach(el=>{const d=document.createElement('div');d.textContent=el.value||'';d.style.cssText='width:100%;min-height:14px;height:14px;line-height:14px;font-size:8px;color:#000;background:#fff;border-bottom:1px solid #94a3b8;box-sizing:border-box;';el.replaceWith(d);});
-            clone.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(el=>{const lab=el.closest('label');if(el.checked){const d=document.createElement('span');d.textContent='✓';d.style.fontWeight='900';el.replaceWith(d);}else{if(lab)lab.remove();else el.remove();}});
-            clone.querySelectorAll('canvas').forEach(cv=>{try{const img=document.createElement('img');img.src=cv.toDataURL('image/png');img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;';cv.replaceWith(img);}catch(e){}});
-            clone.querySelectorAll('.lk-print-date-value-inline').forEach(el=>{el.style.cssText='display:block!important;height:14px;line-height:14px;font-size:7.5px;font-weight:800;color:#000;border-bottom:1px solid #94a3b8;background:#fff;';});
-            document.body.appendChild(clone);
-            await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-            const targetH=Math.round(287*3.779527559);
-            const naturalH=clone.scrollHeight;
-            const fit=Math.min(1,targetH/Math.max(1,naturalH));
-            if(fit<1){clone.style.transformOrigin='top left';clone.style.transform=`scale(${fit})`;clone.style.width=`${200/fit}mm`;clone.style.maxWidth='none';}
-            await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-            const canvas=await window.html2canvas(clone,{backgroundColor:'#fff',scale:2,useCORS:true,allowTaint:false,logging:false,scrollX:0,scrollY:0,windowWidth:Math.ceil(clone.getBoundingClientRect().width)});
-            clone.remove();
-            const {jsPDF}=window.jspdf;
-            const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});
-            const pageW=210,pageH=297,margin=5,maxW=pageW-2*margin,maxH=pageH-2*margin;
-            const ratio=Math.min(maxW/canvas.width,maxH/canvas.height); const drawW=canvas.width*ratio,drawH=canvas.height*ratio;
-            pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',(pageW-drawW)/2,margin,drawW,drawH,undefined,'FAST');
-            return pdf.output('blob');
-        }
-
-        async function lihatLkTersimpanSebagaiPdf(){
-            const area=document.getElementById('area-lembar-kerja-resmi');
-            if(!area || !area.classList.contains('medix-lk-locked')){ showToast('LK belum berada pada mode tersimpan/terkunci.','info'); return; }
-            const modal=document.getElementById('modal-lk-pdf'),frame=document.getElementById('lk-pdf-viewer');
-            if(!modal||!frame) return;
-            try{
-                if(medixCurrentLkPdfUrl) URL.revokeObjectURL(medixCurrentLkPdfUrl);
-                medixCurrentLkPdfBlob=await medixBuildLkPdfBlob();
-                medixCurrentLkPdfUrl=URL.createObjectURL(medixCurrentLkPdfBlob);
-                frame.src=medixCurrentLkPdfUrl;
-                modal.classList.remove('hidden');
-                document.body.classList.add('overflow-hidden');
-                const dl=document.getElementById('btn-lk-pdf-download');
-                if(dl) dl.onclick=()=>{const a=document.createElement('a');a.href=medixCurrentLkPdfUrl;a.download=(document.getElementById('dlk-no')?.value||'LK-Pemeliharaan')+'.pdf';a.click();};
-            }catch(err){console.error('PDF LK:',err);showToast('LK PDF gagal dibuat: '+(err.message||err),'error');}
-        }
-
-        function tutupLkPdfViewer(){
-            const modal=document.getElementById('modal-lk-pdf'); if(modal) modal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-            const frame=document.getElementById('lk-pdf-viewer'); if(frame) frame.src='about:blank';
-        }
-
-        async function cetakLKTerKunci(){
-            const area=document.getElementById('area-lembar-kerja-resmi');
-            if(!area || !area.classList.contains('medix-lk-locked')){ showToast('LK belum berada pada mode tersimpan/terkunci.','info'); return; }
-            const popup=window.open('about:blank','_blank');
-            try{
-                const blob=await medixBuildLkPdfBlob();
-                const url=URL.createObjectURL(blob);
-                if(popup && !popup.closed){
-                    popup.location.href=url;
-                    setTimeout(()=>URL.revokeObjectURL(url),120000);
-                }else{
-                    if(medixCurrentLkPdfUrl) URL.revokeObjectURL(medixCurrentLkPdfUrl);
-                    medixCurrentLkPdfBlob=blob; medixCurrentLkPdfUrl=url;
-                    const modal=document.getElementById('modal-lk-pdf'),frame=document.getElementById('lk-pdf-viewer');
-                    if(modal&&frame){frame.src=url;modal.classList.remove('hidden');document.body.classList.add('overflow-hidden');}
-                    showToast('PDF LK sudah dibuat. Gunakan tombol cetak/simpan pada penampil PDF.','success');
-                }
-            }catch(err){
-                try{if(popup&&!popup.closed)popup.close();}catch(e){}
-                console.error('Cetak PDF LK:',err); showToast('PDF LK gagal dibuat: '+(err.message||err),'error');
-            }
         }
 
         function pemicuCetakDokumen() {
@@ -8182,11 +8083,6 @@ function renderMaintenanceHistory() {
                 targetSelector: '#area-lembar-kerja-resmi'
             });
         }
-
-        document.addEventListener('DOMContentLoaded',()=>{
-            document.getElementById('btn-lk-pdf-close')?.addEventListener('click',tutupLkPdfViewer);
-            document.getElementById('modal-lk-pdf')?.addEventListener('click',e=>{if(e.target.id==='modal-lk-pdf')tutupLkPdfViewer();});
-        });
 
         // Fallback: pastikan tombol LK tetap memiliki handler meskipun inline
         // handler pernah tertimpa oleh perubahan template/CSS.
