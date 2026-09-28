@@ -2518,27 +2518,27 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-label-printing{background:#fff!important;}
 #medix-label-print-root{display:none;}
 .medix-label-printing #medix-label-print-root{display:block;width:297mm;margin:0 auto;background:#fff;color:#0f172a;}
-.medix-label-print-page{display:grid;grid-template-columns:repeat(3,88mm);grid-template-rows:repeat(7,26mm);grid-auto-rows:26mm;gap:2mm;width:268mm;height:194mm;margin:8mm auto; padding:0;box-sizing:border-box;align-content:start;justify-content:center;page-break-after:always;break-after:page;}
+.medix-label-print-page{display:grid;grid-template-columns:repeat(3,78mm);grid-template-rows:repeat(7,26mm);grid-auto-rows:26mm;gap:2mm;width:238mm;height:194mm;margin:8mm auto; padding:0;box-sizing:border-box;align-content:start;justify-content:center;page-break-after:always;break-after:page;}
 .medix-label-print-page:last-child{page-break-after:auto;break-after:auto;}
-.medix-label-card-print{width:88mm;height:26mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
+.medix-label-card-print{width:78mm;height:26mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
 .medix-label-top{height:3.2mm;min-height:3.2mm;background:#fff;color:#64748b;border-bottom:.25mm solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 2mm;font-size:2.5mm;line-height:1;}
 .medix-label-top span{font-size:1.35mm;letter-spacing:.1mm;color:#94a3b8;}
-.medix-label-body{display:flex;align-items:center;gap:2mm;padding:.7mm 1.8mm 0;height:18.7mm;min-height:18.7mm;box-sizing:border-box;}
-.medix-label-qr{width:18.5mm;height:18.5mm;flex:0 0 18.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.medix-label-qr img,.medix-label-qr canvas{width:18.5mm!important;height:18.5mm!important;display:block;image-rendering:auto;}
-.medix-label-info{min-width:0;width:64mm;overflow:hidden;line-height:1.02;}
-.medix-label-name{font-size:3.35mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;}
-.medix-label-sub{font-size:2.05mm;color:#475569;font-weight:700;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sn{font:700 1.9mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-room{font-size:2mm;color:#2563eb;font-weight:800;margin-top:.55mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-body{display:flex;align-items:center;gap:1.5mm;padding:.7mm 1.3mm 0;height:18.7mm;min-height:18.7mm;box-sizing:border-box;}
+.medix-label-qr{width:17mm;height:17mm;flex:0 0 18.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.medix-label-qr img,.medix-label-qr canvas{width:17mm!important;height:17mm!important;display:block;image-rendering:auto;}
+.medix-label-info{min-width:0;width:57mm;overflow:hidden;line-height:1.02;}
+.medix-label-name{font-size:3.15mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;}
+.medix-label-sub{font-size:1.85mm;color:#475569;font-weight:700;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sn{font:700 1.7mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-room{font-size:1.8mm;color:#2563eb;font-weight:800;margin-top:.55mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-scan{text-align:center;height:3.6mm;min-height:3.6mm;font:700 1.2mm/1 monospace;color:#64748b;padding-top:.25mm;}
 @media print{
   @page{size:A4 landscape;margin:0;}
   body.medix-label-printing > *{display:none!important;}
   body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;width:297mm!important;margin:0!important;padding:0!important;box-sizing:border-box!important;background:#fff!important;color:#0f172a!important;overflow:visible!important;}
-  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,88mm)!important;grid-template-rows:repeat(7,26mm)!important;gap:2mm!important;width:268mm!important;height:194mm!important;margin:8mm auto!important;padding:0!important;box-sizing:border-box!important;align-content:start!important;justify-content:center!important;page-break-after:always!important;break-after:page!important;}
+  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,78mm)!important;grid-template-rows:repeat(7,26mm)!important;gap:2mm!important;width:238mm!important;height:194mm!important;margin:8mm auto!important;padding:0!important;box-sizing:border-box!important;align-content:start!important;justify-content:center!important;page-break-after:always!important;break-after:page!important;}
   body.medix-label-printing .medix-label-print-page:last-child{page-break-after:auto!important;break-after:auto!important;}
-  body.medix-label-printing .medix-label-card-print{width:88mm!important;height:26mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
+  body.medix-label-printing .medix-label-card-print{width:78mm!important;height:26mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
 }
 </style>
 <style id="medix-label-print-isolation-final">
@@ -2696,18 +2696,11 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
   #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{break-inside:avoid !important;page-break-inside:avoid !important;}
   #area-lembar-kerja-resmi .lk-bhp-print-only{display:block !important;}
   #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{
-    height:130px !important;
-    min-height:130px !important;
-    max-height:130px !important;
+    height:auto !important;
+    min-height:62px !important;
+    max-height:72px !important;
     overflow:hidden !important;
     align-self:stretch !important;
-  }
-  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper #dlk-txt-deskripsi-tunggal{
-    flex:1 1 auto !important;
-    height:auto !important;
-    min-height:0 !important;
-    max-height:none !important;
-    overflow:hidden !important;
   }
   #area-lembar-kerja-resmi .grid.items-stretch > .uraian-pekerjaan-wrapper{
     align-self:stretch !important;
@@ -2754,6 +2747,45 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
   #area-lembar-kerja-resmi #dlk-select-nama-teknisi::-ms-expand{display:none!important;}
 }
 </style>
+
+<style id="medix-lk-structured-pfa">
+.lk-uraian-structured{display:grid;grid-template-columns:1fr 1fr;gap:4px;flex:1 1 auto;min-height:0;}
+.lk-uraian-field{display:flex;flex-direction:column;min-width:0;}
+.lk-uraian-field label{font-size:8px;font-weight:900;color:#475569;margin-bottom:2px;text-transform:uppercase;letter-spacing:.03em;}
+.lk-uraian-field textarea{width:100%;min-height:46px;flex:1 1 auto;resize:vertical;border:1px solid #cbd5e1;border-radius:5px;padding:4px 5px;font-size:9px;line-height:1.25;color:#0f172a;background:#f8fafc;outline:none;box-sizing:border-box;}
+.lk-uraian-field textarea:focus{background:#fff;border-color:#60a5fa;box-shadow:0 0 0 1px rgba(96,165,250,.15);}
+.lk-pfa-card{border:1px solid #cbd5e1;border-radius:8px;background:#fff;overflow:hidden;}
+.lk-pfa-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 7px;background:#f8fafc;border-bottom:1px solid #cbd5e1;}
+.lk-pfa-head h4{margin:0;font-size:10px;font-weight:900;color:#0f172a;}
+.lk-pfa-head span{font-size:8px;color:#64748b;font-weight:700;}
+.lk-pfa-wrap{overflow-x:auto;}
+.lk-pfa-table{width:100%;min-width:900px;border-collapse:collapse;table-layout:fixed;font-size:8px;}
+.lk-pfa-table th,.lk-pfa-table td{border:1px solid #cbd5e1;padding:2px 3px;vertical-align:middle;}
+.lk-pfa-table th{background:#f1f5f9;color:#334155;font-weight:900;text-align:center;line-height:1.05;}
+.lk-pfa-table th:nth-child(1){width:8%}.lk-pfa-table th:nth-child(2){width:25%}.lk-pfa-table th:nth-child(3){width:7%}
+.lk-pfa-table th:nth-child(4),.lk-pfa-table th:nth-child(5),.lk-pfa-table th:nth-child(6){width:10%}
+.lk-pfa-table th:nth-child(7){width:12%}.lk-pfa-table th:nth-child(8),.lk-pfa-table th:nth-child(9){width:4%}
+.lk-pfa-table td.pfa-center{text-align:center;}
+.lk-pfa-table input[type=text]{width:100%;height:20px;border:0;border-bottom:1px dotted #94a3b8;background:transparent;outline:none;font-size:8px;padding:1px 2px;box-sizing:border-box;color:#0f172a;}
+.lk-pfa-table input[type=radio]{width:12px;height:12px;margin:0;accent-color:#0f766e;vertical-align:middle;}
+.lk-pfa-empty{padding:8px;text-align:center;color:#94a3b8;font-size:8px;font-style:italic;}
+@media(max-width:767px){.lk-uraian-structured{grid-template-columns:1fr}.lk-uraian-field textarea{min-height:60px}.lk-pfa-table{min-width:880px}}
+@media print{
+  #area-lembar-kerja-resmi .lk-uraian-structured{grid-template-columns:1fr 1fr!important;gap:2px!important;}
+  #area-lembar-kerja-resmi .lk-uraian-field label{font-size:6.5px!important;margin-bottom:1px!important;}
+  #area-lembar-kerja-resmi .lk-uraian-field textarea{min-height:0!important;height:25px!important;max-height:25px!important;padding:2px 3px!important;font-size:7px!important;line-height:1.1!important;resize:none!important;overflow:hidden!important;}
+  #area-lembar-kerja-resmi .lk-pfa-card{margin-top:2px!important;border-radius:0!important;break-inside:avoid!important;page-break-inside:avoid!important;}
+  #area-lembar-kerja-resmi .lk-pfa-head{padding:2px 4px!important;}
+  #area-lembar-kerja-resmi .lk-pfa-head h4{font-size:7.5px!important;}
+  #area-lembar-kerja-resmi .lk-pfa-head span{font-size:6px!important;}
+  #area-lembar-kerja-resmi .lk-pfa-table{min-width:0!important;width:100%!important;font-size:6.2px!important;table-layout:fixed!important;}
+  #area-lembar-kerja-resmi .lk-pfa-table th,#area-lembar-kerja-resmi .lk-pfa-table td{padding:1px 2px!important;height:13px!important;line-height:1.0!important;}
+  #area-lembar-kerja-resmi .lk-pfa-table input[type=text]{height:11px!important;font-size:6px!important;padding:0 1px!important;}
+  #area-lembar-kerja-resmi .lk-pfa-table input[type=radio]{width:8px!important;height:8px!important;}
+  #area-lembar-kerja-resmi .lk-pfa-empty{padding:3px!important;font-size:6px!important;}
+}
+</style>
+
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -3619,7 +3651,22 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
                 <div class="uraian-pekerjaan-wrapper border border-slate-200 p-2.5 rounded-lg text-[11px] space-y-1 bg-white md:col-span-9 print:col-span-9 flex flex-col">
                     <h4 class="font-bold border-b border-slate-100 pb-0.5 text-slate-800 text-[10px]"><i class="fa-solid fa-paste mr-1.5 text-blue-600"></i>2. Uraian Detail Pekerjaan</h4>
-                    <div id="dlk-txt-deskripsi-tunggal" contenteditable="true" class="w-full border border-slate-300 p-2 rounded-lg outline-none font-medium bg-slate-50 focus:bg-white text-[10px] text-slate-900 whitespace-pre-wrap break-words" style="min-height:60px;height:auto;flex:1 1 auto;box-sizing:border-box;" placeholder="Tuliskan catatan pemeliharaan teknis di sini..."></div>
+                    <div class="lk-uraian-structured">
+                        <div class="lk-uraian-field"><label for="dlk-uraian-keluhan">Keluhan</label><textarea id="dlk-uraian-keluhan" placeholder="Tuliskan keluhan/gejala kerusakan..."></textarea></div>
+                        <div class="lk-uraian-field"><label for="dlk-uraian-penyebab">Penyebab</label><textarea id="dlk-uraian-penyebab" placeholder="Tuliskan penyebab yang ditemukan..."></textarea></div>
+                        <div class="lk-uraian-field"><label for="dlk-uraian-pengecekan">Pengecekan</label><textarea id="dlk-uraian-pengecekan" placeholder="Tuliskan pemeriksaan/hasil pengecekan..."></textarea></div>
+                        <div class="lk-uraian-field"><label for="dlk-uraian-solusi">Solusi</label><textarea id="dlk-uraian-solusi" placeholder="Tuliskan tindakan/solusi yang dilakukan..."></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lk-pfa-card">
+                <div class="lk-pfa-head"><h4><i class="fa-solid fa-gauge-high mr-1 text-blue-600"></i>3. Pemeriksaan Kinerja Alat (PFA)</h4><span id="dlk-pfa-subtitle">Pilih alat untuk memuat parameter otomatis.</span></div>
+                <div class="lk-pfa-wrap">
+                    <table class="lk-pfa-table">
+                        <thead><tr><th>No PFA</th><th>Pemeriksaan Kinerja Alat</th><th>Satuan</th><th>Nilai Setting</th><th>Nilai Terukur 1</th><th>Nilai Terukur 2</th><th>Nilai Terukur 3</th><th>Nilai Acuan</th><th>Baik / Tidak</th></tr></thead>
+                        <tbody id="dlk-pfa-body"></tbody>
+                    </table>
                 </div>
             </div>
 
@@ -7703,7 +7750,12 @@ function renderMaintenanceHistory() {
                 alatId: alatIdRaw,
                 noLk: document.getElementById('dlk-no')?.value || '',
                 textTgl: tglText,
-                desc_kerja: document.getElementById('dlk-txt-deskripsi-tunggal')?.innerText || '',
+                desc_kerja: medixBuildDescKerja(),
+                keluhan: medixGetStructuredUraian().keluhan,
+                penyebab: medixGetStructuredUraian().penyebab,
+                pengecekan: medixGetStructuredUraian().pengecekan,
+                solusi: medixGetStructuredUraian().solusi,
+                pemeriksaanKinerja: Array.isArray(pemeriksaanKinerjaLK) ? pemeriksaanKinerjaLK.map(r=>({...r})) : [],
                 jenisKerja: jenisEl.value,
                 hasilTunggal: hasilEl.value,
                 ttdTeknisi: document.getElementById('sig-teknisi')?.toDataURL() || '',
@@ -7843,8 +7895,8 @@ function renderMaintenanceHistory() {
             const localIso = new Date(now.getTime() - offsetMs).toISOString().substring(0, 16);
             const inputTgl = document.getElementById('dlk-tgl');
             if(inputTgl) inputTgl.value = localIso; 
-            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if(descTunggal) { descTunggal.innerText = ""; descTunggal.setAttribute('contenteditable', 'true'); }
+            ['dlk-uraian-keluhan','dlk-uraian-penyebab','dlk-uraian-pengecekan','dlk-uraian-solusi'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.removeAttribute('disabled');}});
+            resetPemeriksaanKinerjaLK();
             const boxBefore = document.getElementById('box-preview-foto-before');
             if(boxBefore) boxBefore.innerHTML = `[ Tidak Ada Foto Before ]`;
             const selectedAlatId = document.getElementById('dlk-selected-alat-id');
@@ -7897,9 +7949,8 @@ function renderMaintenanceHistory() {
             ['container-drop-alatkerja', 'container-drop-fisik', 'container-drop-fungsi'].forEach(id => {
                 const d = document.getElementById(id); if(d) d.style.display = 'block';
             });
-            const descBox = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if(descBox) descBox.setAttribute('contenteditable', 'true');
-            if(area) area.querySelectorAll('input, select').forEach(el => el.removeAttribute('disabled'));
+            ['dlk-uraian-keluhan','dlk-uraian-penyebab','dlk-uraian-pengecekan','dlk-uraian-solusi'].forEach(id=>document.getElementById(id)?.removeAttribute('disabled'));
+            if(area) area.querySelectorAll('input, select, textarea').forEach(el => el.removeAttribute('disabled'));
         }
 
         function terapkanModeLockedPermanenLk() {
@@ -7915,11 +7966,10 @@ function renderMaintenanceHistory() {
             ['container-drop-alatkerja', 'container-drop-fisik', 'container-drop-fungsi'].forEach(id => {
                 const d = document.getElementById(id); if(d) d.style.display = 'none';
             });
-            const descBox = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if(descBox) descBox.removeAttribute('contenteditable');
+            ['dlk-uraian-keluhan','dlk-uraian-penyebab','dlk-uraian-pengecekan','dlk-uraian-solusi'].forEach(id=>document.getElementById(id)?.setAttribute('disabled','true'));
             setTimeout(() => {
                 const area = document.getElementById('area-lembar-kerja-resmi');
-                if(area) area.querySelectorAll('input, select').forEach(el => el.setAttribute('disabled', 'true'));
+                if(area) area.querySelectorAll('input, select, textarea').forEach(el => el.setAttribute('disabled', 'true'));
             }, 50);
         }
 
@@ -7935,8 +7985,14 @@ function renderMaintenanceHistory() {
             if(record.tglKalibrasi) document.getElementById('dlk-tglcal').value = record.tglKalibrasi;
             if(record.tglExpKalibrasi) document.getElementById('dlk-nokal').value = record.tglExpKalibrasi;
 
-            const descTunggal = document.getElementById('dlk-txt-deskripsi-tunggal');
-            if(descTunggal) descTunggal.innerText = record.desc_kerja || "";
+            medixLoadStructuredUraian(record);
+            try {
+                const savedPfa = typeof record.pemeriksaanKinerja === 'string' ? JSON.parse(record.pemeriksaanKinerja || '[]') : record.pemeriksaanKinerja;
+                pemeriksaanKinerjaLK = Array.isArray(savedPfa) && savedPfa.length ? savedPfa.map(r=>({...r})) : medixGetPfaTemplateForAsset(document.getElementById('dlk-nama')?.value||'').map(x=>({...x,setting:'',t1:'',t2:'',t3:'',acuan:'',status:''}));
+            } catch(e) {
+                pemeriksaanKinerjaLK = medixGetPfaTemplateForAsset(document.getElementById('dlk-nama')?.value||'').map(x=>({...x,setting:'',t1:'',t2:'',t3:'',acuan:'',status:''}));
+            }
+            renderPemeriksaanKinerjaLK();
             
             try { terpakaiAlatKerja = JSON.parse(record.paramAlatKerja || '[]').map(i => typeof i === 'string' ? {nama: i} : i); } catch(e){ terpakaiAlatKerja = []; }
             try { terpakaiFisik = JSON.parse(record.paramFisik || '[]').map(i => typeof i === 'string' ? {nama: i, status: 'Baik'} : i); } catch(e){ terpakaiFisik = []; }
@@ -8385,6 +8441,74 @@ function renderMaintenanceHistory() {
             }).join(''); 
         }
         
+
+        // ================================================================
+        // LK: TEMPLATE PEMERIKSAAN KINERJA ALAT (PFA)
+        // ================================================================
+        const MEDIX_PFA_TEMPLATES = {"EKG":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Tombol/ Knob Pengaturan","satuan":""},{"pfa":"PFA3","nama":"Switch On/Off","satuan":""},{"pfa":"PFA4","nama":"Volume Control","satuan":""},{"pfa":"PFA5","nama":"Keypad","satuan":""},{"pfa":"PFA6","nama":"Pengukuran EKG","satuan":""},{"pfa":"PFA7","nama":"Alarm Test","satuan":""},{"pfa":"PFA8","nama":"Printer Test","satuan":""},{"pfa":"PFA9","nama":"Battery Back Up Test","satuan":""},{"pfa":"PFA10","nama":"Backlight Setting","satuan":""}],"USG":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Panel control","satuan":""},{"pfa":"PFA4","nama":"Wheel/Brake System","satuan":""},{"pfa":"PFA5","nama":"kabel HDMI","satuan":""},{"pfa":"PFA6","nama":"Monitor Extension","satuan":""},{"pfa":"PFA7","nama":"Printing B/W","satuan":""},{"pfa":"PFA8","nama":"Printing Colour","satuan":""},{"pfa":"PFA9","nama":"Baterai Back Up Test","satuan":""},{"pfa":"PFA10","nama":"Probe Transvaginal","satuan":""},{"pfa":"PFA11","nama":"Probe Convex","satuan":""},{"pfa":"PFA12","nama":"Probe Linear","satuan":""},{"pfa":"PFA13","nama":"Probe 4D","satuan":""},{"pfa":"PFA14","nama":"Warmer","satuan":""}],"INFANT WARMER":[{"pfa":"PFA1","nama":"Display/ Monitor","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Touchscreen","satuan":""},{"pfa":"PFA5","nama":"Alarm test","satuan":""},{"pfa":"PFA6","nama":"Knob switch","satuan":""},{"pfa":"PFA7","nama":"Heater","satuan":""},{"pfa":"PFA8","nama":"Wheel/Brake System","satuan":""}],"CTG":[{"pfa":"PFA1","nama":"Display/ Monitor","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Knob","satuan":""},{"pfa":"PFA5","nama":"Touchscreen","satuan":""},{"pfa":"PFA6","nama":"Heart rate Display","satuan":""},{"pfa":"PFA7","nama":"Printing Test","satuan":""},{"pfa":"PFA8","nama":"Recording","satuan":""},{"pfa":"PFA9","nama":"Alarm Test","satuan":""},{"pfa":"PFA10","nama":"Battery Back Up Test","satuan":""}],"PATIENT MONITOR":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Touchscreen","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Volume Control","satuan":""},{"pfa":"PFA5","nama":"Pengukuran NiBP","satuan":"mmHg"},{"pfa":"PFA6","nama":"Pengukuran EKG","satuan":""},{"pfa":"PFA7","nama":"Pengukuran SpO2","satuan":"%"},{"pfa":"PFA8","nama":"Pengukuran Suhu","satuan":"°C"},{"pfa":"PFA9","nama":"Alarm Test","satuan":""},{"pfa":"PFA10","nama":"Printer Test","satuan":""},{"pfa":"PFA11","nama":"Battery Back Up Test","satuan":""}],"OPERATING TABLE":[{"pfa":"PFA1","nama":"Led Indikator","satuan":""},{"pfa":"PFA2","nama":"Pergerakan Naik","satuan":""},{"pfa":"PFA3","nama":"Pergerakan Turun","satuan":""},{"pfa":"PFA4","nama":"Pergerakan Miring Kanan","satuan":""},{"pfa":"PFA5","nama":"Pergerakan Miring Kiri","satuan":""},{"pfa":"PFA6","nama":"Pergerakan Depan","satuan":""},{"pfa":"PFA7","nama":"Pergerakan Belakang","satuan":""},{"pfa":"PFA8","nama":"Pergerakan Geser Maju","satuan":""},{"pfa":"PFA9","nama":"Pergerakan Geser Mundur","satuan":""},{"pfa":"PFA10","nama":"Batery Back Up Test","satuan":""},{"pfa":"PFA11","nama":"Oil Sealed","satuan":""}],"DIGITAL RADIOGRAPHY":[{"pfa":"PFA1","nama":"Panel Listrik","satuan":""},{"pfa":"PFA2","nama":"Panel Control","satuan":""},{"pfa":"PFA3","nama":"PC Workstation","satuan":""},{"pfa":"PFA4","nama":"Hand Switch","satuan":""},{"pfa":"PFA5","nama":"Led Colimator","satuan":""},{"pfa":"PFA6","nama":"X-ray Tube Sealed","satuan":""},{"pfa":"PFA7","nama":"X-ray Tube Movement","satuan":""},{"pfa":"PFA8","nama":"Patient Table Movement","satuan":""},{"pfa":"PFA9","nama":"Cassette Tray Movement","satuan":""},{"pfa":"PFA10","nama":"Wall Stand Function","satuan":""}],"AUTOCLAVE":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Indikator suhu","satuan":""},{"pfa":"PFA5","nama":"Indikator Pressure","satuan":""},{"pfa":"PFA6","nama":"Alarm Test","satuan":""},{"pfa":"PFA7","nama":"Door Lock","satuan":""},{"pfa":"PFA8","nama":"Bowie Dick Test","satuan":""},{"pfa":"PFA9","nama":"BI Test","satuan":""}],"DENTAL UNIT":[{"pfa":"PFA1","nama":"Fungsi Led Indikator","satuan":""},{"pfa":"PFA2","nama":"Fungsi Display/Monitor","satuan":""},{"pfa":"PFA3","nama":"Fungsi main switch","satuan":""},{"pfa":"PFA4","nama":"Fungsi Panel Button & microswitch","satuan":""},{"pfa":"PFA5","nama":"Fungsi Compressor","satuan":""},{"pfa":"PFA6","nama":"Fungsi Caspidor","satuan":""},{"pfa":"PFA7","nama":"Fungsi Chair Movement","satuan":""},{"pfa":"PFA8","nama":"Fungsi Handpiece","satuan":""},{"pfa":"PFA9","nama":"Fungsi Kamera","satuan":""},{"pfa":"PFA10","nama":"Fungsi Vacuum","satuan":""},{"pfa":"PFA11","nama":"Fungsi table movement","satuan":""},{"pfa":"PFA12","nama":"Fungsi Selenoid","satuan":""},{"pfa":"PFA13","nama":"Fungsi speed meter","satuan":""},{"pfa":"PFA14","nama":"Fungsi lampu sorot dental","satuan":""}],"INFANT INCUBATOR":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Wheel & Brake System","satuan":""},{"pfa":"PFA5","nama":"Heat","satuan":""},{"pfa":"PFA6","nama":"Air Flow","satuan":""},{"pfa":"PFA7","nama":"Alarm","satuan":""},{"pfa":"PFA8","nama":"Door Lock","satuan":""},{"pfa":"PFA9","nama":"Humidity Control","satuan":""},{"pfa":"PFA10","nama":"Air Temp Sensor","satuan":""},{"pfa":"PFA11","nama":"Skin Temp Sensor","satuan":""}],"VENTILATOR":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Breathing Circuit","satuan":""},{"pfa":"PFA5","nama":"O2 Sensor Test","satuan":""},{"pfa":"PFA6","nama":"Flow Sensor Test","satuan":""},{"pfa":"PFA7","nama":"Alarm Test","satuan":""},{"pfa":"PFA8","nama":"Rotameter","satuan":""},{"pfa":"PFA9","nama":"Volume","satuan":""},{"pfa":"PFA10","nama":"Exhalation Membrane","satuan":""}],"VENTILATOR TRANSPORT":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Breathing Circuit","satuan":""},{"pfa":"PFA5","nama":"O2 Sensor Test","satuan":""},{"pfa":"PFA6","nama":"Flow Sensor Test","satuan":""},{"pfa":"PFA7","nama":"Alarm Test","satuan":""},{"pfa":"PFA8","nama":"Rotameter","satuan":""},{"pfa":"PFA9","nama":"Volume","satuan":""},{"pfa":"PFA10","nama":"Exhalation Membrane","satuan":""}],"X-RAY MOBILE":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Panel Control","satuan":""},{"pfa":"PFA3","nama":"Wheel / Brake System","satuan":""},{"pfa":"PFA4","nama":"Hand Switch","satuan":""},{"pfa":"PFA5","nama":"Halogen Lamp Colimator","satuan":""},{"pfa":"PFA6","nama":"X-ray Tube Sealed","satuan":""},{"pfa":"PFA7","nama":"X-ray Tube Movement","satuan":""},{"pfa":"PFA8","nama":"Actuator","satuan":""}],"VITAL SIGN MONITOR":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Touchscreen","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Knob Button","satuan":""},{"pfa":"PFA5","nama":"Pengukuran NiBP","satuan":"mmHg"},{"pfa":"PFA6","nama":"Battery Back Up Test","satuan":""},{"pfa":"PFA7","nama":"Pengukuran SpO2","satuan":"%"},{"pfa":"PFA8","nama":"Pengukuran Suhu","satuan":"°C"},{"pfa":"PFA9","nama":"Alarm Test","satuan":""},{"pfa":"PFA10","nama":"Printer Test","satuan":""},{"pfa":"PFA11","nama":"Wheel / brake system","satuan":""}],"ESU":[{"pfa":"PFA1","nama":"Fungsi Kelistrikan","satuan":""},{"pfa":"PFA2","nama":"Fungsi Cutting","satuan":""},{"pfa":"PFA3","nama":"Fungsi Coagulan","satuan":""},{"pfa":"PFA4","nama":"Fungsi Netral Pad","satuan":""},{"pfa":"PFA5","nama":"Fungsi Couter Monopolar","satuan":""},{"pfa":"PFA6","nama":"Fungsi Couter Bippolar","satuan":""},{"pfa":"PFA7","nama":"Fungsi Footswitch","satuan":""}],"NEBULIZER":[{"pfa":"PFA1","nama":"Fungsi Tombol","satuan":""},{"pfa":"PFA2","nama":"Fungsi Kompressor","satuan":""},{"pfa":"PFA3","nama":"Alarm Test","satuan":""}],"INFUSION PUMP":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Fungsi Tombol","satuan":""},{"pfa":"PFA3","nama":"Touchscreen","satuan":""},{"pfa":"PFA4","nama":"Fungsi Drip Sensor","satuan":""},{"pfa":"PFA5","nama":"Alarm test","satuan":""},{"pfa":"PFA6","nama":"Fungsi Door Lock","satuan":""}],"SYRINGE PUMP":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Fungsi Tombol","satuan":""},{"pfa":"PFA3","nama":"Fungsi Clutch Holder","satuan":""},{"pfa":"PFA4","nama":"Fungsi Hoseline","satuan":""},{"pfa":"PFA5","nama":"Alarm Test","satuan":""},{"pfa":"PFA6","nama":"Fungsi Door Lock","satuan":""}],"SUCTION PUMP":[{"pfa":"PFA1","nama":"Fungsi Main Switch","satuan":""},{"pfa":"PFA2","nama":"Indikator LED","satuan":""},{"pfa":"PFA3","nama":"Fungsi knob","satuan":""},{"pfa":"PFA4","nama":"Fungsi Vacuum Meter","satuan":""},{"pfa":"PFA5","nama":"Fungsi Charger","satuan":""}],"REFRIGERATOR MEDICAL":[{"pfa":"PFA1","nama":"Fungsi Main Swithc","satuan":""},{"pfa":"PFA2","nama":"Fungsi Cooler","satuan":""},{"pfa":"PFA3","nama":"Fungsi lampu","satuan":""},{"pfa":"PFA4","nama":"Fungsi Indikator","satuan":""},{"pfa":"PFA5","nama":"Fungsi tombol","satuan":""},{"pfa":"PFA6","nama":"Fungsi display","satuan":""},{"pfa":"PFA7","nama":"Fungsi Alarm","satuan":""},{"pfa":"PFA8","nama":"Fungsi door lock","satuan":""}],"ROLLER MIXER":[{"pfa":"PFA1","nama":"Fungsi Main Switch","satuan":""},{"pfa":"PFA2","nama":"Fungsi knob","satuan":""},{"pfa":"PFA3","nama":"Fungsi motor","satuan":""},{"pfa":"PFA4","nama":"Fungsi Indikator","satuan":""}],"CENTRIFUGE":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Tombol","satuan":""},{"pfa":"PFA4","nama":"Timer Setting","satuan":""},{"pfa":"PFA5","nama":"Door Lock","satuan":""},{"pfa":"PFA6","nama":"Alarm","satuan":""}],"FREEZER MEDICAL":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Tombol","satuan":""},{"pfa":"PFA4","nama":"Timer Setting","satuan":""},{"pfa":"PFA5","nama":"Door Lock","satuan":""},{"pfa":"PFA6","nama":"Alarm","satuan":""}],"ELEKTRIK BED":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Tombol","satuan":""},{"pfa":"PFA4","nama":"Battery Indicator","satuan":""},{"pfa":"PFA5","nama":"Button Lock","satuan":""},{"pfa":"PFA6","nama":"Tilt Indicator","satuan":""},{"pfa":"PFA7","nama":"Fungsi Handrail","satuan":""},{"pfa":"PFA8","nama":"Fungsi Battery Back up","satuan":""}],"FILM VIEWER":[{"pfa":"PFA1","nama":"Fungsi Lampu","satuan":""},{"pfa":"PFA2","nama":"Fungsi tombol","satuan":""},{"pfa":"PFA3","nama":"Fungsi board","satuan":""},{"pfa":"PFA4","nama":"Fungsi knob intensitas cahaya","satuan":""}],"HFNC":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Breathing Circuit","satuan":""},{"pfa":"PFA5","nama":"Fungsi Roda / Trolly","satuan":""},{"pfa":"PFA6","nama":"Fungsi Brake System","satuan":""},{"pfa":"PFA7","nama":"Fungsi Regulator O2","satuan":""}],"EXAMINATION LAMP":[{"pfa":"PFA1","nama":"Lampu","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Dimmer Control","satuan":""},{"pfa":"PFA4","nama":"Kabel Power","satuan":""},{"pfa":"PFA5","nama":"Upper / Lower Stand Mode","satuan":""},{"pfa":"PFA6","nama":"Foot Unit dan Roda","satuan":""}],"STEAM STERILIZER":[{"pfa":"PFA1","nama":"Fungsi Main Switch","satuan":""},{"pfa":"PFA2","nama":"Fungsi Display","satuan":""},{"pfa":"PFA3","nama":"Fungsi Tombol","satuan":""},{"pfa":"PFA4","nama":"Fungsi Alarm","satuan":""},{"pfa":"PFA5","nama":"Fungsi Door Lock","satuan":""},{"pfa":"PFA6","nama":"Kompressor","satuan":""}],"AED":[{"pfa":"PFA1","nama":"Fungsi voice prompt","satuan":""},{"pfa":"PFA2","nama":"Fungsi tombol","satuan":""},{"pfa":"PFA3","nama":"Fungsi battery","satuan":""},{"pfa":"PFA4","nama":"ujicoba tembak","satuan":""}],"TENSIMETER MANUAL":[{"pfa":"PFA1","nama":"Fungsi Aneroid","satuan":""},{"pfa":"PFA2","nama":"Fungsi Bulb","satuan":""},{"pfa":"PFA3","nama":"Fungsi Valve","satuan":""}],"TENSIMETER OTOMATIS":[{"pfa":"PFA1","nama":"Fungsi tensi","satuan":""},{"pfa":"PFA2","nama":"Fungsi manset","satuan":""},{"pfa":"PFA3","nama":"Fungsi Battery","satuan":""}],"Operating Lamp":[{"pfa":"PFA1","nama":"Fungsi Lampu","satuan":""},{"pfa":"PFA2","nama":"Fungsi tombol","satuan":""},{"pfa":"PFA3","nama":"Fungsi board","satuan":""},{"pfa":"PFA4","nama":"Fungsi knob intensitas cahaya","satuan":""}],"EEG":[{"pfa":"PFA1","nama":"Fungsi PC","satuan":""},{"pfa":"PFA2","nama":"Fungsi Junction Box","satuan":""},{"pfa":"PFA3","nama":"Fungsi Electrode","satuan":""},{"pfa":"PFA4","nama":"Fungsi Printer","satuan":""},{"pfa":"PFA5","nama":"Fungsi Kamera","satuan":""},{"pfa":"PFA6","nama":"Fungsi CCTV","satuan":""},{"pfa":"PFA7","nama":"Fungsi Software","satuan":""}],"Cabinet Warmer":[{"pfa":"PFA1","nama":"Fungsi Display","satuan":""},{"pfa":"PFA2","nama":"Fungsi Tombol","satuan":""},{"pfa":"PFA3","nama":"Fungsi Heater","satuan":""}],"ENT Treatment Unit":[{"pfa":"PFA1","nama":"Fungsi main switch","satuan":""},{"pfa":"PFA2","nama":"Fungsi spray","satuan":""},{"pfa":"PFA3","nama":"Fungsi vacuum","satuan":""},{"pfa":"PFA4","nama":"Fungsi tombol","satuan":""},{"pfa":"PFA5","nama":"Fungsi lampu","satuan":""},{"pfa":"PFA6","nama":"Fungsi manometer","satuan":""},{"pfa":"PFA7","nama":"Fungsi Dryer","satuan":""},{"pfa":"PFA8","nama":"Fungsi Headlamp","satuan":""}],"KIMIA ANALYZER":[{"pfa":"PFA1","nama":"Fungsi Main Unit","satuan":""},{"pfa":"PFA2","nama":"Fungsi PC Workstatiton","satuan":""},{"pfa":"PFA3","nama":"Fungsi Main Software","satuan":""},{"pfa":"PFA4","nama":"Fungsi Printer","satuan":""},{"pfa":"PFA5","nama":"Fungsi QC","satuan":""}],"Anesthesi Ventilator":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Breathing Circuit","satuan":""},{"pfa":"PFA5","nama":"O2 Sensor Test","satuan":""},{"pfa":"PFA6","nama":"Flow Sensor Test","satuan":""},{"pfa":"PFA7","nama":"Alarm Test","satuan":""},{"pfa":"PFA8","nama":"Rotameter","satuan":""},{"pfa":"PFA9","nama":"Volume","satuan":""},{"pfa":"PFA10","nama":"Exhalation Membrane","satuan":""},{"pfa":"PFA11","nama":"Fungsi Vaporizer","satuan":""}],"TIMBANGAN - BAYI":[],"Kursi Gynecolog":[],"Suction Pump - high Vacuum":[{"pfa":"PFA1","nama":"Main Switch","satuan":""},{"pfa":"PFA2","nama":"Knob Pressure","satuan":""},{"pfa":"PFA3","nama":"Manometer","satuan":""},{"pfa":"PFA4","nama":"Safety Valve","satuan":""},{"pfa":"PFA5","nama":"Kerapatan Seal","satuan":""},{"pfa":"PFA6","nama":"Caster Lock","satuan":""},{"pfa":"PFA7","nama":"Lid Jar Lock","satuan":""}],"Suction Pump - Low Vacuum":[{"pfa":"PFA1","nama":"Main Switch","satuan":""},{"pfa":"PFA2","nama":"Knob Pressure","satuan":""},{"pfa":"PFA3","nama":"Manometer","satuan":""},{"pfa":"PFA4","nama":"Safety Valve","satuan":""},{"pfa":"PFA5","nama":"Kerapatan Seal","satuan":""},{"pfa":"PFA6","nama":"Caster Lock","satuan":""},{"pfa":"PFA7","nama":"Lid Jar Lock","satuan":""}],"TIMBANGAN - DEWASA":[{"pfa":"PFA1","nama":"Body Unit","satuan":""},{"pfa":"PFA2","nama":"Bar Scale","satuan":""},{"pfa":"PFA3","nama":"Cover meter","satuan":""},{"pfa":"PFA4","nama":"Stadiometer","satuan":""},{"pfa":"PFA5","nama":"BMI","satuan":""}],"OXYGEN CONCENTRATOR":[],"USG - General":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Control Panel","satuan":""},{"pfa":"PFA4","nama":"Wheel/Break System","satuan":""},{"pfa":"PFA5","nama":"Printing B/W","satuan":""},{"pfa":"PFA6","nama":"Probe Convex","satuan":""},{"pfa":"PFA7","nama":"Probe Linear","satuan":""},{"pfa":"PFA8","nama":"Probe Transvaginal","satuan":""},{"pfa":"PFA9","nama":"Probe 4D","satuan":""}],"DEFIBRILATOR":[{"pfa":"PFA1","nama":"SpO2","satuan":""},{"pfa":"PFA2","nama":"EKG","satuan":""},{"pfa":"PFA3","nama":"NIBP","satuan":""},{"pfa":"PFA4","nama":"Paddle Pad","satuan":""},{"pfa":"PFA5","nama":"Battery","satuan":""}],"USG - OBGYN":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Control Panel","satuan":""},{"pfa":"PFA4","nama":"Wheel/Break System","satuan":""},{"pfa":"PFA5","nama":"Printing B/W","satuan":""},{"pfa":"PFA6","nama":"Probe Convex","satuan":""},{"pfa":"PFA7","nama":"Probe Linear","satuan":""},{"pfa":"PFA8","nama":"Probe Transvaginal","satuan":""},{"pfa":"PFA9","nama":"Probe 4D","satuan":""}],"Fetal Doppler":[{"pfa":"PFA1","nama":"Fungsi Monitor","satuan":""},{"pfa":"PFA2","nama":"Fungsi Main Switch","satuan":""},{"pfa":"PFA3","nama":"Fungsi Knob Kontrol","satuan":""},{"pfa":"PFA4","nama":"Fungsi Key pad","satuan":""},{"pfa":"PFA5","nama":"Fungsi Probe","satuan":""},{"pfa":"PFA6","nama":"Fungsi Indikator suara","satuan":""},{"pfa":"PFA7","nama":"Fungsi alarm error","satuan":""}],"Hematology analyzer":[{"pfa":"PFA1","nama":"Fungsi Main Unit","satuan":""},{"pfa":"PFA2","nama":"Fungsi PC Workstatiton","satuan":""},{"pfa":"PFA3","nama":"Fungsi Main Software","satuan":""},{"pfa":"PFA4","nama":"Fungsi Printer","satuan":""},{"pfa":"PFA5","nama":"Fungsi QC","satuan":""}],"Nebulizer Compressor":[{"pfa":"PFA1","nama":"Fungsi Tombol","satuan":""},{"pfa":"PFA2","nama":"Fungsi Kompressor","satuan":""},{"pfa":"PFA3","nama":"Alarm Test","satuan":""}],"Infusion Warmer":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Control/Setting","satuan":""},{"pfa":"PFA4","nama":"Keypad","satuan":""},{"pfa":"PFA5","nama":"Alarm","satuan":""},{"pfa":"PFA6","nama":"Heater","satuan":""}],"URINE ANALYZER":[{"pfa":"PFA1","nama":"Reflector Fotometer","satuan":""},{"pfa":"PFA2","nama":"LCD Display","satuan":""},{"pfa":"PFA3","nama":"Printer Thermal","satuan":""},{"pfa":"PFA4","nama":"Tombol Power","satuan":""}],"Pulse Oxymeter":[{"pfa":"PFA1","nama":"Display Monitor","satuan":""},{"pfa":"PFA2","nama":"Tombol On/Off","satuan":""},{"pfa":"PFA3","nama":"Control/Setting","satuan":""},{"pfa":"PFA4","nama":"Keypad","satuan":""},{"pfa":"PFA5","nama":"Buzzer/Alarm","satuan":""}],"High Flow Nasal Canula":[{"pfa":"PFA1","nama":"Display Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Control/Setting","satuan":""},{"pfa":"PFA4","nama":"Keypad","satuan":""},{"pfa":"PFA5","nama":"Chamber","satuan":""},{"pfa":"PFA6","nama":"Flow Meter","satuan":""}],"Bio Safety Cabinet":[{"pfa":"PFA1","nama":"Switch On/Off","satuan":""},{"pfa":"PFA2","nama":"Aliran Udara","satuan":""},{"pfa":"PFA3","nama":"Hepafilter","satuan":""},{"pfa":"PFA4","nama":"Lampu UV","satuan":""},{"pfa":"PFA5","nama":"Lampu Fluorescent","satuan":""},{"pfa":"PFA6","nama":"Alarm","satuan":""},{"pfa":"PFA7","nama":"Keypad","satuan":""},{"pfa":"PFA8","nama":"Door Lock","satuan":""},{"pfa":"PFA9","nama":"Port Akses Listrik","satuan":""}],"Ventilator Adult / Pediatrik":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Main Switch","satuan":""},{"pfa":"PFA3","nama":"Panel Control","satuan":""},{"pfa":"PFA4","nama":"Breathing Circuit","satuan":""},{"pfa":"PFA5","nama":"O2 Sensor Test","satuan":""},{"pfa":"PFA6","nama":"Flow Sensor Test","satuan":""},{"pfa":"PFA7","nama":"Alarm Test","satuan":""},{"pfa":"PFA8","nama":"Rotameter","satuan":""},{"pfa":"PFA9","nama":"Volume","satuan":""},{"pfa":"PFA10","nama":"Exhalation Membrane","satuan":""}],"Treadmill":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Treadmill","satuan":""},{"pfa":"PFA4","nama":"ECG","satuan":""}],"SCRUB STATION":[{"pfa":"PFA1","nama":"Sistem Aliran Air","satuan":""},{"pfa":"PFA2","nama":"Sistem Sensor","satuan":""},{"pfa":"PFA3","nama":"Pengaturan Suhu Air","satuan":""},{"pfa":"PFA4","nama":"Filter Air","satuan":""},{"pfa":"PFA5","nama":"Sistem Pembuangan Air","satuan":""},{"pfa":"PFA6","nama":"Lampu Indikator","satuan":""},{"pfa":"PFA7","nama":"Dimer Lampu UV","satuan":""},{"pfa":"PFA8","nama":"Lampu UV","satuan":""},{"pfa":"PFA9","nama":"Lampu TL","satuan":""}],"Timbangan Bayi":[{"pfa":"PFA1","nama":"Display","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Tombol Setting","satuan":""}],"Ventilator Transport Adult / Pediatrik":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Control/Setting","satuan":""}],"Ventilator Bayi":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Control/Setting","satuan":""},{"pfa":"PFA4","nama":"Humidifier","satuan":""},{"pfa":"PFA5","nama":"Compressor","satuan":""},{"pfa":"PFA6","nama":"Baterai Internal","satuan":""}],"Automatic Resuscitator":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Max P-Control","satuan":""},{"pfa":"PFA4","nama":"PIP Control","satuan":""},{"pfa":"PFA5","nama":"Compressor","satuan":""},{"pfa":"PFA6","nama":"Manometer","satuan":""},{"pfa":"PFA7","nama":"Control/Setting","satuan":""},{"pfa":"PFA8","nama":"Alarm","satuan":""},{"pfa":"PFA9","nama":"Gas intake tube (selang gas)","satuan":""},{"pfa":"PFA10","nama":"Gas outlet","satuan":""}],"Baby CPAP":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Switch On/Off","satuan":""},{"pfa":"PFA3","nama":"Control/Setting","satuan":""},{"pfa":"PFA4","nama":"Humidifier","satuan":""},{"pfa":"PFA5","nama":"Indikator / Alarm","satuan":""},{"pfa":"PFA6","nama":"Filter udara","satuan":""}],"Diode Laser":[{"pfa":"PFA1","nama":"Interface dan Display","satuan":""},{"pfa":"PFA2","nama":"Foot Switch / Aktuator","satuan":""},{"pfa":"PFA3","nama":"Output Laser (Tanpa Target Biologis)","satuan":""},{"pfa":"PFA4","nama":"Switch On/Off","satuan":""},{"pfa":"PFA5","nama":"Control/Setting","satuan":""},{"pfa":"PFA6","nama":"Alarm","satuan":""}],"X-ray Dental Unit":[{"pfa":"PFA1","nama":"Pemeriksaan Panel Kontrol","satuan":""},{"pfa":"PFA2","nama":"Pemeriksaan Tombol Ekspos","satuan":""},{"pfa":"PFA3","nama":"Pemeriksaan Lengan (Arm) & Mekanik","satuan":""},{"pfa":"PFA4","nama":"Pemeriksaan Hasil Pembacaan","satuan":""}],"Electro Stimulator":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Tombol / Knop Pengaturan","satuan":""},{"pfa":"PFA3","nama":"Switch On/Off","satuan":""},{"pfa":"PFA4","nama":"Pengaturan Frekuensi","satuan":""},{"pfa":"PFA5","nama":"Pengaturan Durasi","satuan":""},{"pfa":"PFA6","nama":"Pengaturan Intensitas","satuan":""},{"pfa":"PFA7","nama":"Pemeriksaan Elektroda Pad","satuan":""},{"pfa":"PFA8","nama":"Pemeriksaan Elektroda Vacum","satuan":""},{"pfa":"PFA9","nama":"Alarm Test","satuan":""},{"pfa":"PFA10","nama":"Baterai Back Up Test","satuan":""},{"pfa":"PFA11","nama":"Backlight Setting","satuan":""}],"NPWT":[{"pfa":"PFA1","nama":"Display/Monitor","satuan":""},{"pfa":"PFA2","nama":"Control Panel","satuan":""},{"pfa":"PFA3","nama":"Canister (Penampung Cairan)","satuan":""},{"pfa":"PFA4","nama":"Sistem Selang & Konektor","satuan":""},{"pfa":"PFA5","nama":"Dressing NPWT","satuan":""},{"pfa":"PFA6","nama":"Alarm","satuan":""}],"Endoscopy - Bronchoscopy":[{"pfa":"PFA1","nama":"Image Processor","satuan":""},{"pfa":"PFA2","nama":"Light Source","satuan":""},{"pfa":"PFA3","nama":"Scope","satuan":""},{"pfa":"PFA4","nama":"Medical Monitor","satuan":""},{"pfa":"PFA5","nama":"Keyboard","satuan":""},{"pfa":"PFA6","nama":"Printer","satuan":""},{"pfa":"PFA7","nama":"UPS","satuan":""},{"pfa":"PFA8","nama":"Suction Pump","satuan":""}],"Infra Red Therapy":[{"pfa":"PFA1","nama":"Saklar ON/OFF","satuan":""},{"pfa":"PFA2","nama":"Lampu Infrared","satuan":""},{"pfa":"PFA3","nama":"Reflektor","satuan":""},{"pfa":"PFA4","nama":"Pengatur Intensitas","satuan":""},{"pfa":"PFA5","nama":"Timer","satuan":""},{"pfa":"PFA6","nama":"Uji Suhu / Panas","satuan":""}],"Sterilizer - Steam":[{"pfa":"PFA1","nama":"Saklar ON/OFF","satuan":""},{"pfa":"PFA2","nama":"Gasket/Pintu Chamber","satuan":""},{"pfa":"PFA3","nama":"Level Air Distilasi","satuan":""},{"pfa":"PFA4","nama":"Uji Tombol dan Display","satuan":""},{"pfa":"PFA5","nama":"Alarm & Indikator","satuan":""},{"pfa":"PFA6","nama":"Uji Kebocoran / Seal (Leak Test)","satuan":""},{"pfa":"PFA7","nama":"Sensor tekanan & suhu","satuan":""},{"pfa":"PFA8","nama":"Safety lock","satuan":""},{"pfa":"PFA9","nama":"Filter Udara","satuan":""},{"pfa":"PFA10","nama":"Kompressor","satuan":""}],"Bed Elektrik":[{"pfa":"PFA1","nama":"Naik–turun bed (height adjustment)","satuan":""},{"pfa":"PFA2","nama":"Sandaran punggung (backrest)","satuan":""},{"pfa":"PFA3","nama":"Sandaran kaki (knee/leg rest)","satuan":""},{"pfa":"PFA4","nama":"Panel kontrol / hand control","satuan":""},{"pfa":"PFA5","nama":"Fungsi CPR (manual CPR release)","satuan":""},{"pfa":"PFA6","nama":"Rel samping (side rail)","satuan":""},{"pfa":"PFA7","nama":"Roda dan rem (casters & brake)","satuan":""},{"pfa":"PFA8","nama":"Stabilitas bed","satuan":""},{"pfa":"PFA9","nama":"Kelistrikan","satuan":""},{"pfa":"PFA10","nama":"Backup Baterai","satuan":""},{"pfa":"PFA11","nama":"Adaptor","satuan":""}],"Timbangan Dewasa":[{"pfa":"PFA1","nama":"Main Unit","satuan":""},{"pfa":"PFA2","nama":"Alas Slip","satuan":""},{"pfa":"PFA3","nama":"Jarum Penunjuk","satuan":""},{"pfa":"PFA4","nama":"Putaran BMI","satuan":""},{"pfa":"PFA5","nama":"Roda","satuan":""},{"pfa":"PFA6","nama":"Stadiometer","satuan":""}],"Vein Finder":[{"pfa":"PFA1","nama":"Main Unit","satuan":""},{"pfa":"PFA2","nama":"Charger","satuan":""},{"pfa":"PFA3","nama":"Tombol On/Off","satuan":""},{"pfa":"PFA4","nama":"Sensor Deteksi","satuan":""},{"pfa":"PFA5","nama":"Proyeksi Vena","satuan":""},{"pfa":"PFA6","nama":"Pencahayaan","satuan":""}],"X-ray Film Viewer":[{"pfa":"PFA1","nama":"Main Unit","satuan":""},{"pfa":"PFA2","nama":"Adaptor","satuan":""},{"pfa":"PFA3","nama":"Switch On/Off","satuan":""},{"pfa":"PFA4","nama":"Lampu LED","satuan":""},{"pfa":"PFA5","nama":"Dimer","satuan":""}],"X-Ray Stationery":[{"pfa":"PFA1","nama":"Panel Listrik","satuan":""},{"pfa":"PFA2","nama":"Panel Control","satuan":""},{"pfa":"PFA3","nama":"PC Workstation","satuan":""},{"pfa":"PFA4","nama":"Hand Switch","satuan":""},{"pfa":"PFA5","nama":"Led Colimator","satuan":""},{"pfa":"PFA6","nama":"X-Ray Tube Sealed","satuan":""},{"pfa":"PFA7","nama":"X-Ray Tube Movement","satuan":""},{"pfa":"PFA8","nama":"Patient Table Movement","satuan":""},{"pfa":"PFA9","nama":"Cassette Tray Movement","satuan":""},{"pfa":"PFA10","nama":"Wall Stand Function","satuan":""}],"Auto Washer Desinfektor":[{"pfa":"PFA1","nama":"Suplai Air","satuan":""},{"pfa":"PFA2","nama":"Door Interlock","satuan":""},{"pfa":"PFA3","nama":"Spray Sistem","satuan":""},{"pfa":"PFA4","nama":"Pemanasan","satuan":""},{"pfa":"PFA5","nama":"Disinfeksi","satuan":""},{"pfa":"PFA6","nama":"Dosing Kimia","satuan":""},{"pfa":"PFA7","nama":"Pengeringan","satuan":""},{"pfa":"PFA8","nama":"Drainase","satuan":""},{"pfa":"PFA9","nama":"Panel Control","satuan":""},{"pfa":"PFA10","nama":"Alarm Sistem","satuan":""}],"Kursi Roda":[{"pfa":"PFA1","nama":"Roda depan & belakang","satuan":""},{"pfa":"PFA2","nama":"Manufer","satuan":""},{"pfa":"PFA3","nama":"Arm","satuan":""},{"pfa":"PFA4","nama":"Jok & sandaran","satuan":""},{"pfa":"PFA5","nama":"Footrest","satuan":""}]};
+        const MEDIX_PFA_UNITS = {"..............................":".....","pengukuran nibp":"mmHg","pengukuran suhu":"°C","pengukuran spo2":"%","pengukuran heartrate":"Bpm","pengukuran fetal heartrate":"Bpm","pengukuran intensitas cahaya":"Lux","pengukuran kebocoran radiasi":"mSv","pengukuran pressure":"mmHg","pengukuran kecepatan kertas":"m/s","pengukuran sensitivitas":"mV/mm","pengukuran qc ua":"mg/dL","pengukuran qc glu":"mg/dL","pengukuran qc tc":"mg/dL","pengukuran qc sgot":"mg/dL","pengukuran qc sgpt":"mg/dL","pengukuran flow o2":"Lpm","pengukuran energi":"Joule","konsentrasi o2":"%","tidal volume":"m/L","tekanan":"cmH2O","frekuensi/rate":"","waktu inspirasi":"detik","peep":"cmH2O","flow":"Lpm","frekuensi":"Hz","intensitas theraphy":"mA","waktu theraphy":"detik","pengukuran joule":"J","pengukuran flow rate":"ml/h","pengukuran occlusion":"PSI"};
+        let pemeriksaanKinerjaLK = [];
+
+        function medixNormText(v){
+            return String(v||'').toLowerCase().replace(/[^a-z0-9%°/]+/g,' ').replace(/\s+/g,' ').trim();
+        }
+        function medixGetPfaTemplateForAsset(nama){
+            const target=medixNormText(nama); if(!target) return [];
+            let key=Object.keys(MEDIX_PFA_TEMPLATES).find(k=>medixNormText(k)===target);
+            if(!key) key=Object.keys(MEDIX_PFA_TEMPLATES).find(k=>{const n=medixNormText(k);return target.includes(n)||n.includes(target);});
+            return key?(MEDIX_PFA_TEMPLATES[key]||[]).map(x=>({...x})):[];
+        }
+        function medixEscPfa(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+        function renderPemeriksaanKinerjaLK(){
+            const body=document.getElementById('dlk-pfa-body'),sub=document.getElementById('dlk-pfa-subtitle'); if(!body) return;
+            const rows=Array.isArray(pemeriksaanKinerjaLK)?pemeriksaanKinerjaLK:[];
+            if(sub) sub.textContent=rows.length?`${rows.length} parameter otomatis sesuai alat • dapat diisi`: 'Pilih alat untuk memuat parameter otomatis.';
+            if(!rows.length){body.innerHTML='<tr><td colspan="9" class="lk-pfa-empty">Belum ada template PFA. Pilih alat kesehatan pada bagian Data Alat Kesehatan.</td></tr>';return;}
+            body.innerHTML=rows.map((r,i)=>`<tr>
+                <td class="pfa-center font-bold text-slate-500">${medixEscPfa(r.pfa||('PFA'+(i+1)))}</td>
+                <td class="font-semibold text-slate-800">${medixEscPfa(r.nama||'-')}</td>
+                <td class="pfa-center">${medixEscPfa(r.satuan||'')}</td>
+                <td><input type="text" value="${medixEscPfa(r.setting||'')}" data-pfa-index="${i}" data-pfa-field="setting"></td>
+                <td><input type="text" value="${medixEscPfa(r.t1||'')}" data-pfa-index="${i}" data-pfa-field="t1"></td>
+                <td><input type="text" value="${medixEscPfa(r.t2||'')}" data-pfa-index="${i}" data-pfa-field="t2"></td>
+                <td><input type="text" value="${medixEscPfa(r.t3||'')}" data-pfa-index="${i}" data-pfa-field="t3"></td>
+                <td><input type="text" value="${medixEscPfa(r.acuan||'')}" data-pfa-index="${i}" data-pfa-field="acuan"></td>
+                <td class="pfa-center"><label title="Baik"><input type="radio" name="pfa-status-${i}" value="Baik" ${r.status==='Baik'?'checked':''} data-pfa-index="${i}" data-pfa-field="status"> B</label><label title="Tidak"><input type="radio" name="pfa-status-${i}" value="Tidak" ${r.status==='Tidak'?'checked':''} data-pfa-index="${i}" data-pfa-field="status"> T</label></td>
+            </tr>`).join('');
+            body.querySelectorAll('[data-pfa-index][data-pfa-field]').forEach(el=>{
+                const handler=()=>{const i=Number(el.dataset.pfaIndex),field=el.dataset.pfaField;if(!pemeriksaanKinerjaLK[i])return;pemeriksaanKinerjaLK[i][field]=el.type==='radio'?(el.checked?el.value:pemeriksaanKinerjaLK[i][field]):el.value;};
+                el.addEventListener('input',handler);el.addEventListener('change',handler);
+            });
+        }
+        function setPemeriksaanKinerjaUntukAlat(nama,forceTemplate=false){
+            const template=medixGetPfaTemplateForAsset(nama);
+            if(!forceTemplate&&Array.isArray(pemeriksaanKinerjaLK)&&pemeriksaanKinerjaLK.length){renderPemeriksaanKinerjaLK();return;}
+            pemeriksaanKinerjaLK=template.map(x=>({...x,setting:'',t1:'',t2:'',t3:'',acuan:'',status:''})); renderPemeriksaanKinerjaLK();
+        }
+        function parseUraianLamaKeStruktur(desc){
+            const raw=String(desc||'').trim(),out={keluhan:'',penyebab:'',pengecekan:'',solusi:''}; if(!raw)return out;
+            const labels=[['keluhan','Keluhan'],['penyebab','Penyebab'],['pengecekan','Pengecekan'],['solusi','Solusi']]; let found=false;
+            labels.forEach(([key,label],idx)=>{
+                const next=idx<labels.length-1?labels[idx+1][1]:null;
+                const re=next?new RegExp('(?:^|\\n)\\s*'+label+'\\s*:?\\s*([\\s\\S]*?)(?=\\n\\s*'+next+'\\s*:?)','i'):new RegExp('(?:^|\\n)\\s*'+label+'\\s*:?\\s*([\\s\\S]*)','i');
+                const m=raw.match(re);if(m){out[key]=m[1].trim();found=true;}
+            });
+            if(!found)out.pengecekan=raw; return out;
+        }
+        function medixGetStructuredUraian(){
+            const get=id=>document.getElementById(id)?.value?.trim()||'';
+            return {keluhan:get('dlk-uraian-keluhan'),penyebab:get('dlk-uraian-penyebab'),pengecekan:get('dlk-uraian-pengecekan'),solusi:get('dlk-uraian-solusi')};
+        }
+        function medixBuildDescKerja(){
+            const d=medixGetStructuredUraian();
+            return ['Keluhan: '+d.keluhan,'Penyebab: '+d.penyebab,'Pengecekan: '+d.pengecekan,'Solusi: '+d.solusi].join('\n');
+        }
+        function medixLoadStructuredUraian(record){
+            const p=(record?.keluhan!==undefined||record?.penyebab!==undefined||record?.pengecekan!==undefined||record?.solusi!==undefined)?{keluhan:record.keluhan||'',penyebab:record.penyebab||'',pengecekan:record.pengecekan||'',solusi:record.solusi||''}:parseUraianLamaKeStruktur(record?.desc_kerja||'');
+            [['dlk-uraian-keluhan',p.keluhan],['dlk-uraian-penyebab',p.penyebab],['dlk-uraian-pengecekan',p.pengecekan],['dlk-uraian-solusi',p.solusi]].forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val||'';});
+        }
+        function resetPemeriksaanKinerjaLK(){pemeriksaanKinerjaLK=[];renderPemeriksaanKinerjaLK();}
+
         function sinkronisasiDataAlatKeWorksheet(id) {
             const a = dataAlat.find(item => item.id == id);
             if(a) {
@@ -8401,8 +8525,9 @@ function renderMaintenanceHistory() {
                 inisialisasiInputKepalaRuanganWorksheet();
                 setPenanggungJawabAlkesOtomatis();
 
-                // Otomatis isi alat kerja, pemeriksaan fisik dan fungsi berdasarkan nama alat.
+                // Otomatis isi alat kerja, pemeriksaan fisik, fungsi, dan PFA berdasarkan nama alat.
                 terapkanTemplateLKUntukAlat(a.nama, true);
+                setPemeriksaanKinerjaUntukAlat(a.nama, true);
                 
                 const inputSearch = document.getElementById('input-search-alat-worksheet');
                 if(inputSearch) inputSearch.value = a.nama + " (" + (a.seri || "-") + ")";
@@ -9760,8 +9885,8 @@ function renderMaintenanceHistory() {
             if(['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))){ await medixEnsurePublicToken(alat,true); }
 
             // CANONICAL MEDIX LABEL: sama dengan label massal.
-            // 88 × 26 mm, header putih, QR kiri, nama alat paling besar.
-            const W=1760,H=520,canvas=document.createElement('canvas');
+            // 78 × 26 mm, header putih, QR kiri, nama alat paling besar.
+            const W=1560,H=520,canvas=document.createElement('canvas');
             canvas.width=W; canvas.height=H;
             const ctx=canvas.getContext('2d',{alpha:false});
             ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,W,H);
@@ -9783,8 +9908,8 @@ function renderMaintenanceHistory() {
             };
             const img=new Image();
             img.onload=()=>{
-                ctx.drawImage(img,30,72,370,370);
-                const x=435,maxW=1265;
+                ctx.drawImage(img,30,72,340,340);
+                const x=395,maxW=1135;
                 // Nama alat paling besar.
                 drawFit(alat.nama||'-',x,154,maxW,'900 60px Arial,sans-serif','#0f172a');
                 // Detail dibuat lebih kecil.
@@ -10482,9 +10607,9 @@ function renderMaintenanceHistory() {
             if(!window.QRCode) throw new Error('Mesin QR Code belum termuat.');
             const {jsPDF}=window.jspdf;
             const pageW=Number(settings.width)||210,pageH=Number(settings.height)||297,margin=Math.max(0,Number(settings.margin)||0),gap=Math.max(1,Number(settings.labelGap)||4);
-            const labelW=88,labelH=26,usableW=pageW-2*margin,usableH=pageH-2*margin;
+            const labelW=78,labelH=26,usableW=pageW-2*margin,usableH=pageH-2*margin;
             const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(7,Math.floor((usableH+gap)/(labelH+gap)));
-            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 88 × 26 mm.');
+            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 78 × 26 mm.');
             const perPage=cols*rows,contentW=cols*labelW+(cols-1)*gap,contentH=rows*labelH+(rows-1)*gap,ox=Math.max(margin,(pageW-contentW)/2),oy=Math.max(margin,(pageH-contentH)/2);
             const orientation=pageW>=pageH?'landscape':'portrait';
             const pdf=new jsPDF({orientation,unit:'mm',format:[pageW,pageH],compress:true,putOnlyUsedFonts:true});
@@ -10496,8 +10621,8 @@ function renderMaintenanceHistory() {
                 pdf.setDrawColor(203,213,225);pdf.setLineWidth(.3);pdf.roundedRect(x,y,labelW,labelH,1.6,1.6,'S');
                 pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(3);pdf.text('MEDIX',x+2,y+2.8);pdf.setFontSize(1.7);pdf.text('ASET MEDIS',x+labelW-2,y+2.95,{align:'right'});pdf.setDrawColor(226,232,240);pdf.setLineWidth(.2);pdf.line(x+2,y+3.7,x+labelW-2,y+3.7);
                 const qrValue=medixBuildQrValue(a),qrData=medixGetQrDataUrl(qrValue,82);
-                pdf.addImage(qrData,'PNG',x+2,y+4.8,18.5,18.5);
-                const tx=x+22,tw=64;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+9.8,tw,3.35);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+14.5,tw,2.05);pdf.setTextColor(51,65,85);pdf.setFont('courier','bold');pdf.setFontSize(1.9);pdf.text('SN '+esc(a.seri||'-'),tx,y+18.5,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+21.5,tw,2);
+                pdf.addImage(qrData,'PNG',x+2,y+4.8,17,17);
+                const tx=x+20.5,tw=55;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+9.6,tw,3.15);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+14.1,tw,1.85);pdf.setTextColor(51,65,85);pdf.setFont('courier','bold');pdf.setFontSize(1.7);pdf.text('SN '+esc(a.seri||'-'),tx,y+18.0,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+21.0,tw,1.8);
                 pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(1.2);pdf.text('SCAN UNTUK REKAM JEJAK',x+labelW/2,y+25.2,{align:'center'});
             }
             const blob=pdf.output('blob'),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`MEDIX_Label_Aset_${new Date().toISOString().slice(0,10)}.pdf`;link.style.display='none';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
@@ -11263,15 +11388,15 @@ function renderMaintenanceHistory() {
   function applyChildLabelLayout(win,d){
     try{
       const grid=win?.document?.querySelector('.grid'); if(!grid)return;
-      const gap=state.labelGap||2,lw=88,lh=26,margin=Number(state.margin)||0;
+      const gap=state.labelGap||2,lw=78,lh=26,margin=Number(state.margin)||0;
       const cols=Math.floor((d.w-2*margin+gap)/(lw+gap));
       const rows=Math.floor((d.h-2*margin+gap)/(lh+gap));
-      if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 88 × 26 mm.');
+      if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 78 × 26 mm.');
       const contentW=cols*lw+(cols-1)*gap, contentH=rows*lh+(rows-1)*gap;
       const ox=Math.max(margin,(d.w-contentW)/2), oy=Math.max(margin,(d.h-contentH)/2);
-      grid.style.gridTemplateColumns=`repeat(${cols},88mm)`;
+      grid.style.gridTemplateColumns=`repeat(${cols},78mm)`;
       grid.style.gridAutoRows='26mm'; grid.style.gap=`${gap}mm`; grid.style.width=`${contentW}mm`; grid.style.margin=`${oy}mm auto ${oy}mm`;
-      win.document.querySelectorAll('.label-card').forEach(el=>{el.style.width='88mm';el.style.height='26mm';});
+      win.document.querySelectorAll('.label-card').forEach(el=>{el.style.width='78mm';el.style.height='26mm';});
       return {cols,rows};
     }catch(err){console.warn('Layout label popup:',err);return null;}
   }
