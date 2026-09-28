@@ -10121,17 +10121,26 @@ function renderMaintenanceHistory() {
                         medixGetByAsset('bukuPetunjukAlat', alat)
                     ]).then(([lkRows,kalRows,bukuRows])=>{
                         const assetId=String(alat.id);
-                        if(Array.isArray(lkRows)){
-                            dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==assetId),...lkRows];
-                            dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==assetId),...lkRows.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                            dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==assetId),...lkRows.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                            dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==assetId),...lkRows.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
+                        // Normalisasi SEMUA hasil query ke alatId agar renderer Rekam Jejak
+                        // tidak kehilangan data ketika dokumen lama memakai assetId / idAlat.
+                        const normalisasiRiwayat = (row) => ({
+                            ...row,
+                            alatId: String(row?.alatId || row?.assetId || row?.idAlat || assetId)
+                        });
+                        const lkNorm = Array.isArray(lkRows) ? lkRows.map(normalisasiRiwayat) : [];
+                        const kalNorm = Array.isArray(kalRows) ? kalRows.map(normalisasiRiwayat) : [];
+                        const bukuNorm = Array.isArray(bukuRows) ? bukuRows.map(normalisasiRiwayat) : [];
+                        if(lkNorm.length){
+                            dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm];
+                            dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
                         }
-                        if(Array.isArray(kalRows)){
-                            dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==assetId),...kalRows];
+                        if(kalNorm.length){
+                            dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==assetId),...kalNorm];
                         }
-                        if(Array.isArray(bukuRows)){
-                            dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==assetId),...bukuRows];
+                        if(bukuNorm.length){
+                            dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==assetId),...bukuNorm];
                         }
                         // Render ulang setelah query khusus selesai agar Corrective, Preventive,
                         // Inspection, dan Kalibrasi langsung muncul pada kartu yang sedang terbuka.
