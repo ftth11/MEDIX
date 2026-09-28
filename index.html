@@ -3139,6 +3139,82 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 }
 </style>
 
+
+<style id="medix-lk-uraian-and-signature-final-v4">
+/* Final LK alignment: uraian saat print mengikuti ukuran area input/lihat. */
+#area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{
+  height:155px !important;
+  min-height:155px !important;
+  max-height:155px !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-structured{
+  flex:1 1 auto !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field{
+  min-height:0 !important;
+  height:auto !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field textarea{
+  flex:1 1 auto !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow:hidden !important;
+}
+
+/* Semua nama penandatangan memakai ukuran font yang sama, hitam, dan bold. */
+#area-lembar-kerja-resmi #medix-lk-teknisi-display,
+#area-lembar-kerja-resmi #dlk-select-nama-teknisi,
+#area-lembar-kerja-resmi #dlk-kepala-ruangan-nama,
+#area-lembar-kerja-resmi #dlk-nama-pj{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  font-size:10px !important;
+  line-height:1.2 !important;
+  font-weight:900 !important;
+  text-shadow:none !important;
+}
+@media print{
+  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{
+    height:155px !important;
+    min-height:155px !important;
+    max-height:155px !important;
+    overflow:hidden !important;
+  }
+  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper .lk-uraian-structured{
+    flex:1 1 auto !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+  }
+  #area-lembar-kerja-resmi .lk-uraian-field{
+    min-height:0 !important;
+    height:auto !important;
+  }
+  #area-lembar-kerja-resmi .lk-uraian-field textarea{
+    flex:1 1 auto !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:hidden !important;
+  }
+  #area-lembar-kerja-resmi #medix-lk-teknisi-display,
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi,
+  #area-lembar-kerja-resmi #dlk-kepala-ruangan-nama,
+  #area-lembar-kerja-resmi #dlk-nama-pj{
+    color:#000 !important;
+    -webkit-text-fill-color:#000 !important;
+    font-size:10px !important;
+    line-height:1.2 !important;
+    font-weight:900 !important;
+    text-shadow:none !important;
+  }
+}
+</style>
+
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
