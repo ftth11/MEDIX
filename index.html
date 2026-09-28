@@ -2899,6 +2899,170 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 }
 </style>
 
+
+<style id="medix-lk-uraian-final-v2">
+/* LK: Uraian dibuat sebagai grid 2x2 yang seragam dengan tabel lain. */
+#area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{
+  min-height:155px !important;
+  height:155px !important;
+  max-height:155px !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-structured{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  grid-template-rows:1fr 1fr !important;
+  gap:0 !important;
+  flex:1 1 auto !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  border:1px solid #cbd5e1 !important;
+  border-radius:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field{
+  display:flex !important;
+  flex-direction:column !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  border:0 !important;
+  border-right:1px solid #cbd5e1 !important;
+  border-bottom:1px solid #cbd5e1 !important;
+  border-radius:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field:nth-child(2n){border-right:0 !important;}
+#area-lembar-kerja-resmi .lk-uraian-field:nth-child(n+3){border-bottom:0 !important;}
+#area-lembar-kerja-resmi .lk-uraian-field label{
+  display:block !important;
+  flex:0 0 13px !important;
+  height:13px !important;
+  line-height:12px !important;
+  margin:0 !important;
+  padding:0 4px !important;
+  border:0 !important;
+  border-bottom:1px solid #cbd5e1 !important;
+  background:#f1f5f9 !important;
+  color:#334155 !important;
+  font-size:7px !important;
+  font-weight:800 !important;
+  text-transform:uppercase !important;
+  box-sizing:border-box !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field textarea{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  flex:1 1 auto !important;
+  resize:none !important;
+  overflow:auto !important;
+  border:0 !important;
+  border-radius:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  background:#fff !important;
+  color:#0f172a !important;
+  font-size:8px !important;
+  line-height:1.2 !important;
+  padding:3px 4px !important;
+  box-sizing:border-box !important;
+}
+
+/* LK tersimpan: nama teknisi/kepala ruangan/PJ tampil sebagai teks, bukan dropdown. */
+#area-lembar-kerja-resmi.medix-lk-locked #dlk-select-nama-teknisi,
+#area-lembar-kerja-resmi.medix-lk-locked #dlk-kepala-ruangan-nama,
+#area-lembar-kerja-resmi.medix-lk-locked #dlk-nama-pj{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  font-weight:900 !important;
+  background:transparent !important;
+  background-image:none !important;
+  border:0 !important;
+  border-bottom:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  pointer-events:none !important;
+  cursor:default !important;
+  text-align:center !important;
+  padding:0 !important;
+}
+#area-lembar-kerja-resmi.medix-lk-locked #dlk-select-nama-teknisi::-ms-expand{display:none !important;}
+
+@media print{
+  #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{
+    height:72px !important;
+    min-height:72px !important;
+    max-height:72px !important;
+    overflow:hidden !important;
+    padding:2px !important;
+  }
+  #area-lembar-kerja-resmi .lk-uraian-structured{
+    height:100% !important;
+    min-height:0 !important;
+    max-height:none !important;
+    border:1px solid #cbd5e1 !important;
+    overflow:hidden !important;
+  }
+  #area-lembar-kerja-resmi .lk-uraian-field{
+    border-right:1px solid #cbd5e1 !important;
+    border-bottom:1px solid #cbd5e1 !important;
+    overflow:hidden !important;
+  }
+  #area-lembar-kerja-resmi .lk-uraian-field:nth-child(2n){border-right:0 !important;}
+  #area-lembar-kerja-resmi .lk-uraian-field:nth-child(n+3){border-bottom:0 !important;}
+  #area-lembar-kerja-resmi .lk-uraian-field label{
+    flex:0 0 11px !important;
+    height:11px !important;
+    line-height:10px !important;
+    padding:0 3px !important;
+    border-bottom:1px solid #cbd5e1 !important;
+    background:#f1f5f9 !important;
+    color:#334155 !important;
+    font-size:6px !important;
+    font-weight:800 !important;
+  }
+  #area-lembar-kerja-resmi .lk-uraian-field textarea{
+    height:100% !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:hidden !important;
+    padding:2px 3px !important;
+    font-size:6.5px !important;
+    line-height:1.15 !important;
+    color:#0f172a !important;
+    background:#fff !important;
+    border:0 !important;
+    resize:none !important;
+  }
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi,
+  #area-lembar-kerja-resmi #dlk-kepala-ruangan-nama,
+  #area-lembar-kerja-resmi #dlk-nama-pj{
+    color:#000 !important;
+    -webkit-text-fill-color:#000 !important;
+    font-weight:900 !important;
+    background:transparent !important;
+    background-image:none !important;
+    border:0 !important;
+    border-bottom:0 !important;
+    appearance:none !important;
+    -webkit-appearance:none !important;
+    box-shadow:none !important;
+    outline:0 !important;
+    text-align:center !important;
+  }
+  #area-lembar-kerja-resmi #dlk-select-nama-teknisi::-ms-expand{display:none !important;}
+}
+</style>
+
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
