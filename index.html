@@ -4040,6 +4040,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             if (masterTambah) buttons.push(`<button type="button" onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
             if (canLabel) {
                 buttons.push(`<button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Preview dan cetak seluruh label aset medis"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label</button>`);
+                buttons.push(`<button type="button" id="btn-sync-public-qr" onclick="medixEnsurePublicTokensForAllAssets(true)" class="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Siapkan QR yang dapat dibuka tanpa login dan sinkronkan riwayat publik"><i class="fa-solid fa-qrcode mr-1.5"></i> QR Publik</button>`);
             }
             container.innerHTML = buttons.join('');
             container.style.display = buttons.length ? 'flex' : 'none';
@@ -6075,6 +6076,9 @@ async function logoutFirebase() {
                 }
         
         
+                // Sinkronkan histori EM/maintenance ke projection publik.
+                if (maintenanceData.equipmentId) medixSyncCurrentAssetPublicHistory(maintenanceData.equipmentId);
+
                 // ========================================
                 // RESET MODE EDIT
                 // ========================================
@@ -7776,6 +7780,9 @@ function renderMaintenanceHistory() {
                 }
 
                 await batch.commit();
+                // Perbarui projection Rekam Jejak publik agar scan kamera tanpa login
+                // langsung melihat LK terbaru. Tidak mengganggu penyimpanan utama bila gagal.
+                medixSyncCurrentAssetPublicHistory(alatIdRaw);
 
                 // Kalibrasi adalah dokumen tambahan; jika gagal, LK utama tetap tersimpan.
                 if (tglKalibrasiInput && tglExpKalibrasiInput) {
@@ -7793,6 +7800,8 @@ function renderMaintenanceHistory() {
                         console.warn('Kalibrasi tidak tersimpan:', calError);
                     }
                 }
+                // Sertifikat/kalibrasi juga masuk projection publik setelah tersimpan.
+                medixSyncCurrentAssetPublicHistory(alatIdRaw);
 
                 // Projection equipment hanya cache/kompatibilitas.
                 try {
@@ -9595,6 +9604,7 @@ function renderMaintenanceHistory() {
             if(currentActiveRole === 'User' && koleksiNama !== 'laporanKeluhanLog') { showToast("Akses ditolak!", "error"); return; }
             if(await showConfirmDialog("Apakah Anda yakin ingin menghapus dokumen log/riwayat ini dari database?", { title: "Hapus Dokumen Riwayat", okText: "Ya, Hapus", icon: "fa-trash-can" })) {
                 db.collection(koleksiNama).doc(docId).delete().then(() => {
+                    medixSyncCurrentAssetPublicHistory(globalSelectedAlatIdForLog || globalSelectedAlatIdUntukLog);
                     showToast("Dokumen log berhasil dihapus!", "success");
                     bukaKartuPemeliharaan(globalSelectedAlatIdForLog || globalSelectedAlatIdUntukLog); 
                 });
@@ -9693,6 +9703,7 @@ function renderMaintenanceHistory() {
             dataPerbaikan.filter(r => r.alatId == alatId).forEach(r => rekapSemua.push({ tgl: r.textTgl || r.tgl || '', jenis: 'Corrective Maintenance', ket: `No LK: ${r.noLk||'-'} <br> ${r.desc_kerja||r.desc}`, hasil: r.hasilTunggal, id: r.id, tipeData: 'lk' }));
             dataPM.filter(p => p.alatId == alatId).forEach(p => rekapSemua.push({ tgl: p.textTgl || p.tgl || '', jenis: 'Preventive Maintenance', ket: `No LK: ${p.noLk||'-'} <br> ${p.desc_kerja||p.desc}`, hasil: p.hasilTunggal, id: p.id, tipeData: 'lk' }));
             dataInspeksi.filter(i => i.alatId == alatId).forEach(i => rekapSemua.push({ tgl: i.textTgl || i.tgl || '', jenis: 'Inspection', ket: `No LK: ${i.noLk||'-'} <br> ${i.desc_kerja||i.desc}`, hasil: i.hasilTunggal, id: i.id, tipeData: 'lk' }));
+            dataMaintenance.filter(m => String(m.equipmentId || m.alatId || m.assetId || m.idAlat) == String(alatId)).forEach(m => rekapSemua.push({ tgl: m.tanggal || m.tgl || '', jenis: `EM / ${m.jenis||'Maintenance'}`, ket: `${m.tindakan||m.keluhan||m.keterangan||'-'}${m.teknisi ? ' · Teknisi: '+m.teknisi : ''}`, hasil: m.hasil || 'Tercatat', id: m.id, tipeData: 'maintenance' }));
             dataKalibrasi.filter(c => c.alatId == alatId).forEach(c => rekapSemua.push({ tgl: c.tgl || '', jenis: 'Sertifikat Kalibrasi', ket: `Vendor: ${c.vendor} | Exp: ${c.exp}`, hasil: c.hasil, id: c.id, tipeData: 'kalibrasi' }));
             rekapSemua.sort((x, y) => String(y.tgl).localeCompare(String(x.tgl)));
         
@@ -9705,7 +9716,7 @@ function renderMaintenanceHistory() {
                             <td class="p-3"><b>${item.jenis}</b><br><span class="text-[10px] text-slate-500 font-mono">${item.tgl.replace('T',' ')}</span></td>
                             <td class="p-3 text-slate-700">${item.ket}</td>
                             <td class="p-3 text-center"><span class="px-2 py-0.5 rounded font-bold text-[10px] ${item.hasil.includes('Baik')||item.hasil==='Layak'?'bg-emerald-50 text-emerald-700 border border-emerald-200':'bg-rose-50 text-rose-700 border border-rose-200'}">${item.hasil}</span></td>
-                            <td class="p-3 text-center">${item.tipeData === 'lk' ? `<button onclick="bukaLembarKerjaDinamisDarlLog('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-[10px]">Lihat LK</button>` : `<span class="text-[10px] text-indigo-600 font-mono">Kalibrasi</span>`}</td>
+                            <td class="p-3 text-center">${item.tipeData === 'lk' ? `<button onclick="bukaLembarKerjaDinamisDarlLog('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-[10px]">Lihat LK</button>` : item.tipeData === 'maintenance' ? `<span class="text-[10px] text-amber-600 font-mono">EM / Maintenance</span>` : `<span class="text-[10px] text-indigo-600 font-mono">Kalibrasi</span>`}</td>
                         </tr>
                     `).join('');
                 }
@@ -9719,7 +9730,7 @@ function renderMaintenanceHistory() {
             if(lkCorrective) lkCorrective.innerHTML = dataPerbaikan.filter(r => r.alatId == alatId).map(r => `<tr><td class="p-3"><b>No LK:</b> ${r.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(r.textTgl||'-').replace('T',' ')}</span><br>${r.desc_kerja||r.desc} ${mapTim(r)}</td>${mapFoto(r)}<td>${r.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${r.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${r.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
             if(lkPreventive) lkPreventive.innerHTML = dataPM.filter(p => p.alatId == alatId).map(p => `<tr><td class="p-3"><b>No LK:</b> ${p.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(p.textTgl||'-').replace('T',' ')}</span><br>${p.desc_kerja||p.desc||'-'} ${mapTim(p)}</td>${mapFoto(p)}<td>${p.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${p.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${p.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
             if(lkInspeksi) lkInspeksi.innerHTML = dataInspeksi.filter(i => i.alatId == alatId).map(i => `<tr><td class="p-3"><b>No LK:</b> ${i.noLk||'-'}<br><span class="text-[10px] text-slate-500 font-mono">${(i.textTgl||'-').replace('T',' ')}</span><br>${i.desc_kerja||i.desc||'-'} ${mapTim(i)}</td>${mapFoto(i)}<td>${i.hasilTunggal}</td><td class="text-center space-x-1"><button onclick="bukaLembarKerjaDinamisDarlLog('${i.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Lihat LK</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${i.id}', 'lembarKerja')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
-            if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl}</td><td class="p-3 text-rose-600 font-bold">${c.exp}</td><td>${c.vendor}</td><td class="text-center space-x-1"><button onclick="bukaDokumenPusat('${c.id}','dataKalibrasi','pdf','Sertifikat')" class="bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded text-[10px]">PDF</button>${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
+            if(lkKalibrasi) lkKalibrasi.innerHTML = dataKalibrasi.filter(c => c.alatId == alatId).map(c => `<tr><td class="p-3 font-mono">${c.tgl||'-'}</td><td class="p-3 text-rose-600 font-bold">${c.exp||'-'}</td><td>${c.vendor||'-'}</td><td class="text-center space-x-1">${medixPublicRekamMode && !auth.currentUser ? `<span class="text-[10px] text-indigo-600 font-mono">Riwayat Publik</span>` : `<button onclick="bukaDokumenPusat('${c.id}','dataKalibrasi','pdf','Sertifikat')" class="bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded text-[10px]">PDF</button>`}${izinMenu('riwayat','hapus')?`<button onclick="hapusDokumenLogSpesifik('${c.id}', 'dataKalibrasi')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('');
             
             const tbodyBuku = document.getElementById('kartu-list-buku-petunjuk');
             if(tbodyBuku) {
@@ -9740,12 +9751,13 @@ function renderMaintenanceHistory() {
             }
         }
 
-        function downloadLabelBarcodeFisik() {
+        async function downloadLabelBarcodeFisik() {
             const alatId = globalSelectedAlatIdForLog || globalSelectedAlatIdUntukLog;
             if(!alatId) return showToast('Aset belum dipilih.', 'info');
             const alat = (dataAlat || []).find(a => String(a.id) === String(alatId));
             if(!alat) return showToast('Data aset tidak ditemukan.', 'error');
             if(!window.QRCode) return showToast('Mesin QR belum termuat. Muat ulang halaman.', 'error');
+            if(['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))){ await medixEnsurePublicToken(alat,true); }
 
             // CANONICAL MEDIX LABEL: sama dengan label massal.
             // 88 × 26 mm, header putih, QR kiri, nama alat paling besar.
@@ -10074,11 +10086,18 @@ function renderMaintenanceHistory() {
                     return;
                 }
 
+                // Token publik dapat datang langsung dari QR v4. Jangan menunggu dataAlat
+                // atau sesi login untuk menampilkan Rekam Jejak.
+                if(decodedPayload?.publicToken) alat.publicToken=decodedPayload.publicToken;
+                if(embeddedAsset?.publicToken && !alat.publicToken) alat.publicToken=embeddedAsset.publicToken;
+
                 if(!Array.isArray(dataAlat)) dataAlat=[];
                 const existingIndex=dataAlat.findIndex(a=>String(a.id)===String(alat.id));
                 if(existingIndex>=0) dataAlat[existingIndex]=alat; else dataAlat.push(alat);
 
-                // Buka Rekam Jejak terlebih dahulu. Data riwayat dilengkapi di background.
+                // Buka Rekam Jejak terlebih dahulu. Projection publik dibaca tanpa login
+                // menggunakan token acak dari QR. Jika belum tersedia, fallback ke query
+                // internal untuk sesi yang memang sedang login.
                 const authGate=document.getElementById('auth-gate-screen');if(authGate)authGate.classList.add('hidden');
                 const sidebar=document.getElementById('app-sidebar');if(sidebar)sidebar.style.display='none';
                 currentActiveRole='User';
@@ -10092,6 +10111,52 @@ function renderMaintenanceHistory() {
                 // aset secara khusus. Jangan hanya mengandalkan listener global karena pada
                 // mode scan publik listener bisa belum aktif / belum selesai memuat.
                 if(db){
+                    const renderPublicRows=async (lkRows,calRows,bukuRows,maintenanceRows)=>{
+                        const assetId=String(alat.id);
+                        const normalisasiRiwayat=(row)=>({...row,alatId:String(row?.alatId||row?.assetId||row?.idAlat||row?.equipmentId||assetId)});
+                        const lkNorm=(lkRows||[]).map(normalisasiRiwayat);
+                        const calNorm=(calRows||[]).map(normalisasiRiwayat);
+                        const bukuNorm=(bukuRows||[]).map(normalisasiRiwayat);
+                        const maintNorm=(maintenanceRows||[]).map(normalisasiRiwayat);
+                        if(lkNorm.length){
+                            dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm];
+                            dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
+                        }
+                        if(calNorm.length) dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==assetId),...calNorm];
+                        if(bukuNorm.length) dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==assetId),...bukuNorm];
+                        if(maintNorm.length) dataMaintenance=[...(dataMaintenance||[]).filter(x=>String(x.alatId)!==assetId),...maintNorm];
+                        if(document.getElementById('modal-kartu') && !document.getElementById('modal-kartu').classList.contains('hidden')){
+                            bukaKartuPemeliharaan(alat.id);
+                            const header=document.querySelector('#modal-kartu .bg-slate-100');
+                            const closeBtn=header?.querySelector('button');if(closeBtn)closeBtn.style.display='none';
+                        }
+                    };
+
+                    // PRIORITAS 1: projection publik, dapat dibaca tanpa login.
+                    if(alat.publicToken){
+                        try{
+                            const root=db.collection('publicRekamJejak').doc(String(alat.publicToken));
+                            const pubSnap=await root.get();
+                            if(pubSnap.exists){
+                                const [lkSnap,calSnap,bukuSnap,maintSnap]=await Promise.all([
+                                    root.collection('lk').get(),root.collection('kalibrasi').get(),root.collection('dokumen').get(),root.collection('maintenance').get()
+                                ]);
+                                await renderPublicRows(
+                                    lkSnap.docs.map(d=>({id:d.id,...d.data()})),
+                                    calSnap.docs.map(d=>({id:d.id,...d.data()})),
+                                    bukuSnap.docs.map(d=>({id:d.id,...d.data()})),
+                                    maintSnap.docs.map(d=>({id:d.id,...d.data()}))
+                                );
+                                return;
+                            }
+                        }catch(err){
+                            console.warn('Projection publik belum dapat dibaca:',err?.code||err?.message||err);
+                        }
+                    }
+
+                    // PRIORITAS 2: fallback untuk akun yang memang sedang login.
                     const medixGetByAsset = async (collectionName, asset) => {
                         const ref = db.collection(collectionName);
                         const values = [...new Set([
@@ -10118,38 +10183,10 @@ function renderMaintenanceHistory() {
                     Promise.all([
                         medixGetByAsset('lembarKerja', alat),
                         medixGetByAsset('dataKalibrasi', alat),
-                        medixGetByAsset('bukuPetunjukAlat', alat)
-                    ]).then(([lkRows,kalRows,bukuRows])=>{
-                        const assetId=String(alat.id);
-                        // Normalisasi SEMUA hasil query ke alatId agar renderer Rekam Jejak
-                        // tidak kehilangan data ketika dokumen lama memakai assetId / idAlat.
-                        const normalisasiRiwayat = (row) => ({
-                            ...row,
-                            alatId: String(row?.alatId || row?.assetId || row?.idAlat || assetId)
-                        });
-                        const lkNorm = Array.isArray(lkRows) ? lkRows.map(normalisasiRiwayat) : [];
-                        const kalNorm = Array.isArray(kalRows) ? kalRows.map(normalisasiRiwayat) : [];
-                        const bukuNorm = Array.isArray(bukuRows) ? bukuRows.map(normalisasiRiwayat) : [];
-                        if(lkNorm.length){
-                            dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm];
-                            dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                            dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                            dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==assetId),...lkNorm.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
-                        }
-                        if(kalNorm.length){
-                            dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==assetId),...kalNorm];
-                        }
-                        if(bukuNorm.length){
-                            dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==assetId),...bukuNorm];
-                        }
-                        // Render ulang setelah query khusus selesai agar Corrective, Preventive,
-                        // Inspection, dan Kalibrasi langsung muncul pada kartu yang sedang terbuka.
-                        if(document.getElementById('modal-kartu') && !document.getElementById('modal-kartu').classList.contains('hidden')){
-                            bukaKartuPemeliharaan(alat.id);
-                            const header=document.querySelector('#modal-kartu .bg-slate-100');
-                            const closeBtn=header?.querySelector('button');if(closeBtn)closeBtn.style.display='none';
-                        }
-                    }).catch(err=>console.warn('Pemuatan riwayat aset gagal:',err));
+                        medixGetByAsset('bukuPetunjukAlat', alat),
+                        medixGetByAsset('maintenance', alat)
+                    ]).then(([lkRows,kalRows,bukuRows,maintenanceRows])=>renderPublicRows(lkRows,kalRows,bukuRows,maintenanceRows))
+                      .catch(err=>console.warn('Pemuatan riwayat aset gagal:',err));
                 }
             }catch(err){
                 console.error('Scan QR langsung gagal:',err);
@@ -10170,25 +10207,184 @@ function renderMaintenanceHistory() {
                 const bin=atob(s),bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
                 const raw=JSON.parse(new TextDecoder().decode(bytes));
                 if(raw&&Array.isArray(raw.a)){
-                    const [id,sn,nama,merk,tipe,ruangan]=raw.a;
-                    return {v:raw.v||3,id:String(id||''),sn:String(sn||''),nama:String(nama||''),merk:String(merk||''),tipe:String(tipe||''),ruangan:String(ruangan||'')};
+                    const [id,sn,nama,merk,tipe,ruangan,publicToken]=raw.a;
+                    return {v:raw.v||3,id:String(id||''),sn:String(sn||''),nama:String(nama||''),merk:String(merk||''),tipe:String(tipe||''),ruangan:String(ruangan||''),publicToken:String(publicToken||'')};
                 }
                 return raw;
             }catch(e){ return null; }
         }
+        // ============================================================
+        // REKAM JEJAK PUBLIK TANPA LOGIN
+        // QR publik memakai token acak sebagai bearer-token. Data internal
+        // (lembarKerja/dataKalibrasi/maintenance/bukuPetunjukAlat) TIDAK
+        // dibuka ke publik; Admin/Teknisi menyalin ringkasan ke koleksi
+        // publicRekamJejak/{token}/... yang hanya berisi data yang aman untuk
+        // ditampilkan pada halaman scan.
+        // ============================================================
+        function medixRandomPublicToken(){
+            try{
+                if(window.crypto?.randomUUID) return window.crypto.randomUUID().replace(/-/g,'');
+                if(window.crypto?.getRandomValues){
+                    const bytes=new Uint8Array(24); window.crypto.getRandomValues(bytes);
+                    let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
+                    return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+                }
+            }catch(e){}
+            return 'medix-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,14);
+        }
+
+        async function medixEnsurePublicToken(alat, persist=true){
+            if(!alat) return '';
+            let token=String(alat.publicToken||'').trim();
+            if(token) return token;
+            token=medixRandomPublicToken();
+            alat.publicToken=token;
+            if(persist && db && alat.id && ['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))){
+                try{
+                    await db.collection('dataAlat').doc(String(alat.id)).update({publicToken:token,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+                }catch(err){
+                    console.warn('Token publik belum dapat disimpan:',err?.code||err?.message||err);
+                    // Token tetap dipakai pada sesi ini; label harus dibuat ulang setelah
+                    // penyimpanan berhasil agar QR yang tercetak permanen memakai token.
+                }
+            }
+            return token;
+        }
+
+        function medixPublicPick(obj, keys){
+            const out={};
+            (keys||[]).forEach(k=>{
+                if(obj && obj[k]!==undefined && obj[k]!==null) out[k]=obj[k];
+            });
+            return out;
+        }
+
+        async function medixGetRowsForPublic(collectionName, assetId, fields=['alatId','assetId','idAlat']){
+            if(!db || !assetId) return [];
+            const docs=new Map();
+            for(const field of fields){
+                try{
+                    const snap=await db.collection(collectionName).where(field,'==',String(assetId)).get();
+                    snap.forEach(d=>docs.set(d.id,{id:d.id,...d.data()}));
+                }catch(e){ /* field/rule/query tidak tersedia; lanjutkan kandidat lain */ }
+            }
+            return Array.from(docs.values());
+        }
+
+        function medixPublicLk(row){
+            return {
+                id:String(row?.id||''),
+                noLk:row?.noLk||'', textTgl:row?.textTgl||row?.tgl||'',
+                jenisKerja:row?.jenisKerja||'', desc_kerja:row?.desc_kerja||row?.desc||'',
+                hasilTunggal:row?.hasilTunggal||row?.hasil||'',
+                teknisiTtd:row?.teknisiTtd||'', saksiTtd:row?.saksiTtd||'', pjTtd:row?.pjTtd||'',
+                tglKalibrasi:row?.tglKalibrasi||'', tglExpKalibrasi:row?.tglExpKalibrasi||'',
+                bhpUsage:Array.isArray(row?.bhpUsage)?row.bhpUsage.map(u=>({
+                    namaItem:u?.namaItem||'',namaAlkes:u?.namaAlkes||'',jenisItem:u?.jenisItem||'',satuan:u?.satuan||'',qty:Number(u?.qty||0)
+                })):[]
+            };
+        }
+        function medixPublicCalibration(row){
+            return medixPublicPick(row,['id','tgl','exp','vendor','hasil','certFileName','certFileType']);
+        }
+        function medixPublicMaintenance(row){
+            return medixPublicPick(row,['id','equipmentId','kodeAlat','namaAlat','tanggal','jenis','keluhan','tindakan','hasil','teknisi','biaya','vendor','keterangan']);
+        }
+        function medixPublicDocument(row){
+            return medixPublicPick(row,['id','namaFile','fileName','fileType','tglUpload','originalFileName','originalFileType','jenis']);
+        }
+
+        async function medixSyncPublicHistoryForAsset(alat, opts={}){
+            if(!alat?.id || !db) return false;
+            const role=canonicalRole(currentActiveRole);
+            if(!['Admin','Teknisi'].includes(role)) return false;
+            const token=await medixEnsurePublicToken(alat,true);
+            if(!token) return false;
+            const root=db.collection('publicRekamJejak').doc(token);
+            const stamp=firebase.firestore.FieldValue.serverTimestamp();
+            const assetPayload={
+                assetId:String(alat.id), nama:alat.nama||'', merk:alat.merk||'', tipe:alat.tipe||'',
+                seri:alat.seri||'', ruangan:alat.ruangan||alat.lokasi||'', status:alat.status||'',
+                publicToken:token, updatedAt:stamp
+            };
+            await root.set(assetPayload,{merge:true});
+
+            const [lkRows,calRows,bukuRows,maintenanceRows]=await Promise.all([
+                medixGetRowsForPublic('lembarKerja',alat.id),
+                medixGetRowsForPublic('dataKalibrasi',alat.id),
+                medixGetRowsForPublic('bukuPetunjukAlat',alat.id),
+                medixGetRowsForPublic('maintenance',alat.id,['equipmentId','alatId','assetId','idAlat'])
+            ]);
+
+            const writeAll=async(col, rows, mapper)=>{
+                for(let i=0;i<rows.length;i+=400){
+                    const batch=db.batch();
+                    rows.slice(i,i+400).forEach(row=>batch.set(root.collection(col).doc(String(row.id)),{...mapper(row),updatedAt:stamp},{merge:true}));
+                    await batch.commit();
+                }
+            };
+            await writeAll('lk',lkRows,medixPublicLk);
+            await writeAll('kalibrasi',calRows,medixPublicCalibration);
+            await writeAll('maintenance',maintenanceRows,medixPublicMaintenance);
+            await writeAll('dokumen',bukuRows,medixPublicDocument);
+            return true;
+        }
+
+        async function medixEnsurePublicTokensForAllAssets(syncHistory=true){
+            if(!db || !Array.isArray(dataAlat) || !dataAlat.length) return;
+            if(!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))){
+                showToast('Sinkronisasi QR publik hanya dapat dilakukan Admin/Teknisi.','error'); return;
+            }
+            const btn=document.getElementById('btn-sync-public-qr');
+            if(btn){btn.disabled=true;btn.dataset.oldHtml=btn.innerHTML;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin mr-1"></i> Sinkronisasi...';}
+            try{
+                const tokenOps=[];
+                for(const a of dataAlat){
+                    if(!a.publicToken) a.publicToken=medixRandomPublicToken();
+                    tokenOps.push(a);
+                }
+                for(let i=0;i<tokenOps.length;i+=450){
+                    const batch=db.batch();
+                    tokenOps.slice(i,i+450).forEach(a=>batch.set(db.collection('dataAlat').doc(String(a.id)),{publicToken:a.publicToken},{merge:true}));
+                    await batch.commit();
+                }
+                if(syncHistory){
+                    let done=0;
+                    for(const a of tokenOps){
+                        try{await medixSyncPublicHistoryForAsset(a);done++;}catch(e){console.warn('Sinkronisasi publik gagal untuk',a.id,e);}
+                    }
+                    showToast(`QR publik dan riwayat ${done}/${tokenOps.length} aset berhasil disiapkan. Cetak ulang label agar QR baru aktif tanpa login.`,'success');
+                }else showToast(`${tokenOps.length} token QR publik berhasil disiapkan.`,'success');
+            }catch(err){
+                console.error('Sinkronisasi QR publik gagal:',err);
+                showToast('Sinkronisasi QR publik gagal: '+(err?.message||err),'error');
+            }finally{
+                if(btn){btn.disabled=false;btn.innerHTML=btn.dataset.oldHtml||'<i class="fa-solid fa-qrcode mr-1.5"></i> Sinkronkan QR Publik';}
+            }
+        }
+
+        async function medixSyncCurrentAssetPublicHistory(alatId){
+            if(!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) return;
+            const alat=(dataAlat||[]).find(a=>String(a.id)===String(alatId));
+            if(!alat) return;
+            try{ await medixSyncPublicHistoryForAsset(alat); }
+            catch(err){ console.warn('Sinkronisasi Rekam Jejak publik gagal:',err?.code||err?.message||err); }
+        }
+
         function medixBuildQrValue(alat){
-            // QR v3: payload ringkas agar lebih mudah dipindai, tetapi tetap cukup untuk
-            // membuka Rekam Jejak tanpa harus menunggu query Firestore.
-            const payload={v:3,a:[String(alat?.id||''),String(alat?.seri||''),String(alat?.nama||''),String(alat?.merk||''),String(alat?.tipe||''),String(alat?.ruangan||alat?.lokasi||'')]};
+            // QR v4 membawa token publik acak. Jika token belum ada, QR tetap kompatibel
+            // dengan mode lama; label baru sebaiknya dibuat setelah sinkronisasi token.
+            const payload={v:4,a:[String(alat?.id||''),String(alat?.seri||''),String(alat?.nama||''),String(alat?.merk||''),String(alat?.tipe||''),String(alat?.ruangan||alat?.lokasi||''),String(alat?.publicToken||'')]};
             const packed=medixEncodeBase64Url(payload);
             return window.location.origin+window.location.pathname+'#asset='+packed;
         }
 
-        function downloadLabelBarcodeMassalPdf(){
+        async function downloadLabelBarcodeMassalPdf(){
             if(!izinMenu('master','read')){showToast('Anda tidak memiliki izin melihat Master Data Aset.','error');return;}
             if(!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))){showToast('Download label tersedia untuk Admin dan Teknisi.','error');return;}
             if(!Array.isArray(dataAlat)||!dataAlat.length){showToast('Data aset medis sedang dimuat atau kosong.','error');return;}
             if(!window.jspdf?.jsPDF){showToast('Mesin PDF belum termuat. Muat ulang halaman lalu coba lagi.','error');return;}
+            await medixEnsurePublicTokensForAllAssets(false);
 
             // DOWNLOAD LABEL = langsung menghasilkan PDF tanpa preview aplikasi/browser.
             // Ukuran PDF download dibuat tetap A4 landscape; pengaturan kertas printer dilakukan di browser saat CETAK.
@@ -10312,6 +10508,7 @@ function renderMaintenanceHistory() {
             if (!izinMenu('master', 'read')) { showToast('Anda tidak memiliki izin melihat Master Data Aset.', 'error'); return; }
             if (!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) { showToast('Cetak label hanya tersedia untuk Admin dan Teknisi.', 'error'); return; }
             if (!Array.isArray(dataAlat) || !dataAlat.length) { showToast('Data aset medis sedang dimuat atau kosong.', 'error'); return; }
+            await medixEnsurePublicTokensForAllAssets(false);
             await medixPrintLabelsBrowser();
         }
 
@@ -10753,6 +10950,7 @@ function renderMaintenanceHistory() {
                     db.collection(targetCollection).add(payload),
                     new Promise((_, reject) => setTimeout(() => reject(new Error('Penyimpanan Firestore melebihi batas waktu 30 detik. Periksa Firestore Rules/koneksi.')), 30000))
                 ]);
+                medixSyncCurrentAssetPublicHistory(alatId);
 
                 form.reset();
                 document.getElementById('form-cal-alat-id').value = '';
