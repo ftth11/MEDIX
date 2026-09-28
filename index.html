@@ -3102,6 +3102,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                             <button onclick="exportLaporanBulananPDF()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center">
                                 <i class="fa-solid fa-file-pdf mr-1.5"></i> Download Laporan Bulanan PDF
                             </button>
+                            <button onclick="exportLaporanTahunanPDF()" class="bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center" title="Download laporan riwayat pemeliharaan satu tahun">
+                                <i class="fa-solid fa-calendar-check mr-1.5"></i> Download Laporan Tahunan PDF
+                            </button>
                             <button id="btn-upload-pdf-baru" onclick="toggleModal('modal-kalibrasi', true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-700 shadow transition flex items-center">
                                 <i class="fa-solid fa-file-arrow-up mr-1.5"></i> Upload Berkas PDF
                             </button>
@@ -4143,7 +4146,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
         let renderAllTimer = null;
         let rekonsiliasiStatusTimer = null;
 
-        function jadwalkanRenderAll(delay = 60) {
+        function jadwalkanRenderAll(delay = 16) {
             if (renderAllTimer) clearTimeout(renderAllTimer);
             renderAllTimer = setTimeout(() => {
                 renderAllTimer = null;
@@ -4238,6 +4241,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     populasikanDropdownAlatDiKalibrasi();
                     populasikanDropdownAlatDiWorksheet();
                     populasikanDropdownEtiketAlat();
+                    // Panaskan cache QR saat browser idle agar saat tombol Cetak Label diklik
+                    // QR tidak perlu dibuat satu per satu dari nol. Tidak memblokir UI utama.
+                    medixWarmQrCache();
 
                 },
                 (error) => console.error("Listener dataAlat gagal:", error)
@@ -6967,6 +6973,69 @@ function renderMaintenanceHistory() {
             const blobUrl = URL.createObjectURL(blob);
             const win = window.open(blobUrl, '_blank');
             if (!win) showToast("Pop-up diblokir browser.", "error");
+        }
+
+        // Laporan tahunan riwayat pemeliharaan. Mengikuti struktur laporan bulanan,
+        // tetapi hanya mengambil LK/riwayat yang tanggalnya berada pada tahun terpilih.
+        function exportLaporanTahunanPDF(tahunArg) {
+            const tahun = Number(tahunArg) || new Date().getFullYear();
+            let htmlContent = `
+                <!DOCTYPE html>
+                <html lang="id">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Laporan Tahunan Rekapitulasi Pemeliharaan Alkes ${tahun}</title>
+                    <style>
+                        @page { size: A4 landscape; margin: 8mm; }
+                        body { font-family: Arial, sans-serif; padding: 0; margin: 0; color: #000; background: #fff; }
+                        .kop { text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 14px; }
+                        .kop h2 { margin: 0; font-size: 15px; text-transform: uppercase; }
+                        .kop h3 { margin: 4px 0; font-size: 13px; text-transform: uppercase; }
+                        .kop p { margin: 0; font-size: 9px; font-family: monospace; }
+                        .periode { text-align:center; font-size:12px; font-weight:700; margin: 0 0 10px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 9px; }
+                        table th, table td { border: 1px solid #333; padding: 4px 5px; text-align: left; vertical-align: top; }
+                        table th { background: #f1f5f9; }
+                        .tanda-tangan { margin-top: 24px; margin-left: auto; width: 240px; text-align: center; font-size: 10px; }
+                        .no-print { margin-bottom: 12px; text-align: right; }
+                        .btn-print { background:#2563eb;color:#fff;border:0;padding:7px 13px;font-weight:700;border-radius:6px;cursor:pointer; }
+                        @media print { .no-print { display:none!important; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="no-print">
+                        <button class="btn-print" onclick="if(window.opener&&window.opener.medixOpenPrintSettings){window.opener.medixOpenPrintSettings(window,{title:'Laporan Tahunan Rekapitulasi Pemeliharaan',mode:'child-print',defaultPreset:'A4',defaultOrientation:'landscape',defaultMargin:8})}else{window.print()}">🖨️ Cetak / Simpan PDF</button>
+                    </div>
+                    <div class="kop">
+                        <h2>Pemerintah Kota Bekasi • Dinas Kesehatan</h2>
+                        <h3>UPTD Rumah Sakit Umum Daerah Pondokgede</h3>
+                        <p>Jl. Raya Jatiwaringin No.1, Kel. Jatiwaringin, Kec. Pondok Gede, Kota Bekasi</p>
+                    </div>
+                    <div class="periode">LAPORAN TAHUNAN REKAPITULASI PEMELIHARAAN &amp; PERBAIKAN ALAT KESEHATAN — ${tahun}</div>
+                    <table>
+                        <thead><tr><th>No</th><th>No. Lembar Kerja</th><th>Jenis Pekerjaan</th><th>Waktu</th><th>Uraian / Keterangan</th><th>Hasil Akhir</th><th>Teknisi</th></tr></thead>
+                        <tbody>
+            `;
+            const gabungLog = [...(dataPerbaikan || []), ...(dataPM || []), ...(dataInspeksi || [])]
+                .filter(item => {
+                    const raw = String(item.textTgl || item.tgl || '');
+                    const match = raw.match(/(?:^|\D)(20\d{2})(?:\D|$)/);
+                    return match ? Number(match[1]) === tahun : false;
+                })
+                .sort((a,b) => String(b.textTgl || b.tgl || '').localeCompare(String(a.textTgl || a.tgl || '')));
+            if (!gabungLog.length) {
+                htmlContent += `<tr><td colspan="7" style="text-align:center;font-style:italic">Tidak ada data riwayat pemeliharaan untuk tahun ${tahun}.</td></tr>`;
+            } else {
+                gabungLog.forEach((item, idx) => {
+                    const esc = v => String(v ?? '-').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+                    htmlContent += `<tr><td>${idx+1}</td><td><b>${esc(item.noLk || '-')}</b></td><td>${esc(item.jenisKerja || '-')}</td><td>${esc(String(item.textTgl || item.tgl || '-').replace('T',' '))}</td><td>${esc(item.desc_kerja || item.desc || '-')}</td><td><b>${esc(item.hasilTunggal || '-')}</b></td><td>${esc(item.teknisiTtd || '-')}</td></tr>`;
+                });
+            }
+            htmlContent += `</tbody></table><div class="tanda-tangan"><p>Bekasi, ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</p><p><b>Penanggung Jawab IPSRS Alkes</b></p><br><br><br><p><b>( ............................................ )</b></p></div></body></html>`;
+            const blob = new Blob([htmlContent], {type:'text/html'});
+            const blobUrl = URL.createObjectURL(blob);
+            const win = window.open(blobUrl, '_blank');
+            if (!win) { URL.revokeObjectURL(blobUrl); showToast('Pop-up diblokir browser.','error'); }
         }
 
         function evaluasiJatuhTempoKalibrasiMassal() {
@@ -10092,25 +10161,76 @@ function renderMaintenanceHistory() {
         }
 
         const medixQrCache = new Map();
+        let medixQrEngineHost = null;
+        let medixQrEngine = null;
+        let medixQrEngineSize = 0;
         let medixQrWarmTimer = null;
+
+        function medixEnsureQrEngine(size=82){
+            if (!window.QRCode) throw new Error('Mesin QR Code belum termuat. Periksa koneksi internet lalu muat ulang halaman.');
+            if (!medixQrEngineHost) {
+                medixQrEngineHost = document.createElement('div');
+                medixQrEngineHost.setAttribute('aria-hidden','true');
+                medixQrEngineHost.style.cssText='position:fixed;left:-100000px;top:-100000px;width:1px;height:1px;background:#fff;overflow:hidden;opacity:0;pointer-events:none;';
+                document.body.appendChild(medixQrEngineHost);
+            }
+            medixQrEngineHost.style.width=size+'px';
+            medixQrEngineHost.style.height=size+'px';
+            if (!medixQrEngine || medixQrEngineSize !== size) {
+                medixQrEngineHost.innerHTML='';
+                medixQrEngine = new QRCode(medixQrEngineHost,{text:'MEDIX',width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:(QRCode.CorrectLevel&&QRCode.CorrectLevel.L)||0});
+                medixQrEngineSize = size;
+            }
+            return medixQrEngineHost;
+        }
 
         function medixGetQrDataUrl(value,size=82){
             const key=String(value||'MEDIX');
             const cacheKey=key+'|'+size;
             if(medixQrCache.has(cacheKey)) return medixQrCache.get(cacheKey);
-            if(!window.QRCode) throw new Error('Mesin QR Code belum termuat. Periksa koneksi internet lalu muat ulang halaman.');
-            const host=document.createElement('div');
-            host.setAttribute('aria-hidden','true');
-            host.style.cssText=`position:fixed;left:-100000px;top:-100000px;width:${size}px;height:${size}px;background:#fff;overflow:hidden;opacity:0;pointer-events:none;`;
-            document.body.appendChild(host);
-            try{
-                new QRCode(host,{text:key,width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:(QRCode.CorrectLevel&&QRCode.CorrectLevel.L)||0});
+            const host=medixEnsureQrEngine(size);
+            try {
+                if(typeof medixQrEngine.makeCode==='function') medixQrEngine.makeCode(key);
+                else { host.innerHTML=''; medixQrEngine=new QRCode(host,{text:key,width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:(QRCode.CorrectLevel&&QRCode.CorrectLevel.L)||0}); }
                 const canvas=host.querySelector('canvas');
                 if(canvas){const url=canvas.toDataURL('image/png');medixQrCache.set(cacheKey,url);return url;}
                 const img=host.querySelector('img');
                 if(img && img.src){medixQrCache.set(cacheKey,img.src);return img.src;}
                 throw new Error('QR Code tidak menghasilkan gambar.');
-            }finally{host.remove();}
+            } catch(e){
+                // Jika engine reusable gagal pada browser tertentu, fallback satu instance.
+                host.innerHTML='';
+                medixQrEngine=new QRCode(host,{text:key,width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:(QRCode.CorrectLevel&&QRCode.CorrectLevel.L)||0});
+                medixQrEngineSize=size;
+                const canvas=host.querySelector('canvas');
+                if(canvas){const url=canvas.toDataURL('image/png');medixQrCache.set(cacheKey,url);return url;}
+                const img=host.querySelector('img');
+                if(img?.src){medixQrCache.set(cacheKey,img.src);return img.src;}
+                throw e;
+            }
+        }
+
+        function medixWarmQrCache(){
+            if(!Array.isArray(dataAlat)||!dataAlat.length||!window.QRCode)return;
+            if(medixQrWarmTimer) return;
+            let index=0;
+            const run=deadline=>{
+                medixQrWarmTimer=null;
+                const start=performance.now();
+                let count=0;
+                while(index<dataAlat.length && count<6 && performance.now()-start<8){
+                    const a=dataAlat[index++];
+                    try{medixGetQrDataUrl(medixBuildQrValue(a),110);}catch(e){}
+                    count++;
+                }
+                if(index<dataAlat.length){
+                    const next=()=>medixWarmQrCache();
+                    if('requestIdleCallback' in window) medixQrWarmTimer=requestIdleCallback(run,{timeout:200});
+                    else medixQrWarmTimer=setTimeout(next,16);
+                }
+            };
+            if('requestIdleCallback' in window) medixQrWarmTimer=requestIdleCallback(run,{timeout:300});
+            else medixQrWarmTimer=setTimeout(()=>run({timeRemaining:()=>8}),16);
         }
 
 
@@ -10241,8 +10361,8 @@ function renderMaintenanceHistory() {
     
         window.addEventListener('DOMContentLoaded', () => {
             syncMasterHeaderActions();
-            setTimeout(syncMasterHeaderActions, 250);
-            setTimeout(syncMasterHeaderActions, 1000);
+            setTimeout(syncMasterHeaderActions, 100);
+            setTimeout(syncMasterHeaderActions, 300);
         }, { once: true });
 
         window.onload = function() { 
@@ -10252,7 +10372,7 @@ function renderMaintenanceHistory() {
              setTimeout(() => {
                  renderGrafikDashboardDinamis();
                  renderGrafikTrenKerusakan();
-             }, 500); 
+             }, 100); 
              const urlParams = new URLSearchParams(window.location.search);
              const scanAlatId = urlParams.get('alat');
              const packedAsset = window.location.hash.startsWith('#asset=') ? medixDecodeBase64Url(window.location.hash.slice(7)) : null;
