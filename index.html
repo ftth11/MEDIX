@@ -10088,28 +10088,59 @@ function renderMaintenanceHistory() {
                 const modalKartuHeader=document.querySelector('#modal-kartu .bg-slate-100');
                 const tombolTutup=modalKartuHeader?.querySelector('button');if(tombolTutup)tombolTutup.style.display='none';
 
-                // Riwayat tidak menghambat pembukaan. Setelah selesai, tabel Rekam Jejak diperbarui.
+                // Riwayat tidak menghambat pembukaan. Setelah kartu tampil, ambil riwayat
+                // aset secara khusus. Jangan hanya mengandalkan listener global karena pada
+                // mode scan publik listener bisa belum aktif / belum selesai memuat.
                 if(db){
-                    Promise.all([
-                        db.collection('lembarKerja').where('alatId','==',alat.id).get().catch(()=>null),
-                        db.collection('dataKalibrasi').where('alatId','==',alat.id).get().catch(()=>null),
-                        db.collection('bukuPetunjukAlat').where('alatId','==',alat.id).get().catch(()=>null)
-                    ]).then(([lkSnap,kalSnap,bukuSnap])=>{
-                        if(lkSnap){
-                            const rows=lkSnap.docs.map(d=>({id:d.id,...d.data()}));
-                            dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows];
-                            dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                            dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
-                            dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==String(alat.id)),...rows.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
+                    const medixGetByAsset = async (collectionName, asset) => {
+                        const ref = db.collection(collectionName);
+                        const values = [...new Set([
+                            String(asset?.id || '').trim(),
+                            asset?.id,
+                            String(asset?.seri || '').trim()
+                        ].filter(v => v !== undefined && v !== null && String(v) !== ''))];
+                        const fields = ['alatId','assetId','idAlat'];
+                        const docs = new Map();
+                        for(const field of fields){
+                            for(const value of values){
+                                try{
+                                    const snap = await ref.where(field,'==',value).get();
+                                    snap.forEach(d => docs.set(d.id,{id:d.id,...d.data()}));
+                                }catch(err){
+                                    // Beberapa rules/index dapat menolak field alternatif.
+                                    // Lanjutkan ke kandidat berikutnya tanpa menghentikan riwayat.
+                                }
+                            }
                         }
-                        if(kalSnap){dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==String(alat.id)),...kalSnap.docs.map(d=>({id:d.id,...d.data()}))];}
-                        if(bukuSnap){dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==String(alat.id)),...bukuSnap.docs.map(d=>({id:d.id,...d.data()}))];}
+                        return Array.from(docs.values());
+                    };
+
+                    Promise.all([
+                        medixGetByAsset('lembarKerja', alat),
+                        medixGetByAsset('dataKalibrasi', alat),
+                        medixGetByAsset('bukuPetunjukAlat', alat)
+                    ]).then(([lkRows,kalRows,bukuRows])=>{
+                        const assetId=String(alat.id);
+                        if(Array.isArray(lkRows)){
+                            dataLembarKerja=[...(dataLembarKerja||[]).filter(x=>String(x.alatId)!==assetId),...lkRows];
+                            dataPerbaikan=[...(dataPerbaikan||[]).filter(x=>String(x.alatId)!==assetId),...lkRows.filter(d=>d.jenisKerja==='Corrective Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataPM=[...(dataPM||[]).filter(x=>String(x.alatId)!==assetId),...lkRows.filter(d=>d.jenisKerja==='Preventive Maintenance').map(d=>({...d,desc:d.desc_kerja}))];
+                            dataInspeksi=[...(dataInspeksi||[]).filter(x=>String(x.alatId)!==assetId),...lkRows.filter(d=>d.jenisKerja==='Inspection').map(d=>({...d,desc:d.desc_kerja}))];
+                        }
+                        if(Array.isArray(kalRows)){
+                            dataKalibrasi=[...(dataKalibrasi||[]).filter(x=>String(x.alatId)!==assetId),...kalRows];
+                        }
+                        if(Array.isArray(bukuRows)){
+                            dataBukuPetunjuk=[...(dataBukuPetunjuk||[]).filter(x=>String(x.alatId)!==assetId),...bukuRows];
+                        }
+                        // Render ulang setelah query khusus selesai agar Corrective, Preventive,
+                        // Inspection, dan Kalibrasi langsung muncul pada kartu yang sedang terbuka.
                         if(document.getElementById('modal-kartu') && !document.getElementById('modal-kartu').classList.contains('hidden')){
                             bukaKartuPemeliharaan(alat.id);
                             const header=document.querySelector('#modal-kartu .bg-slate-100');
                             const closeBtn=header?.querySelector('button');if(closeBtn)closeBtn.style.display='none';
                         }
-                    }).catch(err=>console.warn('Pemuatan riwayat background gagal:',err));
+                    }).catch(err=>console.warn('Pemuatan riwayat aset gagal:',err));
                 }
             }catch(err){
                 console.error('Scan QR langsung gagal:',err);
