@@ -2587,7 +2587,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 </style>
 
 <style id="medix-final-qr-lk-natural-fix">
-/* QR Rekam Jejak: satu renderer saja, ukuran stabil. */
+/* QR Rekam Jejak: satu renderer saja, sumber payload sama dengan label download. */
 #qrcode-container{
   width:100px !important;
   height:100px !important;
@@ -9662,15 +9662,21 @@ function renderMaintenanceHistory() {
                 // Gunakan satu <img> final dari dataURL. Ini menghindari canvas/img
                 // qrcodejs yang pada sebagian browser dapat bertumpuk atau tertutup CSS.
                 qrContainer.innerHTML = '';
-                const targetUrl = window.location.origin + window.location.pathname + '?alat=' + encodeURIComponent(String(alat.id || ''));
+                // Gunakan payload QR CANONICAL yang sama persis dengan label yang bisa
+                // dipindai. QR di Rekam Jejak sebelumnya memakai URL ?alat=...
+                // sehingga hasil scan dapat berbeda dengan label yang di-download.
+                // Render pada resolusi lebih tinggi, lalu tampilkan lebih kecil agar
+                // modul QR tetap tajam saat dipindai kamera HP.
+                const targetUrl = medixBuildQrValue(alat);
                 try {
-                    const qrDataUrl = medixGetQrDataUrl(targetUrl, 96);
+                    const qrDataUrl = medixGetQrDataUrl(targetUrl, 192);
                     const qrImg = document.createElement('img');
                     qrImg.src = qrDataUrl;
                     qrImg.alt = 'QR Rekam Jejak ' + String(alat.nama || 'Aset Medis');
-                    qrImg.width = 96;
-                    qrImg.height = 96;
-                    qrImg.style.cssText = 'display:block!important;width:96px!important;height:96px!important;min-width:96px!important;min-height:96px!important;max-width:96px!important;max-height:96px!important;opacity:1!important;visibility:visible!important;background:#fff!important;object-fit:contain!important;transform:none!important;margin:0!important;';
+                    qrImg.width = 104;
+                    qrImg.height = 104;
+                    qrImg.draggable = false;
+                    qrImg.style.cssText = 'display:block!important;width:104px!important;height:104px!important;min-width:104px!important;min-height:104px!important;max-width:104px!important;max-height:104px!important;opacity:1!important;visibility:visible!important;background:#fff!important;object-fit:contain!important;transform:none!important;margin:0!important;border:0!important;';
                     qrContainer.appendChild(qrImg);
                 } catch(e) {
                     console.error('QR Rekam Jejak gagal dibuat:', e);
