@@ -2515,31 +2515,31 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 }
 </style>
 <style id="medix-label-layout-final">
-/* MEDIX LABEL ENGINE — canonical compact layout, 3 x 7 per A4 landscape */
+/* MEDIX LABEL ENGINE — 3 kolom x 9 baris A4 landscape */
 .medix-label-printing{background:#fff!important;}
 #medix-label-print-root{display:none;}
 .medix-label-printing #medix-label-print-root{display:block;width:297mm;margin:0 auto;background:#fff;color:#0f172a;}
-.medix-label-print-page{display:grid;grid-template-columns:repeat(3,78mm);grid-template-rows:repeat(7,26mm);grid-auto-rows:26mm;gap:2mm;width:238mm;height:194mm;margin:8mm auto; padding:0;box-sizing:border-box;align-content:start;justify-content:center;page-break-after:always;break-after:page;}
+.medix-label-print-page{display:grid;grid-template-columns:repeat(3,78mm);grid-template-rows:repeat(9,20mm);grid-auto-rows:20mm;gap:2mm;width:238mm;height:196mm;margin:4mm auto; padding:0;box-sizing:border-box;align-content:start;justify-content:center;page-break-after:always;break-after:page;}
 .medix-label-print-page:last-child{page-break-after:auto;break-after:auto;}
-.medix-label-card-print{width:78mm;height:26mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
+.medix-label-card-print{width:78mm;height:20mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
 .medix-label-top{height:3.2mm;min-height:3.2mm;background:#fff;color:#64748b;border-bottom:.25mm solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 2mm;font-size:2.5mm;line-height:1;}
 .medix-label-top span{font-size:1.35mm;letter-spacing:.1mm;color:#94a3b8;}
-.medix-label-body{display:flex;align-items:center;gap:1.5mm;padding:.7mm 1.3mm 0;height:18.7mm;min-height:18.7mm;box-sizing:border-box;}
-.medix-label-qr{width:17mm;height:17mm;flex:0 0 18.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.medix-label-qr img,.medix-label-qr canvas{width:17mm!important;height:17mm!important;display:block;image-rendering:auto;}
-.medix-label-info{min-width:0;width:57mm;overflow:hidden;line-height:1.02;}
-.medix-label-name{font-size:3.15mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;}
-.medix-label-sub{font-size:1.85mm;color:#475569;font-weight:700;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sn{font:700 1.7mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-room{font-size:1.8mm;color:#2563eb;font-weight:800;margin-top:.55mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-scan{text-align:center;height:3.6mm;min-height:3.6mm;font:700 1.2mm/1 monospace;color:#64748b;padding-top:.25mm;}
+.medix-label-body{display:flex;align-items:center;gap:1.5mm;padding:.4mm 1.3mm 0;height:14.1mm;min-height:14.1mm;box-sizing:border-box;}
+.medix-label-qr{width:13mm;height:13mm;flex:0 0 14.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.medix-label-qr img,.medix-label-qr canvas{width:13mm!important;height:13mm!important;display:block;image-rendering:auto;}
+.medix-label-info{min-width:0;width:61mm;overflow:hidden;line-height:1.02;}
+.medix-label-name{font-size:2.75mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;}
+.medix-label-sub{font-size:1.65mm;color:#475569;font-weight:700;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sn{font:700 1.55mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-room{font-size:1.55mm;color:#2563eb;font-weight:800;margin-top:.55mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-scan{text-align:center;height:2.7mm;min-height:2.7mm;font:700 1.2mm/1 monospace;color:#64748b;padding-top:.25mm;}
 @media print{
   @page{size:A4 landscape;margin:0;}
   body.medix-label-printing > *{display:none!important;}
   body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;width:297mm!important;margin:0!important;padding:0!important;box-sizing:border-box!important;background:#fff!important;color:#0f172a!important;overflow:visible!important;}
-  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,78mm)!important;grid-template-rows:repeat(7,26mm)!important;gap:2mm!important;width:238mm!important;height:194mm!important;margin:8mm auto!important;padding:0!important;box-sizing:border-box!important;align-content:start!important;justify-content:center!important;page-break-after:always!important;break-after:page!important;}
+  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,78mm)!important;grid-template-rows:repeat(9,20mm)!important;gap:2mm!important;width:238mm!important;height:196mm!important;margin:4mm auto!important;padding:0!important;box-sizing:border-box!important;align-content:start!important;justify-content:center!important;page-break-after:always!important;break-after:page!important;}
   body.medix-label-printing .medix-label-print-page:last-child{page-break-after:auto!important;break-after:auto!important;}
-  body.medix-label-printing .medix-label-card-print{width:78mm!important;height:26mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
+  body.medix-label-printing .medix-label-card-print{width:78mm!important;height:20mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
 }
 </style>
 <style id="medix-label-print-isolation-final">
@@ -3215,6 +3215,12 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 }
 </style>
 
+<style id="medix-final-request-fixes">
+#tab-data-alat .glass-panel, #master-table-scroll { max-height:none !important; }
+#master-table-scroll { overflow-y:visible !important; }
+.medix-mobile-filter-reset { display:none !important; }
+#sidebar-profile-avatar, #sidebar-footer-avatar { object-fit:cover; }
+</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -3326,8 +3332,15 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
                     <div class="px-4 py-2 mt-2">
                         <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-200 flex items-center space-x-2.5">
-                            <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 border border-blue-200"><i class="fa-solid fa-circle-user"></i></div>
-                            <div class="overflow-hidden"><p id="sidebar-role-badge" class="text-[10px] uppercase font-bold text-cyan-600 tracking-wider">Role</p><p class="text-xs text-slate-800 truncate font-semibold">-</p></div>
+                            <button type="button" onclick="triggerSidebarProfileUpload()" class="relative w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 border border-blue-200 overflow-hidden shrink-0 cursor-pointer hover:ring-2 hover:ring-cyan-200 transition" title="Ubah foto profil" aria-label="Ubah foto profil">
+                                <img id="sidebar-profile-avatar" src="" alt="Foto profil" class="hidden w-full h-full object-cover">
+                                <i id="sidebar-profile-avatar-icon" class="fa-solid fa-circle-user"></i>
+                            </button>
+                            <div class="overflow-hidden min-w-0 flex-1 cursor-pointer" onclick="triggerSidebarProfileUpload()">
+                                <p id="sidebar-role-badge" class="text-[10px] uppercase font-bold text-cyan-600 tracking-wider">Role</p>
+                                <p id="sidebar-account-name" class="text-xs text-slate-800 truncate font-semibold">-</p>
+                            </div>
+                            <input id="sidebar-profile-upload" type="file" accept="image/*" class="hidden" onchange="handleSidebarProfileUpload(event)">
                         </div>
                     </div>
                     
@@ -3364,10 +3377,11 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 </div>
                 <div class="medix-sidebar-footer p-3 border-t border-slate-200 bg-white/95 backdrop-blur-xl shadow-[0_-10px_25px_rgba(15,23,42,.08)]">
                     <div class="flex items-center gap-2.5 mb-2.5 px-1">
-                        <div class="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shrink-0">
-                            <i class="fa-solid fa-user text-xs"></i>
-                        </div>
-                        <div class="min-w-0 flex-1">
+                        <button type="button" onclick="triggerSidebarProfileUpload()" class="relative w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shrink-0 overflow-hidden cursor-pointer hover:ring-2 hover:ring-cyan-200 transition" title="Ubah foto profil" aria-label="Ubah foto profil">
+                            <img id="sidebar-footer-avatar" src="" alt="Foto profil" class="hidden w-full h-full object-cover">
+                            <i id="sidebar-footer-avatar-icon" class="fa-solid fa-user text-xs"></i>
+                        </button>
+                        <div class="min-w-0 flex-1 cursor-pointer" onclick="triggerSidebarProfileUpload()">
                             <p id="sidebar-footer-name" class="text-[11px] font-bold text-slate-700 truncate">-</p>
                             <p id="sidebar-footer-role" class="text-[9px] font-semibold uppercase tracking-wider text-slate-400 truncate">Akun MEDIX</p>
                         </div>
@@ -3491,7 +3505,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         
                         <div class="master-table-scroll-wrap">
-                            <div id="master-table-scroll" class="master-table-scroll max-h-[60vh] no-scrollbar">
+                            <div id="master-table-scroll" class="master-table-scroll no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[850px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
@@ -3688,7 +3702,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-bhp-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat BHP</span></label>
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-bhp-edit" class="rounded border-slate-300 text-cyan-600"> <span>Kelola BHP / Transaksi</span></label>
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-label-print" class="rounded border-slate-300 text-cyan-600"> <span>Cetak Label Aset</span></label>
-                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-qr-public" class="rounded border-slate-300 text-cyan-600"> <span>Kelola QR Publik</span></label>
                                             </div>
                                         </div>
                                     </div>
@@ -3876,7 +3889,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                         <th class="p-3">SN</th>
                                         <th class="p-3">Ruangan</th>
                                         <th class="p-3">Periode PM</th>
-                                        <th class="p-3">Status Jadwal</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-rekapan-pm-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -4509,8 +4521,10 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 role: userData.role || "User",
                 menuAkses: userAksesMenuArray || {},
                 unitId: userData.unitId || null,
+                photoURL: userData.photoURL || userData.fotoProfil || '',
                 aktif: userData.aktif !== false
             };
+            medixRenderSidebarProfile(currentUser.photoURL);
         
             return true;
         }
@@ -4534,7 +4548,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             if (masterTambah) buttons.push(`<button type="button" onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
             if (canLabel) {
                 buttons.push(`<button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Preview dan cetak seluruh label aset medis"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label</button>`);
-                buttons.push(`<button type="button" id="btn-sync-public-qr" onclick="medixEnsurePublicTokensForAllAssets(true)" class="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Siapkan QR yang dapat dibuka tanpa login dan sinkronkan riwayat publik"><i class="fa-solid fa-qrcode mr-1.5"></i> QR Publik</button>`);
+
             }
             container.innerHTML = buttons.join('');
             container.style.display = buttons.length ? 'flex' : 'none';
@@ -5451,8 +5465,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                     "SN":sn,
                     "Ruangan":lokasi,
                     "Periode PM":item.rekomendasiPeriode||'Belum Ditentukan',
-                    "Tanggal Jadwal":(mode==='month'?inMonth:inYear).map(j=>j.tanggal||'-').join(', ')||'-',
-                    "Status Jadwal":item.statusJadwalPM||'-'
+                    "Tanggal Jadwal":(mode==='month'?inMonth:inYear).map(j=>j.tanggal||'-').join(', ')||'-'
                 });
             });
             const ws=XLSX.utils.json_to_sheet(rows.length?rows:[{"Informasi":`Tidak ada jadwal PM untuk ${mode==='month'?namaBulan[month]+' ':''}${year}.`}]);
@@ -5502,7 +5515,6 @@ const filtered = rows;
                         <td class="p-3 font-mono text-[10px]" data-label="SN">${escapeHtmlEquipment(sn)}</td>
                         <td class="p-3" data-label="Ruangan">${escapeHtmlEquipment(lokasi)}</td>
                         <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold medix-period-badge ${kelasBadgePeriodeEM(row.periode)} ${row.periode === 'Setiap 4 Bulan' ? 'period-4' : row.periode === 'Setiap 6 Bulan' ? 'period-6' : row.periode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(row.periode)}</span></td>
-                        <td class="p-3" data-label="Status Jadwal"><span class="px-2 py-1 rounded-full text-[9px] font-bold ${row.statusJadwalPM === 'Terjadwal' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${escapeHtmlEquipment(row.statusJadwalPM || '-')}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -5697,10 +5709,12 @@ const filtered = rows;
                 group.populasi += 1;
                 group.assets.push(asset);
 
-                const jadwal = getJadwalPMUntukAsset(asset, index);
-                group.target += Array.isArray(jadwal)
-                    ? jadwal.filter(j => j && Number(j.bulan) >= 1 && Number(j.bulan) <= 12).length
+                const periode = asset.rekomendasiPeriode || '';
+                const targetPerTahun = periode === 'Setiap 4 Bulan' ? 3
+                    : periode === 'Setiap 6 Bulan' ? 2
+                    : periode === 'Satu Kali Per Tahun' ? 1
                     : 0;
+                group.target += targetPerTahun;
             });
 
             // Realisasi: LK + maintenance pada tahun terpilih.
@@ -5980,17 +5994,56 @@ function showConfirmDialog(message, options = {}) {
 
 
 
-function medixSyncSidebarFooterAccount() {
-    const nameEl = document.getElementById('sidebar-footer-name');
-    const roleEl = document.getElementById('sidebar-footer-role');
-    if (!nameEl || !roleEl) return;
-    const role = (typeof currentUser !== 'undefined' && currentUser && currentUser.role) ? currentUser.role : (document.getElementById('sidebar-role-badge')?.textContent || 'Akun');
-    const sourceName = document.querySelector('#app-sidebar #sidebar-role-badge')?.parentElement?.querySelector('p.text-xs')?.textContent?.trim();
-    const authName = (typeof currentUser !== 'undefined' && currentUser && (currentUser.nama || currentUser.name || currentUser.username)) ? (currentUser.nama || currentUser.name || currentUser.username) : sourceName;
-    nameEl.textContent = authName || '-';
-    roleEl.textContent = role || 'Akun MEDIX';
+function medixRenderSidebarProfile(photoURL = '') {
+    const url = String(photoURL || '').trim();
+    const imgs = [document.getElementById('sidebar-profile-avatar'), document.getElementById('sidebar-footer-avatar')];
+    const icons = [document.getElementById('sidebar-profile-avatar-icon'), document.getElementById('sidebar-footer-avatar-icon')];
+    imgs.forEach(img => {
+        if (!img) return;
+        if (url) { img.src = url; img.classList.remove('hidden'); }
+        else { img.removeAttribute('src'); img.classList.add('hidden'); }
+    });
+    icons.forEach(icon => { if (icon) icon.classList.toggle('hidden', !!url); });
 }
-
+function triggerSidebarProfileUpload() {
+    if (!auth?.currentUser) return showToast('Silakan login terlebih dahulu.', 'error');
+    document.getElementById('sidebar-profile-upload')?.click();
+}
+async function handleSidebarProfileUpload(event) {
+    const input=event?.target, file=input?.files?.[0];
+    if(!file) return;
+    if(!auth?.currentUser) { showToast('Sesi login tidak ditemukan.','error'); if(input)input.value=''; return; }
+    if(!file.type?.startsWith('image/')) { showToast('File harus berupa gambar.','error'); if(input)input.value=''; return; }
+    if(file.size>5*1024*1024) { showToast('Ukuran foto maksimal 5 MB.','error'); if(input)input.value=''; return; }
+    try {
+        showToast('Mengunggah foto profil...','info');
+        const uid=auth.currentUser.uid;
+        const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+        const ref=firebase.storage().ref(`profilePhotos/${uid}/avatar.${ext}`);
+        const snap=await ref.put(file,{contentType:file.type});
+        const photoURL=await snap.ref.getDownloadURL();
+        await db.collection('users').doc(uid).set({
+            photoURL, fotoProfil:photoURL, updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+        },{merge:true});
+        if(currentUser) currentUser.photoURL=photoURL;
+        medixRenderSidebarProfile(photoURL);
+        showToast('Foto profil berhasil diperbarui.','success');
+    } catch(error) {
+        console.error('Upload foto profil gagal:',error);
+        showToast(error?.code==='storage/unauthorized'
+            ? 'Firebase Storage menolak upload. Periksa Storage Rules profilePhotos/{uid}.'
+            : 'Foto profil gagal diunggah: '+(error?.message||'kesalahan tidak diketahui.'),'error');
+    } finally { if(input)input.value=''; }
+}
+function medixSyncSidebarFooterAccount() {
+    const nameEl=document.getElementById('sidebar-footer-name'), roleEl=document.getElementById('sidebar-footer-role'), topNameEl=document.getElementById('sidebar-account-name');
+    if(!nameEl||!roleEl)return;
+    const role=(currentUser?.role)||document.getElementById('sidebar-role-badge')?.textContent||'Akun';
+    const authName=(currentUser&&(currentUser.nama||currentUser.name||currentUser.username))||'-';
+    nameEl.textContent=authName; roleEl.textContent=role||'Akun MEDIX';
+    if(topNameEl)topNameEl.textContent=authName;
+    medixRenderSidebarProfile(currentUser?.photoURL||currentUser?.fotoProfil||'');
+}
 async function logoutFirebase() {
 
             try {
@@ -10027,7 +10080,7 @@ function renderMaintenanceHistory() {
                     <td class="p-3 font-semibold">${nama}<div class="text-[9px] text-slate-400">${aktif ? 'Aktif' : 'Nonaktif'}</div></td>
                     <td class="p-3 font-mono text-[10px]">${email}</td>
                     <td class="p-3"><span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-bold">${role}</span></td>
-                    <td class="p-3"><div class="flex flex-wrap gap-1">${chips.map(c => `<span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] font-bold">${c}</span>`).join('')}</div><div class="text-[8px] text-slate-400 mt-1">${[m.master.edit&&'Edit aset',m.ticket.kerjakan&&'Kerjakan tiket',m.riwayat.upload&&'Upload dokumen',m.equipment.maintenance&&'Maintenance equipment',m.equipment.edit&&'Kelola equipment',m.lk.create&&'Buat LK',m.lk.edit&&'Edit LK',m.kalibrasi.upload&&'Upload sertifikat',m.bhp.edit&&'Kelola BHP',m.label.print&&'Cetak label'].filter(Boolean).join(' • ') || 'Akses baca terbatas'}</div></td>
+                    <td class="p-3"><div class="flex flex-wrap gap-1">${chips.map(c => `<span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] font-bold">${c}</span>`).join('')}</div><div class="text-[8px] text-slate-400 mt-1">${[m.master.tambah&&'Tambah aset',m.master.edit&&'Edit aset',m.master.hapus&&'Hapus aset',m.master.import&&'Import aset',m.master.export&&'Export aset',m.ticket.lapor&&'Lapor tiket',m.ticket.kerjakan&&'Kerjakan tiket',m.ticket.selesai&&'Selesaikan tiket',m.ticket.hapus&&'Hapus tiket',m.riwayat.upload&&'Upload dokumen',m.riwayat.download&&'Download dokumen',m.riwayat.hapus&&'Hapus dokumen',m.equipment.maintenance&&'Maintenance EM/PM',m.equipment.edit&&'Kelola equipment',m.lk.create&&'Buat LK',m.lk.edit&&'Edit LK',m.lk.print&&'Cetak LK',m.kalibrasi.upload&&'Upload sertifikat',m.kalibrasi.hapus&&'Hapus kalibrasi',m.bhp.edit&&'Kelola BHP',m.label.print&&'Cetak label'].filter(Boolean).join(' • ') || 'Akses baca terbatas'}</div></td>
                     <td class="p-3 text-center whitespace-nowrap">
                         <button type="button" onclick="editAkunUserOlehAdmin('${uid}')" class="bg-amber-50 text-amber-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Edit</button>
                         <button type="button" onclick="kirimResetPasswordAkun('${uid}')" class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Reset Password</button>
@@ -11105,8 +11158,8 @@ function renderMaintenanceHistory() {
             if(!window.QRCode) throw new Error('Mesin QR Code belum termuat.');
             const {jsPDF}=window.jspdf;
             const pageW=Number(settings.width)||210,pageH=Number(settings.height)||297,margin=Math.max(0,Number(settings.margin)||0),gap=Math.max(1,Number(settings.labelGap)||4);
-            const labelW=78,labelH=26,usableW=pageW-2*margin,usableH=pageH-2*margin;
-            const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(7,Math.floor((usableH+gap)/(labelH+gap)));
+            const labelW=78,labelH=20,usableW=pageW-2*margin,usableH=pageH-2*margin;
+            const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(9,Math.floor((usableH+gap)/(labelH+gap)));
             if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 78 × 26 mm.');
             const perPage=cols*rows,contentW=cols*labelW+(cols-1)*gap,contentH=rows*labelH+(rows-1)*gap,ox=Math.max(margin,(pageW-contentW)/2),oy=Math.max(margin,(pageH-contentH)/2);
             const orientation=pageW>=pageH?'landscape':'portrait';
@@ -11119,9 +11172,9 @@ function renderMaintenanceHistory() {
                 pdf.setDrawColor(203,213,225);pdf.setLineWidth(.3);pdf.roundedRect(x,y,labelW,labelH,1.6,1.6,'S');
                 pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(3);pdf.text('MEDIX',x+2,y+2.8);pdf.setFontSize(1.7);pdf.text('ASET MEDIS',x+labelW-2,y+2.95,{align:'right'});pdf.setDrawColor(226,232,240);pdf.setLineWidth(.2);pdf.line(x+2,y+3.7,x+labelW-2,y+3.7);
                 const qrValue=medixBuildQrValue(a),qrData=medixGetQrDataUrl(qrValue,82);
-                pdf.addImage(qrData,'PNG',x+2,y+4.8,17,17);
-                const tx=x+20.5,tw=55;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+9.6,tw,3.15);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+14.1,tw,1.85);pdf.setTextColor(51,65,85);pdf.setFont('courier','bold');pdf.setFontSize(1.7);pdf.text('SN '+esc(a.seri||'-'),tx,y+18.0,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+21.0,tw,1.8);
-                pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(1.2);pdf.text('SCAN UNTUK REKAM JEJAK',x+labelW/2,y+25.2,{align:'center'});
+                pdf.addImage(qrData,'PNG',x+2,y+3.8,13,13);
+                const tx=x+17.5,tw=58;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+7.5,tw,2.7);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+11.5,tw,1.65);pdf.setTextColor(51,65,85);pdf.setFont('courier','bold');pdf.setFontSize(1.5);pdf.text('SN '+esc(a.seri||'-'),tx,y+15.0,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+17.5,tw,1.55);
+                pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(1.2);pdf.text('SCAN UNTUK REKAM JEJAK',x+labelW/2,y+19.1,{align:'center'});
             }
             const blob=pdf.output('blob'),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`MEDIX_Label_Aset_${new Date().toISOString().slice(0,10)}.pdf`;link.style.display='none';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
             showToast(`${dataAlat.length} label berhasil diunduh.`,'success');
@@ -11139,7 +11192,7 @@ function renderMaintenanceHistory() {
             const old=document.getElementById('medix-label-print-root'); if(old) old.remove();
             const root=document.createElement('div'); root.id='medix-label-print-root';
             const esc=v=>String(v??'-').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-            const perPage=21;
+            const perPage=27;
             const pages=[];
             for(let start=0; start<dataAlat.length; start+=perPage){
                 const pageItems=dataAlat.slice(start,start+perPage);
@@ -11843,7 +11896,7 @@ function renderMaintenanceHistory() {
     inner.style.width=Math.max(40,pw*(1-(2*state.margin/d.w)))+'px';inner.style.height=Math.max(50,ph*(1-(2*state.margin/d.h)))+'px';
     const isLabel=state.mode==='download-label-pdf'||state.mode==='label-popup';
     if(isLabel){
-      const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||2,lw=88,lh=26;
+      const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||2,lw=78,lh=20;
       const cols=Math.max(1,Math.floor((usableW+gap)/(lw+gap))),rows=Math.max(1,Math.floor((usableH+gap)/(lh+gap)));
       const perPage=cols*rows,total=Array.isArray(dataAlat)?dataAlat.length:0,pages=Math.max(1,Math.ceil(total/perPage));
       const shown=Math.min(perPage,Math.min(total||1,12));
@@ -11933,22 +11986,32 @@ function renderMaintenanceHistory() {
       }
       if(root) window.scrollTo(0,0);
       try{win.focus();win.print();}catch(err){throw err;}
+      let finished=false;
       const finish=()=>{
+        if(finished)return;
+        finished=true;
         if(root)cleanupGeneric(root);
         if(state.mode==='lk'){
           document.body.classList.remove('medix-lk-printing');
           document.getElementById('area-lembar-kerja-resmi')?.classList.remove('medix-lk-print-ready');
-          // Setelah Cancel/Save dari native print preview, kembali langsung ke LK.
           document.getElementById('medix-print-settings-modal')?.classList.remove('show');
           document.getElementById('medix-print-settings-modal')?.setAttribute('aria-hidden','true');
+          document.getElementById('medix-print-settings-modal')?.style.removeProperty('display');
           document.getElementById('area-lembar-kerja-resmi')?.classList.remove('hidden');
+          document.body.classList.remove('medix-modal-open');
         }
         if(state.cleanup)try{state.cleanup()}catch(e){}
       };
       if(win===window){
         window.addEventListener('afterprint',finish,{once:true});
-        setTimeout(finish,1200);
-      }else{try{win.onafterprint=finish}catch(e){setTimeout(finish,1200);}}
+        const onVisibility=()=>{
+          if(document.visibilityState==='visible'&&state.mode==='lk'){
+            setTimeout(()=>{window.removeEventListener('visibilitychange',onVisibility);finish();},80);
+          }
+        };
+        window.addEventListener('visibilitychange',onVisibility);
+        setTimeout(()=>{window.removeEventListener('visibilitychange',onVisibility);finish();},700);
+      }else{try{win.onafterprint=finish}catch(e){setTimeout(finish,700);}}
     }catch(err){console.error('MEDIX Print Engine:',err);showToast('Proses cetak gagal: '+(err.message||err),'error');}
   }
   document.addEventListener('DOMContentLoaded',()=>{
