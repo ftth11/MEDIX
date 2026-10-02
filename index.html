@@ -650,12 +650,7 @@ body.dark-mode .medix-dialog-card { background:#111827; border-color:rgba(94,234
 body.dark-mode .medix-dialog-message { color:#cbd5e1; }
 body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
 body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
-    
-/* MASTER DATA: tabel mengikuti tinggi halaman, bukan dipotong 60vh. */
-#master-table-scroll { max-height:none !important; height:auto !important; overflow-y:visible !important; }
-#master-table-scroll-wrap { min-height:0 !important; }
-@media (min-width:768px){ #master-table-scroll { overflow-x:auto !important; overflow-y:visible !important; } }
-</style>
+    </style>
 
 <style id="medix-pro-app-shell-v11">
 /* =========================================================
@@ -1796,262 +1791,6 @@ body.dark-mode .medix-period-badge.period-6 { color:#fdba74 !important; border-c
 body.dark-mode .medix-period-badge.period-12 { color:#fcd34d !important; border-color:rgba(245,158,11,.35) !important; background:rgba(245,158,11,.12) !important; }
 body.dark-mode .medix-period-badge.period-inspeksi { color:#6ee7b7 !important; border-color:rgba(16,185,129,.35) !important; background:rgba(16,185,129,.12) !important; }
 
-/* Excel-like table filter controls */
-.medix-filterable-table { position:relative; }
-.medix-filter-th { position:relative !important; padding-right:2.35rem !important; }
-.medix-filter-btn {
-  position:absolute; right:.35rem; top:50%; transform:translateY(-50%);
-  width:1.65rem; height:1.65rem; display:inline-flex; align-items:center; justify-content:center;
-  border:1px solid transparent; border-radius:.45rem; background:transparent; color:inherit;
-  cursor:pointer; opacity:.72; transition:.15s ease; z-index:2;
-}
-.medix-filter-btn:hover, .medix-filter-btn.active { background:rgba(20,184,166,.13); border-color:rgba(20,184,166,.28); color:#0f766e; opacity:1; }
-body.dark-mode .medix-filter-btn:hover, body.dark-mode .medix-filter-btn.active { background:rgba(45,212,191,.14); border-color:rgba(45,212,191,.3); color:#5eead4; }
-.medix-filter-btn.has-filter { color:#0f766e; opacity:1; }
-body.dark-mode .medix-filter-btn.has-filter { color:#5eead4; }
-.medix-filterable-table tbody tr[data-medix-filter-hidden="1"]{display:none !important;visibility:hidden !important;}\n.medix-filter-popup {
-  position:fixed; z-index:99999; width:min(300px,calc(100vw - 20px)); max-height:min(440px,calc(100vh - 20px));
-  overflow:hidden; background:#fff; color:#0f172a; border:1px solid #dbe5ec; border-radius:14px;
-  box-shadow:0 18px 50px rgba(15,23,42,.22); font-size:12px;
-}
-body.dark-mode .medix-filter-popup { background:#111827; color:#f8fafc; border-color:#334155; box-shadow:0 22px 60px rgba(0,0,0,.48); }
-.medix-filter-head { padding:10px 11px; border-bottom:1px solid #e2e8f0; }
-body.dark-mode .medix-filter-head { border-color:#263449; }
-.medix-filter-title { font-weight:800; display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:8px; }
-.medix-filter-search { width:100%; box-sizing:border-box; padding:8px 9px; border:1px solid #cbd5e1; border-radius:9px; outline:none; background:#fff; color:#0f172a; }
-body.dark-mode .medix-filter-search { background:#0b1220; color:#f8fafc; border-color:#334155; }
-.medix-filter-actions { display:flex; gap:6px; padding:8px 11px; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; }
-body.dark-mode .medix-filter-actions { border-color:#263449; }
-.medix-filter-action { border:1px solid #cbd5e1; background:#f8fafc; color:#334155; padding:6px 8px; border-radius:8px; cursor:pointer; }
-body.dark-mode .medix-filter-action { background:#172033; color:#cbd5e1; border-color:#334155; }
-.medix-filter-values { overflow:auto; max-height:270px; padding:7px 9px; }
-.medix-filter-value { display:flex; align-items:center; gap:8px; padding:6px 5px; border-radius:7px; cursor:pointer; }
-.medix-filter-value:hover { background:#f1f5f9; }
-body.dark-mode .medix-filter-value:hover { background:#172033; }
-.medix-filter-value input { accent-color:#0f766e; }
-.medix-filter-empty { padding:14px 8px; color:#64748b; text-align:center; }
-.medix-filter-footer { padding:8px 11px; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between; gap:8px; align-items:center; }
-body.dark-mode .medix-filter-footer { border-color:#263449; }
-.medix-filter-clear { border:0; background:transparent; color:#dc2626; cursor:pointer; font-weight:700; }
-.medix-filter-close { border:0; background:#2563eb; color:#fff; padding:7px 12px; border-radius:8px; cursor:pointer; font-weight:700; }
-.medix-mobile-filter-bar { display:none; }
-.medix-mobile-filter-btn {
-  border:1px solid #dbe5ec; background:#fff; color:#334155; border-radius:10px; padding:7px 10px; font-size:11px; font-weight:800;
-}
-body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; border-color:#334155; }
-@media (max-width:767px) {
-  .medix-mobile-filter-bar { display:flex; align-items:center; gap:7px; padding:0 0 10px; position:sticky; top:0; z-index:20; }
-  .medix-mobile-filter-bar select { flex:1 1 auto; min-width:0; height:38px; border:1px solid #dbe5ec; border-radius:12px; background:#fff; color:#334155; padding:0 10px; font-size:11px; font-weight:800; outline:none; box-shadow:0 4px 14px rgba(15,23,42,.05); }
-  .medix-mobile-filter-btn { min-height:38px; padding:0 13px; border-radius:12px; background:linear-gradient(135deg,#0f766e,#0ea5a4); color:#fff; border:0; box-shadow:0 5px 14px rgba(13,148,136,.20); white-space:nowrap; }
-.medix-mobile-filter-reset{min-height:38px;min-width:38px;border-radius:12px;border:1px solid #fecaca;background:#fff1f2;color:#be123c;box-shadow:0 4px 12px rgba(190,24,93,.08);}
-  .medix-filter-th { padding-right:.6rem !important; }
-  .medix-filter-btn { display:none; }
-}
-
-/* MEDIX v19 — nonaktifkan filter tabel pada HP/tablet; filter tetap tersedia di desktop */
-@media (max-width:1024px){
-  .medix-mobile-filter-bar,
-  .medix-filter-btn,
-  .medix-smart-filter-panel{display:none !important;}
-  .medix-filter-th{padding-right:0 !important;}
-}
-
-/* MEDIX v18 — App-like filters for mobile/tablet */
-.medix-smart-filter-panel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px;border:1px solid #dbe5ec;border-radius:16px;background:linear-gradient(180deg,#ffffff,#f8fafc);box-shadow:0 6px 20px rgba(15,23,42,.045);}
-.medix-smart-filter-panel .medix-smart-search{flex:1 1 240px;min-width:180px;height:40px;border:1px solid #dbe5ec;border-radius:12px;background:#fff;padding:0 12px;font-size:11px;font-weight:700;outline:none;color:#0f172a;}
-.medix-smart-filter-panel select{height:40px;border:1px solid #dbe5ec;border-radius:12px;background:#fff;padding:0 11px;font-size:11px;font-weight:800;color:#334155;outline:none;min-width:130px;}
-.medix-smart-filter-reset{height:40px;padding:0 12px;border:1px solid #fecaca;border-radius:12px;background:#fff1f2;color:#be123c;font-size:11px;font-weight:800;white-space:nowrap;}
-.medix-filter-count-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:9px;font-weight:900;}
-.lk-bhp-usage-card #dlk-bhp-list > .lk-bhp-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:9px 10px;border:1px solid #d1fae5;border-radius:14px;background:rgba(255,255,255,.88);box-shadow:0 3px 10px rgba(15,118,110,.05);}
-.lk-bhp-usage-card .lk-bhp-item-name{font-weight:900;color:#0f172a;min-width:0;}
-.lk-bhp-usage-card .lk-bhp-meta{font-size:8px;color:#64748b;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lk-bhp-usage-card .lk-bhp-qty-pill{display:inline-flex;align-items:center;justify-content:center;min-width:58px;padding:5px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:9px;font-weight:900;}
-.lk-bhp-usage-card .lk-bhp-stock-pill{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;background:#f0fdfa;color:#0f766e;font-size:8px;font-weight:800;}
-@media(max-width:767px){.lk-bhp-usage-card #dlk-bhp-list > .lk-bhp-row{grid-template-columns:minmax(0,1fr) auto;gap:7px}.lk-bhp-usage-card .lk-bhp-row .lk-bhp-stock-pill{grid-column:1}.lk-bhp-usage-card .lk-bhp-row .lk-bhp-remove{grid-column:2;grid-row:1 / span 2}.lk-bhp-usage-card .lk-bhp-qty-pill{grid-column:2;grid-row:1;}.lk-bhp-usage-card .lk-bhp-meta{white-space:normal;}.lk-bhp-usage-card #dlk-bhp-stock-info{font-size:9px;}}
-@media(max-width:767px){
-  .medix-smart-filter-panel{padding:9px;border-radius:16px;gap:7px;}
-  .medix-smart-filter-panel .medix-smart-search{flex:1 1 100%;width:100%;height:42px;min-width:0;font-size:12px;}
-  .medix-smart-filter-panel select{flex:1 1 calc(50% - 7px);min-width:0;height:40px;}
-  .medix-smart-filter-reset{height:40px;flex:0 0 auto;}
-}
-</style>
-
-<style id="medix-lk-dashboard-fix">
-#dashboard-stat-grid { align-items: stretch !important; }
-#dashboard-stat-grid > * { width:100% !important; min-width:0 !important; min-height:92px !important; box-sizing:border-box !important; }
-#dashboard-stat-grid > button { appearance:none !important; -webkit-appearance:none !important; }
-#dashboard-equipment-stat { width:100% !important; height:100% !important; }
-@media (min-width:1024px) {
-  /* Dashboard desktop: 6 kartu dibagi 2 baris, masing-masing 3 kartu. */
-  #dashboard-stat-grid {
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-    gap:1rem !important;
-  }
-}
-@media (max-width:767px) { #dashboard-stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:.75rem !important; } }
-#dlk-kepala-ruangan-nama { min-width:0 !important; }
-@media (min-width:1024px) {
-  #dashboard-stat-grid > * { min-height:116px !important; }
-  #dashboard-stat-grid > button { min-height:116px !important; }
-}
-
-
-/* MEDIX FINAL V3 — LK calibration dates and cross-device role parity */
-@media print {
-  #area-lembar-kerja-resmi .lk-calibration-dates {
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    column-gap:6px !important;
-    row-gap:2px !important;
-    align-items:start !important;
-    height:30px !important;
-    min-height:30px !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates > div {
-    display:flex !important;
-    flex-direction:column !important;
-    justify-content:flex-start !important;
-    min-width:0 !important;
-    width:100% !important;
-    height:30px !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates .lk-print-date-value {
-    display:block !important;
-    height:14px !important;
-    min-height:14px !important;
-    line-height:14px !important;
-    padding:0 2px !important;
-    margin-top:1px !important;
-    overflow:visible !important;
-    white-space:nowrap !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-calibration-card {
-    height:150px !important;
-    min-height:150px !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates + * { overflow:visible !important; }
-}
-@media (max-width:1023px) {
-  #dashboard-stat-grid > *, #dashboard-equipment-stat { min-height:88px !important; }
-  .em-stat-card { min-height:104px !important; touch-action:manipulation; }
-}
-
-</style>
-
-
-<style id="medix-lk-print-date-final-fix">
-/* Final LK print fix: tanggal harus memiliki ruang fisik sendiri. */
-#area-lembar-kerja-resmi .lk-calibration-dates {
-  position:relative !important;
-  z-index:5 !important;
-  overflow:visible !important;
-}
-#area-lembar-kerja-resmi .lk-calibration-dates > div {
-  overflow:visible !important;
-}
-@media print {
-  #area-lembar-kerja-resmi .lk-info-top-card {
-    height:auto !important;
-    min-height:0 !important;
-    max-height:none !important;
-    overflow:visible !important;
-    align-self:start !important;
-    page-break-inside:avoid !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates {
-    position:relative !important;
-    z-index:20 !important;
-    display:grid !important;
-    grid-template-columns:1fr 1fr !important;
-    height:auto !important;
-    min-height:30px !important;
-    margin-top:2px !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-date-value {
-    position:relative !important;
-    z-index:30 !important;
-    display:block !important;
-    height:15px !important;
-    min-height:15px !important;
-    line-height:15px !important;
-    white-space:nowrap !important;
-    overflow:visible !important;
-    color:#0f172a !important;
-    background:#fff !important;
-    font-size:8.5px !important;
-    font-weight:900 !important;
-  }
-}
-</style>
-
-<style id="medix-lk-print-date-v9">
-.lk-print-date-row { display:none !important; }
-@media print {
-  #area-lembar-kerja-resmi .lk-calibration-dates {
-    display:block !important;
-    height:auto !important;
-    min-height:34px !important;
-    overflow:visible !important;
-    position:relative !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates > div {
-    height:auto !important;
-    min-height:16px !important;
-    overflow:visible !important;
-  }
-  #area-lembar-kerja-resmi .lk-calibration-dates input[type="date"] { display:none !important; }
-  #area-lembar-kerja-resmi .lk-print-date-row {
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    gap:5px !important;
-    width:100% !important;
-    min-height:16px !important;
-    height:16px !important;
-    margin-top:1px !important;
-    overflow:visible !important;
-    position:relative !important;
-    z-index:999 !important;
-  }
-  #area-lembar-kerja-resmi .lk-print-date-row .lk-print-date-value {
-    display:block !important;
-    visibility:visible !important;
-    opacity:1 !important;
-    width:100% !important;
-    height:16px !important;
-    min-height:16px !important;
-    line-height:16px !important;
-    padding:0 2px !important;
-    margin:0 !important;
-    overflow:visible !important;
-    white-space:nowrap !important;
-    color:#0f172a !important;
-    background:#fff !important;
-    font-size:8.5px !important;
-    font-weight:800 !important;
-    border-bottom:1px solid #94a3b8 !important;
-    box-sizing:border-box !important;
-  }
-}
-</style>
-
-
-<style id="medix-lk-topcard-v9">
-@media print {
-  #area-lembar-kerja-resmi .lk-info-top-card {
-    min-height:0 !important; height:auto !important; max-height:none !important;
-    overflow:visible !important; align-self:start !important;
-  }
-  #area-lembar-kerja-resmi .lk-info-top-card .flex-1 {
-    min-height:0 !important;
-  }
-}
-</style>
-
-<style id="medix-lk-date-one-row-v10">
 /* LK V10 — tanggal kalibrasi satu baris, baik saat input maupun cetak */
 #area-lembar-kerja-resmi .lk-calibration-dates {
   display:grid !important;
@@ -2399,8 +2138,6 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 </style>
 <style id="medix-final-mobile-ui-patch">
 @media(max-width:767px){
-  #bhp-filter-panel select,#bhp-filter-panel button{min-height:40px;}
-  #filter-rekapan-em-tahun{min-height:40px;width:100%;}
   #tab-bhp .overflow-x-auto{border-radius:14px;}
 }
 </style>
@@ -3220,6 +2957,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 }
 </style>
 
+
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -3331,12 +3069,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
                     <div class="px-4 py-2 mt-2">
                         <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-200 flex items-center space-x-2.5">
-                            <button type="button" onclick="pilihFotoProfilMEDIX()" class="relative w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 border border-blue-200 overflow-hidden shrink-0 group" title="Ganti foto profil">
-                                <img id="sidebar-profile-avatar-top" class="hidden w-full h-full object-cover" alt="Foto profil">
-                                <i id="sidebar-profile-icon-top" class="fa-solid fa-circle-user"></i>
-                                <span class="absolute inset-0 bg-black/45 text-white hidden group-hover:flex items-center justify-center"><i class="fa-solid fa-camera text-[9px]"></i></span>
-                            </button>
-                            <input type="file" id="input-foto-profil-medix" accept="image/*" capture="user" class="hidden" onchange="unggahFotoProfilMEDIX(this)">
+                            <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 border border-blue-200"><i class="fa-solid fa-circle-user"></i></div>
                             <div class="overflow-hidden"><p id="sidebar-role-badge" class="text-[10px] uppercase font-bold text-cyan-600 tracking-wider">Role</p><p id="sidebar-top-name" class="text-xs text-slate-800 truncate font-semibold">-</p></div>
                         </div>
                     </div>
@@ -3374,11 +3107,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 </div>
                 <div class="medix-sidebar-footer p-3 border-t border-slate-200 bg-white/95 backdrop-blur-xl shadow-[0_-10px_25px_rgba(15,23,42,.08)]">
                     <div class="flex items-center gap-2.5 mb-2.5 px-1">
-                        <button type="button" onclick="pilihFotoProfilMEDIX()" class="relative w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shrink-0 overflow-hidden group" title="Ganti foto profil">
-                            <img id="sidebar-profile-avatar-footer" class="hidden w-full h-full object-cover" alt="Foto profil">
-                            <i id="sidebar-profile-icon-footer" class="fa-solid fa-user text-xs"></i>
-                            <span class="absolute inset-0 bg-black/45 text-white hidden group-hover:flex items-center justify-center"><i class="fa-solid fa-camera text-[9px]"></i></span>
-                        </button>
+                        <div class="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shrink-0">
+                            <i class="fa-solid fa-user text-xs"></i>
+                        </div>
                         <div class="min-w-0 flex-1">
                             <p id="sidebar-footer-name" class="text-[11px] font-bold text-slate-700 truncate">-</p>
                             <p id="sidebar-footer-role" class="text-[9px] font-semibold uppercase tracking-wider text-slate-400 truncate">Akun MEDIX</p>
@@ -3503,7 +3234,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         
                         <div class="master-table-scroll-wrap">
-                            <div id="master-table-scroll" class="master-table-scroll no-scrollbar">
+                            <div id="master-table-scroll" class="master-table-scroll max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[850px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
@@ -3731,14 +3462,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     </div>
 
                     <div class="glass-panel p-4 rounded-2xl border border-slate-200 space-y-3">
-                        <div class="medix-smart-filter-panel" id="bhp-filter-panel">
-                            <input id="bhp-filter-search" oninput="renderBHPTable()" type="search" placeholder="🔍 Cari nama alkes, item, spesifikasi..." class="medix-smart-search">
-                            <select id="bhp-filter-jenis" onchange="renderBHPTable()"><option value="">Semua Jenis</option><option>AKSESORIS</option><option>DISPOSABLE</option><option>SUKU CADANG</option></select>
-                            <select id="bhp-filter-status" onchange="renderBHPTable()"><option value="">Semua Status</option><option value="aman">Aman</option><option value="menipis">Menipis</option><option value="habis">Habis</option></select>
-                            <select id="bhp-filter-alkes" onchange="renderBHPTable()"><option value="">Semua Alkes</option></select>
-                            <button type="button" class="medix-smart-filter-reset" onclick="resetFilterBHP()"><i class="fa-solid fa-rotate-left mr-1"></i>Reset</button>
-                            <span id="bhp-filter-count" class="medix-filter-count-badge">0 item</span>
-                        </div>
+
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs" data-medix-no-filters="1">
                                 <thead class="bg-slate-100 text-slate-700 font-bold"><tr>
@@ -3756,12 +3480,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                 <p class="text-[9px] text-slate-500 mt-0.5">Setiap BHP yang disimpan melalui LK otomatis menjadi transaksi <b>OUT</b> dan tetap terhubung ke nomor LK.</p>
                             </div>
                             <div class="flex items-center gap-2 flex-wrap">
-                                <input id="bhp-rekap-lk-search" oninput="renderBHPRecapLK()" type="search" placeholder="Cari No LK / item / alkes..." class="border border-emerald-200 rounded-xl px-3 py-2 text-[10px] w-56 outline-none focus:border-emerald-500">
-                                <select id="bhp-rekap-bulan" class="border border-emerald-200 rounded-xl px-2.5 py-2 text-[10px] bg-white font-bold text-slate-700" aria-label="Bulan rekapan BHP"></select>
-                                <select id="bhp-rekap-tahun" class="border border-emerald-200 rounded-xl px-2.5 py-2 text-[10px] bg-white font-bold text-slate-700" aria-label="Tahun rekapan BHP"></select>
                                 <button type="button" onclick="exportRekapanBHP('month')" class="px-2.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold shadow-sm no-print" title="Download rekapan BHP bulan terpilih"><i class="fa-solid fa-calendar-days mr-1"></i> Bulanan</button>
                                 <button type="button" onclick="exportRekapanBHP('year')" class="px-2.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-[10px] font-bold shadow-sm no-print" title="Download rekapan BHP satu tahun"><i class="fa-solid fa-calendar-check mr-1"></i> Tahunan</button>
-                                <span id="bhp-rekap-lk-count" class="medix-filter-count-badge">0 transaksi</span>
+                                <span id="bhp-rekap-lk-count" class="text-[9px] font-bold text-slate-500">0 transaksi</span>
                             </div>
                         </div>
                         <div class="overflow-x-auto">
@@ -3788,30 +3509,30 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
                     <!-- Statistik Ringkasan EM — setiap kartu dapat ditekan untuk membuka daftar sesuai fungsinya -->
                     <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
-                        <button type="button" onclick="bukaEMDenganFilter('all')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka seluruh Jenis Alkes EM">
+                        <div class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka seluruh Jenis Alkes EM">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Jenis Alkes EM</p><h3 id="em-stat-total" class="text-2xl font-black text-slate-900 mt-1">0</h3></div>
                             <div class="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100"><i class="fa-solid fa-layer-group text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaEMDenganFilter('all')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka seluruh populasi EM">
+                        </div>
+                        <div class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka seluruh populasi EM">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Total Populasi</p><h3 id="em-stat-populasi" class="text-2xl font-black text-cyan-600 mt-1">0</h3></div>
                             <div class="p-3 bg-cyan-50 text-cyan-600 rounded-xl border border-cyan-100"><i class="fa-solid fa-boxes-stacked text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaEMDenganFilter('Setiap 4 Bulan')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 4 bulan">
+                        </div>
+                        <div class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 4 bulan">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 4 Bulan</p><h3 id="em-stat-empat" class="text-2xl font-black text-rose-600 mt-1">0</h3></div>
                             <div class="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaEMDenganFilter('Setiap 6 Bulan')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 6 bulan">
+                        </div>
+                        <div class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 6 bulan">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 6 Bulan</p><h3 id="em-stat-enam" class="text-2xl font-black text-orange-600 mt-1">0</h3></div>
                             <div class="p-3 bg-orange-50 text-orange-600 rounded-xl border border-orange-100"><i class="fa-solid fa-calendar-days text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaEMDenganFilter('Satu Kali Per Tahun')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 12 bulan">
+                        </div>
+                        <div class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat dengan jadwal setiap 12 bulan">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Setiap 12 Bulan</p><h3 id="em-stat-satu" class="text-2xl font-black text-amber-600 mt-1">0</h3></div>
                             <div class="p-3 bg-amber-50 text-amber-600 rounded-xl border border-amber-100"><i class="fa-solid fa-calendar-check text-lg"></i></div>
-                        </button>
-                        <button type="button" onclick="bukaEMDenganFilter('Inspeksi Sesuai Kebutuhan')" class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat inspeksi sesuai kebutuhan">
+                        </div>
+                        <div class="em-stat-card glass-panel p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between text-left cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition" aria-label="Buka alat inspeksi sesuai kebutuhan">
                             <div><p class="text-[10px] text-slate-500 font-bold uppercase">Inspeksi Sesuai Kebutuhan</p><h3 id="em-stat-inspeksi" class="text-2xl font-black text-emerald-600 mt-1">0</h3></div>
                             <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100"><i class="fa-solid fa-clipboard-check text-lg"></i></div>
-                        </button>
+                        </div>
                     </div>
 
                     <!-- Sub-Tab Navigasi Equipment -->
@@ -3857,8 +3578,8 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                 <div class="text-[9px] text-slate-500">Periode PM dan target tahunan berdasarkan penilaian EM. Tidak menggunakan tanggal acuan.</div>
                             </div>
                             <div class="flex items-center gap-2 flex-wrap no-print">
-                                <select id="filter-rekapan-pm-tahun" class="px-2.5 py-2 border border-slate-300 rounded-xl text-[10px] bg-white font-bold"></select>
-                                <button type="button" onclick="exportRekapanPMExcel('year')" class="px-2.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold"><i class="fa-solid fa-calendar-check mr-1"></i> Export Tahunan</button>
+                                <button type="button" onclick="exportRekapanPMExcel('month')" class="px-2.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-[10px] font-bold"><i class="fa-solid fa-calendar-days mr-1"></i> Bulanan</button>
+                                <button type="button" onclick="exportRekapanPMExcel('year')" class="px-2.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold"><i class="fa-solid fa-calendar-check mr-1"></i> Tahunan</button>
                             </div>
                         </div>
                         <div class="overflow-x-auto max-h-[60vh] no-scrollbar">
@@ -3871,7 +3592,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                         <th class="p-3">SN</th>
                                         <th class="p-3">Ruangan</th>
                                         <th class="p-3">Periode PM</th>
-                                        <th class="p-3 text-center">Target / Tahun</th>
+                                        <th class="p-3">Target / Tahun</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-rekapan-pm-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -3883,13 +3604,8 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     <div id="em-content-rekapan" class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-4 hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <select id="filter-rekapan-em-tahun" onchange="renderRekapanEMTable()" class="px-3 py-2 border border-slate-300 rounded-xl text-xs bg-white text-slate-900 outline-none font-bold"></select>
-                                
                             </div>
                             <div class="flex items-center gap-2 flex-wrap">
-                                <select id="filter-rekapan-em-bulan" class="px-2.5 py-2 border border-slate-300 rounded-xl text-[10px] bg-white text-slate-900 outline-none font-bold" aria-label="Bulan rekapan EM">
-                                    <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option><option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option><option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
-                                </select>
                                 <button type="button" onclick="exportRekapanEMExcel()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm no-print">
                                     <i class="fa-solid fa-calendar-check mr-1"></i> Tahunan
                                 </button>
@@ -4209,6 +3925,8 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                         <div><label class="block mb-1 font-bold text-slate-600">Perawatan (1–5)</label><input type="number" min="1" max="5" step="1" id="form-alat-em-perawatan" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
                         <div><label class="block mb-1 font-bold text-slate-600">Insiden (-2–2)</label><input type="number" min="-2" max="2" step="1" id="form-alat-em-insiden" class="w-full border border-slate-300 p-2 rounded-xl bg-white text-slate-900 outline-none"></div>
                     </div>
+                    <div class="grid grid-cols-1 gap-2 mt-2">
+                    </div>
                     <div id="form-alat-em-preview" class="mt-2 p-2 rounded-xl bg-slate-50 border border-slate-200 text-[10px] font-semibold text-slate-600">Nilai EM dan periode PM akan dihitung setelah data lengkap.</div>
                 </div>
             </div>
@@ -4501,9 +4219,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 role: userData.role || "User",
                 menuAkses: userAksesMenuArray || {},
                 unitId: userData.unitId || null,
-                aktif: userData.aktif !== false,
-                fotoProfilDataUrl: userData.fotoProfilDataUrl || ''
+                aktif: userData.aktif !== false
             };
+            try { medixSyncSidebarFooterAccount(); } catch(e) {}
         
             return true;
         }
@@ -4527,6 +4245,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             if (masterTambah) buttons.push(`<button type="button" onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
             if (canLabel) {
                 buttons.push(`<button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Preview dan cetak seluruh label aset medis"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label</button>`);
+                buttons.push(`<button type="button" id="btn-sync-public-qr" onclick="medixEnsurePublicTokensForAllAssets(true)" class="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Siapkan QR yang dapat dibuka tanpa login dan sinkronkan riwayat publik"><i class="fa-solid fa-qrcode mr-1.5"></i> QR Publik</button>`);
             }
             container.innerHTML = buttons.join('');
             container.style.display = buttons.length ? 'flex' : 'none';
@@ -4537,18 +4256,18 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             const box = document.getElementById('box-form-buat-ticket');
             if (!box) return;
             const role = canonicalRole(currentActiveRole);
-            const canReport = role === 'User' || izinMenu('ticket', 'lapor');
+            const canReport = izinMenu('ticket', 'lapor');
             box.classList.toggle('hidden', !canReport);
             box.style.display = canReport ? '' : 'none';
             box.setAttribute('aria-hidden', canReport ? 'false' : 'true');
         }
 
         function renderSidebarByPermission() {
-            const bhpAllowed = (canonicalRole(currentActiveRole) === 'Admin' || canonicalRole(currentActiveRole) === 'Teknisi') && izinMenu('equipment', 'read');
+            const bhpAllowed = izinMenu('equipment', 'read');
             const checks = {
                 dashboard: izinMenu('dashboard', 'read'),
                 master: izinMenu('master', 'read'),
-                ticket: canonicalRole(currentActiveRole) === 'User' ? true : izinMenu('ticket', 'read'),
+                ticket: izinMenu('ticket', 'read'),
                 riwayat: izinMenu('riwayat', 'read'),
                 equipment: izinMenu('equipment', 'read'),
                 bhp: bhpAllowed,
@@ -4586,7 +4305,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             const checks = {
                 dashboard: izinMenu('dashboard','read'),
                 'data-alat': izinMenu('master','read'),
-                'ticket-system': canonicalRole(currentActiveRole) === 'User' ? true : izinMenu('ticket','read'),
+                'ticket-system': izinMenu('ticket','read'),
                 equipment: izinMenu('equipment','read')
             };
             nav.querySelectorAll('button[data-tab]').forEach(btn => {
@@ -5188,8 +4907,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 rekomendasiPeriode,
                 jadwalPM: [],
                 jadwalBerbasisTanggal: false,
-                hari: jadwalPertama.hari || null,
-                bulan: jadwalPertama.bulan || null,
+                statusJadwalPM: !komponenLengkap ? 'Belum Dinilai' : 'Berdasarkan Periode PM',
+                hari: null,
+                bulan: null,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
         }
@@ -5334,7 +5054,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
         }
 
         function bukaEMDenganFilter(periode = 'all') {
-            window.medixEMQuickFilter = periode || 'all';
+            window.medixEMQuickFilter = 'all';
             gantiSubTabEM('database');
             renderEquipmentManagementTable();
             const area = document.getElementById('tab-equipment');
@@ -5362,12 +5082,11 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 document.getElementById('em-stat-enam')?.replaceChildren(document.createTextNode(enamBulan));
                 document.getElementById('em-stat-satu')?.replaceChildren(document.createTextNode(tahunan));
                 document.getElementById('em-stat-inspeksi')?.replaceChildren(document.createTextNode(inspeksi));
-                const quickFilter = window.medixEMQuickFilter || 'all';
-                const filtered = quickFilter === 'all' ? groups : groups.filter(g => g.rekomendasiPeriode === quickFilter);
+                const filtered = groups;
                 const tbody = document.getElementById('table-equipment-em-body');
                 if (!tbody) return;
                 if (filtered.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Pencarian atau filter tidak menemukan data.'}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="10" class="px-4 py-10 text-center text-slate-400 italic">${groups.length === 0 ? 'Belum ada aset pada Master Data Aset.' : 'Belum ada data yang dapat ditampilkan.'}</td></tr>`;
                     return;
                 }
                 tbody.innerHTML = filtered.map(item => `
@@ -5398,24 +5117,19 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 .replace(/'/g, '&#039;');
         }
 
-        function targetTahunanPeriodePM(periode) {
-            if (periode === 'Setiap 4 Bulan') return 3;
-            if (periode === 'Setiap 6 Bulan') return 2;
-            if (periode === 'Satu Kali Per Tahun') return 1;
-            if (periode === 'Inspeksi Sesuai Kebutuhan') return 1;
-            return 0;
-        }
-
-        function getJadwalPMUntukAsset(item, index = 0) {
-            // Tanggal acuan PM dihapus. Jadwal tidak lagi bergantung pada tanggal tertentu.
-            return [];
-        }
+        function getJadwalPMUntukAsset(item, index = 0) { return []; }
 
         function inisialisasiFilterRekapanPM(){
             const sel=document.getElementById('filter-rekapan-pm-tahun');
             if(!sel)return;
             const old=sel.value;
             const years=new Set([new Date().getFullYear()]);
+            (Array.isArray(dataEquipment)?dataEquipment:[]).forEach((item,index)=>{
+                const dates=getJadwalPMUntukAsset(item,index)||[];
+                dates.forEach(j=>{
+                    if(j?.tahun)years.add(Number(j.tahun));
+                });
+            });
             sel.innerHTML=Array.from(years).filter(Boolean).sort((a,b)=>b-a).map(y=>`<option value="${y}">${y}</option>`).join('');
             sel.value=years.has(Number(old))?old:String(new Date().getFullYear());
             const bulan=document.getElementById('filter-rekapan-pm-bulan');
@@ -5425,8 +5139,8 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
         function exportRekapanPMExcel(mode='year'){
             if(typeof XLSX==='undefined'){showToast('Library Excel belum tersedia.','error');return;}
             inisialisasiFilterRekapanPM();
-            const year=Number(document.getElementById('filter-rekapan-pm-tahun')?.value)||new Date().getFullYear();
-            const month=Number(document.getElementById('filter-rekapan-pm-bulan')?.value)||0;
+            const year=new Date().getFullYear();
+            const month=new Date().getMonth();
             const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
             const rows=[];
             (Array.isArray(dataEquipment)?dataEquipment:[]).forEach((item,index)=>{
@@ -5443,7 +5157,8 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                     "SN":sn,
                     "Ruangan":lokasi,
                     "Periode PM":item.rekomendasiPeriode||'Belum Ditentukan',
-                    "Target Tahunan":targetTahunanPeriodePM(item.rekomendasiPeriode)
+                    "Tanggal Jadwal":(mode==='month'?inMonth:inYear).map(j=>j.tanggal||'-').join(', ')||'-',
+                    "Target / Tahun":targetTahunanPeriodePM(item.rekomendasiPeriode)
                 });
             });
             const ws=XLSX.utils.json_to_sheet(rows.length?rows:[{"Informasi":`Tidak ada jadwal PM untuk ${mode==='month'?namaBulan[month]+' ':''}${year}.`}]);
@@ -5457,30 +5172,45 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             inisialisasiFilterRekapanPM();
             const tbody = document.getElementById('table-rekapan-pm-body');
             if (!tbody) return;
+
+            // Jadwal EM/PM ditampilkan satu baris per unit aset.
+            // Hari ke-/bulan ke- tidak lagi ditampilkan karena periode PM
+            // sudah menjadi informasi utama yang dibutuhkan teknisi.
             const rows = dataEquipment.map(item => ({
                 item,
                 periode: item.rekomendasiPeriode || 'Belum Ditentukan',
-                target: targetTahunanPeriodePM(item.rekomendasiPeriode)
+                statusJadwalPM: item.statusJadwalPM || (item.nilaiEM == null ? 'Belum Dinilai' : 'Belum Ada Tanggal Acuan')
             }));
-            rows.sort((a,b) =>
+
+            rows.sort((a, b) =>
                 (a.item.namaAlat || '').localeCompare(b.item.namaAlat || '', 'id') ||
                 (a.item.serialNumber || '').localeCompare(b.item.serialNumber || '', 'id')
             );
-            if (!rows.length) {
-                tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data Equipment Management.</td></tr>`;
+
+const filtered = rows;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal PM dari Master Data Aset.</td></tr>`;
                 return;
             }
-            tbody.innerHTML = rows.map(row => {
+
+            tbody.innerHTML = filtered.map(row => {
                 const item = row.item || {};
-                return `<tr class="hover:bg-slate-50 transition">
-                    <td class="p-3 font-semibold text-slate-900" data-label="Nama Alat Medis">${escapeHtmlEquipment(item.namaAlat || '-')}</td>
-                    <td class="p-3" data-label="Merek">${escapeHtmlEquipment(item.merk || '-')}</td>
-                    <td class="p-3" data-label="Tipe / Model">${escapeHtmlEquipment(item.tipe || item.model || '-')}</td>
-                    <td class="p-3 font-mono text-[10px]" data-label="SN">${escapeHtmlEquipment(item.serialNumber || item.seri || '-')}</td>
-                    <td class="p-3" data-label="Ruangan">${escapeHtmlEquipment(item.lokasi || item.ruangan || '-')}</td>
-                    <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold medix-period-badge ${kelasBadgePeriodeEM(row.periode)}">${escapeHtmlEquipment(row.periode)}</span></td>
-                    <td class="p-3 text-center font-black text-blue-700" data-label="Target / Tahun">${row.target}</td>
-                </tr>`;
+                const merk = item.merk || '-';
+                const tipe = item.tipe || item.model || '-';
+                const sn = item.serialNumber || item.seri || '-';
+                const lokasi = item.lokasi || item.ruangan || '-';
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 font-semibold text-slate-900" data-label="Nama Alat Medis">${escapeHtmlEquipment(item.namaAlat || '-')}</td>
+                        <td class="p-3" data-label="Merek">${escapeHtmlEquipment(merk)}</td>
+                        <td class="p-3" data-label="Tipe / Model">${escapeHtmlEquipment(tipe)}</td>
+                        <td class="p-3 font-mono text-[10px]" data-label="SN">${escapeHtmlEquipment(sn)}</td>
+                        <td class="p-3" data-label="Ruangan">${escapeHtmlEquipment(lokasi)}</td>
+                        <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold medix-period-badge ${kelasBadgePeriodeEM(row.periode)} ${row.periode === 'Setiap 4 Bulan' ? 'period-4' : row.periode === 'Setiap 6 Bulan' ? 'period-6' : row.periode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(row.periode)}</span></td>
+                        <td class="p-3 font-bold" data-label="Target / Tahun">${targetTahunanPeriodePM(row.periode)}x / tahun</td>
+                    </tr>
+                `;
             }).join('');
         }
 
@@ -5491,9 +5221,9 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
         // 1) lembarKerja = LK yang benar-benar dibuat melalui Lembar Kerja.
         // 2) maintenance = histori pemeliharaan manual.
         //
-        // Target tahunan berasal langsung dari periode EM/PM per unit:
+        // Target berasal dari jadwal EM/PM per unit:
         // 4 bulan = 3 target/tahun, 6 bulan = 2, 12 bulan = 1,
-        // inspeksi sesuai kebutuhan = 1. Tidak lagi bergantung pada tanggal acuan.
+        // inspeksi sesuai kebutuhan = 0.
         //
         // Jika LK dan maintenance tercatat untuk alat yang sama pada tanggal
         // yang sama, aktivitas dihitung satu kali agar tidak menggandakan
@@ -5648,6 +5378,14 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             ) || null;
         }
 
+        function targetTahunanPeriodePM(periode) {
+            if (periode === 'Setiap 4 Bulan') return 3;
+            if (periode === 'Setiap 6 Bulan') return 2;
+            if (periode === 'Satu Kali Per Tahun') return 1;
+            if (periode === 'Inspeksi Sesuai Kebutuhan') return 1;
+            return 0;
+        }
+
         function buatDataRekapanEM(tahun) {
             const groups = new Map();
 
@@ -5743,7 +5481,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
 
             inisialisasiFilterTahunRekapanEM();
 
-            const tahun = parseInt(document.getElementById('filter-rekapan-em-tahun')?.value, 10) || new Date().getFullYear();
+            const tahun = new Date().getFullYear();
             const allRows = buatDataRekapanEM(tahun);
             const rows = allRows;
 
@@ -5811,8 +5549,8 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                 return;
             }
 
-            const tahun = parseInt(document.getElementById('filter-rekapan-em-tahun')?.value, 10) || new Date().getFullYear();
-            const bulanIndex = Math.max(0, Math.min(11, Number(document.getElementById('filter-rekapan-em-bulan')?.value) || 0));
+            const tahun = new Date().getFullYear();
+            const bulanIndex = new Date().getMonth();
             const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
             const rows = buatDataRekapanEM(tahun);
 
@@ -5954,80 +5692,17 @@ function showConfirmDialog(message, options = {}) {
 
 
 function medixSyncSidebarFooterAccount() {
-    const nameEl = document.getElementById('sidebar-footer-name');
-    const roleEl = document.getElementById('sidebar-footer-role');
-    const topNameEl = document.getElementById('sidebar-top-name');
-    if (!nameEl || !roleEl) return;
-    const role = (typeof currentUser !== 'undefined' && currentUser && currentUser.role) ? currentUser.role : (document.getElementById('sidebar-role-badge')?.textContent || 'Akun');
-    const sourceName = document.querySelector('#app-sidebar #sidebar-role-badge')?.parentElement?.querySelector('#sidebar-top-name')?.textContent?.trim();
-    const authName = (typeof currentUser !== 'undefined' && currentUser && (currentUser.nama || currentUser.name || currentUser.username)) ? (currentUser.nama || currentUser.name || currentUser.username) : sourceName;
-    nameEl.textContent = authName || '-';
-    if (topNameEl) topNameEl.textContent = authName || '-';
-    roleEl.textContent = role || 'Akun MEDIX';
-    const foto = (typeof currentUser !== 'undefined' && currentUser?.fotoProfilDataUrl) ? currentUser.fotoProfilDataUrl : '';
-    ['sidebar-profile-avatar-top','sidebar-profile-avatar-footer'].forEach((id, idx) => {
-        const img = document.getElementById(id);
-        const icon = document.getElementById(idx === 0 ? 'sidebar-profile-icon-top' : 'sidebar-profile-icon-footer');
-        if (!img || !icon) return;
-        if (foto) { img.src = foto; img.classList.remove('hidden'); icon.classList.add('hidden'); }
-        else { img.removeAttribute('src'); img.classList.add('hidden'); icon.classList.remove('hidden'); }
-    });
-}
-
-function pilihFotoProfilMEDIX() {
-    if (!auth.currentUser) return showToast('Silakan login terlebih dahulu.', 'error');
-    const input = document.getElementById('input-foto-profil-medix');
-    if (input) { input.value = ''; input.click(); }
-}
-
-function kompresFotoProfilMEDIX(file, maxSize = 160, quality = 0.78) {
-    return new Promise((resolve, reject) => {
-        if (!file || !file.type?.startsWith('image/')) return reject(new Error('File bukan gambar.'));
-        const reader = new FileReader();
-        reader.onerror = () => reject(new Error('Gagal membaca gambar.'));
-        reader.onload = () => {
-            const img = new Image();
-            img.onerror = () => reject(new Error('Gambar tidak dapat diproses.'));
-            img.onload = () => {
-                const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
-                const canvas = document.createElement('canvas');
-                canvas.width = Math.max(1, Math.round(img.width * scale));
-                canvas.height = Math.max(1, Math.round(img.height * scale));
-                const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                resolve(canvas.toDataURL('image/jpeg', quality));
-            };
-            img.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-async function unggahFotoProfilMEDIX(input) {
-    const file = input?.files?.[0];
-    if (!file || !auth.currentUser) return;
-    if (file.size > 5 * 1024 * 1024) {
-        input.value = '';
-        return showToast('Ukuran foto maksimal 5 MB.', 'error');
-    }
-    try {
-        showToast('Memproses foto profil...', 'info');
-        const dataUrl = await kompresFotoProfilMEDIX(file);
-        await db.collection('users').doc(auth.currentUser.uid).set({
-            fotoProfilDataUrl: dataUrl,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-        currentUser = { ...(currentUser || {}), fotoProfilDataUrl: dataUrl };
-        medixSyncSidebarFooterAccount();
-        showToast('Foto profil berhasil diperbarui.', 'success');
-    } catch (error) {
-        console.error('Upload foto profil gagal:', error);
-        showToast('Foto profil gagal disimpan: ' + (error.message || 'silakan coba lagi.'), 'error');
-    } finally {
-        input.value = '';
-    }
+    const topName = document.getElementById('sidebar-top-name');
+    const footerName = document.getElementById('sidebar-footer-name');
+    const topRole = document.getElementById('sidebar-role-badge');
+    const footerRole = document.getElementById('sidebar-footer-role');
+    const authName = (typeof currentUser !== 'undefined' && currentUser && (currentUser.nama || currentUser.name || currentUser.username || currentUser.email))
+        ? (currentUser.nama || currentUser.name || currentUser.username || currentUser.email) : '-';
+    const role = (typeof currentActiveRole !== 'undefined' && currentActiveRole) ? currentActiveRole : 'Akun MEDIX';
+    if(topName) topName.textContent = authName;
+    if(footerName) footerName.textContent = authName;
+    if(topRole) topRole.textContent = role;
+    if(footerRole) footerRole.textContent = role;
 }
 
 async function logoutFirebase() {
@@ -7501,6 +7176,8 @@ function renderMaintenanceHistory() {
                         <p><b>( ............................................ )</b></p>
                     </div>
                 
+
+
 
 </body>
                 </html>
@@ -9255,26 +8932,8 @@ function renderMaintenanceHistory() {
             const m={aman:['Aman','bg-emerald-50 text-emerald-700 border-emerald-200'],menipis:['Menipis','bg-amber-50 text-amber-700 border-amber-200'],habis:['Habis','bg-rose-50 text-rose-700 border-rose-200']};
             const x=m[status]||m.aman; return `<span class="px-2 py-1 rounded-full border text-[9px] font-black ${x[1]}">${x[0]}</span>`;
         }
-        function resetFilterBHP(){
-            ['bhp-filter-search','bhp-filter-jenis','bhp-filter-status','bhp-filter-alkes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-            renderBHPTable();
-        }
+        function resetFilterBHP(){ renderBHPTable(); }
 
-        function renderBHPTable() {
-            const body=document.getElementById('table-bhp-body'); if(!body) return;
-            const q=(document.getElementById('bhp-filter-search')?.value||'').toLowerCase().trim();
-            const jenis=document.getElementById('bhp-filter-jenis')?.value||'';
-            const status=document.getElementById('bhp-filter-status')?.value||'';
-            const alkes=document.getElementById('bhp-filter-alkes')?.value||'';
-            const sel=document.getElementById('bhp-filter-alkes');
-            if(sel){ const old=sel.value; const names=[...new Set(dataBHPItems.map(x=>x.namaAlkes).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'id')); sel.innerHTML='<option value="">Semua Alkes</option>'+names.map(x=>`<option value="${escBHP(x)}">${escBHP(x)}</option>`).join(''); if(names.includes(old)) sel.value=old; }
-            const rows=dataBHPItems.filter(i=>{
-                const hay=[i.namaAlkes,i.namaItem,i.jenisItem,i.spesifikasi].join(' ').toLowerCase();
-                return (!q||hay.includes(q))&&(!jenis||i.jenisItem===jenis)&&(!status||statusStokBHP(i)===status)&&(!alkes||i.namaAlkes===alkes);
-            });
-            const count=document.getElementById('bhp-filter-count'); if(count) count.textContent=`${rows.length} item${rows.length===1?'':'s'}`;
-            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
-        }
         function inisialisasiFilterRekapanBHP(){
             const yearSel=document.getElementById('bhp-rekap-tahun');
             const monthSel=document.getElementById('bhp-rekap-bulan');
@@ -9300,13 +8959,9 @@ function renderMaintenanceHistory() {
             inisialisasiFilterRekapanBHP();
             const body=document.getElementById('table-bhp-rekap-lk-body');
             if(!body)return;
-            const q=(document.getElementById('bhp-rekap-lk-search')?.value||'').toLowerCase().trim();
             const rows=dataBHPTransactions.filter(t=>String(t.sumber||'').toUpperCase()==='LK').map(t=>{
                 const item=dataBHPItems.find(i=>String(i.id)===String(t.itemId))||{};
                 return {t,item};
-            }).filter(({t,item})=>{
-                const hay=[t.noLk,t.alatId,t.keterangan,t.createdByNama,item.namaItem,item.namaAlkes,item.jenisItem].join(' ').toLowerCase();
-                return !q||hay.includes(q);
             }).sort((a,b)=>String(b.t.tanggal||'').localeCompare(String(a.t.tanggal||'')));
             const count=document.getElementById('bhp-rekap-lk-count');
             if(count)count.textContent=`${rows.length} transaksi`;
@@ -9319,15 +8974,13 @@ function renderMaintenanceHistory() {
                 const canOpen=!!t.lkId && (dataLembarKerja||[]).some(l=>String(l.id)===String(t.lkId));
                 return `<tr class="hover:bg-emerald-50/50"><td class="p-3 font-mono text-[10px]">${escBHP(t.tanggal||t.tanggalLk||'-')}</td><td class="p-3 font-mono font-bold text-indigo-700">${escBHP(t.noLk||'-')}</td><td class="p-3">${escBHP(alat.nama||t.alatId||'-')}<br><span class="text-[9px] text-slate-400">SN ${escBHP(alat.seri||'-')}</span></td><td class="p-3 font-bold">${escBHP(item.namaItem||'-')}<br><span class="text-[9px] text-slate-500">${escBHP(item.namaAlkes||'-')}</span></td><td class="p-3 text-center font-black">${angkaBHP(t.qty)} ${escBHP(item.satuan||'')}</td><td class="p-3">${escBHP(t.createdByNama||'-')}</td><td class="p-3 text-center">${canOpen?`<button type="button" onclick="bukaLembarKerjaDinamisDarlLog('${String(t.lkId).replace(/'/g,'&#39;')}')" class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 font-bold text-[9px]">Lihat LK</button>`:'-'}</td></tr>`;
             }).join('');
-            if(rows.length>200){
-                body.insertAdjacentHTML('beforeend','<tr><td colspan="7" class="p-2 text-center text-[9px] text-slate-400">Menampilkan 200 transaksi terbaru. Gunakan pencarian untuk mempersempit hasil.</td></tr>');
-            }
+            if(rows.length>200){ body.insertAdjacentHTML('beforeend','<tr><td colspan="7" class="p-2 text-center text-[9px] text-slate-400">Menampilkan 200 transaksi terbaru.</td></tr>'); }
         }
 
         function exportRekapanBHP(mode='year'){
             if(typeof XLSX==='undefined'){showToast('Library Excel belum tersedia.','error');return;}
-            const year=Number(document.getElementById('bhp-rekap-tahun')?.value)||new Date().getFullYear();
-            const month=Number(document.getElementById('bhp-rekap-bulan')?.value);
+            const year=new Date().getFullYear();
+            const month=new Date().getMonth();
             const bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
             const transaksi=(Array.isArray(dataBHPTransactions)?dataBHPTransactions:[]).filter(t=>String(t.sumber||'').toUpperCase()==='LK');
             const rows=transaksi.map(t=>{
@@ -9558,7 +9211,7 @@ function renderMaintenanceHistory() {
         }
 
         function openModalAlatManual() { 
-            if (currentActiveRole !== 'Admin' || !izinMenu('master', 'tambah')) { showToast('Anda tidak memiliki izin menambah aset.', 'error'); return; }
+            if (!izinMenu('master', 'tambah')) { showToast('Anda tidak memiliki izin menambah aset.', 'error'); return; }
             document.getElementById('form-alat-id').value = ""; 
             document.getElementById('form-alat-nama').value = ""; 
             document.getElementById('form-alat-merk').value = ""; 
@@ -9572,7 +9225,7 @@ function renderMaintenanceHistory() {
         }
         
         function pemicuEditAlatLangsung(id) { 
-            if (currentActiveRole !== 'Admin' || !izinMenu('master', 'edit')) { showToast('Anda tidak memiliki izin mengedit aset.', 'error'); return; }
+            if (!izinMenu('master', 'edit')) { showToast('Anda tidak memiliki izin mengedit aset.', 'error'); return; }
             const a = dataAlat.find(i => i.id == id); if(!a) return; 
             document.getElementById('form-alat-id').value = a.id; 
             document.getElementById('form-alat-nama').value = a.nama || ''; 
@@ -9581,12 +9234,10 @@ function renderMaintenanceHistory() {
             document.getElementById('form-alat-seri').value = a.seri || ''; 
             document.getElementById('form-alat-izin').value = a.izinEdar || a.edar || ''; 
             document.getElementById('form-alat-lokasi').value = a.ruangan || a.lokasi || '';
-            const emMirror = Array.isArray(dataEquipment) ? dataEquipment.find(e => String(e.id) === String(a.id)) : null;
-            const emProfile = cariProfilEM(a.nama || '');
-            document.getElementById('form-alat-em-fungsi').value = a.emFungsi ?? emMirror?.emFungsi ?? emProfile?.fungsi ?? '';
-            document.getElementById('form-alat-em-risiko').value = a.emRisiko ?? emMirror?.emRisiko ?? emProfile?.risiko ?? '';
-            document.getElementById('form-alat-em-perawatan').value = a.emPerawatan ?? emMirror?.emPerawatan ?? emProfile?.perawatan ?? '';
-            document.getElementById('form-alat-em-insiden').value = a.emInsiden ?? emMirror?.emInsiden ?? emProfile?.insiden ?? '';
+            document.getElementById('form-alat-em-fungsi').value = a.emFungsi ?? '';
+            document.getElementById('form-alat-em-risiko').value = a.emRisiko ?? '';
+            document.getElementById('form-alat-em-perawatan').value = a.emPerawatan ?? '';
+            document.getElementById('form-alat-em-insiden').value = a.emInsiden ?? '';
                         updateFormAlatEMPreview();
             toggleModal('modal-alat', true); 
         }
@@ -9594,7 +9245,7 @@ function renderMaintenanceHistory() {
         function submitFormAlatMaster(e) { 
             e.preventDefault();
             const idAsetForm = document.getElementById('form-alat-id').value;
-            if (currentActiveRole !== 'Admin' || !(idAsetForm ? izinMenu('master', 'edit') : izinMenu('master', 'tambah'))) { showToast('Anda tidak memiliki izin untuk menyimpan perubahan aset.', 'error'); return; } 
+            if (!(idAsetForm ? izinMenu('master', 'edit') : izinMenu('master', 'tambah'))) { showToast('Anda tidak memiliki izin untuk menyimpan perubahan aset.', 'error'); return; } 
             const id = document.getElementById('form-alat-id').value;
             const namaForm = document.getElementById('form-alat-nama').value.trim();
             const seriForm = document.getElementById('form-alat-seri').value.trim();
@@ -9614,7 +9265,7 @@ function renderMaintenanceHistory() {
                 emFungsi: parseOptionalNumber('form-alat-em-fungsi'),
                 emRisiko: parseOptionalNumber('form-alat-em-risiko'),
                 emPerawatan: parseOptionalNumber('form-alat-em-perawatan'),
-                emInsiden: parseOptionalNumber('form-alat-em-insiden')
+                emInsiden: parseOptionalNumber('form-alat-em-insiden'),
             }; 
             if(id) { 
                 db.collection("dataAlat").doc(id).update(payload).then(() => { 
@@ -9689,12 +9340,8 @@ function renderMaintenanceHistory() {
             base.equipment.maintenance = !!(base.equipment.maintenance || base.equipment.edit);
             base.riwayat.read = !!(base.riwayat.read || base.riwayat.upload || base.riwayat.download || base.riwayat.hapus);
             base.akun.read = !!(base.akun.read || base.akun.edit || base.akun.nonaktifkan);
-            // Jika menuAkses sudah tersimpan lengkap, hormati checkbox Admin.
-            // Preset role hanya menjadi fallback untuk akun lama yang belum memiliki menuAkses.
-            if (!raw || typeof raw !== 'object' || Object.keys(raw).length === 0) {
-                if (role === 'Admin' || role === 'Teknisi') base.equipment = { read: true, maintenance: true, edit: true };
-                if (role === 'User') base.ticket = { read: true, lapor: true, kerjakan: false, selesai: false, hapus: false, edit: false };
-            }
+
+            // E-Ticket mengikuti izin yang disimpan Admin.
 
             // Kelola akun hanya Admin.
             if (role !== 'Admin') base.akun = { read: false, edit: false, nonaktifkan: false };
@@ -9704,7 +9351,7 @@ function renderMaintenanceHistory() {
         function izinMenu(menu, action = 'read') {
             const role = currentActiveRole || 'User';
             if (menu === 'equipment') {
-                return (role === 'Admin' || role === 'Teknisi') && !!userAksesMenuArray?.equipment?.[action];
+                return !!userAksesMenuArray?.equipment?.[action];
             }
             if (menu === 'akun') return role === 'Admin' && !!userAksesMenuArray?.akun?.[action];
             return !!userAksesMenuArray?.[menu]?.[action];
@@ -9740,20 +9387,14 @@ function renderMaintenanceHistory() {
                 const el = document.getElementById(id);
                 if (el) el.checked = !!value;
             });
-            const equipmentLocked = role === 'User';
-            ['akses-equipment-read','akses-equipment-maintenance','akses-equipment-edit'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.disabled = equipmentLocked;
-            });
+            ['akses-equipment-read','akses-equipment-maintenance','akses-equipment-edit'].forEach(id => { const el=document.getElementById(id); if(el) el.disabled=false; });
             const accountLocked = role !== 'Admin';
             ['akses-akun-read','akses-akun-edit','akses-akun-nonaktifkan'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.disabled = accountLocked;
             });
             const note = document.getElementById('akses-equipment-note');
-            if (note) note.textContent = role === 'User'
-                ? 'Akses Equipment Management otomatis ditutup untuk User.'
-                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Maintenance + Kelola Equipment Management.';
+            if (note) note.textContent = 'Admin dapat menentukan akses Equipment Management langsung per akun.';
         }
 
         function ambilMenuAksesDariForm() {
@@ -9829,20 +9470,14 @@ function renderMaintenanceHistory() {
         }
 
         function terapkanPresetIzinRoleLock(role) {
-            const equipmentLocked = role === 'User';
-            ['akses-equipment-read','akses-equipment-maintenance','akses-equipment-edit'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.disabled = equipmentLocked;
-            });
+            ['akses-equipment-read','akses-equipment-maintenance','akses-equipment-edit'].forEach(id => { const el=document.getElementById(id); if(el) el.disabled=false; });
             const accountLocked = role !== 'Admin';
             ['akses-akun-read','akses-akun-edit','akses-akun-nonaktifkan'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.disabled = accountLocked;
             });
             const note = document.getElementById('akses-equipment-note');
-            if (note) note.textContent = role === 'User'
-                ? 'Akses Equipment Management otomatis ditutup untuk User.'
-                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Maintenance + Kelola Equipment Management.';
+            if (note) note.textContent = 'Admin dapat menentukan akses Equipment Management langsung per akun.';
         }
 
         function resetFormUser() {
@@ -9933,12 +9568,13 @@ function renderMaintenanceHistory() {
                     const emRisiko = pick(row, ['RISIKO EM','EM RISIKO','RISIKO']);
                     const emPerawatan = pick(row, ['PERAWATAN EM','EM PERAWATAN','PERAWATAN']);
                     const emInsiden = pick(row, ['INSIDEN EM','EM INSIDEN','INSIDEN']);
+                    const tanggalAcuanPM = pick(row, ['TANGGAL ACUAN PM','TANGGAL PM TERAKHIR','TANGGAL PM']);
                     const payload = { nama, merk, tipe, seri, izinEdar, ruangan, status,
                         emFungsi: emFungsi === '' ? null : Number(emFungsi),
                         emRisiko: emRisiko === '' ? null : Number(emRisiko),
                         emPerawatan: emPerawatan === '' ? null : Number(emPerawatan),
                         emInsiden: emInsiden === '' ? null : Number(emInsiden),
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                        tanggalAcuanPM, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
                     const keySeri = norm(seri);
                     const keyFull = [nama,merk,tipe,ruangan].map(norm).join('|');
                     const existing = (keySeri && existingByKey.get('seri|' + keySeri)) || existingByKey.get('key|' + keyFull);
@@ -10132,11 +9768,7 @@ function renderMaintenanceHistory() {
             setTimeout(updateMasterTableNav, 300);
         }
 
-        function filterAlat() {
-            // Legacy compatibility. Table filtering is handled by the universal Excel-style filters.
-            initMasterTableNavigation();
-            if (window.medixInitTableFilters) window.medixInitTableFilters();
-        }
+        function filterAlat() { initMasterTableNavigation(); }
         
         function updateStats() {
             const statTotal = document.getElementById('stat-total');
@@ -11639,165 +11271,10 @@ function renderMaintenanceHistory() {
 
 
 
+
+
+
 <script>
-/* MEDIX STABLE 5 — universal Excel-like table filters */
-(function(){
-  const STATE = new WeakMap();
-  let popup = null;
-  let activeTable = null;
-  let activeCol = -1;
-
-  function norm(v){ return String(v ?? '').replace(/\s+/g,' ').trim(); }
-  function isFilterableHeader(text){
-    const t=norm(text).toLowerCase();
-    return t && !/^(aksi|aksi berkas|preview|kartu pemeliharaan|tindakan|action)$/.test(t);
-  }
-  function getState(table){
-    let s=STATE.get(table);
-    if(!s){
-      s=table.__medixFilterState || {filters:new Map(), sort:null};
-      table.__medixFilterState=s;
-      STATE.set(table,s);
-    }
-    return s;
-  }
-  function rows(table){
-    return Array.from(table.tBodies||[]).flatMap(tb=>Array.from(tb.rows));
-  }
-  function cellText(row,i){ return norm(row.cells[i]?.innerText || row.cells[i]?.textContent || ''); }
-  function apply(table){
-    const s=getState(table), rs=rows(table);
-    let visible=0;
-    rs.forEach(r=>{
-      if(r.querySelector('td[colspan]')) return;
-      let ok=true;
-      for(const [col,set] of s.filters){
-        if(set && set.size && !set.has(cellText(r,col))) { ok=false; break; }
-      }
-      r.dataset.medixFilterHidden = ok ? '0' : '1';
-      r.hidden = !ok;
-      r.style.setProperty('display', ok ? '' : 'none', 'important');
-      if(ok) visible++;
-    });
-    table.dataset.medixFilteredCount=String(visible);
-    table.querySelectorAll('.medix-filter-btn').forEach(b=>{
-      const i=Number(b.dataset.col), active=!!(s.filters.get(i)?.size);
-      b.classList.toggle('has-filter',active); b.classList.toggle('active',active);
-    });
-    updateMobileLabel(table);
-  }
-  function values(table,col){
-    const set=new Set(); rows(table).forEach(r=>{ if(!r.querySelector('td[colspan]')) set.add(cellText(r,col)); });
-    return Array.from(set).sort((a,b)=>a.localeCompare(b,'id',{numeric:true,sensitivity:'base'}));
-  }
-  function closePopup(){ if(popup){popup.remove();popup=null;} activeTable=null; activeCol=-1; }
-  function positionPopup(btn){
-    if(!btn||!popup)return;
-    const r=btn.getBoundingClientRect(), w=Math.min(320,Math.max(260,window.innerWidth-20)), h=Math.min(470,Math.max(260,window.innerHeight-20));
-    let left=Math.min(Math.max(10,r.left),Math.max(10,window.innerWidth-w-10));
-    let top=r.bottom+7;
-    if(top+h>window.innerHeight-10) top=Math.max(10,r.top-h-7);
-    if(window.innerWidth<768){ left=Math.max(10,(window.innerWidth-w)/2); top=Math.min(Math.max(10,top),Math.max(10,window.innerHeight-h-10)); }
-    popup.style.width=Math.min(320,window.innerWidth-20)+'px';
-    popup.style.left=left+'px'; popup.style.top=top+'px';
-  }
-  function openPopup(table,col,btn){
-    closePopup(); activeTable=table; activeCol=col; const s=getState(table), selected=new Set(s.filters.get(col)||[]);
-    const th=table.tHead?.rows[0]?.cells[col], title=norm(th?.innerText||'Kolom');
-    popup=document.createElement('div'); popup.className='medix-filter-popup';
-    popup.innerHTML=`<div class="medix-filter-head"><div class="medix-filter-title"><span>Filter: ${escapeHtml(title)}</span><span class="text-[10px] opacity-60">${selected.size?selected.size+' dipilih':'Semua'}</span></div><input class="medix-filter-search" placeholder="Cari nilai..."></div><div class="medix-filter-actions"><button type="button" class="medix-filter-action" data-act="all">Pilih semua</button><button type="button" class="medix-filter-action" data-act="none">Kosongkan</button><button type="button" class="medix-filter-action" data-act="az">A → Z</button><button type="button" class="medix-filter-action" data-act="za">Z → A</button></div><div class="medix-filter-values"></div><div class="medix-filter-footer"><button type="button" class="medix-filter-clear">Hapus filter</button><button type="button" class="medix-filter-close">Terapkan</button></div>`;
-    document.body.appendChild(popup); renderValues(''); positionPopup(btn);
-    popup.querySelector('.medix-filter-search').addEventListener('input',e=>renderValues(e.target.value));
-    popup.querySelector('[data-act="all"]').onclick=()=>{ selected.clear(); values(table,col).forEach(v=>selected.add(v)); renderValues(popup.querySelector('.medix-filter-search').value); };
-    popup.querySelector('[data-act="none"]').onclick=()=>{ selected.clear(); renderValues(popup.querySelector('.medix-filter-search').value); };
-    popup.querySelector('[data-act="az"]').onclick=()=>sortColumn(table,col,false);
-    popup.querySelector('[data-act="za"]').onclick=()=>sortColumn(table,col,true);
-    popup.querySelector('.medix-filter-clear').onclick=()=>{ s.filters.delete(col); apply(table); closePopup(); };
-    popup.querySelector('.medix-filter-close').onclick=()=>{ if(selected.size) s.filters.set(col,new Set(selected)); else s.filters.delete(col); apply(table); closePopup(); };
-    function renderValues(q){
-      const box=popup.querySelector('.medix-filter-values'), needle=norm(q).toLowerCase();
-      const vals=values(table,col).filter(v=>!needle||v.toLowerCase().includes(needle));
-      if(!vals.length){box.innerHTML='<div class="medix-filter-empty">Tidak ada nilai yang cocok.</div>';return;}
-      box.innerHTML=vals.map(v=>`<label class="medix-filter-value"><input type="checkbox" ${selected.has(v)?'checked':''} data-value="${escapeAttr(v)}"><span>${escapeHtml(v||'(Kosong)')}</span></label>`).join('');
-      box.querySelectorAll('input').forEach(cb=>cb.addEventListener('change',()=>{cb.checked?selected.add(cb.dataset.value):selected.delete(cb.dataset.value);}));
-    }
-  }
-  function sortColumn(table,col,desc){
-    const s=getState(table); s.sort={col,desc};
-    table.querySelectorAll('tbody').forEach(tb=>{
-      const arr=Array.from(tb.rows).filter(r=>!r.querySelector('td[colspan]'));
-      arr.sort((a,b)=>{const av=cellText(a,col),bv=cellText(b,col);return (desc?-1:1)*av.localeCompare(bv,'id',{numeric:true,sensitivity:'base'});});
-      arr.forEach(r=>tb.appendChild(r));
-    }); apply(table);
-  }
-  function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-  function escapeAttr(v){return escapeHtml(v);}
-  function updateMobileLabel(table){
-    const bar=table.parentElement?.querySelector(':scope > .medix-mobile-filter-bar'); if(!bar)return;
-    const n=getState(table).filters.size; const btn=bar.querySelector('button'); if(btn)btn.innerHTML=`<i class="fa-solid fa-filter"></i> Buka Filter${n?' ('+n+')':''}`;
-  }
-  function decorateTable(table){
-    if(!table || table.dataset.medixNoFilters==='1' || table.hasAttribute('data-medix-no-filters') || !table.tHead || !table.tHead.rows || !table.tHead.rows.length || !table.tHead.rows[0] || !table.tHead.rows[0].cells || table.dataset.medixFiltersReady==='1') return;
-    table.dataset.medixFiltersReady='1'; table.classList.add('medix-filterable-table');
-    Array.from(table.tHead.rows[0].cells).forEach((th,i)=>{
-      if(!isFilterableHeader(th.innerText)) return;
-      th.classList.add('medix-filter-th');
-      const b=document.createElement('button'); b.type='button'; b.className='medix-filter-btn'; b.dataset.col=i; b.title='Filter kolom'; b.setAttribute('aria-label','Filter '+norm(th.innerText)); b.innerHTML='<i class="fa-solid fa-filter"></i>';
-      b.addEventListener('click',e=>{e.stopPropagation();openPopup(table,i,b);}); th.appendChild(b);
-    });
-    const host=table.parentElement;
-    if(host && !host.querySelector(':scope > .medix-mobile-filter-bar')){
-      const bar=document.createElement('div'); bar.className='medix-mobile-filter-bar no-print';
-      const options=Array.from(table.tHead.rows[0].cells).map((th,i)=>isFilterableHeader(th.innerText)?`<option value="${i}">${escapeHtml(norm(th.innerText))}</option>`:'').join('');
-      bar.innerHTML=`<select class="medix-mobile-filter-select" aria-label="Pilih kolom filter"><option value="">Filter kolom...</option>${options}</select><button type="button" class="medix-mobile-filter-btn"><i class="fa-solid fa-filter"></i> Filter</button><button type="button" class="medix-mobile-filter-reset" title="Hapus semua filter"><i class="fa-solid fa-xmark"></i></button>`;
-      const sel=bar.querySelector('select');
-      const mobileBtn=bar.querySelector('button.medix-mobile-filter-btn');
-      const resetBtn=bar.querySelector('button.medix-mobile-filter-reset');
-      const openSelected=()=>{
-        const raw=sel.value;
-        if(raw===''){ sel.focus(); return; }
-        const col=Number(raw);
-        if(Number.isInteger(col) && col>=0) openPopup(table,col,mobileBtn);
-      };
-      mobileBtn.onclick=(event)=>{ event.preventDefault(); event.stopPropagation(); openSelected(); };
-      resetBtn.onclick=(event)=>{ event.preventDefault(); event.stopPropagation(); const st=getState(table); st.filters.clear(); apply(table); sel.value=''; };
-      sel.addEventListener('change',()=>{ if(sel.value!=='') openSelected(); });
-      host.insertBefore(bar,table);
-    }
-    observeBody(table); apply(table);
-  }
-  function observeBody(table){
-    if(table.dataset.medixObserver==='1') return; table.dataset.medixObserver='1';
-    Array.from(table.tBodies||[]).forEach(tb=>new MutationObserver(()=>{clearTimeout(tb._medixTimer);tb._medixTimer=setTimeout(()=>apply(table),0);}).observe(tb,{childList:true}));
-  }
-  function init(){ document.querySelectorAll('table').forEach(decorateTable); }
-  document.addEventListener('click',e=>{if(popup&&!popup.contains(e.target)&&!e.target.closest('.medix-filter-btn')&&!e.target.closest('.medix-mobile-filter-btn'))closePopup();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup();});
-  window.addEventListener('resize',()=>{if(popup&&activeTable){const bar=activeTable.parentElement?.querySelector(':scope > .medix-mobile-filter-bar');const anchor=window.innerWidth<768?(bar?.querySelector('.medix-mobile-filter-btn')||activeTable.tHead.rows[0].cells[activeCol]?.querySelector('.medix-filter-btn')):activeTable.tHead.rows[0].cells[activeCol]?.querySelector('.medix-filter-btn');if(anchor)positionPopup(anchor);}});
-  window.medixInitTableFilters=init;
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  const mo=new MutationObserver(()=>init());
-  document.addEventListener('DOMContentLoaded',()=>mo.observe(document.body,{childList:true,subtree:true}),{once:true});
-})();
-
-        try { pasangListenerFormEM(); } catch (e) { console.warn('Listener form EM belum terpasang:', e); }
-
-        // ============================================================
-        // KTI / VALIDASI: fungsi bantu untuk verifikasi algoritma EM
-        // ============================================================
-        function jalankanUjiAlgoritmaEM() {
-            const cases = [
-                {nama:'Kasus 1', f:10, r:5, p:5, i:-2, expected:'Setiap 4 Bulan'},
-                {nama:'Kasus 2', f:8, r:5, p:5, i:-2, expected:'Setiap 6 Bulan'},
-                {nama:'Kasus 3', f:6, r:3, p:5, i:-2, expected:'Satu Kali Per Tahun'},
-                {nama:'Kasus 4', f:4, r:2, p:1, i:-2, expected:'Inspeksi Sesuai Kebutuhan'}
-            ];
-            return cases.map(c => { const total=c.f+c.r+c.p+c.i; const actual=hitungRekomendasiPeriodeWHO(total); return {...c,total,actual,lulus:actual===c.expected}; });
-        }
-        window.MEDIX_KTI_TEST = { runEM: jalankanUjiAlgoritmaEM, hitungPeriode: hitungRekomendasiPeriodeWHO, jadwalPM: jadwalOtomatisDariPeriode };
-
-
-
 /* ============================================================
    MEDIX PRINT ENGINE — unified flexible printing
    ============================================================ */
@@ -11879,7 +11356,8 @@ function renderMaintenanceHistory() {
     const saved=loadSaved(); Object.assign(state,{targetWindow:targetWin||window,mode:opts.mode||'print-current',targetSelector:opts.targetSelector||null,element:opts.element||null,title:opts.title||'Cetak',preset:opts.defaultPreset||saved.preset||'A4',orientation:opts.defaultOrientation||saved.orientation||'portrait',margin:opts.defaultMargin??saved.margin??0,scale:saved.scale||100,fit:saved.fit||'actual',labelWidth:opts.labelWidth||88,labelHeight:opts.labelHeight||26,labelGap:opts.labelGap||2,cleanup:opts.cleanup||null});
     requestAnimationFrame(()=>execute());
   }
-  function close(){const modal=$('medix-print-settings-modal');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}}
+  function close(cancelled=false){const modal=$('medix-print-settings-modal');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');} if(cancelled && state.mode==='lk'){ document.body.classList.remove('medix-lk-printing'); document.getElementById('area-lembar-kerja-resmi')?.classList.add('hidden'); document.getElementById('area-lembar-kerja-resmi')?.classList.remove('medix-lk-print-ready'); }}
+  function cancel(){ close(true); }
   function injectPrintStyle(win,d){
     if(!win||win.closed)return null; const doc=win.document; let st=doc.getElementById('medix-print-dynamic-style');if(!st){st=doc.createElement('style');st.id='medix-print-dynamic-style';doc.head.appendChild(st)}
     const margin=Math.max(0,Number(state.margin)||0),scale=Number(state.fit==='fit'?100:state.scale)||100;
@@ -11935,16 +11413,15 @@ function renderMaintenanceHistory() {
     $('medix-print-action')?.addEventListener('click',execute);
     $('medix-print-settings-modal')?.addEventListener('click',e=>{if(e.target.id==='medix-print-settings-modal')close();});
   });
-  window.medixOpenPrintSettings=open; window.medixClosePrintSettings=close; window.medixPrintExecute=execute;
+  window.medixOpenPrintSettings=open; window.medixClosePrintSettings=close; window.medixCancelPrintSettings=cancel; window.medixPrintExecute=execute;
   window.medixCetakElemen=function(selector,title){open(window,{title:title||'Cetak',mode:'print-current',targetSelector:selector,defaultPreset:'A4',defaultOrientation:'landscape',defaultMargin:6});};
   window.medixOpenPrintSettingsChild=function(win,opts){open(win,opts||{});};
 })();
 </script>
 
-
 <div id="medix-print-settings-modal" class="medix-print-modal no-print" aria-hidden="true">
   <div class="medix-print-card" role="dialog" aria-modal="true" aria-labelledby="medix-print-title">
-    <div class="medix-print-head"><h3 id="medix-print-title">Pengaturan Cetak</h3><button type="button" class="medix-print-close" onclick="medixClosePrintSettings()" aria-label="Tutup">×</button></div>
+    <div class="medix-print-head"><h3 id="medix-print-title">Pengaturan Cetak</h3><button type="button" class="medix-print-close" onclick="medixCancelPrintSettings()" aria-label="Tutup">×</button></div>
     <div class="medix-print-body">
       <div class="medix-print-controls">
         <div class="medix-print-field"><label>Ukuran Kertas</label><select id="medix-print-paper"></select></div>
@@ -11957,8 +11434,9 @@ function renderMaintenanceHistory() {
       </div>
 
     </div>
-    <div class="medix-print-footer"><button type="button" class="medix-print-btn cancel" onclick="medixClosePrintSettings()">Batal</button><button id="medix-print-action" type="button" class="medix-print-btn primary">🖨️ Cetak / Preview Browser</button></div>
+    <div class="medix-print-footer"><button type="button" class="medix-print-btn cancel" onclick="medixCancelPrintSettings()">Batal</button><button id="medix-print-action" type="button" class="medix-print-btn primary">🖨️ Cetak / Preview Browser</button></div>
   </div>
 </div>
+
 </body>
 </html>
