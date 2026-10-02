@@ -1,10 +1,8 @@
-<!-- MEDIX KTI READY BUILD: 2026-09-28 - LK PDF VIEW -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="medix-version" content="MEDIX-2026.09-KTI-READY-1">
     <title>MEDIX - RSUD Pondokgede</title>
     
     <link class="no-print" rel="icon" type="image/png" href="logo.png">
@@ -2428,7 +2426,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 </style>
 
 <style id="medix-lk-bhp-compact-layout">
-/* LK BHP/Aksesori: dibuat seperti tabel kerja yang padat, bukan kartu tinggi. */
+/* LK BHP/Aksesoris: dibuat seperti tabel kerja yang padat, bukan kartu tinggi. */
 .lk-bhp-usage-card{
   border-radius:10px !important;
   background:#fff !important;
@@ -3353,7 +3351,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                             <i class="fa-solid fa-hospital w-5 text-rose-500"></i><span>Equipment Management</span>
                         </button>
                         <button onclick="switchTab('bhp')" id="btn-bhp" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition hidden">
-                            <i class="fa-solid fa-boxes-stacked w-5 text-emerald-600"></i><span>Monitoring BHP & Aksesori</span>
+                            <i class="fa-solid fa-boxes-stacked w-5 text-emerald-600"></i><span>Monitoring BHP & Aksesoris</span>
                         </button>
                         
                         <div id="btn-aksi-cepat-container" class="pt-4 mt-4 border-t border-slate-100 space-y-2 menu-akses-teknisi hidden">
@@ -3437,9 +3435,9 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                 <i class="fa-solid fa-hospital text-base sm:text-lg"></i>
                             </div>
                         </button>
-                        <button id="dashboard-bhp-stat" type="button" onclick="switchTab('bhp')" aria-label="Buka Monitoring BHP dan Aksesori" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
+                        <button id="dashboard-bhp-stat" type="button" onclick="switchTab('bhp')" aria-label="Buka Monitoring BHP dan Aksesoris" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between text-left cursor-pointer hover:scale-[1.01] transition hidden">
                             <div class="min-w-0">
-                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">BHP & Aksesori</p>
+                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wider uppercase leading-tight">BHP & Aksesoris</p>
                                 <h3 id="dash-bhp-total" class="text-2xl sm:text-3xl font-black text-emerald-700 mt-1 leading-none">0</h3>
                                 <p id="dash-bhp-warning" class="text-[8px] sm:text-[9px] text-slate-400 font-semibold mt-1">0 perlu perhatian</p>
                             </div>
@@ -3719,7 +3717,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 <div id="tab-bhp" class="tab-content hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
-                            <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesori</h2>
+                            <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesoris</h2>
                             <p class="text-[10px] text-slate-500 mt-1">Master item diinput manual. Pengeluaran dapat dicatat otomatis dari pemakaian pada Lembar Kerja (LK).</p>
                         </div>
                         <div class="flex gap-2">
@@ -3773,7 +3771,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs" data-medix-no-filters="1">
                                 <thead class="bg-emerald-50 text-emerald-900 font-bold"><tr>
-                                    <th class="p-3">Tanggal</th><th class="p-3">No LK</th><th class="p-3">Alat Kesehatan</th><th class="p-3">BHP / Aksesori</th><th class="p-3 text-center">Qty</th><th class="p-3">Teknisi</th><th class="p-3 text-center">LK</th>
+                                    <th class="p-3">Tanggal</th><th class="p-3">No LK</th><th class="p-3">Alat Kesehatan</th><th class="p-3">BHP / Aksesoris</th><th class="p-3 text-center">Qty</th><th class="p-3">Teknisi</th><th class="p-3 text-center">LK</th>
                                 </tr></thead>
                                 <tbody id="table-bhp-rekap-lk-body" class="divide-y divide-slate-100"></tbody>
                             </table>
@@ -4127,16 +4125,16 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 <div class="px-3.5 py-3 border-b border-emerald-100 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 min-w-0">
                         <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-boxes-stacked"></i></div>
-                        <div class="min-w-0"><div class="font-black text-slate-800 text-[11px]">Penggunaan BHP / Aksesori</div><div class="text-[9px] text-slate-500 truncate">Pilih manual sesuai kebutuhan alat yang sedang dikerjakan.</div></div>
+                        <div class="min-w-0"><div class="font-black text-slate-800 text-[11px]">Penggunaan BHP / Aksesoris</div><div class="text-[9px] text-slate-500 truncate">Pilih manual sesuai kebutuhan alat yang sedang dikerjakan.</div></div>
                     </div>
                     <div class="text-right shrink-0"><div id="dlk-bhp-count" class="text-[11px] font-black text-emerald-700">0 item</div><div class="text-[8px] text-slate-400 uppercase font-bold tracking-wider">digunakan</div></div>
                 </div>
                 <div class="p-3 space-y-2.5">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
                         <div class="md:col-span-7 relative">
-                            <label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">BHP / Aksesori</label>
+                            <label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">BHP / Aksesoris</label>
                             <input id="dlk-bhp-search" oninput="filterDropdownBHPDiLK(this.value)" type="search" placeholder="🔍 Cari item atau nama alkes..." class="w-full border border-emerald-200 rounded-xl p-2.5 text-[10px] bg-white outline-none focus:border-emerald-500">
-                            <select id="dlk-bhp-item" onchange="updateStokInfoBHPDiLK()" class="w-full mt-1.5 border border-slate-300 rounded-xl p-2.5 text-[10px] bg-white font-semibold"><option value="">-- Pilih BHP / Aksesori --</option></select>
+                            <select id="dlk-bhp-item" onchange="updateStokInfoBHPDiLK()" class="w-full mt-1.5 border border-slate-300 rounded-xl p-2.5 text-[10px] bg-white font-semibold"><option value="">-- Pilih BHP / Aksesoris --</option></select>
                             <div id="dlk-bhp-stock-info" class="mt-1.5 min-h-[18px] text-[9px] font-bold text-slate-500"></div>
                         </div>
                         <div class="md:col-span-2"><label class="block text-[8px] uppercase tracking-wider font-black text-slate-500 mb-1">Jumlah</label><input id="dlk-bhp-qty" type="number" min="0.01" step="0.01" value="1" class="w-full border border-slate-300 rounded-xl p-2.5 text-[10px] text-center font-black bg-white" placeholder="Qty"></div>
@@ -4149,10 +4147,10 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
             <div id="dlk-bhp-print-summary" class="lk-bhp-print-only border border-emerald-200 p-2 rounded-lg bg-white shadow-sm">
                 <div class="flex items-center justify-between gap-2 mb-1">
-                    <div class="font-black text-slate-800 text-[9px] uppercase tracking-wide"><i class="fa-solid fa-boxes-stacked mr-1 text-emerald-600"></i>Penggunaan BHP / Aksesori</div>
+                    <div class="font-black text-slate-800 text-[9px] uppercase tracking-wide"><i class="fa-solid fa-boxes-stacked mr-1 text-emerald-600"></i>Penggunaan BHP / Aksesoris</div>
                     <div id="dlk-bhp-print-count" class="text-[8px] font-black text-emerald-700">0 item</div>
                 </div>
-                <div id="dlk-bhp-print-body"><div class="lk-bhp-print-empty">Tidak ada BHP / aksesori yang digunakan pada LK ini.</div></div>
+                <div id="dlk-bhp-print-body"><div class="lk-bhp-print-empty">Tidak ada BHP / aksesoris yang digunakan pada LK ini.</div></div>
             </div>
 
             <div class="border border-slate-200 p-2 rounded-lg text-[11px] bg-slate-50 shadow-sm">
@@ -9191,7 +9189,7 @@ function renderMaintenanceHistory() {
 
 
         // ================================================================
-        // MONITORING BHP & AKSESORI — terintegrasi dengan Lembar Kerja (LK)
+        // MONITORING BHP & AKSESORIS — terintegrasi dengan Lembar Kerja (LK)
         // Master item sengaja manual karena satu jenis alat dapat memakai
         // BHP yang sama atau berbeda. Stok dihitung dari transaksi IN/OUT.
         // ================================================================
@@ -9244,7 +9242,7 @@ function renderMaintenanceHistory() {
                 return (!q||hay.includes(q))&&(!jenis||i.jenisItem===jenis)&&(!status||statusStokBHP(i)===status)&&(!alkes||i.namaAlkes===alkes);
             });
             const count=document.getElementById('bhp-filter-count'); if(count) count.textContent=`${rows.length} item${rows.length===1?'':'s'}`;
-            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200">${izinMenu('bhp','edit')?`<button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button>`:'-'}</div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
+            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200">${izinMenu('bhp','edit')?`<button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button>`:'-'}</div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesoris. Tambahkan secara manual.</td></tr>`;
         }
         function inisialisasiFilterRekapanBHP(){
             const yearSel=document.getElementById('bhp-rekap-tahun');
@@ -9314,7 +9312,7 @@ function renderMaintenanceHistory() {
                     "No LK":t.noLk||'-',
                     "Alat Kesehatan":alat.nama||t.alatId||'-',
                     "SN":alat.seri||'-',
-                    "BHP / Aksesori":item.namaItem||t.namaItem||'-',
+                    "BHP / Aksesoris":item.namaItem||t.namaItem||'-',
                     "Jenis":item.jenisItem||t.jenisItem||'-',
                     "Spesifikasi":item.spesifikasi||'-',
                     "Qty":angkaBHP(t.qty),
@@ -9336,7 +9334,7 @@ function renderMaintenanceHistory() {
                 m=document.createElement('div'); m.id='modal-bhp'; m.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100000] flex items-center justify-center p-4 no-print'; document.body.appendChild(m);
             }
             const item=dataBHPItems.find(x=>String(x.id)===String(id));
-            m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesori</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
+            m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesoris</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
         }
         function tutupModalBHP(){document.getElementById('modal-bhp')?.remove();}
         async function simpanMasterBHP(e){e.preventDefault(); if(!izinMenu('bhp','edit')){showToast('Akses edit BHP tidak diberikan.','error');return;} const id=document.getElementById('bhp-form-id').value; const payload={namaAlkes:document.getElementById('bhp-form-alkes').value.trim(),namaItem:document.getElementById('bhp-form-item').value.trim(),jenisItem:document.getElementById('bhp-form-jenis').value,satuan:document.getElementById('bhp-form-satuan').value.trim(),spesifikasi:document.getElementById('bhp-form-spesifikasi').value.trim(),stokAwal:angkaBHP(document.getElementById('bhp-form-stok-awal').value),stokMinimum:angkaBHP(document.getElementById('bhp-form-min').value),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; try{if(id) await db.collection('bhpItems').doc(id).set(payload,{merge:true});else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('bhpItems').add(payload);} tutupModalBHP();showToast('Master BHP berhasil disimpan.','success');}catch(err){console.error('Simpan master BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpItems. Tambahkan izin read/write untuk Admin/Teknisi pada collection bhpItems.' : ('Gagal menyimpan master BHP: '+(err.message||err)); showToast(msg,'error');}}
@@ -9350,7 +9348,7 @@ function renderMaintenanceHistory() {
             const s=document.getElementById('dlk-bhp-item'); if(!s)return;
             const old=s.value; const q=String(filterText||document.getElementById('dlk-bhp-search')?.value||'').toLowerCase().trim();
             const rows=dataBHPItems.filter(i=>!q||[i.namaItem,i.namaAlkes,i.spesifikasi,i.jenisItem].some(v=>String(v||'').toLowerCase().includes(q)));
-            s.innerHTML='<option value="">-- Pilih BHP / Aksesori --</option>'+rows.map(i=>{const st=getStokBHP(i.id);return `<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} · ${st.stok} ${escBHP(i.satuan||'')}</option>`}).join('');
+            s.innerHTML='<option value="">-- Pilih BHP / Aksesoris --</option>'+rows.map(i=>{const st=getStokBHP(i.id);return `<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} · ${st.stok} ${escBHP(i.satuan||'')}</option>`}).join('');
             if(rows.some(i=>String(i.id)===old))s.value=old;
             updateStokInfoBHPDiLK(); renderBHPUsageLK();
         }
@@ -9369,10 +9367,10 @@ function renderMaintenanceHistory() {
             if(count) count.textContent=`${bhpUsageLK.length} item${bhpUsageLK.length===1?'':'s'}`;
             if(!body) return;
             if(!bhpUsageLK.length){
-                body.innerHTML='<div class="lk-bhp-print-empty">Tidak ada BHP / aksesori yang digunakan pada LK ini.</div>';
+                body.innerHTML='<div class="lk-bhp-print-empty">Tidak ada BHP / aksesoris yang digunakan pada LK ini.</div>';
                 return;
             }
-            body.innerHTML=`<table class="lk-bhp-print-table"><thead><tr><th style="width:34%">BHP / Aksesori</th><th style="width:28%">Alkes</th><th style="width:16%">Jenis</th><th style="width:10%">Qty</th><th style="width:12%">Satuan</th></tr></thead><tbody>${bhpUsageLK.map(u=>{
+            body.innerHTML=`<table class="lk-bhp-print-table"><thead><tr><th style="width:34%">BHP / Aksesoris</th><th style="width:28%">Alkes</th><th style="width:16%">Jenis</th><th style="width:10%">Qty</th><th style="width:12%">Satuan</th></tr></thead><tbody>${bhpUsageLK.map(u=>{
                 const item=dataBHPItems.find(x=>String(x.id)===String(u.itemId))||{};
                 return `<tr><td><b>${escBHP(item.namaItem||u.namaItem||'-')}</b>${item.spesifikasi?`<br><span style="color:#64748b">${escBHP(item.spesifikasi)}</span>`:''}</td><td>${escBHP(item.namaAlkes||u.namaAlkes||'-')}</td><td>${escBHP(item.jenisItem||u.jenisItem||'-')}</td><td style="text-align:center;font-weight:900">${angkaBHP(u.qty)}</td><td>${escBHP(item.satuan||u.satuan||'-')}</td></tr>`;
             }).join('')}</tbody></table>`;
@@ -11864,9 +11862,9 @@ function renderMaintenanceHistory() {
       const usage=Array.isArray(bhpUsageLK)?bhpUsageLK:[];
       const noLk=$('dlk-no')?.value||'-', alat=$('dlk-nama')?.value||'-', jenis=document.querySelector('input[name="dlk-jenis"]:checked')?.value||'-';
       inner.style.display='block'; inner.style.overflow='hidden'; inner.style.padding='8px'; inner.style.textAlign='left';
-      const rowsHtml=usage.length?usage.slice(0,5).map(u=>{const item=(dataBHPItems||[]).find(x=>String(x.id)===String(u.itemId))||{};return `<tr><td>${String(item.namaItem||u.namaItem||'-')}</td><td>${String(item.namaAlkes||u.namaAlkes||'-')}</td><td style="text-align:center">${angkaBHP(u.qty)} ${String(item.satuan||u.satuan||'')}</td></tr>`}).join(''):`<tr><td colspan="3" style="color:#94a3b8;text-align:center">Tidak ada BHP / aksesori</td></tr>`;
-      inner.innerHTML=`<div style="font-size:7px;line-height:1.25;color:#334155"><div style="font-size:10px;font-weight:900;text-align:center;margin-bottom:5px">LEMBAR KERJA PEMELIHARAAN</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:5px"><div><b>No LK:</b> ${noLk}</div><div><b>Jenis:</b> ${jenis}</div><div style="grid-column:1/-1"><b>Alat:</b> ${alat}</div></div><div style="font-weight:900;margin:3px 0">Penggunaan BHP / Aksesori (${usage.length} item)</div><table style="width:100%;border-collapse:collapse;font-size:6px"><thead><tr><th style="border:1px solid #cbd5e1;padding:2px;text-align:left">Item</th><th style="border:1px solid #cbd5e1;padding:2px;text-align:left">Alkes</th><th style="border:1px solid #cbd5e1;padding:2px">Qty</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
-      $('medix-print-summary').textContent=`Kertas ${d.w} × ${d.h} mm • LK ${noLk} • ${usage.length} item BHP/Aksesori • Margin ${state.margin} mm`;
+      const rowsHtml=usage.length?usage.slice(0,5).map(u=>{const item=(dataBHPItems||[]).find(x=>String(x.id)===String(u.itemId))||{};return `<tr><td>${String(item.namaItem||u.namaItem||'-')}</td><td>${String(item.namaAlkes||u.namaAlkes||'-')}</td><td style="text-align:center">${angkaBHP(u.qty)} ${String(item.satuan||u.satuan||'')}</td></tr>`}).join(''):`<tr><td colspan="3" style="color:#94a3b8;text-align:center">Tidak ada BHP / aksesoris</td></tr>`;
+      inner.innerHTML=`<div style="font-size:7px;line-height:1.25;color:#334155"><div style="font-size:10px;font-weight:900;text-align:center;margin-bottom:5px">LEMBAR KERJA PEMELIHARAAN</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:5px"><div><b>No LK:</b> ${noLk}</div><div><b>Jenis:</b> ${jenis}</div><div style="grid-column:1/-1"><b>Alat:</b> ${alat}</div></div><div style="font-weight:900;margin:3px 0">Penggunaan BHP / Aksesoris (${usage.length} item)</div><table style="width:100%;border-collapse:collapse;font-size:6px"><thead><tr><th style="border:1px solid #cbd5e1;padding:2px;text-align:left">Item</th><th style="border:1px solid #cbd5e1;padding:2px;text-align:left">Alkes</th><th style="border:1px solid #cbd5e1;padding:2px">Qty</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
+      $('medix-print-summary').textContent=`Kertas ${d.w} × ${d.h} mm • LK ${noLk} • ${usage.length} item BHP/Aksesoris • Margin ${state.margin} mm`;
     }else{
       inner.style.display='flex'; inner.style.alignItems='center'; inner.style.justifyContent='center'; inner.style.overflow='hidden'; inner.style.padding='0'; inner.textContent='Konten akan dicetak pada area kertas ini.\nUkuran dan orientasi mengikuti pilihan Anda.';
       $('medix-print-summary').textContent=`Kertas ${d.w} × ${d.h} mm • Margin ${state.margin} mm • Skala ${state.fit==='fit'?'Fit to Paper':state.scale+'%'}`;
