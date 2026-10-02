@@ -310,7 +310,7 @@
         /* Master Data: navigasi horizontal yang terlihat di mobile */
         .master-table-scroll-wrap { position: relative; }
         .master-table-scroll {
-            overflow-x: auto; overflow-y: visible; height: auto; max-height: none; scroll-behavior: smooth;
+            overflow-x: auto; overflow-y: auto; scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
         }
         
@@ -1792,6 +1792,8 @@ body.dark-mode .medix-period-badge.period-12 { color:#fcd34d !important; border-
 body.dark-mode .medix-period-badge.period-inspeksi { color:#6ee7b7 !important; border-color:rgba(16,185,129,.35) !important; background:rgba(16,185,129,.12) !important; }
 
 /* Excel-like table filter controls */
+/* Generic column filters are intentionally hidden in MEDIX v4. */
+.medix-filter-btn,.medix-mobile-filter-bar,.medix-smart-filter-panel{display:none!important;}
 .medix-filterable-table { position:relative; }
 .medix-filter-th { position:relative !important; padding-right:2.35rem !important; }
 .medix-filter-btn {
@@ -2519,12 +2521,12 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-label-printing{background:#fff!important;}
 #medix-label-print-root{display:none;}
 .medix-label-printing #medix-label-print-root{display:block;width:297mm;margin:0 auto;background:#fff;color:#0f172a;}
-.medix-label-print-page{display:grid;grid-template-columns:repeat(3,78mm);grid-template-rows:repeat(8,23mm);grid-auto-rows:23mm;gap:2mm;width:238mm;height:196mm;margin:8mm auto; padding:0;box-sizing:border-box;align-content:start;justify-content:center;page-break-after:always;break-after:page;}
+.medix-label-print-page{display:grid;grid-template-columns:repeat(3,78mm);grid-template-rows:repeat(7,26mm);grid-auto-rows:26mm;gap:2mm;width:238mm;height:194mm;margin:8mm auto; padding:0;box-sizing:border-box;align-content:start;justify-content:center;page-break-after:always;break-after:page;}
 .medix-label-print-page:last-child{page-break-after:auto;break-after:auto;}
-.medix-label-card-print{width:78mm;height:23mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
+.medix-label-card-print{width:78mm;height:26mm;box-sizing:border-box;border:.3mm solid #cbd5e1;border-radius:1.2mm;background:#fff;overflow:hidden;page-break-inside:avoid;break-inside:avoid;display:flex;flex-direction:column;}
 .medix-label-top{height:3.2mm;min-height:3.2mm;background:#fff;color:#64748b;border-bottom:.25mm solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 2mm;font-size:2.5mm;line-height:1;}
 .medix-label-top span{font-size:1.35mm;letter-spacing:.1mm;color:#94a3b8;}
-.medix-label-body{display:flex;align-items:center;gap:1.5mm;padding:.45mm 1.3mm 0;height:16.1mm;min-height:16.1mm;box-sizing:border-box;}
+.medix-label-body{display:flex;align-items:center;gap:1.5mm;padding:.7mm 1.3mm 0;height:18.7mm;min-height:18.7mm;box-sizing:border-box;}
 .medix-label-qr{width:17mm;height:17mm;flex:0 0 18.5mm;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .medix-label-qr img,.medix-label-qr canvas{width:17mm!important;height:17mm!important;display:block;image-rendering:auto;}
 .medix-label-info{min-width:0;width:57mm;overflow:hidden;line-height:1.02;}
@@ -2532,14 +2534,14 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-label-sub{font-size:1.85mm;color:#475569;font-weight:700;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-sn{font:700 1.7mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-room{font-size:1.8mm;color:#2563eb;font-weight:800;margin-top:.55mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-scan{text-align:center;height:3.0mm;min-height:3.0mm;font:700 1.2mm/1 monospace;color:#64748b;padding-top:.25mm;}
+.medix-label-scan{text-align:center;height:3.6mm;min-height:3.6mm;font:700 1.2mm/1 monospace;color:#64748b;padding-top:.25mm;}
 @media print{
-  @page{size:297mm 210mm;margin:0;}
+  @page{size:A4 landscape;margin:0;}
   body.medix-label-printing > *{display:none!important;}
   body.medix-label-printing > #medix-label-print-root{display:block!important;position:static!important;width:297mm!important;margin:0!important;padding:0!important;box-sizing:border-box!important;background:#fff!important;color:#0f172a!important;overflow:visible!important;}
-  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,78mm)!important;grid-template-rows:repeat(8,23mm)!important;gap:2mm!important;width:238mm!important;height:196mm!important;margin:8mm auto!important;padding:0!important;box-sizing:border-box!important;align-content:start!important;justify-content:center!important;page-break-after:always!important;break-after:page!important;}
+  body.medix-label-printing .medix-label-print-page{display:grid!important;grid-template-columns:repeat(3,78mm)!important;grid-template-rows:repeat(7,26mm)!important;gap:2mm!important;width:238mm!important;height:194mm!important;margin:8mm auto!important;padding:0!important;box-sizing:border-box!important;align-content:start!important;justify-content:center!important;page-break-after:always!important;break-after:page!important;}
   body.medix-label-printing .medix-label-print-page:last-child{page-break-after:auto!important;break-after:auto!important;}
-  body.medix-label-printing .medix-label-card-print{width:78mm!important;height:23mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
+  body.medix-label-printing .medix-label-card-print{width:78mm!important;height:26mm!important;margin:0!important;page-break-inside:avoid!important;break-inside:avoid!important;}
 }
 </style>
 <style id="medix-label-print-isolation-final">
@@ -3215,17 +3217,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 }
 </style>
 
-
-<style id="medix-desktop-filter-final">
-@media (min-width:1024px){
-  .medix-filter-btn{display:inline-flex!important;align-items:center;justify-content:center;}
-  .medix-filterable-table .medix-filter-th{padding-right:2.35rem!important;}
-}
-@media (max-width:1023px){
-  .medix-filter-btn,.medix-mobile-filter-bar,.medix-smart-filter-panel{display:none!important;}
-  .medix-filter-th{padding-right:.6rem!important;}
-}
-</style>
 </head>
     
 <body id="main-app-body" class="font-sans text-slate-800 transition-all duration-500">
@@ -3502,7 +3493,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         
                         <div class="master-table-scroll-wrap">
-                            <div id="master-table-scroll" class="master-table-scroll no-scrollbar">
+                            <div id="master-table-scroll" class="master-table-scroll max-h-[60vh] no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[850px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
@@ -3684,6 +3675,22 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-akun-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat</span></label>
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-akun-edit" class="rounded border-slate-300 text-cyan-600"> <span>Edit / Buat</span></label>
                                                 <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-akun-nonaktifkan" class="rounded border-slate-300 text-cyan-600"> <span>Nonaktifkan</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border border-slate-200 rounded-xl p-2.5">
+                                            <div class="flex items-center justify-between mb-2"><span class="font-bold text-slate-800"><i class="fa-solid fa-sliders w-4 text-emerald-600"></i> Akses Fitur Detail</span><span class="text-[8px] text-slate-400">Kontrol operasional</span></div>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-lk-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat LK</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-lk-create" class="rounded border-slate-300 text-cyan-600"> <span>Buat / Simpan LK</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-lk-edit" class="rounded border-slate-300 text-cyan-600"> <span>Edit LK</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-lk-print" class="rounded border-slate-300 text-cyan-600"> <span>Cetak LK</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-cal-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat Kalibrasi</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-cal-upload" class="rounded border-slate-300 text-cyan-600"> <span>Upload Sertifikat</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-cal-hapus" class="rounded border-slate-300 text-cyan-600"> <span>Hapus Kalibrasi</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-bhp-read" class="rounded border-slate-300 text-cyan-600"> <span>Lihat BHP</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-bhp-edit" class="rounded border-slate-300 text-cyan-600"> <span>Kelola BHP / Transaksi</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-label-print" class="rounded border-slate-300 text-cyan-600"> <span>Cetak Label Aset</span></label>
+                                                <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="akses-qr-public" class="rounded border-slate-300 text-cyan-600"> <span>Kelola QR Publik</span></label>
                                             </div>
                                         </div>
                                     </div>
@@ -3874,7 +3881,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                                         <th class="p-3">SN</th>
                                         <th class="p-3">Ruangan</th>
                                         <th class="p-3">Periode PM</th>
-                                        
+                                        <th class="p-3">Status Jadwal</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-rekapan-pm-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
@@ -4518,7 +4525,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             if (!container) return;
             const masterRead = !!(typeof izinMenu === 'function' ? izinMenu('master', 'read') : false);
             const role = canonicalRole(currentActiveRole);
-            const canLabel = masterRead && ['Admin','Teknisi'].includes(role);
+            const canLabel = masterRead && izinMenu('label','print');
 
             // Satu renderer untuk seluruh tombol header Master Data. Dengan cara ini
             // tombol label tidak mungkin terhapus ketika tombol lain dirender ulang.
@@ -4532,6 +4539,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             if (masterTambah) buttons.push(`<button type="button" onclick="openModalAlatManual()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-1.5 rounded-xl text-xs font-semibold hover:from-blue-700 transition shadow"><i class="fa-solid fa-plus mr-1"></i> Tambah Manual</button>`);
             if (canLabel) {
                 buttons.push(`<button type="button" id="btn-print-label-master" onclick="cetakLabelBarcodeMassalPdf()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Preview dan cetak seluruh label aset medis"><i class="fa-solid fa-print mr-1.5"></i> Cetak Label</button>`);
+                buttons.push(`<button type="button" id="btn-sync-public-qr" onclick="medixEnsurePublicTokensForAllAssets(true)" class="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow transition" title="Siapkan QR yang dapat dibuka tanpa login dan sinkronkan riwayat publik"><i class="fa-solid fa-qrcode mr-1.5"></i> QR Publik</button>`);
             }
             container.innerHTML = buttons.join('');
             container.style.display = buttons.length ? 'flex' : 'none';
@@ -4736,7 +4744,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     // Panaskan cache QR saat browser idle agar saat tombol Cetak Label diklik
                     // QR tidak perlu dibuat satu per satu dari nol. Tidak memblokir UI utama.
                     medixWarmQrCache();
-                    medixSchedulePublicQrAutoSync();
 
                 },
                 (error) => console.error("Listener dataAlat gagal:", error)
@@ -5058,12 +5065,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             Object.entries(EM_WHO_PROFIL_ALAT).map(([nama, nilai]) => [normalisasiNamaEM(nama), nilai])
         );
 
-        // Profil fallback konservatif untuk nama alat yang belum tercantum di
-        // daftar WHO. Ini bukan penilaian risiko khusus alat; dipakai agar
-        // master tetap memiliki nilai awal dan periode tahunan, lalu dapat
-        // dikoreksi Admin/Teknisi bila tersedia penilaian lokal.
-        const EM_WHO_PROFIL_FALLBACK = { fungsi: 2, risiko: 1, perawatan: 1, insiden: -2 };
-
         function cariProfilEM(namaAlat) {
             const key = normalisasiNamaEM(namaAlat);
             if (EM_WHO_PROFIL_NORMALIZED[key]) return EM_WHO_PROFIL_NORMALIZED[key];
@@ -5075,7 +5076,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 .filter(k => k.length >= 4 && (key.includes(k) || k.includes(key)))
                 .sort((a, b) => b.length - a.length);
 
-            return kandidat.length ? EM_WHO_PROFIL_NORMALIZED[kandidat[0]] : EM_WHO_PROFIL_FALLBACK;
+            return kandidat.length ? EM_WHO_PROFIL_NORMALIZED[kandidat[0]] : null;
         }
 
         function hitungRekomendasiPeriodeWHO(nilaiEM) {
@@ -5179,7 +5180,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
             return {
                 assetId: asset.id,
                 sumberData: 'dataAlat',
-                sumberEM: profilWHO ? (EM_WHO_PROFIL_NORMALIZED[normalisasiNamaEM(namaAlat)] ? 'Profil EM bawaan aplikasi' : 'Profil EM default konservatif') : (komponenLengkap ? 'Penilaian manual / data lama' : 'Profil EM default konservatif'),
+                sumberEM: profilWHO ? 'Profil EM bawaan aplikasi' : (komponenLengkap ? 'Penilaian manual / data lama' : 'Belum Dinilai'),
                 kodeAlat,
                 namaAlat,
                 merk,
@@ -5455,7 +5456,8 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
                     "SN":sn,
                     "Ruangan":lokasi,
                     "Periode PM":item.rekomendasiPeriode||'Belum Ditentukan',
-                    "Tanggal Jadwal":(mode==='month'?inMonth:inYear).map(j=>j.tanggal||'-').join(', ')||'-'
+                    "Tanggal Jadwal":(mode==='month'?inMonth:inYear).map(j=>j.tanggal||'-').join(', ')||'-',
+                    "Status Jadwal":item.statusJadwalPM||'-'
                 });
             });
             const ws=XLSX.utils.json_to_sheet(rows.length?rows:[{"Informasi":`Tidak ada jadwal PM untuk ${mode==='month'?namaBulan[month]+' ':''}${year}.`}]);
@@ -5476,7 +5478,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
             const rows = dataEquipment.map(item => ({
                 item,
                 periode: item.rekomendasiPeriode || 'Belum Ditentukan',
-                statusJadwalPM: item.statusJadwalPM || ''
+                statusJadwalPM: item.statusJadwalPM || (item.nilaiEM == null ? 'Belum Dinilai' : 'Belum Ada Tanggal Acuan')
             }));
 
             rows.sort((a, b) =>
@@ -5487,7 +5489,7 @@ function updateBadgeEquipmentSync(text, mode = 'ready') {
 const filtered = rows;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal PM dari Master Data Aset.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-10 text-center text-slate-400 italic">Belum ada data jadwal PM dari Master Data Aset.</td></tr>`;
                 return;
             }
 
@@ -5505,6 +5507,7 @@ const filtered = rows;
                         <td class="p-3 font-mono text-[10px]" data-label="SN">${escapeHtmlEquipment(sn)}</td>
                         <td class="p-3" data-label="Ruangan">${escapeHtmlEquipment(lokasi)}</td>
                         <td class="p-3" data-label="Periode PM"><span class="px-2 py-1 rounded-full text-[9px] font-bold medix-period-badge ${kelasBadgePeriodeEM(row.periode)} ${row.periode === 'Setiap 4 Bulan' ? 'period-4' : row.periode === 'Setiap 6 Bulan' ? 'period-6' : row.periode === 'Satu Kali Per Tahun' ? 'period-12' : 'period-inspeksi'}">${escapeHtmlEquipment(row.periode)}</span></td>
+                        <td class="p-3" data-label="Status Jadwal"><span class="px-2 py-1 rounded-full text-[9px] font-bold ${row.statusJadwalPM === 'Terjadwal' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${escapeHtmlEquipment(row.statusJadwalPM || '-')}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -5699,15 +5702,10 @@ const filtered = rows;
                 group.populasi += 1;
                 group.assets.push(asset);
 
-                // Target tahunan ditentukan oleh periode PM, bukan oleh ada/tidaknya
-                // tanggal acuan. Dengan demikian semua alat tetap memiliki target.
-                const periode=asset.rekomendasiPeriode || 'Belum Ditentukan';
-                const targetPerUnit = periode === 'Setiap 4 Bulan' ? 3
-                    : periode === 'Setiap 6 Bulan' ? 2
-                    : periode === 'Satu Kali Per Tahun' ? 1
-                    : periode === 'Inspeksi Sesuai Kebutuhan' ? 1
-                    : 1;
-                group.target += targetPerUnit;
+                const jadwal = getJadwalPMUntukAsset(asset, index);
+                group.target += Array.isArray(jadwal)
+                    ? jadwal.filter(j => j && Number(j.bulan) >= 1 && Number(j.bulan) <= 12).length
+                    : 0;
             });
 
             // Realisasi: LK + maintenance pada tahun terpilih.
@@ -7184,8 +7182,7 @@ function renderMaintenanceHistory() {
                 }
 
                 const btnUploadPdf = document.getElementById('btn-upload-pdf-baru');
-                if (btnUploadPdf) { btnUploadPdf.classList.toggle('hidden', !riwayatUpload); btnUploadPdf.style.display = riwayatUpload ? 'inline-flex' : 'none'; }
-                syncRiwayatHeaderActions();
+                if (btnUploadPdf) btnUploadPdf.classList.toggle('hidden', !riwayatUpload);
 
                 const boxTicket = document.getElementById('box-form-buat-ticket');
                 if (boxTicket) boxTicket.classList.toggle('hidden', !ticketLapor);
@@ -7204,10 +7201,13 @@ function renderMaintenanceHistory() {
                 // Pastikan form E-Ticket User tidak tertinggal tersembunyi setelah render ulang.
                 requestAnimationFrame(() => ensureUserEticketForm());
         
-                requestAnimationFrame(() => {
+                setTimeout(() => {
+        
                     renderGrafikDashboardDinamis();
+        
                     renderGrafikTrenKerusakan();
-                });
+        
+                }, 300);
         
                 // ============================================
                 // RESET BUTTON
@@ -8112,18 +8112,8 @@ function renderMaintenanceHistory() {
             }
         }
 
-        function syncRiwayatHeaderActions(){
-            const btn=document.getElementById('btn-upload-pdf-baru');
-            if(!btn) return;
-            const canUpload=['Admin','Teknisi'].includes(canonicalRole(currentActiveRole)) && izinMenu('riwayat','upload');
-            btn.classList.toggle('hidden',!canUpload);
-            btn.style.display=canUpload?'inline-flex':'none';
-            btn.setAttribute('aria-hidden',canUpload?'false':'true');
-        }
-
         function renderAll() {
             syncMasterHeaderActions();
-            syncRiwayatHeaderActions();
             updateStats(); renderBHPTable(); populasikanDropdownBHPDiLK(); populasikanDropdownAlatDiKalibrasi(); populasikanDropdownAlatDiWorksheet(); populasikanDropdownEtiketAlat();
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
             let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
@@ -8165,8 +8155,6 @@ function renderMaintenanceHistory() {
                 `;
             }).join('');
             renderTabelPusatDokumen();
-            syncRiwayatHeaderActions();
-            if(window.medixInitTableFilters) window.medixInitTableFilters();
         }
 
         async function simpanPenuhIsianWorksheetDinamis() {
@@ -8349,7 +8337,8 @@ function renderMaintenanceHistory() {
             }
         }
 
-        function bukaLembarKerjaBaruKosong() { 
+        function bukaLembarKerjaBaruKosong() {
+            if (!izinMenu('lk','create')) { showToast('Anda tidak memiliki izin membuat LK.', 'error'); return; }
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); if(!areaLK) return;
             document.getElementById('dlk-firebase-id').value = ""; stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
             resetFotoAfterDisplay();
@@ -8454,6 +8443,7 @@ function renderMaintenanceHistory() {
         }
 
         function bukaLembarKerjaDinamisDarlLog(id) {
+            if (!izinMenu('lk','read')) { showToast('Anda tidak memiliki izin melihat LK.', 'error'); return; }
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             if(!record) { showToast("Dokumen lembar kerja tidak ditemukan.", "error"); return; }
             document.getElementById('dlk-firebase-id').value = record.id; 
@@ -8520,6 +8510,7 @@ function renderMaintenanceHistory() {
         }
 
         function pemicuCetakDokumen() {
+            if (!izinMenu('lk','print')) { showToast('Anda tidak memiliki izin mencetak LK.', 'error'); return; }
             const area = document.getElementById('area-lembar-kerja-resmi');
             if (!area) {
                 console.error('Area LK tidak ditemukan.');
@@ -8585,6 +8576,8 @@ function renderMaintenanceHistory() {
         }
 
         window.addEventListener('afterprint', () => {
+            document.getElementById('medix-print-settings-modal')?.classList.remove('show');
+            document.getElementById('medix-print-settings-modal')?.setAttribute('aria-hidden','true');
             document.querySelectorAll('.lk-print-date-row').forEach(el => el.remove());
             document.querySelectorAll('.lk-print-date-value').forEach(el => el.remove());
             document.querySelectorAll('.lk-print-date-value-inline').forEach(el => el.remove());
@@ -9251,7 +9244,7 @@ function renderMaintenanceHistory() {
                 return (!q||hay.includes(q))&&(!jenis||i.jenisItem===jenis)&&(!status||statusStokBHP(i)===status)&&(!alkes||i.namaAlkes===alkes);
             });
             const count=document.getElementById('bhp-filter-count'); if(count) count.textContent=`${rows.length} item${rows.length===1?'':'s'}`;
-            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200"><button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button></div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
+            body.innerHTML=rows.length?rows.map(i=>{const st=getStokBHP(i.id), ss=statusStokBHP(i); return `<tr class="hover:bg-slate-50"><td class="p-3 font-semibold">${escBHP(i.namaAlkes||'-')}</td><td class="p-3 font-bold text-slate-900">${escBHP(i.namaItem||'-')}</td><td class="p-3">${escBHP(i.jenisItem||'-')}</td><td class="p-3">${escBHP(i.spesifikasi||'-')}</td><td class="p-3">${escBHP(i.satuan||'-')}</td><td class="p-3 text-center">${st.awal}</td><td class="p-3 text-center text-blue-700 font-bold">${st.masuk}</td><td class="p-3 text-center text-amber-700 font-bold">${st.keluar}</td><td class="p-3 text-center text-lg font-black ${st.stok<=0?'text-rose-700':'text-slate-900'}">${st.stok}</td><td class="p-3 text-center">${badgeStatusBHP(ss)}</td><td class="p-3 text-center"><div class="inline-flex rounded-lg overflow-hidden border border-slate-200">${izinMenu('bhp','edit')?`<button onclick="bukaModalBHP('${i.id}')" class="px-2.5 py-2 bg-amber-50 text-amber-700" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="bukaModalTransaksiBHP('IN','${i.id}')" class="px-2.5 py-2 bg-blue-50 text-blue-700" title="Stok masuk"><i class="fa-solid fa-arrow-down"></i></button><button onclick="bukaModalTransaksiBHP('OUT','${i.id}')" class="px-2.5 py-2 bg-emerald-50 text-emerald-700" title="Stok keluar"><i class="fa-solid fa-arrow-up"></i></button>`:'-'}</div></td></tr>`;}).join(''):`<tr><td colspan="11" class="p-8 text-center text-slate-400 italic">Belum ada item BHP / Aksesori. Tambahkan secara manual.</td></tr>`;
         }
         function inisialisasiFilterRekapanBHP(){
             const yearSel=document.getElementById('bhp-rekap-tahun');
@@ -9346,13 +9339,13 @@ function renderMaintenanceHistory() {
             m.innerHTML=`<form onsubmit="simpanMasterBHP(event)" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200"><div class="p-4 border-b font-black text-slate-800 flex justify-between"><span>${item?'Edit':'Tambah'} BHP / Aksesori</span><button type="button" onclick="tutupModalBHP()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5 grid grid-cols-2 gap-3 text-xs"><input type="hidden" id="bhp-form-id" value="${escBHP(item?.id||'')}"><div class="col-span-2"><label class="font-bold">Nama Alkes *</label><input required id="bhp-form-alkes" value="${escBHP(item?.namaAlkes||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Nama Item *</label><input required id="bhp-form-item" value="${escBHP(item?.namaItem||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Jenis *</label><select id="bhp-form-jenis" class="w-full border rounded-xl p-2.5 mt-1"><option ${item?.jenisItem==='AKSESORIS'?'selected':''}>AKSESORIS</option><option ${item?.jenisItem==='DISPOSABLE'?'selected':''}>DISPOSABLE</option><option ${item?.jenisItem==='SUKU CADANG'?'selected':''}>SUKU CADANG</option></select></div><div><label class="font-bold">Satuan *</label><input required id="bhp-form-satuan" value="${escBHP(item?.satuan||'PCS')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div class="col-span-2"><label class="font-bold">Spesifikasi</label><input id="bhp-form-spesifikasi" value="${escBHP(item?.spesifikasi||'')}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Stok Awal</label><input type="number" step="0.01" id="bhp-form-stok-awal" value="${angkaBHP(item?.stokAwal)}" class="w-full border rounded-xl p-2.5 mt-1"></div><div><label class="font-bold">Minimum Stok</label><input type="number" min="0" step="0.01" id="bhp-form-min" value="${angkaBHP(item?.stokMinimum)}" class="w-full border rounded-xl p-2.5 mt-1"></div></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="tutupModalBHP()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold">Simpan</button></div></form>`;
         }
         function tutupModalBHP(){document.getElementById('modal-bhp')?.remove();}
-        async function simpanMasterBHP(e){e.preventDefault(); if(!izinMenu('equipment','edit')){showToast('Akses edit BHP tidak diberikan.','error');return;} const id=document.getElementById('bhp-form-id').value; const payload={namaAlkes:document.getElementById('bhp-form-alkes').value.trim(),namaItem:document.getElementById('bhp-form-item').value.trim(),jenisItem:document.getElementById('bhp-form-jenis').value,satuan:document.getElementById('bhp-form-satuan').value.trim(),spesifikasi:document.getElementById('bhp-form-spesifikasi').value.trim(),stokAwal:angkaBHP(document.getElementById('bhp-form-stok-awal').value),stokMinimum:angkaBHP(document.getElementById('bhp-form-min').value),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; try{if(id) await db.collection('bhpItems').doc(id).set(payload,{merge:true});else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('bhpItems').add(payload);} tutupModalBHP();showToast('Master BHP berhasil disimpan.','success');}catch(err){console.error('Simpan master BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpItems. Tambahkan izin read/write untuk Admin/Teknisi pada collection bhpItems.' : ('Gagal menyimpan master BHP: '+(err.message||err)); showToast(msg,'error');}}
+        async function simpanMasterBHP(e){e.preventDefault(); if(!izinMenu('bhp','edit')){showToast('Akses edit BHP tidak diberikan.','error');return;} const id=document.getElementById('bhp-form-id').value; const payload={namaAlkes:document.getElementById('bhp-form-alkes').value.trim(),namaItem:document.getElementById('bhp-form-item').value.trim(),jenisItem:document.getElementById('bhp-form-jenis').value,satuan:document.getElementById('bhp-form-satuan').value.trim(),spesifikasi:document.getElementById('bhp-form-spesifikasi').value.trim(),stokAwal:angkaBHP(document.getElementById('bhp-form-stok-awal').value),stokMinimum:angkaBHP(document.getElementById('bhp-form-min').value),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}; try{if(id) await db.collection('bhpItems').doc(id).set(payload,{merge:true});else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('bhpItems').add(payload);} tutupModalBHP();showToast('Master BHP berhasil disimpan.','success');}catch(err){console.error('Simpan master BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpItems. Tambahkan izin read/write untuk Admin/Teknisi pada collection bhpItems.' : ('Gagal menyimpan master BHP: '+(err.message||err)); showToast(msg,'error');}}
         function bukaModalTransaksiBHP(tipe='IN', itemId=''){
             let m=document.getElementById('modal-bhp-tx'); if(!m){m=document.createElement('div');m.id='modal-bhp-tx';m.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100000] flex items-center justify-center p-4 no-print';document.body.appendChild(m);}
             const opts=dataBHPItems.map(i=>`<option value="${escBHP(i.id)}" ${String(i.id)===String(itemId)?'selected':''}>${escBHP(i.namaAlkes)} — ${escBHP(i.namaItem)} (${escBHP(i.satuan)})</option>`).join('');
             m.innerHTML=`<form onsubmit="simpanTransaksiBHP(event)" class="bg-white w-full max-w-md rounded-2xl shadow-2xl"><div class="p-4 border-b font-black">${tipe==='IN'?'Stok Masuk':'Stok Keluar'}</div><div class="p-5 space-y-3 text-xs"><input type="hidden" id="bhp-tx-tipe" value="${tipe}"><label class="font-bold block">Item<select required id="bhp-tx-item" class="w-full border rounded-xl p-2.5 mt-1 bg-white"><option value="">-- Pilih Item --</option>${opts}</select></label><label class="font-bold block">Jumlah<input required min="0.01" step="0.01" type="number" id="bhp-tx-qty" value="1" class="w-full border rounded-xl p-2.5 mt-1"></label><label class="font-bold block">Tanggal<input required type="date" id="bhp-tx-tgl" value="${new Date().toISOString().slice(0,10)}" class="w-full border rounded-xl p-2.5 mt-1"></label><label class="font-bold block">Keterangan<input id="bhp-tx-ket" placeholder="Contoh: pembelian / pemakaian umum" class="w-full border rounded-xl p-2.5 mt-1"></label></div><div class="p-4 border-t bg-slate-50 flex justify-end gap-2"><button type="button" onclick="document.getElementById('modal-bhp-tx').remove()" class="px-4 py-2 rounded-xl bg-slate-200">Batal</button><button class="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold">Simpan</button></div></form>`;
         }
-        async function simpanTransaksiBHP(e){e.preventDefault(); if(!izinMenu('equipment','edit')){showToast('Akses transaksi BHP tidak diberikan.','error');return;} const tipe=document.getElementById('bhp-tx-tipe').value,itemId=document.getElementById('bhp-tx-item').value,qty=angkaBHP(document.getElementById('bhp-tx-qty').value); if(!itemId||qty<=0)return; const ref=db.collection('bhpTransactions').doc(); try{await ref.set({itemId,tipe,qty,tanggal:document.getElementById('bhp-tx-tgl').value,keterangan:document.getElementById('bhp-tx-ket').value.trim(),sumber:'Manual',createdByUid:auth.currentUser?.uid||'',createdByNama:currentUserNama||'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('modal-bhp-tx')?.remove();showToast('Transaksi stok berhasil disimpan.','success');}catch(err){console.error('Simpan transaksi BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpTransactions. Tambahkan izin read/write untuk Admin/Teknisi.' : ('Gagal menyimpan transaksi: '+(err.message||err)); showToast(msg,'error');}}
+        async function simpanTransaksiBHP(e){e.preventDefault(); if(!izinMenu('bhp','edit')){showToast('Akses transaksi BHP tidak diberikan.','error');return;} const tipe=document.getElementById('bhp-tx-tipe').value,itemId=document.getElementById('bhp-tx-item').value,qty=angkaBHP(document.getElementById('bhp-tx-qty').value); if(!itemId||qty<=0)return; const ref=db.collection('bhpTransactions').doc(); try{await ref.set({itemId,tipe,qty,tanggal:document.getElementById('bhp-tx-tgl').value,keterangan:document.getElementById('bhp-tx-ket').value.trim(),sumber:'Manual',createdByUid:auth.currentUser?.uid||'',createdByNama:currentUserNama||'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('modal-bhp-tx')?.remove();showToast('Transaksi stok berhasil disimpan.','success');}catch(err){console.error('Simpan transaksi BHP gagal:',err); const msg=err?.code==='permission-denied' ? 'Firestore Rules menolak akses bhpTransactions. Tambahkan izin read/write untuk Admin/Teknisi.' : ('Gagal menyimpan transaksi: '+(err.message||err)); showToast(msg,'error');}}
         function populasikanDropdownBHPDiLK(filterText=''){
             const s=document.getElementById('dlk-bhp-item'); if(!s)return;
             const old=s.value; const q=String(filterText||document.getElementById('dlk-bhp-search')?.value||'').toLowerCase().trim();
@@ -9418,7 +9411,7 @@ function renderMaintenanceHistory() {
 
         function switchTab(tId) {
             syncMasterHeaderActions();
-            const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'riwayat', equipment: 'equipment', bhp: 'equipment', 'kelola-akun': 'akun' };
+            const menuMap = { dashboard: 'dashboard', 'data-alat': 'master', 'ticket-system': 'ticket', kalibrasi: 'kalibrasi', equipment: 'equipment', bhp: 'bhp', 'kelola-akun': 'akun' };
             const menu = menuMap[tId];
             if (menu && !(menu === 'ticket' && canonicalRole(currentActiveRole) === 'User') && !izinMenu(menu, 'read')) {
                 showToast('Akses menu ini tidak diberikan untuk akun Anda.', 'error');
@@ -9620,7 +9613,12 @@ function renderMaintenanceHistory() {
                 ticket: { read: true, lapor: true, kerjakan: true, selesai: true, hapus: true, edit: true },
                 equipment: { read: true, maintenance: true, edit: true },
                 riwayat: { read: true, upload: true, download: true, hapus: true, edit: true },
-                akun: { read: true, edit: true, nonaktifkan: true }
+                akun: { read: true, edit: true, nonaktifkan: true },
+                lk: { read: true, create: true, edit: true, print: true },
+                kalibrasi: { read: true, upload: true, hapus: true },
+                bhp: { read: true, edit: true },
+                label: { print: true },
+                qr: { manage: true }
             },
             Teknisi: {
                 dashboard: { read: true, edit: false },
@@ -9628,7 +9626,12 @@ function renderMaintenanceHistory() {
                 ticket: { read: true, lapor: false, kerjakan: true, selesai: true, hapus: false, edit: true },
                 equipment: { read: true, maintenance: true, edit: true },
                 riwayat: { read: true, upload: true, download: true, hapus: false, edit: true },
-                akun: { read: false, edit: false, nonaktifkan: false }
+                akun: { read: false, edit: false, nonaktifkan: false },
+                lk: { read: true, create: true, edit: true, print: true },
+                kalibrasi: { read: true, upload: true, hapus: false },
+                bhp: { read: true, edit: true },
+                label: { print: true },
+                qr: { manage: true }
             },
             User: {
                 dashboard: { read: true, edit: false },
@@ -9636,7 +9639,12 @@ function renderMaintenanceHistory() {
                 ticket: { read: true, lapor: true, kerjakan: false, selesai: false, hapus: false, edit: false },
                 equipment: { read: false, maintenance: false, edit: false },
                 riwayat: { read: true, upload: false, download: true, hapus: false, edit: false },
-                akun: { read: false, edit: false, nonaktifkan: false }
+                akun: { read: false, edit: false, nonaktifkan: false },
+                lk: { read: true, create: false, edit: false, print: true },
+                kalibrasi: { read: true, upload: false, hapus: false },
+                bhp: { read: false, edit: false },
+                label: { print: false },
+                qr: { manage: false }
             }
         };
 
@@ -9667,19 +9675,16 @@ function renderMaintenanceHistory() {
             base.equipment.maintenance = !!(base.equipment.maintenance || base.equipment.edit);
             base.riwayat.read = !!(base.riwayat.read || base.riwayat.upload || base.riwayat.download || base.riwayat.hapus);
             base.akun.read = !!(base.akun.read || base.akun.edit || base.akun.nonaktifkan);
-            // Equipment wajib tersedia untuk Admin/Teknisi sesuai kebijakan MEDIX terbaru.
-            if (role === 'Admin' || role === 'Teknisi') base.equipment = { read: true, maintenance: true, edit: true };
-            else base.equipment = { read: false, maintenance: false, edit: false };
-
-            // E-Ticket wajib tersedia untuk User agar akun User selalu dapat
-            // melaporkan kerusakan, termasuk pada profil lama yang menuAkses-nya
-            // belum memiliki struktur permission terbaru atau tersimpan false.
-            if (role === 'User') {
-                base.ticket = { read: true, lapor: true, kerjakan: false, selesai: false, hapus: false, edit: false };
-            }
+            // Tidak ada lagi override paksa berdasarkan role untuk Equipment/Tiket.
+            // Admin mengatur detail akses akun langsung dari menu Kelola Akun.
 
             // Kelola akun hanya Admin.
             if (role !== 'Admin') base.akun = { read: false, edit: false, nonaktifkan: false };
+            base.lk = { read: !!base.lk?.read, create: !!base.lk?.create, edit: !!base.lk?.edit, print: !!base.lk?.print };
+            base.kalibrasi = { read: !!base.kalibrasi?.read, upload: !!base.kalibrasi?.upload, hapus: !!base.kalibrasi?.hapus };
+            base.bhp = { read: !!base.bhp?.read, edit: !!base.bhp?.edit };
+            base.label = { print: !!base.label?.print };
+            base.qr = { manage: !!base.qr?.manage };
             return base;
         }
 
@@ -9716,16 +9721,15 @@ function renderMaintenanceHistory() {
                 'akses-riwayat-hapus': preset.riwayat.hapus,
                 'akses-akun-read': preset.akun.read,
                 'akses-akun-edit': preset.akun.edit,
-                'akses-akun-nonaktifkan': preset.akun.nonaktifkan
+                'akses-akun-nonaktifkan': preset.akun.nonaktifkan,
+                'akses-lk-read': preset.lk.read, 'akses-lk-create': preset.lk.create, 'akses-lk-edit': preset.lk.edit, 'akses-lk-print': preset.lk.print,
+                'akses-cal-read': preset.kalibrasi.read, 'akses-cal-upload': preset.kalibrasi.upload, 'akses-cal-hapus': preset.kalibrasi.hapus,
+                'akses-bhp-read': preset.bhp.read, 'akses-bhp-edit': preset.bhp.edit,
+                'akses-label-print': preset.label.print, 'akses-qr-public': preset.qr.manage
             };
             Object.entries(map).forEach(([id, value]) => {
                 const el = document.getElementById(id);
                 if (el) el.checked = !!value;
-            });
-            const equipmentLocked = role === 'User';
-            ['akses-equipment-read','akses-equipment-maintenance','akses-equipment-edit'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.disabled = equipmentLocked;
             });
             const accountLocked = role !== 'Admin';
             ['akses-akun-read','akses-akun-edit','akses-akun-nonaktifkan'].forEach(id => {
@@ -9733,9 +9737,7 @@ function renderMaintenanceHistory() {
                 if (el) el.disabled = accountLocked;
             });
             const note = document.getElementById('akses-equipment-note');
-            if (note) note.textContent = role === 'User'
-                ? 'Akses Equipment Management otomatis ditutup untuk User.'
-                : 'Admin dan Teknisi otomatis memiliki akses Lihat + Maintenance + Kelola Equipment Management.';
+            if (note) note.textContent = 'Akses Equipment Management dapat diatur per akun oleh Admin.';
         }
 
         function ambilMenuAksesDariForm() {
@@ -9773,7 +9775,12 @@ function renderMaintenanceHistory() {
                     read: !!document.getElementById('akses-akun-read')?.checked,
                     edit: !!document.getElementById('akses-akun-edit')?.checked,
                     nonaktifkan: !!document.getElementById('akses-akun-nonaktifkan')?.checked
-                }
+                },
+                lk: { read: !!document.getElementById('akses-lk-read')?.checked, create: !!document.getElementById('akses-lk-create')?.checked, edit: !!document.getElementById('akses-lk-edit')?.checked, print: !!document.getElementById('akses-lk-print')?.checked },
+                kalibrasi: { read: !!document.getElementById('akses-cal-read')?.checked, upload: !!document.getElementById('akses-cal-upload')?.checked, hapus: !!document.getElementById('akses-cal-hapus')?.checked },
+                bhp: { read: !!document.getElementById('akses-bhp-read')?.checked, edit: !!document.getElementById('akses-bhp-edit')?.checked },
+                label: { print: !!document.getElementById('akses-label-print')?.checked },
+                qr: { manage: !!document.getElementById('akses-qr-public')?.checked }
             };
         }
 
@@ -9801,7 +9808,11 @@ function renderMaintenanceHistory() {
                 'akses-riwayat-hapus': m.riwayat.hapus,
                 'akses-akun-read': m.akun.read,
                 'akses-akun-edit': m.akun.edit,
-                'akses-akun-nonaktifkan': m.akun.nonaktifkan
+                'akses-akun-nonaktifkan': m.akun.nonaktifkan,
+                'akses-lk-read': m.lk.read, 'akses-lk-create': m.lk.create, 'akses-lk-edit': m.lk.edit, 'akses-lk-print': m.lk.print,
+                'akses-cal-read': m.kalibrasi.read, 'akses-cal-upload': m.kalibrasi.upload, 'akses-cal-hapus': m.kalibrasi.hapus,
+                'akses-bhp-read': m.bhp.read, 'akses-bhp-edit': m.bhp.edit,
+                'akses-label-print': m.label.print, 'akses-qr-public': m.qr.manage
             };
             Object.entries(map).forEach(([id, value]) => {
                 const el = document.getElementById(id);
@@ -10013,11 +10024,15 @@ function renderMaintenanceHistory() {
                 if (m.equipment.read) chips.push('Equipment');
                 if (m.riwayat.read) chips.push('Dokumen');
                 if (m.akun.read) chips.push('Akun');
+                if (m.lk.read) chips.push('LK');
+                if (m.kalibrasi.read) chips.push('Kalibrasi');
+                if (m.bhp.read) chips.push('BHP');
+                if (m.label.print) chips.push('Label');
                 return `<tr class="border-b border-slate-100">
                     <td class="p-3 font-semibold">${nama}<div class="text-[9px] text-slate-400">${aktif ? 'Aktif' : 'Nonaktif'}</div></td>
                     <td class="p-3 font-mono text-[10px]">${email}</td>
                     <td class="p-3"><span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 text-[10px] font-bold">${role}</span></td>
-                    <td class="p-3"><div class="flex flex-wrap gap-1">${chips.map(c => `<span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] font-bold">${c}</span>`).join('')}</div><div class="text-[8px] text-slate-400 mt-1">${[m.master.edit&&'Edit aset',m.ticket.kerjakan&&'Kerjakan tiket',m.riwayat.upload&&'Upload dokumen',m.equipment.maintenance&&'Maintenance equipment',m.equipment.edit&&'Kelola equipment'].filter(Boolean).join(' • ') || 'Akses baca terbatas'}</div></td>
+                    <td class="p-3"><div class="flex flex-wrap gap-1">${chips.map(c => `<span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[8px] font-bold">${c}</span>`).join('')}</div><div class="text-[8px] text-slate-400 mt-1">${[m.master.edit&&'Edit aset',m.ticket.kerjakan&&'Kerjakan tiket',m.riwayat.upload&&'Upload dokumen',m.equipment.maintenance&&'Maintenance equipment',m.equipment.edit&&'Kelola equipment',m.lk.create&&'Buat LK',m.lk.edit&&'Edit LK',m.kalibrasi.upload&&'Upload sertifikat',m.bhp.edit&&'Kelola BHP',m.label.print&&'Cetak label'].filter(Boolean).join(' • ') || 'Akses baca terbatas'}</div></td>
                     <td class="p-3 text-center whitespace-nowrap">
                         <button type="button" onclick="editAkunUserOlehAdmin('${uid}')" class="bg-amber-50 text-amber-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Edit</button>
                         <button type="button" onclick="kirimResetPasswordAkun('${uid}')" class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-lg text-[10px] font-bold mr-1">Reset Password</button>
@@ -10943,19 +10958,19 @@ function renderMaintenanceHistory() {
             return true;
         }
 
-        async function medixEnsurePublicTokensForAllAssets(syncHistory=true, opts={}){
-            if(!db || !Array.isArray(dataAlat) || !dataAlat.length) return false;
-            if(!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) return false;
-            const silent=!!opts?.silent;
-            const onlyMissing=!!opts?.onlyMissing;
+        async function medixEnsurePublicTokensForAllAssets(syncHistory=true){
+            if(!db || !Array.isArray(dataAlat) || !dataAlat.length) return;
+            if(!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))){
+                showToast('Sinkronisasi QR publik hanya dapat dilakukan Admin/Teknisi.','error'); return;
+            }
             const btn=document.getElementById('btn-sync-public-qr');
-            if(btn && !silent){btn.disabled=true;btn.dataset.oldHtml=btn.innerHTML;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin mr-1"></i> Sinkronisasi...';}
+            if(btn){btn.disabled=true;btn.dataset.oldHtml=btn.innerHTML;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin mr-1"></i> Sinkronisasi...';}
             try{
-                const tokenOps=(syncHistory && !onlyMissing)
-                    ? [...dataAlat]
-                    : dataAlat.filter(a=>!String(a.publicToken||'').trim());
-                tokenOps.forEach(a=>{ if(!a.publicToken) a.publicToken=medixRandomPublicToken(); });
-                if(!tokenOps.length) return true;
+                const tokenOps=[];
+                for(const a of dataAlat){
+                    if(!a.publicToken) a.publicToken=medixRandomPublicToken();
+                    tokenOps.push(a);
+                }
                 for(let i=0;i<tokenOps.length;i+=450){
                     const batch=db.batch();
                     tokenOps.slice(i,i+450).forEach(a=>batch.set(db.collection('dataAlat').doc(String(a.id)),{publicToken:a.publicToken},{merge:true}));
@@ -10966,32 +10981,14 @@ function renderMaintenanceHistory() {
                     for(const a of tokenOps){
                         try{await medixSyncPublicHistoryForAsset(a);done++;}catch(e){console.warn('Sinkronisasi publik gagal untuk',a.id,e);}
                     }
-                    if(!silent) showToast(`QR publik dan riwayat ${done}/${tokenOps.length} aset berhasil disiapkan.`, 'success');
-                }else if(!silent && tokenOps.length){
-                    showToast(`${tokenOps.length} token QR publik berhasil disiapkan.`,'success');
-                }
-                return true;
+                    showToast(`QR publik dan riwayat ${done}/${tokenOps.length} aset berhasil disiapkan. Cetak ulang label agar QR baru aktif tanpa login.`,'success');
+                }else showToast(`${tokenOps.length} token QR publik berhasil disiapkan.`,'success');
             }catch(err){
                 console.error('Sinkronisasi QR publik gagal:',err);
-                if(!silent) showToast('Sinkronisasi QR publik gagal: '+(err?.message||err),'error');
-                return false;
+                showToast('Sinkronisasi QR publik gagal: '+(err?.message||err),'error');
             }finally{
-                if(btn && !silent){btn.disabled=false;btn.innerHTML=btn.dataset.oldHtml||'<i class="fa-solid fa-qrcode mr-1.5"></i> Sinkronkan QR Publik';}
+                if(btn){btn.disabled=false;btn.innerHTML=btn.dataset.oldHtml||'<i class="fa-solid fa-qrcode mr-1.5"></i> Sinkronkan QR Publik';}
             }
-        }
-
-        let medixPublicAutoSyncTimer=null;
-        function medixSchedulePublicQrAutoSync(){
-            if(medixPublicAutoSyncTimer || !['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) return;
-            medixPublicAutoSyncTimer=setTimeout(async()=>{
-                medixPublicAutoSyncTimer=null;
-                try{
-                    const missing=(dataAlat||[]).some(a=>!String(a.publicToken||'').trim());
-                    if(missing){
-                        await medixEnsurePublicTokensForAllAssets(true,{silent:true,onlyMissing:true});
-                    }
-                }catch(e){console.warn('Auto sinkronisasi QR publik:',e);}
-            },1200);
         }
 
         async function medixSyncCurrentAssetPublicHistory(alatId){
@@ -11113,7 +11110,7 @@ function renderMaintenanceHistory() {
             if(!window.QRCode) throw new Error('Mesin QR Code belum termuat.');
             const {jsPDF}=window.jspdf;
             const pageW=Number(settings.width)||210,pageH=Number(settings.height)||297,margin=Math.max(0,Number(settings.margin)||0),gap=Math.max(1,Number(settings.labelGap)||4);
-            const labelW=78,labelH=23,usableW=pageW-2*margin,usableH=pageH-2*margin;
+            const labelW=78,labelH=26,usableW=pageW-2*margin,usableH=pageH-2*margin;
             const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(7,Math.floor((usableH+gap)/(labelH+gap)));
             if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 78 × 26 mm.');
             const perPage=cols*rows,contentW=cols*labelW+(cols-1)*gap,contentH=rows*labelH+(rows-1)*gap,ox=Math.max(margin,(pageW-contentW)/2),oy=Math.max(margin,(pageH-contentH)/2);
@@ -11139,7 +11136,7 @@ function renderMaintenanceHistory() {
             if (!izinMenu('master', 'read')) { showToast('Anda tidak memiliki izin melihat Master Data Aset.', 'error'); return; }
             if (!['Admin','Teknisi'].includes(canonicalRole(currentActiveRole))) { showToast('Cetak label hanya tersedia untuk Admin dan Teknisi.', 'error'); return; }
             if (!Array.isArray(dataAlat) || !dataAlat.length) { showToast('Data aset medis sedang dimuat atau kosong.', 'error'); return; }
-            await medixEnsurePublicTokensForAllAssets(false, {silent:true});
+            await medixEnsurePublicTokensForAllAssets(false);
             await medixPrintLabelsBrowser();
         }
 
@@ -11147,7 +11144,7 @@ function renderMaintenanceHistory() {
             const old=document.getElementById('medix-label-print-root'); if(old) old.remove();
             const root=document.createElement('div'); root.id='medix-label-print-root';
             const esc=v=>String(v??'-').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-            const perPage=24;
+            const perPage=21;
             const pages=[];
             for(let start=0; start<dataAlat.length; start+=perPage){
                 const pageItems=dataAlat.slice(start,start+perPage);
@@ -11641,8 +11638,11 @@ function renderMaintenanceHistory() {
 
 
 <script>
-/* MEDIX STABLE 5 — universal Excel-like table filters */
+/* MEDIX v4 — column filters dinonaktifkan karena filter generik sebelumnya tidak stabil.
+   Filter khusus/menu yang memang dibuat untuk fungsi tertentu tetap dipertahankan. */
 (function(){
+  window.medixInitTableFilters = function(){};
+  return;
   const STATE = new WeakMap();
   let popup = null;
   let activeTable = null;
@@ -11848,7 +11848,7 @@ function renderMaintenanceHistory() {
     inner.style.width=Math.max(40,pw*(1-(2*state.margin/d.w)))+'px';inner.style.height=Math.max(50,ph*(1-(2*state.margin/d.h)))+'px';
     const isLabel=state.mode==='download-label-pdf'||state.mode==='label-popup';
     if(isLabel){
-      const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||2,lw=78,lh=23;
+      const usableW=d.w-2*state.margin,usableH=d.h-2*state.margin,gap=state.labelGap||2,lw=88,lh=26;
       const cols=Math.max(1,Math.floor((usableW+gap)/(lw+gap))),rows=Math.max(1,Math.floor((usableH+gap)/(lh+gap)));
       const perPage=cols*rows,total=Array.isArray(dataAlat)?dataAlat.length:0,pages=Math.max(1,Math.ceil(total/perPage));
       const shown=Math.min(perPage,Math.min(total||1,12));
@@ -11880,7 +11880,15 @@ function renderMaintenanceHistory() {
     const saved=loadSaved(); Object.assign(state,{targetWindow:targetWin||window,mode:opts.mode||'print-current',targetSelector:opts.targetSelector||null,element:opts.element||null,title:opts.title||'Cetak',preset:opts.defaultPreset||saved.preset||'A4',orientation:opts.defaultOrientation||saved.orientation||'portrait',margin:opts.defaultMargin??saved.margin??0,scale:saved.scale||100,fit:saved.fit||'actual',labelWidth:opts.labelWidth||88,labelHeight:opts.labelHeight||26,labelGap:opts.labelGap||2,cleanup:opts.cleanup||null});
     requestAnimationFrame(()=>execute());
   }
-  function close(){const modal=$('medix-print-settings-modal');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}}
+  function close(){
+    const modal=$('medix-print-settings-modal');
+    if(modal){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+      modal.style.removeProperty('display');
+      modal.style.removeProperty('visibility');
+    }
+  }
   function injectPrintStyle(win,d){
     if(!win||win.closed)return null; const doc=win.document; let st=doc.getElementById('medix-print-dynamic-style');if(!st){st=doc.createElement('style');st.id='medix-print-dynamic-style';doc.head.appendChild(st)}
     const margin=Math.max(0,Number(state.margin)||0),scale=Number(state.fit==='fit'?100:state.scale)||100;
@@ -11894,7 +11902,7 @@ function renderMaintenanceHistory() {
   function applyChildLabelLayout(win,d){
     try{
       const grid=win?.document?.querySelector('.grid'); if(!grid)return;
-      const gap=state.labelGap||2,lw=78,lh=23,margin=Number(state.margin)||0;
+      const gap=state.labelGap||2,lw=78,lh=26,margin=Number(state.margin)||0;
       const cols=Math.floor((d.w-2*margin+gap)/(lw+gap));
       const rows=Math.floor((d.h-2*margin+gap)/(lh+gap));
       if(cols<1||rows<1)throw new Error('Ukuran kertas terlalu kecil untuk label 78 × 26 mm.');
@@ -11908,7 +11916,11 @@ function renderMaintenanceHistory() {
   }
   function cleanupGeneric(root){document.body.classList.remove('medix-generic-printing');root?.remove();}
   async function execute(){
-    close(); const d=getDims();
+    close();
+    // Pastikan modal pengaturan cetak benar-benar tertutup sebelum native browser print.
+    document.getElementById('medix-print-settings-modal')?.classList.remove('show');
+    document.getElementById('medix-print-settings-modal')?.setAttribute('aria-hidden','true');
+    const d=getDims();
     try{
       if(state.mode==='download-label-pdf'){ await medixGenerateLabelPdf({width:d.w,height:d.h,margin:state.margin,labelGap:state.labelGap}); return; }
       if(state.mode==='label-popup'){ await medixPrintLabelsBrowser(); return; }
@@ -11926,8 +11938,22 @@ function renderMaintenanceHistory() {
       }
       if(root) window.scrollTo(0,0);
       try{win.focus();win.print();}catch(err){throw err;}
-      const finish=()=>{if(root)cleanupGeneric(root);if(state.mode==='lk'){document.body.classList.remove('medix-lk-printing');document.getElementById('area-lembar-kerja-resmi')?.classList.remove('medix-lk-print-ready');}if(state.cleanup)try{state.cleanup()}catch(e){}};
-      if(win===window){setTimeout(finish,600);}else{try{win.onafterprint=finish}catch(e){setTimeout(finish,600);}}
+      const finish=()=>{
+        if(root)cleanupGeneric(root);
+        if(state.mode==='lk'){
+          document.body.classList.remove('medix-lk-printing');
+          document.getElementById('area-lembar-kerja-resmi')?.classList.remove('medix-lk-print-ready');
+          // Setelah Cancel/Save dari native print preview, kembali langsung ke LK.
+          document.getElementById('medix-print-settings-modal')?.classList.remove('show');
+          document.getElementById('medix-print-settings-modal')?.setAttribute('aria-hidden','true');
+          document.getElementById('area-lembar-kerja-resmi')?.classList.remove('hidden');
+        }
+        if(state.cleanup)try{state.cleanup()}catch(e){}
+      };
+      if(win===window){
+        window.addEventListener('afterprint',finish,{once:true});
+        setTimeout(finish,1200);
+      }else{try{win.onafterprint=finish}catch(e){setTimeout(finish,1200);}}
     }catch(err){console.error('MEDIX Print Engine:',err);showToast('Proses cetak gagal: '+(err.message||err),'error');}
   }
   document.addEventListener('DOMContentLoaded',()=>{
@@ -11953,7 +11979,7 @@ function renderMaintenanceHistory() {
         <div class="medix-print-field"><label>Orientasi</label><div class="medix-print-orientation"><button type="button" data-orient="portrait">▯ Portrait</button><button type="button" data-orient="landscape">▭ Landscape</button></div></div>
         <div class="medix-print-row"><div class="medix-print-field"><label>Margin (mm)</label><input id="medix-print-margin" type="number" min="0" max="30" step="1" value="6"></div><div class="medix-print-field"><label>Skala (%)</label><input id="medix-print-scale" type="number" min="50" max="150" step="1" value="100"></div></div>
         <div class="medix-print-field"><label>Mode Skala</label><select id="medix-print-fit"><option value="actual">Actual Size</option><option value="fit">Fit to Paper</option></select></div>
-        <div id="medix-print-label-note" class="medix-print-note" style="display:none">Label aset: <b>88 × 26 mm</b>. Sistem menghitung jumlah label yang muat otomatis berdasarkan ukuran kertas, margin, orientasi, dan jarak antarlabel.</div>
+        <div id="medix-print-label-note" class="medix-print-note" style="display:none">Label aset: <b>78 × 26 mm</b>. Sistem menghitung jumlah label yang muat otomatis berdasarkan ukuran kertas, margin, orientasi, dan jarak antarlabel.</div>
         <div id="medix-print-summary" class="medix-print-note">-</div>
       </div>
 
