@@ -2132,6 +2132,16 @@ body.dark-mode .medix-period-badge.period-inspeksi { color:#6ee7b7 !important; b
   }
 }
 </style>
+<style id="medix-regression-layout-fix">
+/* Jangan ubah layout yang sudah benar: Dashboard desktop wajib 2 baris x 3 kolom. */
+@media (min-width:1024px){
+  #dashboard-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:1rem !important;}
+}
+/* Master Data tidak dipotong sehingga seluruh aset tetap terlihat. */
+#master-table-scroll{max-height:none !important;height:auto !important;overflow-y:visible !important;}
+#master-table-scroll-wrap{min-height:0 !important;}
+@media (min-width:768px){#master-table-scroll{overflow-x:auto !important;overflow-y:visible !important;}}
+</style>
 <style>
 #dashboard-stat-grid > button { min-width:0; }
 #table-bhp-body td { vertical-align:middle; }
@@ -3069,7 +3079,12 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 
                     <div class="px-4 py-2 mt-2">
                         <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-200 flex items-center space-x-2.5">
-                            <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 border border-blue-200"><i class="fa-solid fa-circle-user"></i></div>
+                            <button type="button" onclick="pilihFotoProfilMEDIX()" class="relative w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 border border-blue-200 overflow-hidden shrink-0 group" title="Ganti foto profil">
+                                <img id="sidebar-profile-avatar-top" class="hidden w-full h-full object-cover" alt="Foto profil">
+                                <i id="sidebar-profile-icon-top" class="fa-solid fa-circle-user"></i>
+                                <span class="absolute inset-0 bg-black/45 text-white hidden group-hover:flex items-center justify-center"><i class="fa-solid fa-camera text-[9px]"></i></span>
+                            </button>
+                            <input type="file" id="input-foto-profil-medix" accept="image/*" capture="user" class="hidden" onchange="unggahFotoProfilMEDIX(this)">
                             <div class="overflow-hidden"><p id="sidebar-role-badge" class="text-[10px] uppercase font-bold text-cyan-600 tracking-wider">Role</p><p id="sidebar-top-name" class="text-xs text-slate-800 truncate font-semibold">-</p></div>
                         </div>
                     </div>
@@ -3234,7 +3249,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     <div class="glass-panel rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         
                         <div class="master-table-scroll-wrap">
-                            <div id="master-table-scroll" class="master-table-scroll max-h-[60vh] no-scrollbar">
+                            <div id="master-table-scroll" class="master-table-scroll no-scrollbar">
                             <table class="w-full text-left text-xs border-collapse min-w-[850px]">
                                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 sticky top-0 z-10">
                                     <tr>
@@ -4217,6 +4232,7 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                 nama: userData.nama || "",
                 username: userData.username || "",
                 role: userData.role || "User",
+                fotoProfilDataUrl: userData.fotoProfilDataUrl || "",
                 menuAkses: userAksesMenuArray || {},
                 unitId: userData.unitId || null,
                 aktif: userData.aktif !== false
@@ -5691,6 +5707,57 @@ function showConfirmDialog(message, options = {}) {
 
 
 
+function medixSyncSidebarProfileImages() {
+    const foto = (typeof currentUser !== 'undefined' && currentUser && currentUser.fotoProfilDataUrl) ? currentUser.fotoProfilDataUrl : '';
+    [['sidebar-profile-avatar-top','sidebar-profile-icon-top'],['sidebar-profile-avatar-footer','sidebar-profile-icon-footer']].forEach(([imgId,iconId])=>{
+        const img=document.getElementById(imgId), icon=document.getElementById(iconId);
+        if(!img || !icon) return;
+        if(foto){ img.src=foto; img.classList.remove('hidden'); icon.classList.add('hidden'); }
+        else { img.removeAttribute('src'); img.classList.add('hidden'); icon.classList.remove('hidden'); }
+    });
+}
+
+function pilihFotoProfilMEDIX(){
+    if(!auth?.currentUser) return showToast('Silakan login terlebih dahulu.','error');
+    const input=document.getElementById('input-foto-profil-medix');
+    if(input){ input.value=''; input.click(); }
+}
+
+function kompresFotoProfilMEDIX(file,maxSize=160,quality=0.78){
+    return new Promise((resolve,reject)=>{
+        if(!file || !String(file.type||'').startsWith('image/')) return reject(new Error('File bukan gambar.'));
+        const reader=new FileReader();
+        reader.onerror=()=>reject(new Error('Gagal membaca gambar.'));
+        reader.onload=()=>{
+            const img=new Image();
+            img.onerror=()=>reject(new Error('Gambar tidak dapat diproses.'));
+            img.onload=()=>{
+                const scale=Math.min(1,maxSize/Math.max(img.width,img.height));
+                const canvas=document.createElement('canvas');
+                canvas.width=Math.max(1,Math.round(img.width*scale)); canvas.height=Math.max(1,Math.round(img.height*scale));
+                const ctx=canvas.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0,canvas.width,canvas.height);
+                resolve(canvas.toDataURL('image/jpeg',quality));
+            };
+            img.src=reader.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+async function unggahFotoProfilMEDIX(input){
+    const file=input?.files?.[0]; if(!file || !auth?.currentUser) return;
+    if(file.size>5*1024*1024){ input.value=''; return showToast('Ukuran foto maksimal 5 MB.','error'); }
+    try{
+        showToast('Memproses foto profil...','info');
+        const dataUrl=await kompresFotoProfilMEDIX(file);
+        await db.collection('users').doc(auth.currentUser.uid).set({fotoProfilDataUrl:dataUrl,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+        currentUser={...(currentUser||{}),fotoProfilDataUrl:dataUrl};
+        medixSyncSidebarProfileImages();
+        showToast('Foto profil berhasil diperbarui.','success');
+    }catch(err){ console.error('Upload foto profil gagal:',err); showToast('Foto profil gagal disimpan: '+(err.message||'silakan coba lagi.'),'error'); }
+    finally{ input.value=''; }
+}
+
 function medixSyncSidebarFooterAccount() {
     const topName = document.getElementById('sidebar-top-name');
     const footerName = document.getElementById('sidebar-footer-name');
@@ -5703,6 +5770,7 @@ function medixSyncSidebarFooterAccount() {
     if(footerName) footerName.textContent = authName;
     if(topRole) topRole.textContent = role;
     if(footerRole) footerRole.textContent = role;
+    medixSyncSidebarProfileImages();
 }
 
 async function logoutFirebase() {
@@ -7827,7 +7895,7 @@ function renderMaintenanceHistory() {
             syncMasterHeaderActions();
             updateStats(); renderBHPTable(); populasikanDropdownBHPDiLK(); populasikanDropdownAlatDiKalibrasi(); populasikanDropdownAlatDiWorksheet(); populasikanDropdownEtiketAlat();
             const tbody = document.getElementById('table-alat-body'); if(!tbody) return;
-            let filteredAlat = dataAlat; if(globalFilterStatus !== "all") filteredAlat = dataAlat.filter(a => a.status === globalFilterStatus);
+            const filteredAlat = Array.isArray(dataAlat) ? dataAlat : [];
             
             const kalibrasiTerakhirByAlat = new Map();
             (Array.isArray(dataKalibrasi) ? dataKalibrasi : []).forEach(c => {
@@ -9322,6 +9390,8 @@ function renderMaintenanceHistory() {
             role = canonicalRole(role);
             const base = cloneAccessPreset(role);
             const src = raw || {};
+            // Admin sendiri selalu memiliki akses penuh; checkbox tetap berlaku untuk akun lain.
+            if (role === 'Admin') return cloneAccessPreset('Admin');
             Object.keys(base).forEach(menu => {
                 if (!src[menu] || typeof src[menu] !== 'object') return;
                 Object.keys(base[menu]).forEach(action => {
