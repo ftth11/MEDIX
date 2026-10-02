@@ -3718,7 +3718,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                     <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
                             <h2 class="text-xl font-bold text-slate-900 bg-white border border-slate-200 px-4 py-1.5 rounded-xl shadow-sm">Monitoring BHP & Aksesoris</h2>
-                            <p class="text-[10px] text-slate-500 mt-1">Master item diinput manual. Pengeluaran dapat dicatat otomatis dari pemakaian pada Lembar Kerja (LK).</p>
                         </div>
                         <div class="flex gap-2">
                             <button type="button" onclick="bukaModalBHP()" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow hover:bg-emerald-700"><i class="fa-solid fa-plus mr-1"></i>Tambah Item</button>
@@ -3757,7 +3756,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                         <div class="flex items-center justify-between gap-3 flex-wrap">
                             <div>
                                 <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-link mr-1.5 text-emerald-600"></i>Rekapan Pemakaian BHP dari LK</h3>
-                                <p class="text-[9px] text-slate-500 mt-0.5">Setiap BHP yang disimpan melalui LK otomatis menjadi transaksi <b>OUT</b> dan tetap terhubung ke nomor LK.</p>
                             </div>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <input id="bhp-rekap-lk-search" oninput="renderBHPRecapLK()" type="search" placeholder="Cari No LK / item / alkes..." class="border border-emerald-200 rounded-xl px-3 py-2 text-[10px] w-56 outline-none focus:border-emerald-500">
@@ -3858,7 +3856,6 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
                         <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between flex-wrap gap-3">
                             <div>
                                 <div class="text-xs font-black text-slate-800">Jadwal EM / PM</div>
-                                <div class="text-[9px] text-slate-500">Jadwal tahunan dan jadwal per bulan dari periode PM aset.</div>
                             </div>
                             <div class="flex items-center gap-2 flex-wrap no-print">
                                 <select id="filter-rekapan-pm-tahun" class="px-2.5 py-2 border border-slate-300 rounded-xl text-[10px] bg-white font-bold"></select>
