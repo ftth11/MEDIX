@@ -650,37 +650,70 @@ body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255
 body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
     
         /* ==========================================================
-           KOP SURAT RESMI MEDIX — konsisten untuk LK dan laporan cetak
+           KOP SURAT RESMI MEDIX — logo kiri, isi kop di kanan
+           Ukuran logo mengikuti tinggi blok teks kop.
            ========================================================== */
-        .medix-letterhead { text-align:center !important; }
+        .medix-letterhead {
+            display:flex !important;
+            flex-direction:row !important;
+            align-items:stretch !important;
+            justify-content:center !important;
+            text-align:left !important;
+            gap:12px !important;
+        }
+        .medix-letterhead .medix-letterhead-logo {
+            width:68px !important;
+            flex:0 0 68px !important;
+            align-self:stretch !important;
+            display:flex !important;
+            align-items:center !important;
+            justify-content:center !important;
+            overflow:hidden !important;
+        }
+        .medix-letterhead .medix-letterhead-logo img,
+        .medix-letterhead .medix-letterhead-logo > i {
+            width:auto !important;
+            height:100% !important;
+            max-width:100% !important;
+            max-height:100% !important;
+            object-fit:contain !important;
+        }
+        .medix-letterhead .medix-letterhead-content {
+            flex:1 1 auto !important;
+            min-width:0 !important;
+            text-align:center !important;
+            align-self:center !important;
+            line-height:1.08 !important;
+        }
         .medix-letterhead .letterhead-city {
-            font-size:12px; font-weight:800; line-height:1.15; letter-spacing:.03em;
+            font-size:13px; font-weight:800; line-height:1.12; letter-spacing:.035em;
         }
         .medix-letterhead .letterhead-dinas {
-            font-size:12px; font-weight:800; line-height:1.15; letter-spacing:.03em;
+            font-size:13px; font-weight:800; line-height:1.12; letter-spacing:.035em;
         }
         .medix-letterhead .letterhead-rsud {
-            font-size:16px; font-weight:900; line-height:1.15; letter-spacing:.035em;
+            font-size:17px; font-weight:900; line-height:1.12; letter-spacing:.035em;
         }
         .medix-letterhead .letterhead-address {
-            font-size:9px; font-weight:600; line-height:1.25; letter-spacing:.01em;
+            font-size:10px; font-weight:600; line-height:1.2; letter-spacing:.01em;
         }
         @media print {
             #area-lembar-kerja-resmi .medix-letterhead {
                 padding-top:0 !important; padding-bottom:3px !important;
+                gap:8px !important;
             }
-            #area-lembar-kerja-resmi .medix-letterhead > div:first-child {
-                width:42px !important; height:42px !important; margin-bottom:1px !important;
+            #area-lembar-kerja-resmi .medix-letterhead .medix-letterhead-logo {
+                width:54px !important; flex-basis:54px !important;
             }
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-city,
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-dinas {
-                font-size:9px !important; line-height:1.05 !important;
+                font-size:10px !important; line-height:1.05 !important;
             }
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-rsud {
-                font-size:13px !important; line-height:1.05 !important;
+                font-size:14px !important; line-height:1.05 !important;
             }
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-address {
-                font-size:7.5px !important; line-height:1.05 !important;
+                font-size:8px !important; line-height:1.05 !important;
             }
         }
 </style>
@@ -3993,12 +4026,12 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
     <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[99999] flex items-center justify-center p-2 hidden no-print overflow-y-auto no-scrollbar">
         <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border border-slate-200 max-w-4xl w-full mx-auto text-slate-900 space-y-3 print:space-y-1 relative max-h-[96vh] print:max-h-none overflow-y-auto no-scrollbar print:overflow-visible my-auto">
             
-            <div class="medix-letterhead flex flex-col items-center justify-center border-b-2 border-slate-800 pb-2 text-slate-900 w-full pt-4 print:pt-1 text-center">
-                <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-slate-50 mb-1">
-                    <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-kop').classList.remove('hidden')" class="w-full h-full object-contain" alt="Logo">
+            <div class="medix-letterhead border-b-2 border-slate-800 pb-2 text-slate-900 w-full pt-4 print:pt-1">
+                <div class="medix-letterhead-logo rounded-full overflow-hidden flex-shrink-0 bg-slate-50">
+                    <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-kop').classList.remove('hidden')" class="object-contain" alt="Logo">
                     <i id="fallback-icon-kop" class="fa-solid fa-heart-pulse text-3xl text-blue-600 hidden"></i>
                 </div>
-                <div class="w-full text-center leading-tight">
+                <div class="medix-letterhead-content">
                     <div class="letterhead-city">PEMERINTAH KOTA BEKASI</div>
                     <div class="letterhead-dinas">DINAS KESEHATAN</div>
                     <div class="letterhead-rsud">UPTD RSUD KELAS D PONDOKGEDE</div>
