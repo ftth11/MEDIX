@@ -648,7 +648,42 @@ body.dark-mode .medix-dialog-card { background:#111827; border-color:rgba(94,234
 body.dark-mode .medix-dialog-message { color:#cbd5e1; }
 body.dark-mode .medix-dialog-actions { background:#0f172a; border-color:rgba(255,255,255,.08); }
 body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-color:#334155; }
-    </style>
+    
+        /* ==========================================================
+           KOP SURAT RESMI MEDIX — konsisten untuk LK dan laporan cetak
+           ========================================================== */
+        .medix-letterhead { text-align:center !important; }
+        .medix-letterhead .letterhead-city {
+            font-size:12px; font-weight:800; line-height:1.15; letter-spacing:.03em;
+        }
+        .medix-letterhead .letterhead-dinas {
+            font-size:12px; font-weight:800; line-height:1.15; letter-spacing:.03em;
+        }
+        .medix-letterhead .letterhead-rsud {
+            font-size:16px; font-weight:900; line-height:1.15; letter-spacing:.035em;
+        }
+        .medix-letterhead .letterhead-address {
+            font-size:9px; font-weight:600; line-height:1.25; letter-spacing:.01em;
+        }
+        @media print {
+            #area-lembar-kerja-resmi .medix-letterhead {
+                padding-top:0 !important; padding-bottom:3px !important;
+            }
+            #area-lembar-kerja-resmi .medix-letterhead > div:first-child {
+                width:42px !important; height:42px !important; margin-bottom:1px !important;
+            }
+            #area-lembar-kerja-resmi .medix-letterhead .letterhead-city,
+            #area-lembar-kerja-resmi .medix-letterhead .letterhead-dinas {
+                font-size:9px !important; line-height:1.05 !important;
+            }
+            #area-lembar-kerja-resmi .medix-letterhead .letterhead-rsud {
+                font-size:13px !important; line-height:1.05 !important;
+            }
+            #area-lembar-kerja-resmi .medix-letterhead .letterhead-address {
+                font-size:7.5px !important; line-height:1.05 !important;
+            }
+        }
+</style>
 
 <style id="medix-pro-app-shell-v11">
 /* =========================================================
@@ -3958,17 +3993,17 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
     <div id="area-lembar-kerja-resmi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[99999] flex items-center justify-center p-2 hidden no-print overflow-y-auto no-scrollbar">
         <div class="bg-white p-6 print:p-0 rounded-2xl shadow-2xl border border-slate-200 max-w-4xl w-full mx-auto text-slate-900 space-y-3 print:space-y-1 relative max-h-[96vh] print:max-h-none overflow-y-auto no-scrollbar print:overflow-visible my-auto">
             
-            <div class="flex items-center justify-center space-x-5 border-b-2 border-slate-800 pb-2 text-slate-900 w-full pt-6 print:pt-1">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm bg-slate-50">
+            <div class="medix-letterhead flex flex-col items-center justify-center border-b-2 border-slate-800 pb-2 text-slate-900 w-full pt-4 print:pt-1 text-center">
+                <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-slate-50 mb-1">
                     <img src="logo.png" onerror="this.style.display='none'; document.getElementById('fallback-icon-kop').classList.remove('hidden')" class="w-full h-full object-contain" alt="Logo">
-                    <i id="fallback-icon-kop" class="fa-solid fa-heart-pulse text-4xl text-blue-600 hidden"></i>
+                    <i id="fallback-icon-kop" class="fa-solid fa-heart-pulse text-3xl text-blue-600 hidden"></i>
                 </div>
-                <div class="text-center md:text-left flex-1 max-w-2xl">
-                    <h1 class="text-[10px] md:text-xs font-bold uppercase tracking-wide text-slate-700">PEMERINTAH KOTA BEKASI</h1>
-                    <h1 class="text-[10px] md:text-xs font-bold uppercase tracking-wide text-slate-700">DINAS KESEHATAN</h1>
-                    <h2 class="text-base md:text-xl font-black uppercase tracking-wider leading-tight text-slate-900">UPTD RSUD KELAS D PONDOKGEDE</h2>
-                    <p class="text-[9px] md:text-[10px] text-slate-500 font-mono mt-0.5">Jl. Raya Jatiwaringin No.1 RT. 01 / RW. 01 Kel. Jatiwaringin</p>
-                    <p class="text-[9px] md:text-[10px] text-slate-500 font-mono mt-0.5">Kec. Pondok Gede - Kota Bekasi</p>
+                <div class="w-full text-center leading-tight">
+                    <div class="letterhead-city">PEMERINTAH KOTA BEKASI</div>
+                    <div class="letterhead-dinas">DINAS KESEHATAN</div>
+                    <div class="letterhead-rsud">UPTD RSUD KELAS D PONDOKGEDE</div>
+                    <div class="letterhead-address">Jl. Raya Jatiwaringin No. 1 RT. 01 / RW. 01 Kel. Jatiwaringin</div>
+                    <div class="letterhead-address">Kec. Pondokgede - Kota Bekasi</div>
                 </div>
             </div>
 
@@ -6003,31 +6038,129 @@ function triggerSidebarProfileUpload() {
     if (!auth?.currentUser) return showToast('Silakan login terlebih dahulu.', 'error');
     document.getElementById('sidebar-profile-upload')?.click();
 }
-async function handleSidebarProfileUpload(event) {
-    const input=event?.target, file=input?.files?.[0];
-    if(!file) return;
-    if(!auth?.currentUser) { showToast('Sesi login tidak ditemukan.','error'); if(input)input.value=''; return; }
-    if(!file.type?.startsWith('image/')) { showToast('File harus berupa gambar.','error'); if(input)input.value=''; return; }
-    if(file.size>5*1024*1024) { showToast('Ukuran foto maksimal 5 MB.','error'); if(input)input.value=''; return; }
+
+// Kompres foto profil di sisi browser sebelum dikirim ke Firebase Storage.
+// Hasil selalu JPEG agar ukuran lebih kecil dan konsisten dengan Storage Rules.
+async function medixCompressProfileImage(file) {
+    const MAX_BYTES = 4 * 1024 * 1024; // target aman di bawah batas Storage 5 MB
+    const MAX_DIMENSION = 1280;
+
+    let source = null;
     try {
-        showToast('Mengunggah foto profil...','info');
-        const uid=auth.currentUser.uid;
-        const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
-        const ref=firebase.storage().ref(`profilePhotos/${uid}/avatar.${ext}`);
-        const snap=await ref.put(file,{contentType:file.type});
-        const photoURL=await snap.ref.getDownloadURL();
+        if (typeof createImageBitmap === 'function') {
+            source = await createImageBitmap(file);
+        } else {
+            source = await new Promise((resolve, reject) => {
+                const img = new Image();
+                const url = URL.createObjectURL(file);
+                img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+                img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Foto tidak dapat diproses oleh browser.')); };
+                img.src = url;
+            });
+        }
+
+        const originalW = source.width || source.naturalWidth || 1;
+        const originalH = source.height || source.naturalHeight || 1;
+        const scale = Math.min(1, MAX_DIMENSION / Math.max(originalW, originalH));
+        let width = Math.max(1, Math.round(originalW * scale));
+        let height = Math.max(1, Math.round(originalH * scale));
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        if (!ctx) throw new Error('Browser tidak dapat menyiapkan kompresi foto.');
+
+        let blob = null;
+        for (let attempt = 0; attempt < 8; attempt++) {
+            canvas.width = width;
+            canvas.height = height;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(source, 0, 0, width, height);
+
+            const quality = [0.82, 0.76, 0.70, 0.64, 0.58, 0.52, 0.46, 0.40][attempt];
+            blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+            if (blob && blob.size <= MAX_BYTES) break;
+
+            // Jika masih besar, turunkan resolusi secara bertahap.
+            width = Math.max(480, Math.round(width * 0.82));
+            height = Math.max(480, Math.round(height * 0.82));
+        }
+
+        if (!blob) throw new Error('Kompresi foto gagal.');
+        if (blob.size > MAX_BYTES) {
+            throw new Error('Foto tidak dapat dikompres ke ukuran yang aman.');
+        }
+
+        return blob;
+    } finally {
+        if (source && typeof source.close === 'function') source.close();
+    }
+}
+
+async function handleSidebarProfileUpload(event) {
+    const input = event?.target;
+    const file = input?.files?.[0];
+    if (!file) return;
+
+    if (!auth?.currentUser) {
+        showToast('Sesi login tidak ditemukan.', 'error');
+        if (input) input.value = '';
+        return;
+    }
+
+    if (!file.type?.startsWith('image/')) {
+        showToast('File harus berupa gambar.', 'error');
+        if (input) input.value = '';
+        return;
+    }
+
+    try {
+        showToast('Mengoptimalkan foto profil...', 'info');
+
+        const compressedBlob = await medixCompressProfileImage(file);
+        const uid = auth.currentUser.uid;
+        const ref = firebase.storage().ref(`profilePhotos/${uid}/avatar.jpg`);
+
+        showToast('Mengunggah foto profil...', 'info');
+        const snap = await ref.put(compressedBlob, {
+            contentType: 'image/jpeg',
+            cacheControl: 'public,max-age=31536000'
+        });
+        const photoURL = await snap.ref.getDownloadURL();
+
+        // Gunakan nama field yang sesuai dengan Firestore Rules MEDIX saat ini.
+        // fotoProfil tetap disimpan sebagai fallback yang sudah digunakan aplikasi.
         await db.collection('users').doc(uid).set({
-            photoURL, fotoProfil:photoURL, updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-        },{merge:true});
-        if(currentUser) currentUser.photoURL=photoURL;
+            fotoURL: photoURL,
+            fotoProfil: photoURL,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        if (currentUser) {
+            currentUser.photoURL = photoURL;
+            currentUser.fotoURL = photoURL;
+            currentUser.fotoProfil = photoURL;
+        }
+
         medixRenderSidebarProfile(photoURL);
-        showToast('Foto profil berhasil diperbarui.','success');
-    } catch(error) {
-        console.error('Upload foto profil gagal:',error);
-        showToast(error?.code==='storage/unauthorized'
-            ? 'Firebase Storage menolak upload. Periksa Storage Rules profilePhotos/{uid}.'
-            : 'Foto profil gagal diunggah: '+(error?.message||'kesalahan tidak diketahui.'),'error');
-    } finally { if(input)input.value=''; }
+        showToast('Foto profil berhasil diperbarui.', 'success');
+    } catch (error) {
+        console.error('Upload foto profil gagal:', error);
+        const code = error?.code || '';
+        const message = String(error?.message || '');
+
+        if (code === 'storage/unauthorized' || code === 'storage/unauthenticated') {
+            showToast('Upload ditolak Firebase Storage. Pastikan Storage Rules profilePhotos/{uid} sudah dipasang.', 'error');
+        } else if (code === 'permission-denied' || message.toLowerCase().includes('permission')) {
+            showToast('Foto berhasil diproses tetapi penyimpanan profil ditolak Firestore. Periksa Rules koleksi users.', 'error');
+        } else {
+            showToast('Foto profil gagal diproses/diunggah. Silakan coba foto lain.', 'error');
+        }
+    } finally {
+        if (input) input.value = '';
+    }
 }
 function medixSyncSidebarFooterAccount() {
     const nameEl=document.getElementById('sidebar-footer-name'), roleEl=document.getElementById('sidebar-footer-role'), topNameEl=document.getElementById('sidebar-account-name');
@@ -7444,10 +7577,10 @@ function renderMaintenanceHistory() {
                     <title>Laporan Rekapitulasi Pemeliharaan Alkes - UPTD RSUD Pondokgede</title>
                     <style>
                         body { font-family: sans-serif; padding: 20px; color: #000; background: #fff; }
-                        .kop { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-                        .kop h2 { margin: 0; font-size: 16px; text-transform: uppercase; }
-                        .kop h3 { margin: 5px 0; font-size: 14px; text-transform: uppercase; }
-                        .kop p { margin: 0; font-size: 10px; font-family: monospace; }
+                        .kop { text-align:center; border-bottom:2px solid #000; padding:0 0 8px; margin:0 0 14px; }
+                        .kop h2 { margin:0; font-size:14px; line-height:1.15; text-transform:uppercase; font-weight:800; }
+                        .kop h3 { margin:2px 0; font-size:15px; line-height:1.15; text-transform:uppercase; font-weight:900; }
+                        .kop p { margin:1px 0 0; font-size:9px; line-height:1.2; font-family:Arial,sans-serif; font-weight:600; }
                         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
                         table th, table td { border: 1px solid #333; padding: 6px 8px; text-align: left; }
                         table th { background: #f1f5f9; }
@@ -7463,8 +7596,8 @@ function renderMaintenanceHistory() {
                         <h2>PEMERINTAH KOTA BEKASI</h2>
                         <h2>DINAS KESEHATAN</h2>
                         <h3>UPTD RSUD KELAS D PONDOKGEDE</h3>
-                        <p>Jl. Raya Jatiwaringin No.1 RT. 01 / RW. 01 Kel. Jatiwaringin</p>
-                        <p>Kec. Pondok Gede - Kota Bekasi</p>
+                        <p>Jl. Raya Jatiwaringin No. 1 RT. 01 / RW. 01 Kel. Jatiwaringin</p>
+                        <p>Kec. Pondokgede - Kota Bekasi</p>
                     </div>
                     <h3 style="text-align: center; font-size: 13px; text-decoration: underline; margin-bottom: 15px;">LAPORAN REKAPITULASI PEMELIHARAAN & PERBAIKAN ALAT KESEHATAN</h3>
                     <table>
@@ -7535,10 +7668,10 @@ function renderMaintenanceHistory() {
                     <style>
                         @page { size: A4 landscape; margin: 8mm; }
                         body { font-family: Arial, sans-serif; padding: 0; margin: 0; color: #000; background: #fff; }
-                        .kop { text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 14px; }
-                        .kop h2 { margin: 0; font-size: 15px; text-transform: uppercase; }
-                        .kop h3 { margin: 4px 0; font-size: 13px; text-transform: uppercase; }
-                        .kop p { margin: 0; font-size: 9px; font-family: monospace; }
+                        .kop { text-align:center; border-bottom:2px solid #000; padding:0 0 8px; margin:0 0 14px; }
+                        .kop h2 { margin:0; font-size:14px; line-height:1.15; text-transform:uppercase; font-weight:800; }
+                        .kop h3 { margin:2px 0; font-size:15px; line-height:1.15; text-transform:uppercase; font-weight:900; }
+                        .kop p { margin:1px 0 0; font-size:9px; line-height:1.2; font-family:Arial,sans-serif; font-weight:600; }
                         .periode { text-align:center; font-size:12px; font-weight:700; margin: 0 0 10px; }
                         table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 9px; }
                         table th, table td { border: 1px solid #333; padding: 4px 5px; text-align: left; vertical-align: top; }
@@ -7557,8 +7690,8 @@ function renderMaintenanceHistory() {
                         <h2>PEMERINTAH KOTA BEKASI</h2> 
                         <h2>DINAS KESEHATAN</h2>
                         <h3>UPTD RSUD KELAS D PONDOKGEDE</h3>
-                        <p>Jl. Raya Jatiwaringin No.1 RT. 01 / RW. 01 Kel. Jatiwaringin</p>
-                        <p>Kec. Pondok Gede - Kota Bekasi</p>
+                        <p>Jl. Raya Jatiwaringin No. 1 RT. 01 / RW. 01 Kel. Jatiwaringin</p>
+                        <p>Kec. Pondokgede - Kota Bekasi</p>
                     </div>
                     <div class="periode">LAPORAN TAHUNAN REKAPITULASI PEMELIHARAAN &amp; PERBAIKAN ALAT KESEHATAN — ${tahun}</div>
                     <table>
