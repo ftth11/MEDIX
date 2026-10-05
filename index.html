@@ -654,16 +654,18 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
            Ukuran logo mengikuti tinggi blok teks kop.
            ========================================================== */
         .medix-letterhead {
+            /* Satu kelompok kop: logo + blok teks, bukan logo + teks yang
+               tersebar memenuhi seluruh lebar halaman. */
             display:flex !important;
             flex-direction:row !important;
             align-items:stretch !important;
             justify-content:center !important;
             text-align:left !important;
-            gap:12px !important;
+            gap:10px !important;
         }
         .medix-letterhead .medix-letterhead-logo {
-            width:68px !important;
-            flex:0 0 68px !important;
+            width:70px !important;
+            flex:0 0 70px !important;
             align-self:stretch !important;
             display:flex !important;
             align-items:center !important;
@@ -679,41 +681,47 @@ body.dark-mode .medix-dialog-cancel { background:#1e293b; color:#e2e8f0; border-
             object-fit:contain !important;
         }
         .medix-letterhead .medix-letterhead-content {
-            flex:1 1 auto !important;
+            /* Lebar mengikuti isi terpanjang agar jarak logo tidak melebar. */
+            flex:0 1 auto !important;
+            width:auto !important;
+            max-width:calc(100% - 80px) !important;
             min-width:0 !important;
             text-align:center !important;
             align-self:center !important;
-            line-height:1.08 !important;
+            line-height:1.06 !important;
         }
         .medix-letterhead .letterhead-city {
-            font-size:13px; font-weight:800; line-height:1.12; letter-spacing:.035em;
+            font-size:14px; font-weight:800; line-height:1.08; letter-spacing:.025em;
         }
         .medix-letterhead .letterhead-dinas {
-            font-size:13px; font-weight:800; line-height:1.12; letter-spacing:.035em;
+            font-size:14px; font-weight:800; line-height:1.08; letter-spacing:.025em;
         }
         .medix-letterhead .letterhead-rsud {
-            font-size:17px; font-weight:900; line-height:1.12; letter-spacing:.035em;
+            font-size:18px; font-weight:900; line-height:1.08; letter-spacing:.025em;
         }
         .medix-letterhead .letterhead-address {
-            font-size:10px; font-weight:600; line-height:1.2; letter-spacing:.01em;
+            font-size:9px; font-weight:600; line-height:1.14; letter-spacing:.005em;
         }
         @media print {
             #area-lembar-kerja-resmi .medix-letterhead {
                 padding-top:0 !important; padding-bottom:3px !important;
-                gap:8px !important;
+                gap:7px !important;
             }
             #area-lembar-kerja-resmi .medix-letterhead .medix-letterhead-logo {
-                width:54px !important; flex-basis:54px !important;
+                width:55px !important; flex-basis:55px !important;
+            }
+            #area-lembar-kerja-resmi .medix-letterhead .medix-letterhead-content {
+                max-width:calc(100% - 62px) !important;
             }
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-city,
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-dinas {
-                font-size:10px !important; line-height:1.05 !important;
+                font-size:11px !important; line-height:1.04 !important;
             }
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-rsud {
-                font-size:14px !important; line-height:1.05 !important;
+                font-size:15px !important; line-height:1.04 !important;
             }
             #area-lembar-kerja-resmi .medix-letterhead .letterhead-address {
-                font-size:8px !important; line-height:1.05 !important;
+                font-size:7.5px !important; line-height:1.04 !important;
             }
         }
 </style>
