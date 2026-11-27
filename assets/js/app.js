@@ -2682,7 +2682,7 @@ function renderMaintenanceHistory() {
             if (!body) return;
             body.classList.toggle('dark-mode', isDark);
             localStorage.setItem('medix_theme', isDark ? 'dark' : 'light');
-            if (themeMeta) themeMeta.setAttribute('content', isDark ? '#0b1220' : '#0f766e');
+            if (themeMeta) themeMeta.setAttribute('content', '#10283f');
             if (themeIcon) { themeIcon.className = isDark ? 'fa-solid fa-moon text-lg text-slate-200' : 'fa-solid fa-sun text-lg text-amber-500'; const themeBtn = themeIcon.closest('button'); if (themeBtn) { themeBtn.title = isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'; themeBtn.setAttribute('aria-label', themeBtn.title); } }
         }
 
@@ -6161,7 +6161,7 @@ function renderMaintenanceHistory() {
                 drawFit(alat.nama||'-',x,154,maxW,'900 60px Arial,sans-serif','#0f172a');
                 // Detail dibuat lebih kecil.
                 drawFit([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'-',x,224,maxW,'700 34px Arial,sans-serif','#475569');
-                drawFit('SN '+(alat.seri||'-'),x,286,maxW,'700 29px monospace','#334155');
+                drawFit('KODE '+(alat.kodeAlat||alat.id||'-')+'  |  SN '+(alat.seri||'-'),x,286,maxW,'700 25px monospace','#334155');
                 drawFit(alat.ruangan||alat.lokasi||'-',x,348,maxW,'800 30px Arial,sans-serif','#2563eb');
                 ctx.textAlign='center';ctx.fillStyle='#64748b';ctx.font='700 19px Arial,sans-serif';ctx.fillText('SCAN UNTUK REKAM JEJAK',W/2,492);
                 canvas.toBlob(blob=>{
@@ -6854,9 +6854,9 @@ function renderMaintenanceHistory() {
             if(!window.QRCode) throw new Error('Mesin QR Code belum termuat.');
             const {jsPDF}=window.jspdf;
             const pageW=Number(settings.width)||210,pageH=Number(settings.height)||297,margin=Math.max(5,Number(settings.margin)||5),gap=Math.max(1,Number(settings.labelGap)||4);
-            const labelW=70,labelH=20.44,usableW=pageW-2*margin,usableH=pageH-2*margin;
-            const cols=Math.min(4,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(9,Math.floor((usableH+gap)/(labelH+gap)));
-            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 70 × 20.44 mm.');
+            const labelW=78,labelH=26,usableW=pageW-2*margin,usableH=pageH-2*margin;
+            const cols=Math.min(3,Math.floor((usableW+gap)/(labelW+gap))),rows=Math.min(7,Math.floor((usableH+gap)/(labelH+gap)));
+            if(cols<1||rows<1) throw new Error('Ukuran kertas terlalu kecil untuk label 78 × 26 mm.');
             const perPage=cols*rows,contentW=cols*labelW+(cols-1)*gap,contentH=rows*labelH+(rows-1)*gap,ox=Math.max(margin,(pageW-contentW)/2),oy=Math.max(margin,(pageH-contentH)/2);
             const orientation=pageW>=pageH?'landscape':'portrait';
             const pdf=new jsPDF({orientation,unit:'mm',format:[pageW,pageH],compress:true,putOnlyUsedFonts:true});
@@ -6868,9 +6868,9 @@ function renderMaintenanceHistory() {
                 pdf.setDrawColor(203,213,225);pdf.setLineWidth(.3);pdf.roundedRect(x,y,labelW,labelH,1.6,1.6,'S');
                 pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(3);pdf.text('MEDIX',x+2,y+2.8);pdf.setFontSize(1.7);pdf.text('ASET MEDIS',x+labelW-2,y+2.95,{align:'right'});pdf.setDrawColor(226,232,240);pdf.setLineWidth(.2);pdf.line(x+2,y+3.7,x+labelW-2,y+3.7);
                 const qrValue=medixBuildQrValue(a),qrData=medixGetQrDataUrl(qrValue,82);
-                pdf.addImage(qrData,'PNG',x+2,y+3.8,13,13);
-                const tx=x+17.5,tw=50;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+7.5,tw,2.7);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+11.5,tw,1.65);pdf.setTextColor(51,65,85);pdf.setFont('courier','bold');pdf.setFontSize(1.5);pdf.text('SN '+esc(a.seri||'-'),tx,y+15.0,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+17.5,tw,1.55);
-                pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(1.2);pdf.text('SCAN UNTUK REKAM JEJAK',x+labelW/2,y+19.1,{align:'center'});
+                pdf.addImage(qrData,'PNG',x+2,y+4.3,17,17);
+                const tx=x+21.5,tw=54;pdf.setTextColor(15,23,42);fit(a.nama||'-',tx,y+9.2,tw,3.2);pdf.setTextColor(71,85,105);fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'-',tx,y+14.0,tw,2.0);pdf.setTextColor(51,65,85);pdf.setFont('courier','bold');pdf.setFontSize(1.7);pdf.text('KODE '+esc(a.kodeAlat||a.id||'-')+'  |  SN '+esc(a.seri||'-'),tx,y+18.7,{maxWidth:tw});pdf.setTextColor(37,99,235);fit(a.ruangan||a.lokasi||'-',tx,y+22.1,tw,1.9);
+                pdf.setTextColor(100,116,139);pdf.setFont('helvetica','bold');pdf.setFontSize(1.45);pdf.text('SCAN UNTUK REKAM JEJAK',x+labelW/2,y+24.8,{align:'center'});
             }
             const blob=pdf.output('blob'),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`MEDIX_Label_Aset_${new Date().toISOString().slice(0,10)}.pdf`;link.style.display='none';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
             showToast(`${dataAlat.length} label berhasil diunduh.`,'success');
@@ -6888,7 +6888,7 @@ function renderMaintenanceHistory() {
             const old=document.getElementById('medix-label-print-root'); if(old) old.remove();
             const root=document.createElement('div'); root.id='medix-label-print-root';
             const esc=v=>String(v??'-').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-            const perPage=36;
+            const perPage=21;
             const pages=[];
             for(let start=0; start<dataAlat.length; start+=perPage){
                 const pageItems=dataAlat.slice(start,start+perPage);
@@ -6899,7 +6899,7 @@ function renderMaintenanceHistory() {
                   <div class="medix-label-body"><div class="medix-label-qr" id="medix-browser-qr-${start+i}"></div><div class="medix-label-info">
                     <div class="medix-label-name">${esc(a.nama||'-')}</div>
                     <div class="medix-label-sub">${esc([a.merk,a.tipe].filter(Boolean).join(' · ')||'-')}</div>
-                    <div class="medix-label-sn">${esc(a.seri||'-')}</div>
+                    <div class="medix-label-sn">KODE ${esc(a.kodeAlat||a.id||'-')} &nbsp;|&nbsp; SN ${esc(a.seri||'-')}</div>
                     <div class="medix-label-room">${esc(a.ruangan||a.lokasi||'-')}</div>
                   </div></div>
                   <div class="medix-label-scan">SCAN UNTUK REKAM JEJAK</div>

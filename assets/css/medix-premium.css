@@ -1,0 +1,121 @@
+/* MEDIX PREMIUM DESIGN SYSTEM — v1.0
+   Layered over the existing application. Preserves business logic and both themes. */
+:root{
+  --mx-navy:#10283f;--mx-navy-2:#173b57;--mx-teal:#0d9488;--mx-teal-2:#0f766e;
+  --mx-bg:#f4f7fa;--mx-surface:#fff;--mx-surface-2:#f8fafc;--mx-text:#172b3a;
+  --mx-muted:#647789;--mx-line:#e1e8ef;--mx-shadow:0 8px 28px rgba(16,40,63,.065);
+  --mx-radius:16px;--mx-focus:rgba(13,148,136,.22);
+  color-scheme:light;
+}
+html,body{background:var(--mx-bg)!important;color:var(--mx-text)!important;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{letter-spacing:-.008em}
+#main-content-area{background:var(--mx-bg)!important}
+#main-content-area>header{background:rgba(255,255,255,.94)!important;border-bottom:1px solid var(--mx-line)!important;box-shadow:0 3px 18px rgba(16,40,63,.055)!important;backdrop-filter:blur(16px)}
+#main-content-area>header h1{background-image:linear-gradient(110deg,var(--mx-navy),var(--mx-teal))!important}
+#main-content-area>main{background:transparent!important}
+/* Premium navy navigation */
+#app-sidebar{background:linear-gradient(180deg,#10283f 0%,#132f49 100%)!important;border-right:1px solid rgba(255,255,255,.08)!important;color:#eaf3f8!important;box-shadow:12px 0 36px rgba(16,40,63,.14)!important}
+#app-sidebar>div:first-child{background:transparent!important}
+#app-sidebar .border-b,#app-sidebar .border-t{border-color:rgba(226,242,250,.12)!important}
+#app-sidebar .bg-slate-50,#app-sidebar .bg-white,#app-sidebar .medix-sidebar-footer{background:rgba(255,255,255,.055)!important;border-color:rgba(226,242,250,.12)!important}
+#app-sidebar .sidebar-item{color:#c6d5e0!important;border-left:3px solid transparent!important;border-radius:11px!important;min-height:44px;font-weight:650;transition:background .18s ease,color .18s ease,border-color .18s ease}
+#app-sidebar .sidebar-item i{filter:saturate(.85)}
+#app-sidebar .sidebar-item:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+#app-sidebar .sidebar-item.active{background:linear-gradient(90deg,rgba(20,184,166,.22),rgba(20,184,166,.08))!important;color:#fff!important;border-left-color:#2dd4bf!important}
+#app-sidebar .sidebar-item.active i{color:#5eead4!important}
+#app-sidebar #sidebar-account-name,#app-sidebar #sidebar-footer-name{color:#f8fafc!important}
+#app-sidebar #sidebar-role-badge,#app-sidebar #sidebar-footer-role{color:#7dd3c7!important}
+#app-sidebar .medix-sidebar-footer button[onclick*="logoutFirebase"]{background:rgba(244,63,94,.12)!important;border-color:rgba(251,113,133,.3)!important;color:#fecdd3!important}
+#app-sidebar .medix-sidebar-footer p{color:#94a3b8!important}
+/* Surfaces, typography and controls */
+.glass-panel{background:var(--mx-surface)!important;border:1px solid var(--mx-line)!important;border-radius:var(--mx-radius)!important;box-shadow:var(--mx-shadow)!important}
+#main-content-area h2,#main-content-area h3,#main-content-area h4{letter-spacing:-.02em}
+#main-content-area input:not([type=checkbox]):not([type=radio]):not([type=file]),#main-content-area select,#main-content-area textarea{border:1px solid #d5e0e8!important;border-radius:10px!important;background:#fff!important;color:#172b3a!important;box-shadow:0 1px 2px rgba(16,40,63,.025)}
+#main-content-area input:focus,#main-content-area select:focus,#main-content-area textarea:focus{border-color:#0d9488!important;box-shadow:0 0 0 3px var(--mx-focus)!important;outline:0!important}
+#main-content-area button{touch-action:manipulation}
+#main-content-area button:focus-visible,#app-sidebar button:focus-visible{outline:3px solid var(--mx-focus)!important;outline-offset:2px}
+#main-content-area table{border-collapse:separate;border-spacing:0;background:transparent}
+#main-content-area table thead th{background:#edf3f7!important;color:#294458!important;border-bottom:1px solid #dce6ed!important;font-size:10px;font-weight:850;letter-spacing:.045em}
+#main-content-area table tbody tr:nth-child(even){background:#fbfcfd}
+#main-content-area table tbody tr:hover{background:#eef8f7!important}
+#main-content-area table td{border-bottom:1px solid #edf1f4!important}
+/* Dashboard */
+.dashboard-welcome{background:linear-gradient(112deg,#10283f 0%,#15536a 54%,#0d9488 100%)!important;border:1px solid rgba(255,255,255,.15)!important;box-shadow:0 16px 38px rgba(16,40,63,.16)!important}
+#dashboard-stat-grid>div,#dashboard-stat-grid>button{border:1px solid var(--mx-line)!important;border-radius:15px!important;background:#fff!important;box-shadow:0 4px 16px rgba(16,40,63,.035)!important}
+#dashboard-stat-grid>div:hover,#dashboard-stat-grid>button:hover{border-color:rgba(13,148,136,.38)!important;box-shadow:0 12px 26px rgba(16,40,63,.08)!important}
+/* Dialogs */
+.medix-dialog-card,#medix-print-settings-modal .medix-print-card{border:1px solid var(--mx-line)!important;border-radius:20px!important;box-shadow:0 24px 80px rgba(16,40,63,.22)!important}
+/* Work order/LK editor — more spacious on screen, print stays official */
+#area-lembar-kerja-resmi{background:rgba(16,40,63,.62)!important;backdrop-filter:blur(7px)}
+#area-lembar-kerja-resmi>div{border:1px solid #dbe5ec!important;border-radius:20px!important;box-shadow:0 24px 80px rgba(16,40,63,.22)!important;max-width:1040px!important;padding:clamp(16px,2.3vw,28px)!important;gap:14px!important}
+#area-lembar-kerja-resmi .medix-letterhead{padding:14px 14px 12px!important;border:1px solid #dce6ed!important;border-bottom:3px solid #0d9488!important;border-radius:14px 14px 4px 4px!important;background:linear-gradient(180deg,#f8fbfc,#fff)!important;gap:12px!important}
+#area-lembar-kerja-resmi .medix-letterhead .letterhead-city,#area-lembar-kerja-resmi .medix-letterhead .letterhead-dinas{color:#34536a!important}
+#area-lembar-kerja-resmi .medix-letterhead .letterhead-rsud{color:#10283f!important}
+#area-lembar-kerja-resmi .lk-info-top-card,#area-lembar-kerja-resmi .uraian-pekerjaan-wrapper,#area-lembar-kerja-resmi .lk-bhp-usage-card,#area-lembar-kerja-resmi>div> .border{border-color:#dce6ed!important;border-radius:12px!important;box-shadow:0 3px 12px rgba(16,40,63,.035)!important}
+#area-lembar-kerja-resmi .uraian-pekerjaan-wrapper{background:#fbfdfe!important}
+#area-lembar-kerja-resmi .lk-bhp-usage-card{background:linear-gradient(135deg,#f0fdfa,#fff 65%,#f0f9ff)!important}
+#area-lembar-kerja-resmi .lk-bhp-usage-card input,#area-lembar-kerja-resmi .lk-bhp-usage-card select{min-height:40px}
+#area-lembar-kerja-resmi .medix-letterhead-logo{border:1px solid #dce6ed!important;background:#fff!important}
+#area-lembar-kerja-resmi #btn-simpan-lk-aksi{background:linear-gradient(110deg,#10283f,#0d9488)!important;box-shadow:0 7px 18px rgba(13,148,136,.2)!important}
+#area-lembar-kerja-resmi #btn-download-lk-pdf{background:#b4233b!important}
+/* Equipment label / QR card in asset detail */
+#qrcode-container{border:1px solid #dce6ed!important;border-radius:13px!important;box-shadow:0 4px 14px rgba(16,40,63,.08)!important}
+/* Print settings modal */
+.medix-print-card{border-radius:20px!important}
+.medix-print-head{background:#f8fafc!important}
+.medix-print-btn.primary{background:linear-gradient(110deg,#10283f,#0d9488)!important}
+/* Mobile/tablet ergonomics */
+@media(max-width:1023px){#app-sidebar{box-shadow:18px 0 46px rgba(16,40,63,.28)!important}#main-content-area>main{padding:16px!important}}
+@media(max-width:640px){#main-content-area>main{padding:12px!important}.dashboard-welcome{border-radius:16px!important}.glass-panel{border-radius:14px!important}#area-lembar-kerja-resmi{align-items:flex-start!important;padding:8px!important}#area-lembar-kerja-resmi>div{max-height:calc(100dvh - 16px)!important;padding:13px!important;border-radius:15px!important}#area-lembar-kerja-resmi .medix-letterhead{padding:10px!important;gap:7px!important}#area-lembar-kerja-resmi .medix-letterhead .letterhead-city,#area-lembar-kerja-resmi .medix-letterhead .letterhead-dinas{font-size:10px!important}#area-lembar-kerja-resmi .medix-letterhead .letterhead-rsud{font-size:13px!important}#area-lembar-kerja-resmi .medix-letterhead .letterhead-address{font-size:8px!important}}
+/* Dark mode: keep a true dark palette without changing semantic status colors. */
+body.dark-mode{--mx-bg:#0b1420;--mx-surface:#132235;--mx-surface-2:#182b40;--mx-text:#e6eef5;--mx-muted:#a5b6c5;--mx-line:#263c50;--mx-shadow:0 10px 30px rgba(0,0,0,.18);color-scheme:dark;background:var(--mx-bg)!important;color:var(--mx-text)!important}
+body.dark-mode #main-content-area,body.dark-mode #main-content-area>main{background:var(--mx-bg)!important}
+body.dark-mode #main-content-area>header{background:rgba(16,32,49,.96)!important;border-color:var(--mx-line)!important}
+body.dark-mode #main-content-area>header h1{background-image:linear-gradient(110deg,#e2f2f7,#5eead4)!important}
+body.dark-mode .glass-panel,body.dark-mode #dashboard-stat-grid>div,body.dark-mode #dashboard-stat-grid>button{background:var(--mx-surface)!important;border-color:var(--mx-line)!important;color:var(--mx-text)!important}
+body.dark-mode #dashboard-stat-grid>div:hover,body.dark-mode #dashboard-stat-grid>button:hover{background:#192d42!important}
+body.dark-mode #main-content-area table thead th{background:#1b3045!important;color:#d9e7f1!important;border-color:#2a4054!important}
+body.dark-mode #main-content-area table tbody tr:nth-child(even){background:#14263a!important}
+body.dark-mode #main-content-area table tbody tr:hover{background:#183b45!important}
+body.dark-mode #main-content-area table td{color:#d1deea!important;border-color:#263b4f!important}
+body.dark-mode #main-content-area input:not([type=checkbox]):not([type=radio]):not([type=file]),body.dark-mode #main-content-area select,body.dark-mode #main-content-area textarea{background:#0c1a29!important;color:#e6eef5!important;border-color:#38516a!important}
+body.dark-mode #main-content-area input::placeholder,body.dark-mode #main-content-area textarea::placeholder{color:#8ca1b4!important}
+body.dark-mode #app-sidebar{background:linear-gradient(180deg,#091a2a,#10283f)!important}
+body.dark-mode #app-sidebar .bg-slate-50,body.dark-mode #app-sidebar .bg-white,body.dark-mode #app-sidebar .medix-sidebar-footer{background:rgba(255,255,255,.045)!important}
+body.dark-mode #area-lembar-kerja-resmi>div{background:#132235!important;border-color:#294056!important;color:#e6eef5!important}
+body.dark-mode #area-lembar-kerja-resmi .medix-letterhead{background:#182b40!important;border-color:#365064!important}
+body.dark-mode #area-lembar-kerja-resmi .medix-letterhead .letterhead-city,body.dark-mode #area-lembar-kerja-resmi .medix-letterhead .letterhead-dinas,body.dark-mode #area-lembar-kerja-resmi .medix-letterhead .letterhead-rsud{color:#e6eef5!important}
+body.dark-mode #area-lembar-kerja-resmi .lk-info-top-card,body.dark-mode #area-lembar-kerja-resmi .uraian-pekerjaan-wrapper,body.dark-mode #area-lembar-kerja-resmi .lk-bhp-usage-card{background:#182b40!important;border-color:#365064!important}
+body.dark-mode #area-lembar-kerja-resmi .lk-bhp-usage-card input,body.dark-mode #area-lembar-kerja-resmi .lk-bhp-usage-card select{background:#0c1a29!important;color:#e6eef5!important}
+body.dark-mode #area-lembar-kerja-resmi .medix-letterhead-logo,body.dark-mode #qrcode-container{background:#fff!important}
+body.dark-mode .medix-print-card{background:#132235!important;color:#e6eef5!important;border-color:#365064!important}
+body.dark-mode .medix-print-head{background:#182b40!important;border-color:#365064!important}
+body.dark-mode .medix-print-field label,body.dark-mode .medix-print-note{color:#b7c8d7!important}
+body.dark-mode .medix-print-note{background:#0c1a29!important;border-color:#365064!important}
+/* Official documents and asset labels always print on white paper in light colors. */
+@media print{
+  html,body{background:#fff!important;color:#111827!important;color-scheme:light!important}
+  #area-lembar-kerja-resmi,body.dark-mode #area-lembar-kerja-resmi{background:#fff!important}
+  #area-lembar-kerja-resmi>div,body.dark-mode #area-lembar-kerja-resmi>div{background:#fff!important;color:#111827!important;border:0!important;box-shadow:none!important}
+  #area-lembar-kerja-resmi .medix-letterhead,body.dark-mode #area-lembar-kerja-resmi .medix-letterhead{background:#fff!important}
+  #area-lembar-kerja-resmi .medix-letterhead .letterhead-city,#area-lembar-kerja-resmi .medix-letterhead .letterhead-dinas,#area-lembar-kerja-resmi .medix-letterhead .letterhead-rsud{color:#111827!important}
+}
+/* One canonical, readable label size across single download, mass PDF and browser print. */
+.medix-label-print-page{grid-template-columns:repeat(3,78mm)!important;grid-template-rows:repeat(7,26mm)!important;grid-auto-rows:26mm!important;gap:2mm!important;width:238mm!important;height:194mm!important;margin:8mm auto!important;align-content:start!important;justify-content:center!important}
+.medix-label-card-print{width:78mm!important;height:26mm!important;border:.3mm solid #cbd5e1!important;border-radius:1.4mm!important}
+.medix-label-top{height:4mm!important;min-height:4mm!important;padding:0 2.2mm!important;font-size:2.8mm!important}
+.medix-label-top span{font-size:1.5mm!important}
+.medix-label-body{height:18.5mm!important;min-height:18.5mm!important;gap:1.7mm!important;padding:.5mm 1.5mm 0!important}
+.medix-label-qr{width:17.5mm!important;height:17.5mm!important;flex:0 0 17.5mm!important}
+.medix-label-qr img,.medix-label-qr canvas{width:17.5mm!important;height:17.5mm!important}
+.medix-label-info{width:55mm!important;line-height:1.04!important}
+.medix-label-name{font-size:3.15mm!important}
+.medix-label-sub{font-size:1.9mm!important;margin-top:.8mm!important}
+.medix-label-sn{font-size:1.55mm!important;margin-top:.8mm!important}
+.medix-label-room{font-size:1.8mm!important;margin-top:.7mm!important}
+.medix-label-scan{height:3mm!important;min-height:3mm!important;font-size:1.35mm!important;padding-top:.25mm!important}
+@media print{
+ body.medix-label-printing > #medix-label-print-root{width:297mm!important}
+ body.medix-label-printing .medix-label-print-page{grid-template-columns:repeat(3,78mm)!important;grid-template-rows:repeat(7,26mm)!important;gap:2mm!important;width:238mm!important;height:194mm!important;margin:8mm auto!important;align-content:start!important;justify-content:center!important}
+ body.medix-label-printing .medix-label-card-print{width:78mm!important;height:26mm!important}
+}

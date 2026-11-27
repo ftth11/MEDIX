@@ -2537,7 +2537,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 }
 
 /* ===== STYLE BLOCK %d ===== */
-/* MEDIX LABEL ENGINE — 4 kolom x 9 baris A4 landscape, margin 5 mm */
+/* MEDIX LABEL ENGINE — ukuran label diseragamkan menjadi 78 × 26 mm */
 .medix-label-printing{background:#fff!important;}
 #medix-label-print-root{display:none;}
 .medix-label-printing #medix-label-print-root{display:block;width:297mm;margin:0 auto;background:#fff;color:#0f172a;}
@@ -2552,7 +2552,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-label-info{min-width:0;width:50mm;overflow:hidden;line-height:1.02;}
 .medix-label-name{font-size:2.75mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;}
 .medix-label-sub{font-size:1.65mm;color:#475569;font-weight:700;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sn{font:700 1.55mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sn{font:700 1.35mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-room{font-size:1.55mm;color:#2563eb;font-weight:800;margin-top:.55mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-scan{text-align:center;height:2.7mm;min-height:2.7mm;font:700 1.2mm/1 monospace;color:#64748b;padding-top:.25mm;}
 @media print{
