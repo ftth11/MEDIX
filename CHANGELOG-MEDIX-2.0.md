@@ -72,3 +72,16 @@ Untuk mengaktifkan seluruh fitur dengan aman, sesuaikan Firestore Security Rules
 - Jangan mengganti seluruh Firestore Rules dengan aturan terbuka. Gabungkan aturan baru ke rules yang sudah ada dan pertahankan aturan QR publik secara terpisah.
 
 Catatan: pemeriksaan role pada antarmuka hanya untuk pengalaman pengguna; keamanan sebenarnya wajib ditegakkan di Firestore Security Rules.
+
+
+## LK PDF Final — November 2026
+- Tata letak dokumen LK diperbarui mengikuti referensi formulir lapangan satu halaman: kop, identitas alat, kondisi lingkungan, dokumentasi, alat kerja, pemeriksaan fisik/fungsi, uraian, pemeriksaan kinerja, BHP, hasil akhir, dan tanda tangan.
+- Pembuatan PDF menggunakan jsPDF dengan teks, tabel, garis, dan kotak vektor; tidak lagi mengubah seluruh formulir HTML menjadi satu gambar.
+- Foto before/after dan tanda tangan dimasukkan pada bidang khusus.
+- PDF final dibuat saat tombol Simpan Data digunakan dan diunggah ke Firebase Storage sebelum record Firestore di-commit.
+- Record LK baru menyimpan `pdfStoragePath`, `pdfFileName`, `pdfMimeType`, `pdfStatus`, `pdfImmutable`, `pdfVersion`, `pdfGeneratedAt`, dan `pdfSha256`.
+- Pembukaan LK baru dari riwayat diarahkan ke PDF viewer. Dokumen lama tanpa PDF tetap kompatibel.
+- Konten LK yang sudah tersimpan ditolak untuk disimpan ulang dari form; verifikasi dan addendum tetap dicatat sebagai metadata terpisah.
+- Viewer menyediakan verifikasi Admin, audit trail, dan addendum tanpa mengubah PDF asli.
+
+- Menambahkan field opsional pemeriksaan listrik/grounding, daya dan battery internal, checklist preventive maintenance, stok consumable, hasil maintenance, rekomendasi, serta catatan teknisi mengikuti formulir lapangan.

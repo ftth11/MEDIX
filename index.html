@@ -1068,6 +1068,58 @@
                 </div>
             </div>
 
+            <section class="lk-reference-card">
+                <div class="lk-reference-heading">Pemeriksaan Listrik, Daya, dan Battery Internal</div>
+                <div class="lk-reference-grid">
+                    <label>Sumber listrik cadangan
+                        <select id="dlk-backup-power"><option value="">Pilih</option><option>UPS</option><option>Stabilizer</option><option>UPS dan Stabilizer</option><option>Tidak Ada</option></select>
+                    </label>
+                    <label>Daya alat (VA)<input id="dlk-power-va" type="text" placeholder="Contoh: 250"></label>
+                    <label>Tegangan L-N (V)<input id="dlk-voltage-ln" type="text" placeholder="Volt"></label>
+                    <label>Tegangan L-G (V)<input id="dlk-voltage-lg" type="text" placeholder="Volt"></label>
+                    <label>Tegangan N-G (V)<input id="dlk-voltage-ng" type="text" placeholder="Volt"></label>
+                    <label>Grounding (Ohm)<input id="dlk-grounding" type="text" placeholder="Ohm"></label>
+                    <label>Tahanan isolasi (MΩ)<input id="dlk-insulation-resistance" type="text" placeholder="MΩ"></label>
+                    <label>Tahanan kabel power (MΩ)<input id="dlk-power-resistance" type="text" placeholder="MΩ"></label>
+                    <label>Arus bocor peralatan (µA)<input id="dlk-leak-current" type="text" placeholder="µA"></label>
+                    <label>Arus bocor elektroda (µA)<input id="dlk-leak-electrode" type="text" placeholder="µA"></label>
+                    <label>Kondisi kebersihan
+                        <select id="dlk-cleanliness"><option value="">Pilih</option><option>Bersih</option><option>Kotor</option></select>
+                    </label>
+                    <label>Kondisi battery internal
+                        <select id="dlk-battery-condition"><option value="">Pilih</option><option>Baik</option><option>Tidak Baik</option><option>Tidak Ada</option></select>
+                    </label>
+                    <label>Tegangan battery (VDC)<input id="dlk-battery-vdc" type="text" placeholder="VDC"></label>
+                    <label>Nilai acuan battery<input id="dlk-battery-reference" type="text" placeholder="Contoh: ≤ 10%"></label>
+                </div>
+            </section>
+
+            <section class="lk-reference-card">
+                <div class="lk-reference-heading">Pemeliharaan Preventif dan Hasil Pemeliharaan</div>
+                <div class="lk-reference-check-grid">
+                    <label><input type="checkbox" id="dlk-pm-cleaning"> Pembersihan main unit</label>
+                    <label><input type="checkbox" id="dlk-pm-accessories"> Pemeriksaan aksesoris alat</label>
+                    <label><input type="checkbox" id="dlk-pm-function"> Pemantauan fungsi alat</label>
+                    <label><input type="checkbox" id="dlk-pm-performance"> Pemantauan kinerja alat</label>
+                    <label><input type="checkbox" id="dlk-pm-consumable"> Penggantian consumable part</label>
+                    <label><input type="checkbox" id="dlk-pm-lubrication"> Lubricating / tightening</label>
+                </div>
+                <div class="lk-reference-grid lk-reference-grid-3">
+                    <label>Stok consumable part
+                        <select id="dlk-consumable-stock"><option value="">Pilih</option><option>Ada</option><option>Tidak Ada</option><option>Habis</option></select>
+                    </label>
+                    <label>Hasil maintenance
+                        <select id="dlk-maintenance-result"><option value="">Pilih</option><option>Alat Berfungsi Dengan Baik</option><option>Alat Berfungsi Dengan Catatan</option><option>Alat Tidak Dapat Berfungsi</option></select>
+                    </label>
+                    <label>Rekomendasi
+                        <select id="dlk-maintenance-recommendation"><option value="">Pilih</option><option>Alat Dapat Digunakan</option><option>Alat Perlu Dikalibrasi</option><option>Alat Harus Diperbaiki</option></select>
+                    </label>
+                </div>
+                <label class="lk-reference-notes">Catatan teknisi
+                    <textarea id="dlk-maintenance-notes" rows="2" placeholder="Catatan tambahan / rekomendasi pekerjaan..."></textarea>
+                </label>
+            </section>
+
             <div class="lk-bhp-usage-card border border-emerald-200 rounded-2xl text-[11px] bg-gradient-to-br from-emerald-50 via-white to-cyan-50 shadow-sm no-print overflow-hidden">
                 <div class="px-3.5 py-3 border-b border-emerald-100 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 min-w-0">
@@ -1406,6 +1458,32 @@
 
 
 
+
+<div id="medix-lk-pdf-modal" class="medix-lk-pdf-modal hidden no-print" aria-hidden="true">
+  <section class="medix-lk-pdf-card" role="dialog" aria-modal="true" aria-labelledby="medix-lk-pdf-title">
+    <header class="medix-lk-pdf-head">
+      <div class="min-w-0"><div class="text-[9px] uppercase tracking-wider font-black text-teal-700">Arsip Dokumen MEDIX</div><h3 id="medix-lk-pdf-title" class="font-black text-slate-900 text-sm truncate">Dokumen Lembar Kerja</h3></div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" id="medix-lk-pdf-open-tab" class="medix-lk-pdf-open">Buka PDF</button>
+        <button type="button" onclick="medixCloseLKPdf()" class="medix-lk-pdf-close" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </header>
+    <div class="medix-lk-pdf-meta">
+      <span>Status: <b id="medix-lk-pdf-status">Menunggu Verifikasi</b></span>
+      <button type="button" id="medix-lk-pdf-verify" class="medix-lk-pdf-verify hidden" onclick="verifikasiLembarKerjaAktif()"><i class="fa-solid fa-circle-check mr-1"></i>Verifikasi LK</button>
+      <details class="medix-lk-pdf-audit"><summary>Audit & Addendum</summary>
+        <div class="medix-lk-pdf-audit-body">
+          <ol id="medix-lk-pdf-audit-list"></ol>
+          <label for="medix-lk-pdf-addendum" class="font-bold">Catatan Addendum (Admin)</label>
+          <textarea id="medix-lk-pdf-addendum" rows="2" maxlength="1000" placeholder="Catatan koreksi tanpa mengubah PDF asli"></textarea>
+          <button type="button" onclick="medixAddendumFromPdfViewer()" class="medix-lk-pdf-verify">Simpan Addendum</button>
+        </div>
+      </details>
+    </div>
+    <iframe id="medix-lk-pdf-frame" title="Preview PDF Lembar Kerja" class="medix-lk-pdf-frame" src="about:blank"></iframe>
+    <footer class="medix-lk-pdf-foot"><span><i class="fa-solid fa-lock mr-1"></i>PDF final • Tidak dapat diedit melalui MEDIX</span><button type="button" onclick="medixCloseLKPdf()" class="medix-lk-pdf-done">Tutup Dokumen</button></footer>
+  </section>
+</div>
 
 <div id="medix-print-settings-modal" class="medix-print-modal no-print" aria-hidden="true">
   <div class="medix-print-card" role="dialog" aria-modal="true" aria-labelledby="medix-print-title">

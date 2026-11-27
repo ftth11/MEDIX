@@ -41,3 +41,53 @@ MEDIX menggunakan tema terang permanen dengan palet putih/abu-abu kebiruan dan a
 Versi ini menambahkan status verifikasi LK, identitas/waktu verifikator, audit trail, serta catatan addendum khusus Admin. Addendum tidak mengubah isi LK yang telah disimpan; koreksi dicatat sebagai catatan tambahan agar dokumen asli tetap dapat ditelusuri. Nomor LK menggunakan transaksi `systemCounters/lembarKerja` untuk mengurangi kemungkinan nomor ganda saat penyimpanan bersamaan.
 
 Sebelum digunakan bersama, sesuaikan Firestore Security Rules untuk koleksi `lembarKerja` dan `systemCounters` sesuai role. Jangan membuka akses koleksi tersebut untuk publik. Lihat bagian "Catatan konfigurasi Firestore" pada `CHANGELOG-MEDIX-2.0.md`.
+
+
+## MEDIX LK — PDF final berdasarkan formulir lapangan
+
+Pembaruan ini menyusun dokumen LK sebagai PDF A4 portrait menggunakan elemen PDF vektor (teks, garis, tabel), bukan screenshot halaman HTML. Foto before/after dan tanda tangan tetap disisipkan sebagai gambar pada area masing-masing. Susunan dokumen mengikuti referensi LK lapangan yang diberikan: kop instansi, nomor/jenis/tanggal, identitas alat, kondisi lingkungan/dokumentasi, kondisi lingkungan, pemeriksaan listrik dan grounding, daya/battery internal, daftar alat kerja, pemeriksaan fisik/fungsi, uraian pekerjaan, pemeriksaan kinerja, checklist pemeliharaan preventif, stok consumable, rekomendasi/catatan, BHP/aksesori, hasil akhir, dan tiga kolom tanda tangan.
+
+### Tambahan kolom yang mengikuti referensi lapangan\nForm LK kini menyediakan isian opsional untuk UPS/stabilizer, tegangan L-N/L-G/N-G, grounding, tahanan isolasi/kabel power, arus bocor, kebersihan, daya alat, battery internal, checklist pemeliharaan preventif, stok consumable, hasil maintenance, rekomendasi, dan catatan teknisi. Field tersebut ditambahkan sebagai field baru pada dokumen; data lama tetap dapat dibuka.\n\n### Alur penyimpanan LK baru
+1. Teknisi melengkapi formulir dan menekan **Simpan Data**.
+2. MEDIX membuat PDF final dari data yang sedang diisi.
+3. PDF diunggah ke Firebase Storage pada `lembarKerjaPdf/{lkId}/{nomorLk}.pdf`.
+4. Hanya setelah unggah PDF berhasil, MEDIX menyimpan record LK dan metadata PDF ke Firestore.
+5. Setelah tersimpan, PDF langsung dibuka. Saat record dibuka dari riwayat, MEDIX menampilkan PDF tersebut, bukan formulir input.
+6. Data isi LK tidak dapat disimpan ulang melalui formulir setelah memiliki ID dokumen. Verifikasi dan addendum disimpan sebagai metadata terpisah dan tidak mengubah PDF asli.
+7. MEDIX menghitung SHA-256 PDF dan memeriksanya saat PDF dibuka untuk mendeteksi perubahan/kerusakan berkas.
+
+### Firebase Storage Rules — tambahkan aturan ini ke rules yang sudah ada
+Jangan mengganti seluruh rules project. Gabungkan blok berikut di dalam `service firebase.storage` dan sesuaikan kebijakan role dengan rules rumah sakit:
+
+```javascript
+match /lembarKerjaPdf/{lkId}/{fileName} {
+  // Pembacaan tetap memerlukan sesi login.
+  allow read: if request.auth != null;
+
+  // Hanya unggah PDF dengan ukuran maksimum 10 MB.
+  allow create: if request.auth != null
+                && request.resource.contentType == 'application/pdf'
+                && request.resource.size < 10 * 1024 * 1024;
+
+  // File PDF yang sudah dibuat tidak boleh ditimpa.
+  allow update: if false;
+
+  // Penghapusan hanya oleh uploader file (mis. pembersihan jika commit Firestore gagal).
+  allow delete: if request.auth != null
+                && resource.metadata.generatedBy == request.auth.uid;
+}
+```
+
+Aturan di atas adalah baseline teknis. Untuk operasional rumah sakit, batasi `create` hanya Admin/Teknisi berdasarkan custom claims atau dokumen role yang tervalidasi di rules.
+
+### Firestore Rules
+Pastikan dokumen `lembarKerja`:
+- dapat dibuat oleh role yang berwenang;
+- tidak mengizinkan perubahan field isi dokumen setelah dibuat;
+- hanya mengizinkan Admin memperbarui field verifikasi, audit, addendum, dan `updatedAt`;
+- tidak mengizinkan penghapusan LK secara umum.
+
+Contoh field metadata yang dapat diperbarui Admin: `statusVerifikasi`, `diverifikasiOleh`, `diverifikasiAt`, `riwayatAudit`, `riwayatRevisi`, dan `updatedAt`. Terapkan pembatasan ini pada rules yang sekarang, jangan membuka akses seluruh koleksi.
+
+### Kompatibilitas
+LK yang sudah tersimpan sebelum fitur PDF ini dan belum memiliki `pdfStoragePath` tetap dibuka melalui tampilan arsip lama (read-only). LK baru setelah pembaruan akan memiliki PDF final. PDF tidak dapat diedit melalui MEDIX dan file di Storage tidak dapat ditimpa melalui aturan di atas; perubahan pada salinan PDF di luar MEDIX tetap mungkin dilakukan oleh aplikasi PDF pihak ketiga, tetapi hash SHA-256 pada record MEDIX dapat dipakai untuk mendeteksi perubahan salinan tersebut.

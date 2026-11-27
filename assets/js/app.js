@@ -3965,7 +3965,9 @@ function renderMaintenanceHistory() {
                     riwayatAudit: firebase.firestore.FieldValue.arrayUnion(event),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                renderStatusDanAuditLK({ ...record, id, statusVerifikasi: 'Terverifikasi', diverifikasiOleh: actor, diverifikasiAt: new Date(), riwayatAudit: [...(record.riwayatAudit || []), event] });
+                const verifiedRecord = { ...record, id, statusVerifikasi: 'Terverifikasi', diverifikasiOleh: actor, diverifikasiAt: new Date(), riwayatAudit: [...(record.riwayatAudit || []), event] };
+                renderStatusDanAuditLK(verifiedRecord);
+                medixRenderPdfViewerMeta(verifiedRecord);
                 showToast('Lembar Kerja berhasil diverifikasi.', 'success');
             } catch (error) {
                 console.error('Verifikasi LK gagal:', error);
@@ -4002,6 +4004,488 @@ function renderMaintenanceHistory() {
             }
         }
 
+
+        /* =========================================================
+           MEDIX LK — PDF RESMI BERBASIS VEKTOR
+           Dokumen PDF disusun dengan teks/tabel/garis PDF asli.
+           Foto dan tanda tangan hanya disisipkan pada area terkait.
+           ========================================================= */
+        function medixPdfText(pdf, value, x, y, width, fontSize = 7, opts = {}) {
+            const text = String(value ?? '-').trim() || '-';
+            pdf.setFontSize(fontSize);
+            const lines = pdf.splitTextToSize(text, Math.max(8, width));
+            const lineH = fontSize * 0.42;
+            pdf.text(lines, x, y, { maxWidth: width, align: opts.align || 'left' });
+            return Math.max(lineH, lines.length * lineH);
+        }
+
+        async function medixGetPdfImageData(value) {
+            if (!value || value === '-') return '';
+            if (String(value).startsWith('data:image/')) return value;
+            try {
+                const response = await fetch(value);
+                if (!response.ok) return '';
+                const blob = await response.blob();
+                return await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(String(reader.result || ''));
+                    reader.onerror = () => resolve('');
+                    reader.readAsDataURL(blob);
+                });
+            } catch (_) { return ''; }
+        }
+
+        async function medixSha256(blob) {
+            try {
+                if (!window.crypto?.subtle) return '';
+                const digest = await window.crypto.subtle.digest('SHA-256', await blob.arrayBuffer());
+                return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+            } catch (error) {
+                console.warn('Hash PDF tidak dapat dibuat:', error);
+                return '';
+            }
+        }
+
+
+        function medixReadLkReferenceFields() {
+            const value = id => document.getElementById(id)?.value || '';
+            const checked = id => !!document.getElementById(id)?.checked;
+            return {
+                pemeriksaanListrik: {
+                    backupPower: value('dlk-backup-power'), powerVa: value('dlk-power-va'),
+                    voltageLN: value('dlk-voltage-ln'), voltageLG: value('dlk-voltage-lg'),
+                    voltageNG: value('dlk-voltage-ng'), grounding: value('dlk-grounding'),
+                    insulationResistance: value('dlk-insulation-resistance'), powerResistance: value('dlk-power-resistance'), leakCurrent: value('dlk-leak-current'),
+                    leakElectrode: value('dlk-leak-electrode'), cleanliness: value('dlk-cleanliness'),
+                    batteryCondition: value('dlk-battery-condition'), batteryVdc: value('dlk-battery-vdc'),
+                    batteryReference: value('dlk-battery-reference')
+                },
+                pemeliharaanPreventif: {
+                    cleaning: checked('dlk-pm-cleaning'), accessories: checked('dlk-pm-accessories'),
+                    function: checked('dlk-pm-function'), performance: checked('dlk-pm-performance'),
+                    consumable: checked('dlk-pm-consumable'), lubrication: checked('dlk-pm-lubrication'),
+                    stock: value('dlk-consumable-stock'), result: value('dlk-maintenance-result'),
+                    recommendation: value('dlk-maintenance-recommendation'),
+                    notes: value('dlk-maintenance-notes')
+                }
+            };
+        }
+
+        function medixLoadLkReferenceFields(record = {}) {
+            const e = record.pemeriksaanListrik || {};
+            const m = record.pemeliharaanPreventif || {};
+            const values = {
+                'dlk-backup-power':e.backupPower,'dlk-power-va':e.powerVa,'dlk-voltage-ln':e.voltageLN,
+                'dlk-voltage-lg':e.voltageLG,'dlk-voltage-ng':e.voltageNG,'dlk-grounding':e.grounding,
+                'dlk-insulation-resistance':e.insulationResistance,'dlk-power-resistance':e.powerResistance,'dlk-leak-current':e.leakCurrent,
+                'dlk-leak-electrode':e.leakElectrode,'dlk-cleanliness':e.cleanliness,
+                'dlk-battery-condition':e.batteryCondition,'dlk-battery-vdc':e.batteryVdc,
+                'dlk-battery-reference':e.batteryReference,'dlk-consumable-stock':m.stock,
+                'dlk-maintenance-result':m.result,'dlk-maintenance-recommendation':m.recommendation,
+                'dlk-maintenance-notes':m.notes
+            };
+            Object.entries(values).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val||'';});
+            const checks = {
+                'dlk-pm-cleaning':m.cleaning,'dlk-pm-accessories':m.accessories,
+                'dlk-pm-function':m.function,'dlk-pm-performance':m.performance,
+                'dlk-pm-consumable':m.consumable,'dlk-pm-lubrication':m.lubrication
+            };
+            Object.entries(checks).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.checked=!!val;});
+        }
+
+        function medixResetLkReferenceFields() { medixLoadLkReferenceFields({}); }
+
+        async function medixGenerateLkPdf(payload, documentId) {
+            if (!window.jspdf?.jsPDF) throw new Error('Library PDF belum termuat. Muat ulang aplikasi lalu coba kembali.');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true, putOnlyUsedFonts: true });
+            const pageW = 210, pageH = 297, left = 8, right = 202, width = right - left;
+            let y = 8, pageNo = 1;
+            const lineColor = [75, 85, 99], light = [235, 239, 243], dark = [25, 38, 52];
+            const alat = (dataAlat || []).find(a => String(a.id) === String(payload.alatId)) || {};
+            const envSuhu = document.getElementById('dlk-env-suhu')?.value || '-';
+            const envLembab = document.getElementById('dlk-env-lembab')?.value || '-';
+            const tools = Array.isArray(terpakaiAlatKerja) ? terpakaiAlatKerja : [];
+            const fisik = Array.isArray(terpakaiFisik) ? terpakaiFisik : [];
+            const fungsi = Array.isArray(terpakaiFungsi) ? terpakaiFungsi : [];
+            const pfa = Array.isArray(payload.pemeriksaanKinerja) ? payload.pemeriksaanKinerja : [];
+            const bhp = Array.isArray(payload.bhpUsage) ? payload.bhpUsage : [];
+            const fotoBefore = await medixGetPdfImageData(payload.fotoBefore);
+            const fotoAfter = await medixGetPdfImageData(payload.fotoAlat);
+            const logo = await medixGetLabelLogoDataUrl().catch(() => '');
+
+            function header() {
+                pdf.setDrawColor(...lineColor); pdf.setLineWidth(.35);
+                if (logo) { try { pdf.addImage(logo, 'PNG', left, y, 18, 18, undefined, 'FAST'); } catch (_) {} }
+                pdf.setTextColor(...dark); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(10);
+                pdf.text('PEMERINTAH KOTA BEKASI', 105, y + 4, { align: 'center' });
+                pdf.setFontSize(9); pdf.text('DINAS KESEHATAN', 105, y + 8, { align: 'center' });
+                pdf.setFontSize(11); pdf.text('UPTD RUMAH SAKIT UMUM DAERAH PONDOKGEDE', 105, y + 13, { align: 'center' });
+                pdf.setFont('helvetica', 'normal'); pdf.setFontSize(6.3);
+                pdf.text('Jl. Raya Jatiwaringin No. 1, Jatiwaringin, Kec. Pondok Gede, Kota Bekasi, Jawa Barat', 105, y + 17, { align: 'center' });
+                y += 22; pdf.line(left, y, right, y); y += 4;
+                pdf.setFont('helvetica', 'bold'); pdf.setFontSize(9.2);
+                pdf.text('LEMBAR KERJA PEMELIHARAAN ALAT KESEHATAN', 105, y + 3, { align: 'center' });
+                y += 6;
+                pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7);
+                const dt = String(payload.textTgl || '').replace('T', ' ');
+                pdf.text(`No. Lembar Kerja: ${payload.noLk || '-'}`, left + 1, y + 3);
+                pdf.text(`Jenis: ${payload.jenisKerja || '-'}`, 91, y + 3, { align: 'center' });
+                pdf.text(`Tanggal: ${dt || '-'}`, right - 1, y + 3, { align: 'right' });
+                y += 6;
+                pdf.setDrawColor(...lineColor); pdf.rect(left, y, width, 20);
+                pdf.setFillColor(242, 245, 248); pdf.rect(left, y, width, 4, 'F');
+                pdf.setFont('helvetica', 'bold'); pdf.setFontSize(6.5); pdf.text('DATA ALAT KESEHATAN', left + 2, y + 2.8);
+                pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7);
+                const rows = [
+                    [`Nama Alat: ${alat.nama || '-'}`, `No. Inventaris: ${alat.kodeAlat || alat.kodeAset || alat.kode || '-'}`],
+                    [`Merk / Tipe: ${[alat.merk, alat.tipe].filter(Boolean).join(' / ') || '-'}`, `No. Seri: ${alat.seri || '-'}`],
+                    [`Instalasi / Ruangan: ${alat.ruangan || alat.lokasi || '-'}`, `Tgl Kalibrasi: ${payload.tglKalibrasi || '-'}`],
+                    [`Tgl Berakhir Kalibrasi: ${payload.tglExpKalibrasi || '-'}`, `Hasil: ${payload.hasilTunggal || '-'}`]
+                ];
+                rows.forEach((r, i) => {
+                    const yy = y + 7 + i * 3.2;
+                    pdf.text(r[0], left + 2, yy);
+                    pdf.text(r[1], 108, yy);
+                });
+                y += 23;
+            }
+
+            function pageBreak(required = 18) {
+                if (y + required > pageH - 12) {
+                    footer();
+                    pdf.addPage(); pageNo++; y = 8; header();
+                }
+            }
+            function footer() {
+                pdf.setDrawColor(170, 178, 186); pdf.setLineWidth(.2);
+                pdf.line(left, pageH - 8, right, pageH - 8);
+                pdf.setFont('helvetica', 'normal'); pdf.setFontSize(6); pdf.setTextColor(100, 110, 120);
+                pdf.text(`MEDIX • ${payload.noLk || documentId} • Dokumen elektronik`, left, pageH - 4);
+                pdf.text(`Halaman ${pageNo}`, right, pageH - 4, { align: 'right' });
+            }
+            function section(title) {
+                pageBreak(9);
+                pdf.setFillColor(231, 237, 242); pdf.setDrawColor(...lineColor);
+                pdf.rect(left, y, width, 5, 'FD');
+                pdf.setFont('helvetica', 'bold'); pdf.setFontSize(7); pdf.setTextColor(...dark);
+                pdf.text(String(title).toUpperCase(), left + 2, y + 3.5);
+                y += 5;
+            }
+            function drawListTable(title, items, showStatus = false) {
+                const colW = width / 3;
+                const maxRows = Math.max(1, Math.ceil(items.length / 3));
+                const rowH = 4.5;
+                pageBreak(maxRows * rowH + 12);
+                section(title);
+                for (let r = 0; r < maxRows; r++) {
+                    for (let c = 0; c < 3; c++) {
+                        const item = items[r * 3 + c];
+                        const x = left + c * colW;
+                        pdf.setDrawColor(190, 198, 205); pdf.rect(x, y, colW, rowH);
+                        if (item) {
+                            const name = typeof item === 'string' ? item : item.nama || '-';
+                            const status = typeof item === 'object' ? (item.status || 'Baik') : '';
+                            pdf.setFont('helvetica', 'normal'); pdf.setFontSize(6.2); pdf.setTextColor(...dark);
+                            const label = showStatus ? `${name}  [${status || '-'}]` : name;
+                            pdf.text(pdf.splitTextToSize(label, colW - 3).slice(0, 1), x + 1.5, y + 2.9);
+                        }
+                    }
+                    y += rowH;
+                }
+                y += 2;
+            }
+            function drawKeyValueSection(title, items, columns = 3) {
+                const rows = Math.max(1, Math.ceil(items.length / columns));
+                const rowH = 8;
+                pageBreak(rows * rowH + 12);
+                section(title);
+                const colW = width / columns;
+                items.forEach((item, index) => {
+                    const row = Math.floor(index / columns), col = index % columns;
+                    const x = left + col * colW, yy = y + row * rowH;
+                    pdf.setDrawColor(190,198,205); pdf.rect(x, yy, colW, rowH);
+                    pdf.setFont('helvetica','bold'); pdf.setFontSize(5.8); pdf.setTextColor(70,80,90);
+                    pdf.text(String(item[0]), x + 1.5, yy + 2.8);
+                    pdf.setFont('helvetica','normal'); pdf.setFontSize(6.7); pdf.setTextColor(...dark);
+                    pdf.text(pdf.splitTextToSize(String(item[1] || '-'), colW - 3).slice(0,1), x + 1.5, yy + 6.1);
+                });
+                y += rows * rowH + 2;
+            }
+
+            function drawWrappedField(label, value, x, fieldY, w) {
+                pdf.setFont('helvetica', 'bold'); pdf.setFontSize(6.3); pdf.setTextColor(60, 70, 80);
+                pdf.text(label, x + 2, fieldY + 3);
+                pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7);
+                const lines = pdf.splitTextToSize(String(value || '-'), w - 4);
+                const lineH = 3.1;
+                pdf.text(lines, x + 2, fieldY + 6);
+                const h = Math.max(12, 8 + lines.length * lineH);
+                pdf.setDrawColor(190, 198, 205); pdf.rect(x, fieldY, w, h);
+                return h;
+            }
+            function addPhoto(data, x, yy, w, h) {
+                pdf.setDrawColor(190, 198, 205); pdf.rect(x, yy, w, h);
+                if (data) {
+                    try {
+                        const fmt = data.startsWith('data:image/png') ? 'PNG' : 'JPEG';
+                        pdf.addImage(data, fmt, x + 1, yy + 1, w - 2, h - 2, undefined, 'FAST');
+                    } catch (_) {
+                        pdf.setFont('helvetica', 'italic'); pdf.setFontSize(6); pdf.text('Foto tidak dapat dimuat', x + w / 2, yy + h / 2, { align: 'center' });
+                    }
+                } else {
+                    pdf.setFont('helvetica', 'italic'); pdf.setFontSize(6); pdf.setTextColor(130, 140, 150);
+                    pdf.text('Tidak ada foto', x + w / 2, yy + h / 2, { align: 'center' });
+                }
+            }
+
+            header();
+            section('Kondisi Lingkungan & Dokumentasi');
+            const envW = 54, photoW = (width - envW - 4) / 2, photoH = 23;
+            pdf.setDrawColor(190, 198, 205); pdf.rect(left, y, envW, photoH);
+            pdf.setFont('helvetica', 'bold'); pdf.setFontSize(6.5); pdf.setTextColor(...dark);
+            pdf.text('Kondisi Lingkungan', left + 2, y + 4);
+            pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7);
+            pdf.text(`Suhu Ruangan : ${envSuhu} °C`, left + 2, y + 10);
+            pdf.text(`Kelembaban : ${envLembab} %`, left + 2, y + 16);
+            addPhoto(fotoBefore, left + envW + 2, y, photoW, photoH);
+            pdf.setFont('helvetica', 'bold'); pdf.setFontSize(6); pdf.text('FOTO BEFORE', left + envW + 4, y + 3);
+            addPhoto(fotoAfter, left + envW + 2 + photoW + 2, y, photoW, photoH);
+            pdf.setFont('helvetica', 'bold'); pdf.setFontSize(6); pdf.text('FOTO AFTER', left + envW + photoW + 6, y + 3);
+            y += photoH + 3;
+
+            const electric = payload.pemeriksaanListrik || {};
+            drawKeyValueSection('Penggunaan Listrik Cadangan & Pemeriksaan Keselamatan', [
+                ['Listrik Cadangan', electric.backupPower], ['Tegangan L-N (V)', electric.voltageLN],
+                ['Tegangan L-G (V)', electric.voltageLG], ['Tegangan N-G (V)', electric.voltageNG],
+                ['Grounding (Ohm)', electric.grounding], ['Tahanan Isolasi (MΩ)', electric.insulationResistance], ['Tahanan Kabel (MΩ)', electric.powerResistance],
+                ['Arus Bocor Alat (µA)', electric.leakCurrent], ['Arus Bocor Elektroda (µA)', electric.leakElectrode],
+                ['Kebersihan', electric.cleanliness]
+            ], 3);
+            drawKeyValueSection('Daya Alat & Battery Internal', [
+                ['Daya Alat (VA)', electric.powerVa], ['Kondisi Battery', electric.batteryCondition],
+                ['Tegangan Battery (VDC)', electric.batteryVdc], ['Acuan Battery', electric.batteryReference]
+            ], 2);
+
+            drawListTable('Alat Kerja Digunakan', tools, false);
+            drawListTable('Pemeriksaan Fisik', fisik, true);
+            drawListTable('Pemeriksaan Fungsi', fungsi, true);
+
+            section('Uraian Detail Pekerjaan');
+            const uraian = [
+                ['Keluhan', payload.keluhan], ['Penyebab', payload.penyebab],
+                ['Pengecekan', payload.pengecekan], ['Solusi', payload.solusi]
+            ];
+            uraian.forEach(([label, value]) => {
+                const lines = pdf.splitTextToSize(String(value || '-'), width - 5);
+                const fieldH = Math.max(11, 7 + lines.length * 3.1);
+                pageBreak(fieldH + 2);
+                const actualH = drawWrappedField(label, value, left, y, width);
+                y += actualH + 2;
+            });
+
+            section('Pemeriksaan Kinerja Alat');
+            const cols = [
+                ['Parameter', 48], ['Satuan', 17], ['Setting', 20], ['Ukur 1', 20],
+                ['Ukur 2', 20], ['Ukur 3', 20], ['Acuan', 28], ['Hasil', 21]
+            ];
+            let cx = left;
+            pdf.setFillColor(242, 245, 248); pdf.setDrawColor(...lineColor);
+            cols.forEach(([label, w]) => { pdf.rect(cx, y, w, 6, 'FD'); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(5.8); pdf.text(label, cx + w / 2, y + 4, { align: 'center' }); cx += w; });
+            y += 6;
+            const pfaRows = pfa.length ? pfa : [{ nama: 'Belum ada data pemeriksaan', satuan: '', setting: '', t1: '', t2: '', t3: '', acuan: '', status: '' }];
+            pfaRows.forEach(row => {
+                const vals = [row.nama || '-', row.satuan || '-', row.setting || '-', row.t1 || '-', row.t2 || '-', row.t3 || '-', row.acuan || '-', row.status || '-'];
+                const heights = vals.map((v, i) => pdf.splitTextToSize(String(v), cols[i][1] - 2).length);
+                const rh = Math.max(6, Math.min(12, Math.max(...heights) * 2.7 + 2));
+                if (y + rh > pageH - 12) {
+                    pageBreak(rh + 10);
+                    section('Pemeriksaan Kinerja Alat (Lanjutan)');
+                    let hx = left;
+                    pdf.setFillColor(242, 245, 248); pdf.setDrawColor(...lineColor);
+                    cols.forEach(([label, w]) => { pdf.rect(hx, y, w, 6, 'FD'); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(5.8); pdf.text(label, hx + w / 2, y + 4, { align: 'center' }); hx += w; });
+                    y += 6;
+                }
+                let xx = left;
+                vals.forEach((v, i) => {
+                    pdf.setDrawColor(190, 198, 205); pdf.rect(xx, y, cols[i][1], rh);
+                    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(5.7);
+                    pdf.text(pdf.splitTextToSize(String(v), cols[i][1] - 2).slice(0, 2), xx + 1, y + 2.8);
+                    xx += cols[i][1];
+                });
+                y += rh;
+            });
+            y += 3;
+
+            const preventive = payload.pemeliharaanPreventif || {};
+            drawKeyValueSection('Pemeliharaan Preventif', [
+                ['Pembersihan Main Unit', preventive.cleaning ? 'Dilakukan' : 'Tidak'],
+                ['Pemeriksaan Aksesoris', preventive.accessories ? 'Dilakukan' : 'Tidak'],
+                ['Pemantauan Fungsi', preventive.function ? 'Dilakukan' : 'Tidak'],
+                ['Pemantauan Kinerja', preventive.performance ? 'Dilakukan' : 'Tidak'],
+                ['Penggantian Consumable', preventive.consumable ? 'Dilakukan' : 'Tidak'],
+                ['Lubricating / Tightening', preventive.lubrication ? 'Dilakukan' : 'Tidak'],
+                ['Stok Consumable Part', preventive.stock],
+                ['Hasil Maintenance', preventive.result]
+            ], 3);
+            drawKeyValueSection('Rekomendasi Hasil Pekerjaan', [
+                ['Rekomendasi', preventive.recommendation],
+                ['Catatan Teknisi', preventive.notes]
+            ], 2);
+
+            if (bhp.length) {
+                section('Penggunaan BHP / Aksesoris');
+                const bhpCols = [['Nama Item', 105], ['Jumlah', 25], ['Satuan', 25], ['Keterangan', 39]];
+                let xx = left;
+                pdf.setFillColor(242,245,248);
+                bhpCols.forEach(([label,w])=>{pdf.rect(xx,y,w,6,'FD');pdf.setFont('helvetica','bold');pdf.setFontSize(6);pdf.text(label,xx+2,y+4);xx+=w;});
+                y += 6;
+                bhp.forEach(item=>{
+                    const vals=[item.namaItem||item.nama||item.itemName||'-',String(item.qty??'-'),item.satuan||'-',item.keterangan||'-'];
+                    pageBreak(7); let x=left;
+                    vals.forEach((v,i)=>{pdf.rect(x,y,bhpCols[i][1],6);pdf.setFont('helvetica','normal');pdf.setFontSize(6);pdf.text(pdf.splitTextToSize(String(v),bhpCols[i][1]-3).slice(0,1),x+1.5,y+4);x+=bhpCols[i][1];});
+                    y+=6;
+                });
+                y+=3;
+            }
+
+            section('Hasil Pemeriksaan Akhir');
+            pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7);
+            const outcomes = ['Alat Berfungsi Dengan Baik','Alat Berfungsi Dengan Catatan','Alat Rusak Perlu Perbaikan'];
+            const outText = outcomes.map(v => `${payload.hasilTunggal === v ? '[X]' : '[ ]'} ${v}`).join('     ');
+            const outLines = pdf.splitTextToSize(outText, width - 4);
+            pdf.text(outLines, left + 2, y + 4);
+            y += Math.max(8, outLines.length * 3.2 + 3);
+
+            pageBreak(45);
+            section('Tanda Tangan');
+            const sigs = [
+                { title: 'Teknisi Pelaksana', name: payload.teknisiTtd || '-', data: payload.ttdTeknisi },
+                { title: 'Kepala Ruangan / Petugas', name: payload.saksiTtd || '-', data: payload.ttdUser },
+                { title: 'Penanggung Jawab Alkes', name: payload.pjTtd || '-', data: payload.ttdPJ }
+            ];
+            const sigW = width / 3, sigTop = y;
+            sigs.forEach((sig, i) => {
+                const x = left + i * sigW;
+                pdf.setDrawColor(190,198,205); pdf.rect(x, sigTop, sigW, 39);
+                pdf.setFont('helvetica','bold'); pdf.setFontSize(6.4);
+                pdf.text(sig.title, x + sigW/2, sigTop + 4, {align:'center'});
+                if (sig.data && sig.data.startsWith('data:image/')) {
+                    try { pdf.addImage(sig.data, sig.data.startsWith('data:image/png')?'PNG':'JPEG', x+5, sigTop+6, sigW-10, 23, undefined, 'FAST'); } catch (_) {}
+                }
+                pdf.setDrawColor(60,70,80); pdf.line(x+4, sigTop+32, x+sigW-4, sigTop+32);
+                pdf.setFont('helvetica','normal'); pdf.setFontSize(6.2);
+                pdf.text(pdf.splitTextToSize(sig.name, sigW-6).slice(0,2), x+sigW/2, sigTop+36, {align:'center'});
+            });
+            y += 42;
+            pdf.setFont('helvetica','italic'); pdf.setFontSize(6); pdf.setTextColor(90,100,110);
+            pdf.text('Dokumen ini diterbitkan melalui MEDIX. Data dokumen tidak dapat diedit setelah disimpan.', left, Math.min(y + 2, pageH - 11));
+
+            for (let i = 1; i <= pdf.getNumberOfPages(); i++) {
+                pdf.setPage(i); footer();
+            }
+            return pdf.output('blob');
+        }
+
+        async function medixOpenLKPdf(record) {
+            const modal = document.getElementById('medix-lk-pdf-modal');
+            const frame = document.getElementById('medix-lk-pdf-frame');
+            const title = document.getElementById('medix-lk-pdf-title');
+            if (!modal || !frame) return false;
+            window.__medixActivePdfLkId = record.id || '';
+            if (record.id) document.getElementById('dlk-firebase-id').value = record.id;
+            renderStatusDanAuditLK(record);
+            medixRenderPdfViewerMeta(record);
+            try {
+                let url = record.pdfUrl || '';
+                if (!url && record.pdfStoragePath) {
+                    const downloadUrl = await storage.ref(record.pdfStoragePath).getDownloadURL();
+                    const response = await fetch(downloadUrl);
+                    if (!response.ok) throw new Error('Unduhan PDF ditolak oleh Storage.');
+                    const pdfBlob = await response.blob();
+                    if (record.pdfSha256) {
+                        const actualHash = await medixSha256(pdfBlob);
+                        if (actualHash && actualHash !== record.pdfSha256) throw new Error('Hash PDF tidak cocok. Berkas mungkin berubah atau rusak.');
+                    }
+                    if (window.__medixLkPdfObjectUrl) URL.revokeObjectURL(window.__medixLkPdfObjectUrl);
+                    window.__medixLkPdfObjectUrl = URL.createObjectURL(pdfBlob);
+                    url = window.__medixLkPdfObjectUrl;
+                }
+                if (!url) return false;
+                frame.src = url + (url.includes('#') ? '' : '#toolbar=1&navpanes=0&view=FitH');
+                if (title) title.textContent = `Dokumen LK • ${record.noLk || '-'}`;
+                modal.classList.remove('hidden');
+                modal.setAttribute('aria-hidden', 'false');
+                const openBtn = document.getElementById('medix-lk-pdf-open-tab');
+                if (openBtn) openBtn.onclick = () => window.open(url, '_blank', 'noopener');
+                return true;
+            } catch (error) {
+                console.error('PDF LK tidak dapat dibuka:', error);
+                showToast('PDF LK tidak dapat dimuat. Periksa akses Firebase Storage.', 'error');
+                return false;
+            }
+        }
+
+        function medixCloseLKPdf() {
+            const modal = document.getElementById('medix-lk-pdf-modal');
+            const frame = document.getElementById('medix-lk-pdf-frame');
+            if (frame) frame.src = 'about:blank';
+            if (window.__medixLkPdfObjectUrl) {
+                URL.revokeObjectURL(window.__medixLkPdfObjectUrl);
+                window.__medixLkPdfObjectUrl = '';
+            }
+            if (modal) { modal.classList.add('hidden'); modal.setAttribute('aria-hidden', 'true'); }
+        }
+
+        function medixRenderPdfViewerMeta(record = {}) {
+            const status = record.statusVerifikasi || (record.noLk ? 'Status Belum Dicatat' : 'Menunggu Verifikasi');
+            const statusEl = document.getElementById('medix-lk-pdf-status');
+            if (statusEl) statusEl.textContent = status;
+            const verifyBtn = document.getElementById('medix-lk-pdf-verify');
+            const addendumDetails = document.querySelector('#medix-lk-pdf-modal .medix-lk-pdf-audit');
+            const isAdmin = canonicalRole(currentActiveRole) === 'Admin';
+            if (verifyBtn) verifyBtn.classList.toggle('hidden', !(isAdmin && status !== 'Terverifikasi'));
+            if (addendumDetails) addendumDetails.classList.toggle('hidden', !isAdmin);
+            const list = document.getElementById('medix-lk-pdf-audit-list');
+            const audit = Array.isArray(record.riwayatAudit) ? record.riwayatAudit : [];
+            const revisions = Array.isArray(record.riwayatRevisi) ? record.riwayatRevisi : [];
+            const entries = [
+                ...audit.map(item => ({ ...item, kind: 'Audit' })),
+                ...revisions.map(item => ({ aksi: 'Addendum', oleh: item.oleh, waktu: item.waktu, keterangan: item.catatan, kind: 'Addendum' }))
+            ].sort((a,b) => new Date(a.waktu || 0) - new Date(b.waktu || 0));
+            if (list) list.innerHTML = entries.length ? entries.map(item =>
+                `<li><b>${medixEscapeHtml(item.aksi || item.kind)}</b> — ${medixEscapeHtml(item.oleh || '-')} <span>(${medixEscapeHtml(medixFormatWaktuAudit(item.waktu))})</span>${item.keterangan ? `<div>${medixEscapeHtml(item.keterangan)}</div>` : ''}</li>`
+            ).join('') : '<li>Belum ada riwayat aktivitas.</li>';
+        }
+
+        async function medixAddendumFromPdfViewer() {
+            if (canonicalRole(currentActiveRole) !== 'Admin') { showToast('Hanya Admin yang dapat menambahkan addendum.', 'error'); return; }
+            const id = window.__medixActivePdfLkId || document.getElementById('dlk-firebase-id')?.value || '';
+            const input = document.getElementById('medix-lk-pdf-addendum');
+            const note = String(input?.value || '').trim();
+            if (!id) { showToast('Identitas LK tidak ditemukan.', 'error'); return; }
+            if (note.length < 5) { showToast('Catatan addendum minimal 5 karakter.', 'warning'); return; }
+            try {
+                const actor = medixNamaPenggunaAktif();
+                const now = new Date().toISOString();
+                const revision = { oleh: actor, role: 'Admin', waktu: now, catatan: note };
+                const audit = { aksi: 'Addendum ditambahkan', oleh: actor, role: 'Admin', waktu: now, keterangan: note };
+                const ref = db.collection('lembarKerja').doc(id);
+                await ref.update({
+                    riwayatRevisi: firebase.firestore.FieldValue.arrayUnion(revision),
+                    riwayatAudit: firebase.firestore.FieldValue.arrayUnion(audit),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                if (input) input.value = '';
+                const snap = await ref.get();
+                medixRenderPdfViewerMeta({ ...(snap.data() || {}), id });
+                showToast('Addendum tersimpan. PDF asli tetap tidak berubah.', 'success');
+            } catch (error) {
+                console.error('Addendum PDF LK gagal:', error);
+                showToast('Gagal menyimpan addendum: ' + (error.message || error), 'error');
+            }
+        }
+
         async function simpanPenuhIsianWorksheetDinamis() {
             if (currentActiveRole === 'User') {
                 showToast('Akses ditolak! Akun User hanya dapat melihat Lembar Kerja.', 'error');
@@ -4011,6 +4495,11 @@ function renderMaintenanceHistory() {
             const alatIdRaw = document.getElementById('dlk-selected-alat-id')?.value || '';
             if (!alatIdRaw) {
                 showToast('Belum ada alat yang terpilih pada Lembar Kerja ini!', 'error');
+                return;
+            }
+            const existingSavedId = document.getElementById('dlk-firebase-id')?.value || '';
+            if (existingSavedId) {
+                showToast('LK yang sudah disimpan bersifat final dan tidak dapat diedit. Gunakan addendum untuk catatan koreksi.', 'warning');
                 return;
             }
 
@@ -4063,7 +4552,7 @@ function renderMaintenanceHistory() {
                 ttdUser: document.getElementById('sig-user')?.toDataURL() || '',
                 ttdPJ: document.getElementById('sig-pj')?.toDataURL() || '',
                 teknisiTtd: tekNama,
-                saksiTtd: document.getElementById('dlk-select-nama-saksi')?.value || '',
+                saksiTtd: document.getElementById('dlk-kepala-ruangan-nama')?.value || document.getElementById('dlk-select-nama-saksi')?.value || '',
                 pjTtd: 'Arrief Nurcahyo, S.Tr.Em.',
                 fotoAlat: stringFotoBase64 || '-',
                 fotoBefore: stringFotoBeforeBase64 || '-',
@@ -4071,6 +4560,7 @@ function renderMaintenanceHistory() {
                 paramFisik: JSON.stringify(terpakaiFisik),
                 paramFungsi: JSON.stringify(terpakaiFungsi),
                 bhpUsage: Array.isArray(bhpUsageLK) ? bhpUsageLK.map(u => ({...u, qty: angkaBHP(u.qty)})) : [],
+                ...medixReadLkReferenceFields(),
                 tglKalibrasi: tglKalibrasiInput,
                 tglExpKalibrasi: tglExpKalibrasiInput,
                 isLocked: true,
@@ -4096,6 +4586,7 @@ function renderMaintenanceHistory() {
                 payload.diverifikasiAt = null;
             }
 
+            let uploadedPdfRef = null;
             try {
                 // Siapkan seluruh perubahan utama terlebih dahulu agar LK + status aset
                 // + penutupan ticket berhasil sebagai satu commit Firestore.
@@ -4134,6 +4625,31 @@ function renderMaintenanceHistory() {
                         .get();
                 }
 
+                // PDF final dibuat dan diunggah SEBELUM commit Firestore. Dengan demikian,
+                // dokumen LK tidak akan tercatat tersimpan bila berkas PDF resminya gagal dibuat.
+                const pdfBlob = await medixGenerateLkPdf(payload, lkRef.id);
+                const pdfSha256 = await medixSha256(pdfBlob);
+                const safeFileNo = String(payload.noLk || 'LK').replace(/[^a-zA-Z0-9_-]+/g, '_');
+                const pdfStoragePath = `lembarKerjaPdf/${lkRef.id}/${safeFileNo}.pdf`;
+                uploadedPdfRef = storage.ref(pdfStoragePath);
+                await uploadedPdfRef.put(pdfBlob, {
+                    contentType: 'application/pdf',
+                    customMetadata: {
+                        lkId: lkRef.id,
+                        noLk: payload.noLk,
+                        immutable: 'true',
+                        generatedBy: auth.currentUser?.uid || ''
+                    }
+                });
+                payload.pdfStoragePath = pdfStoragePath;
+                payload.pdfFileName = `${safeFileNo}.pdf`;
+                payload.pdfMimeType = 'application/pdf';
+                payload.pdfSha256 = pdfSha256;
+                payload.pdfStatus = 'ready';
+                payload.pdfImmutable = true;
+                payload.pdfVersion = 1;
+                payload.pdfGeneratedAt = firebase.firestore.FieldValue.serverTimestamp();
+
                 const batch = db.batch();
 
                 if (existingFirebaseId) {
@@ -4163,6 +4679,9 @@ function renderMaintenanceHistory() {
                 }
 
                 await batch.commit();
+                // Setelah Firestore berhasil commit, PDF sudah menjadi dokumen arsip.
+                // Jangan hapus PDF bila ada proses pasca-simpan yang gagal.
+                uploadedPdfRef = null;
                 document.getElementById('dlk-firebase-id').value = lkRef.id;
                 renderStatusDanAuditLK({ ...payload, id: lkRef.id, statusVerifikasi: 'Menunggu Verifikasi' });
                 // Perbarui projection Rekam Jejak publik agar scan kamera tanpa login
@@ -4203,9 +4722,13 @@ function renderMaintenanceHistory() {
                 }
 
                 document.getElementById('area-lembar-kerja-resmi')?.classList.add('hidden');
-                showToast(`Lembar Kerja ${payload.noLk} berhasil disimpan dan masuk rekapan.`, 'success');
+                showToast(`Lembar Kerja ${payload.noLk} berhasil disimpan sebagai PDF final dan masuk rekapan.`, 'success');
+                await medixOpenLKPdf({ id: lkRef.id, ...payload });
                 jadwalkanRenderAll();
             } catch (error) {
+                if (uploadedPdfRef) {
+                    try { await uploadedPdfRef.delete(); } catch (cleanupError) { console.warn('PDF sementara gagal dibersihkan:', cleanupError); }
+                }
                 console.error('Gagal menyimpan LK:', error);
                 const code = error?.code ? ` [${error.code}]` : '';
                 showToast('Lembar Kerja gagal disimpan: ' + (error.message || 'periksa koneksi dan Security Rules.') + code, 'error');
@@ -4223,6 +4746,7 @@ function renderMaintenanceHistory() {
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); if(!areaLK) return;
             document.getElementById('dlk-firebase-id').value = ""; stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
             renderStatusDanAuditLK({});
+            medixResetLkReferenceFields();
             resetFotoAfterDisplay();
             terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; bhpUsageLK = []; renderBHPUsageLK();
             const now = new Date();
@@ -4324,10 +4848,14 @@ function renderMaintenanceHistory() {
             }, 50);
         }
 
-        function bukaLembarKerjaDinamisDarlLog(id) {
+        async function bukaLembarKerjaDinamisDarlLog(id) {
             if (!izinMenu('lk','read')) { showToast('Anda tidak memiliki izin melihat LK.', 'error'); return; }
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             if(!record) { showToast("Dokumen lembar kerja tidak ditemukan.", "error"); return; }
+            if (record.pdfUrl || record.pdfStoragePath) {
+                const opened = await medixOpenLKPdf(record);
+                if (opened) return;
+            }
             document.getElementById('dlk-firebase-id').value = record.id;
             renderStatusDanAuditLK({ ...record, id: record.id });
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => { if(radio.value === record.jenisKerja) radio.checked = true; });
@@ -4339,6 +4867,7 @@ function renderMaintenanceHistory() {
             if(record.tglExpKalibrasi) document.getElementById('dlk-nokal').value = record.tglExpKalibrasi;
 
             medixLoadStructuredUraian(record);
+            medixLoadLkReferenceFields(record);
             try {
                 const savedPfa = typeof record.pemeriksaanKinerja === 'string' ? JSON.parse(record.pemeriksaanKinerja || '[]') : record.pemeriksaanKinerja;
                 pemeriksaanKinerjaLK = Array.isArray(savedPfa) && savedPfa.length ? savedPfa.map(r=>({...r, nama:r.nama||'', satuan:r.satuan||MEDIX_PFA_UNITS[medixNormText(r.nama||'')]||''})) : (()=>{const t=medixGetPfaTemplateForAsset(document.getElementById('dlk-nama')?.value||''); return t.length?t.map(x=>({...x,setting:'',t1:'',t2:'',t3:'',acuan:'',status:''})): [{pfa:'',nama:'',satuan:'',setting:'',t1:'',t2:'',t3:'',acuan:'',status:''}];})();

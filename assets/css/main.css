@@ -3687,3 +3687,99 @@ img, canvas, video, iframe { max-width:100%; }
 @media print{
   #area-lembar-kerja-resmi .lk-signature-pad canvas{max-height:none !important;height:100% !important;width:100% !important;}
 }
+
+
+/* MEDIX LK PDF viewer: dokumen asli PDF, bukan screenshot halaman. */
+.medix-lk-pdf-modal{
+  position:fixed;inset:0;z-index:12000;background:rgba(15,23,42,.78);
+  display:flex;align-items:center;justify-content:center;padding:12px;
+}
+.medix-lk-pdf-modal.hidden{display:none!important}
+.medix-lk-pdf-card{
+  width:min(1180px,100%);height:min(94dvh,960px);background:#fff;border-radius:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.32);display:flex;flex-direction:column;overflow:hidden;
+}
+.medix-lk-pdf-head{
+  min-height:58px;padding:10px 14px;border-bottom:1px solid #e2e8f0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;
+}
+.medix-lk-pdf-frame{display:block;width:100%;height:100%;flex:1;border:0;background:#e2e8f0}
+.medix-lk-pdf-foot{
+  min-height:42px;padding:7px 14px;border-top:1px solid #e2e8f0;display:flex;
+  align-items:center;justify-content:space-between;gap:10px;font-size:10px;color:#64748b;
+}
+.medix-lk-pdf-open,.medix-lk-pdf-done{
+  border:0;border-radius:8px;padding:8px 12px;background:#0f766e;color:#fff;
+  font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;
+}
+.medix-lk-pdf-close{
+  width:34px;height:34px;border:0;border-radius:9px;background:#f1f5f9;color:#334155;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+@media(max-width:640px){
+  .medix-lk-pdf-modal{padding:0}
+  .medix-lk-pdf-card{height:100dvh;width:100%;border-radius:0}
+  .medix-lk-pdf-head{padding:9px 10px}
+  .medix-lk-pdf-foot{padding:7px 10px}
+  .medix-lk-pdf-open,.medix-lk-pdf-done{padding:8px 9px}
+}
+
+.medix-lk-pdf-meta{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:7px 14px;
+  border-bottom:1px solid #e2e8f0;background:#f8fafc;color:#475569;font-size:10px;
+}
+.medix-lk-pdf-meta>span b{color:#0f766e}
+.medix-lk-pdf-verify{
+  border:0;border-radius:7px;padding:6px 9px;background:#0f766e;color:#fff;
+  font-size:10px;font-weight:800;cursor:pointer;
+}
+.medix-lk-pdf-audit{margin-left:auto}
+.medix-lk-pdf-audit summary{cursor:pointer;font-weight:800;color:#334155}
+.medix-lk-pdf-audit-body{
+  position:absolute;z-index:2;right:20px;bottom:52px;width:min(420px,calc(100vw - 30px));
+  max-height:55vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:12px;
+  box-shadow:0 12px 35px rgba(15,23,42,.2);padding:12px;display:grid;gap:8px;
+}
+.medix-lk-pdf-audit-body ol{list-style:decimal;padding-left:18px;display:grid;gap:6px;color:#475569}
+.medix-lk-pdf-audit-body li{font-size:10px;border-bottom:1px solid #f1f5f9;padding-bottom:5px}
+.medix-lk-pdf-audit-body li span{color:#94a3b8}
+.medix-lk-pdf-audit-body textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font:inherit;resize:vertical}
+
+/* Form tambahan agar LK lebih dekat dengan formulir kerja lapangan. */
+#area-lembar-kerja-resmi .lk-reference-card{
+  border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:8px;
+  color:#1e293b;font-size:10px;
+}
+#area-lembar-kerja-resmi .lk-reference-heading{
+  font-size:10px;font-weight:900;color:#1e3a5f;border-bottom:1px solid #cbd5e1;
+  padding-bottom:5px;margin-bottom:7px;text-transform:uppercase;letter-spacing:.025em;
+}
+#area-lembar-kerja-resmi .lk-reference-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px 10px;
+}
+#area-lembar-kerja-resmi .lk-reference-grid label,
+#area-lembar-kerja-resmi .lk-reference-notes{
+  display:flex;flex-direction:column;gap:3px;font-size:9px;font-weight:700;color:#475569;
+}
+#area-lembar-kerja-resmi .lk-reference-grid input,
+#area-lembar-kerja-resmi .lk-reference-grid select,
+#area-lembar-kerja-resmi .lk-reference-notes textarea{
+  width:100%;min-width:0;border:0;border-bottom:1px solid #cbd5e1;border-radius:0;
+  padding:4px 2px;background:#fff;color:#0f172a;font-size:10px;outline:none;
+}
+#area-lembar-kerja-resmi .lk-reference-grid-3{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:8px}
+#area-lembar-kerja-resmi .lk-reference-check-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px 10px;
+}
+#area-lembar-kerja-resmi .lk-reference-check-grid label{
+  display:flex;align-items:center;gap:5px;font-size:9px;font-weight:600;color:#334155;
+}
+#area-lembar-kerja-resmi .lk-reference-notes{margin-top:8px}
+@media(max-width:760px){
+  #area-lembar-kerja-resmi .lk-reference-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #area-lembar-kerja-resmi .lk-reference-check-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #area-lembar-kerja-resmi .lk-reference-grid-3{grid-template-columns:1fr}
+}
+@media print{
+  #area-lembar-kerja-resmi .lk-reference-card{break-inside:avoid;page-break-inside:avoid}
+}
