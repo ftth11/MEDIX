@@ -93,7 +93,7 @@ const firebaseConfig = {
                 role: userData.role || "User",
                 menuAkses: userAksesMenuArray || {},
                 unitId: userData.unitId || null,
-                photoURL: userData.photoURL || userData.fotoProfil || '',
+                photoURL: userData.photoURL || userData.fotoURL || userData.fotoProfil || '',
                 aktif: userData.aktif !== false
             };
             medixRenderSidebarProfile(currentUser.photoURL);
@@ -1588,15 +1588,36 @@ function showConfirmDialog(message, options = {}) {
 
 function medixRenderSidebarProfile(photoURL = '') {
     const url = String(photoURL || '').trim();
-    const imgs = [document.getElementById('sidebar-profile-avatar'), document.getElementById('sidebar-footer-avatar')];
-    const icons = [document.getElementById('sidebar-profile-avatar-icon'), document.getElementById('sidebar-footer-avatar-icon')];
-    imgs.forEach(img => {
+    const imgs = [
+        document.getElementById('sidebar-profile-avatar'),
+        document.getElementById('sidebar-footer-avatar'),
+        document.getElementById('header-profile-avatar')
+    ];
+    const icons = [
+        document.getElementById('sidebar-profile-avatar-icon'),
+        document.getElementById('sidebar-footer-avatar-icon'),
+        document.getElementById('header-profile-avatar-icon')
+    ];
+    imgs.forEach((img, index) => {
         if (!img) return;
-        if (url) { img.src = url; img.classList.remove('hidden'); }
-        else { img.removeAttribute('src'); img.classList.add('hidden'); }
+        img.onerror = () => {
+            img.removeAttribute('src');
+            img.classList.add('hidden');
+            if (icons[index]) icons[index].classList.remove('hidden');
+        };
+        if (url) {
+            img.src = url;
+            img.classList.remove('hidden');
+        } else {
+            img.removeAttribute('src');
+            img.classList.add('hidden');
+        }
     });
-    icons.forEach(icon => { if (icon) icon.classList.toggle('hidden', !!url); });
+    icons.forEach((icon, index) => {
+        if (icon) icon.classList.toggle('hidden', !!url && !!imgs[index]);
+    });
 }
+
 function triggerSidebarProfileUpload() {
     if (!auth?.currentUser) return showToast('Silakan login terlebih dahulu.', 'error');
     document.getElementById('sidebar-profile-upload')?.click();
@@ -1732,7 +1753,7 @@ function medixSyncSidebarFooterAccount() {
     const authName=(currentUser&&(currentUser.nama||currentUser.name||currentUser.username))||'-';
     nameEl.textContent=authName; roleEl.textContent=role||'Akun MEDIX';
     if(topNameEl)topNameEl.textContent=authName;
-    medixRenderSidebarProfile(currentUser?.photoURL||currentUser?.fotoProfil||'');
+    medixRenderSidebarProfile(currentUser?.photoURL||currentUser?.fotoURL||currentUser?.fotoProfil||'');
 }
 async function logoutFirebase() {
 
@@ -2694,34 +2715,23 @@ function renderMaintenanceHistory() {
             }
         }
         
-        function applyMedixTheme(theme) {
+        // MEDIX menggunakan satu tema terang permanen agar konsisten di seluruh perangkat.
+        function applyMedixTheme() {
             const body = document.getElementById('main-app-body');
-            const themeIcon = document.getElementById('theme-icon');
             const themeMeta = document.getElementById('medix-theme-color');
-            const isDark = theme === 'dark';
-            if (!body) return;
-            body.classList.toggle('dark-mode', isDark);
-            localStorage.setItem('medix_theme', isDark ? 'dark' : 'light');
-            if (themeMeta) themeMeta.setAttribute('content', isDark ? '#0b1220' : '#0f766e');
-            if (themeIcon) { themeIcon.className = isDark ? 'fa-solid fa-moon text-lg text-slate-200' : 'fa-solid fa-sun text-lg text-amber-500'; const themeBtn = themeIcon.closest('button'); if (themeBtn) { themeBtn.title = isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'; themeBtn.setAttribute('aria-label', themeBtn.title); } }
+            if (body) body.classList.remove('dark-mode');
+            try { localStorage.setItem('medix_theme', 'light'); } catch (_) {}
+            if (themeMeta) themeMeta.setAttribute('content', '#f5f8fc');
         }
 
         function toggleLightDarkMode() {
-            const body = document.getElementById('main-app-body');
-            const next = body && body.classList.contains('dark-mode') ? 'light' : 'dark';
-            applyMedixTheme(next);
-            setTimeout(() => {
-                renderGrafikDashboardDinamis();
-                renderGrafikTrenKerusakan();
-            }, 120);
+            // Kompatibilitas untuk pemanggilan lama: mode gelap tidak lagi tersedia.
+            applyMedixTheme();
+            showToast('MEDIX menggunakan mode terang.', 'info');
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('medix_theme');
-            const themeIcon = document.getElementById('theme-icon');
-            applyMedixTheme(savedTheme === 'dark' ? 'dark' : 'light');
-        });
-        
+        document.addEventListener('DOMContentLoaded', () => applyMedixTheme());
+
         let dataBukuPetunjuk = [];
         let html5QrCodeScanner = null;
         let riwayatNavigasiTab = ['dashboard'];

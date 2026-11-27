@@ -35,3 +35,12 @@ Paket ini adalah peningkatan visual non-destruktif tahap awal. Belum dapat diseb
 - Menghilangkan baris ID internal dari seluruh varian label (PNG satuan, cetak massal browser, dan PDF massal). Label tetap menampilkan nomor seri dan lokasi aset.
 - Menambahkan panel sambutan dashboard berisi nama pengguna, peran akun, identitas aplikasi/rumah sakit, tanggal, dan jam WIB yang diperbarui otomatis.
 - QR Rekam Jejak tetap menggunakan mekanisme payload/token publik yang sudah ada; tidak ada perubahan skema database.
+
+## Refinement UI — tema terang dan responsivitas
+- Mengunci tampilan MEDIX pada satu tema terang; tombol pengubah mode dihapus dan preferensi lama mode gelap dinormalisasi menjadi terang.
+- Tombol logout dipindahkan ke kanan atas header aplikasi.
+- Tombol foto profil ditampilkan di header dan tetap tersedia dari area profil sidebar.
+- Renderer foto profil sekarang menyinkronkan avatar header dan sidebar, membaca fallback `photoURL`, `fotoURL`, dan `fotoProfil`, serta menampilkan ikon cadangan jika gambar gagal dimuat.
+- Palet aplikasi diselaraskan ke putih/abu-abu kebiruan dengan aksen teal dan biru, termasuk dashboard sambutan agar kontras teks lebih jelas.
+- Penyesuaian layout responsif untuk desktop, tablet, dan ponsel, termasuk ruang konten, header, sidebar, tabel yang dapat digulir horizontal, dan kontrol sentuh.
+- Fungsi autentikasi, penyimpanan profil Firebase, dan struktur data aset tidak diubah.

@@ -32,3 +32,6 @@ Paket ini mempertahankan logika aplikasi dan menambahkan refinement visual secar
 - Dashboard menampilkan panel sambutan berdasarkan profil pengguna, peran akun, tanggal dan jam WIB otomatis.
 - Label aset tidak lagi menampilkan ID internal; nomor seri dan lokasi tetap ditampilkan.
 - Penghilangan ID hanya mengubah tampilan cetak label. Data aset, ID dokumen/database, dan payload QR tidak diubah.
+
+### UI refinement
+MEDIX menggunakan tema terang permanen dengan palet putih/abu-abu kebiruan dan aksen teal/biru. Tombol logout berada di kanan atas. Foto profil dapat dibuka dari avatar header atau sidebar; perubahan foto memerlukan Firebase Storage dan izin Firestore/Storage yang sesuai. Layout telah diberi penyesuaian responsif untuk desktop, tablet, dan ponsel.
