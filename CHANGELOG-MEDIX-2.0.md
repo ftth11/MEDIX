@@ -30,3 +30,8 @@ Paket ini adalah peningkatan visual non-destruktif tahap awal. Belum dapat diseb
 - PDF massal memakai ukuran dan tata letak yang sama dengan browser print.
 - Label satuan diunduh sebagai PNG resolusi tinggi dengan ukuran desain 70 × 25 mm.
 - Payload QR tetap menggunakan fungsi canonical `medixBuildQrValue(alat)` dan token publik yang sudah ada; tidak mengubah format URL/token atau alur QR Rekam Jejak publik tanpa login.
+
+### Penyempurnaan MEDIX – Dashboard & Smart Asset Tag
+- Menghilangkan baris ID internal dari seluruh varian label (PNG satuan, cetak massal browser, dan PDF massal). Label tetap menampilkan nomor seri dan lokasi aset.
+- Menambahkan panel sambutan dashboard berisi nama pengguna, peran akun, identitas aplikasi/rumah sakit, tanggal, dan jam WIB yang diperbarui otomatis.
+- QR Rekam Jejak tetap menggunakan mekanisme payload/token publik yang sudah ada; tidak ada perubahan skema database.

@@ -27,3 +27,8 @@ Paket ini mempertahankan logika aplikasi dan menambahkan refinement visual secar
 - QR tetap menggunakan payload canonical `medixBuildQrValue(alat)` dan token publik aset yang sama. Cetak ulang tidak membuat token baru jika token sudah tersedia.
 - Untuk hasil ukuran fisik yang tepat, pada dialog cetak pilih A4, Landscape, skala 100% / Actual size, dan nonaktifkan header/footer browser. Pastikan printer tidak menerapkan scaling tambahan.
 - Lakukan uji scan pada hasil cetak fisik sebelum produksi massal; hasil scan dipengaruhi printer, bahan stiker, kontras, dan kualitas cetak.
+
+### Penyempurnaan Dashboard & Label
+- Dashboard menampilkan panel sambutan berdasarkan profil pengguna, peran akun, tanggal dan jam WIB otomatis.
+- Label aset tidak lagi menampilkan ID internal; nomor seri dan lokasi tetap ditampilkan.
+- Penghilangan ID hanya mengubah tampilan cetak label. Data aset, ID dokumen/database, dan payload QR tidak diubah.

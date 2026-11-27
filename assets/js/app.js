@@ -97,8 +97,27 @@ const firebaseConfig = {
                 aktif: userData.aktif !== false
             };
             medixRenderSidebarProfile(currentUser.photoURL);
+            medixUpdateDashboardWelcome();
         
             return true;
+        }
+
+        function medixUpdateDashboardWelcome() {
+            const nameEl = document.getElementById('dashboard-welcome-name');
+            const roleEl = document.getElementById('dashboard-welcome-role');
+            const dateEl = document.getElementById('dashboard-live-date');
+            const timeEl = document.getElementById('dashboard-live-time');
+            if (nameEl) nameEl.textContent = currentUser?.nama || currentUser?.username || currentUser?.email || currentUserNama || 'Pengguna';
+            if (roleEl) roleEl.textContent = `Masuk sebagai ${canonicalRole(currentActiveRole || currentUser?.role || 'User')}`;
+            const updateClock = () => {
+                const now = new Date();
+                const dateText = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+                const timeText = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(now);
+                if (dateEl) dateEl.textContent = dateText;
+                if (timeEl) timeEl.textContent = `${timeText} WIB`;
+            };
+            updateClock();
+            if (!medixDashboardClockTimer) medixDashboardClockTimer = window.setInterval(updateClock, 1000);
         }
 
         function syncMasterHeaderActions() {
@@ -212,6 +231,7 @@ const firebaseConfig = {
         let currentUserNama = "";
         let userAksesMenuArray = {};
         let currentUser = null;
+        let medixDashboardClockTimer = null;
         let currentEMSubTab = 'database';
         let dataEquipment = []; // Projection per unit dari Master Data Aset
         let dataLembarKerja = []; // Seluruh LK untuk Rekapan EM
@@ -6184,8 +6204,7 @@ function renderMaintenanceHistory() {
             };
             fit(alat.nama||alat.namaAlat||'ALAT KESEHATAN',218,59,'#123047','900');
             fit([alat.merk,alat.tipe].filter(Boolean).join(' · ')||'Merk / tipe tidak dicantumkan',303,39,'#475569','700');
-            const kode=alat.kodeAlat||alat.kodeAset||alat.kode||alat.assetCode||alat.nomorAset||alat.id||'-';
-            fit(`ID ${kode}   |   SN ${alat.seri||alat.serialNumber||'-'}`,385,34,'#334155','700');
+            fit(`NO. SERI ${alat.seri||alat.serialNumber||'-'}`,385,34,'#334155','700');
             fit(`LOKASI ${alat.ruangan||alat.lokasi||'-'}`,463,34,'#0f766e','800');
             ctx.textAlign='center'; ctx.fillStyle='#64748b'; ctx.font='700 20px Arial,sans-serif';
             ctx.fillText('SCAN UNTUK MEMBUKA REKAM JEJAK ASET',W/2,565);
@@ -6923,8 +6942,7 @@ function renderMaintenanceHistory() {
                 const tx=x+21.5,tw=47;
                 fit(a.nama||a.namaAlat||'ALAT KESEHATAN',tx,y+9.0,tw,7.0,[18,48,71]);
                 fit([a.merk,a.tipe].filter(Boolean).join(' · ')||'Merk / tipe tidak dicantumkan',tx,y+13.0,tw,5.0,[71,85,105]);
-                const kode=a.kodeAlat||a.kodeAset||a.kode||a.assetCode||a.nomorAset||a.id||'-';
-                fit(`ID ${kode}  |  SN ${a.seri||a.serialNumber||'-'}`,tx,y+16.7,tw,4.4,[51,65,85],'normal');
+                fit(`NO. SERI ${a.seri||a.serialNumber||'-'}`,tx,y+16.7,tw,4.4,[51,65,85],'normal');
                 fit(`LOKASI ${a.ruangan||a.lokasi||'-'}`,tx,y+20.5,tw,4.5,[15,118,110]);
                 pdf.setFont('helvetica','bold');pdf.setFontSize(3.0);pdf.setTextColor(100,116,139);
                 pdf.text('SCAN UNTUK REKAM JEJAK ASET',x+labelW/2,y+24.1,{align:'center'});
@@ -6953,13 +6971,12 @@ function renderMaintenanceHistory() {
                 const pageItems=dataAlat.slice(start,start+perPage),page=document.createElement('div');
                 page.className='medix-label-print-page';
                 page.innerHTML=pageItems.map((a,i)=>{
-                    const kode=a.kodeAlat||a.kodeAset||a.kode||a.assetCode||a.nomorAset||a.id||'-';
                     return `<div class="medix-label-card-print">
                       <div class="medix-label-top"><img src="${logoUrl}" alt="Logo RSUD" onerror="this.style.display='none'"><b>MEDIX</b><span>UPTD RSUD KELAS D PONDOKGEDE</span></div>
                       <div class="medix-label-body"><div class="medix-label-qr" id="medix-browser-qr-${start+i}"></div><div class="medix-label-info">
                         <div class="medix-label-name">${esc(a.nama||a.namaAlat||'ALAT KESEHATAN')}</div>
                         <div class="medix-label-sub">${esc([a.merk,a.tipe].filter(Boolean).join(' · ')||'Merk / tipe tidak dicantumkan')}</div>
-                        <div class="medix-label-sn">ID ${esc(kode)} &nbsp;|&nbsp; SN ${esc(a.seri||a.serialNumber||'-')}</div>
+                        <div class="medix-label-sn">NO. SERI ${esc(a.seri||a.serialNumber||'-')}</div>
                         <div class="medix-label-room">LOKASI ${esc(a.ruangan||a.lokasi||'-')}</div>
                       </div></div>
                       <div class="medix-label-scan">SCAN UNTUK REKAM JEJAK ASET</div>
