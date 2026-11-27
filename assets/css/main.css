@@ -3230,31 +3230,3 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 #master-table-scroll { overflow-y:visible !important; }
 .medix-mobile-filter-reset { display:none !important; }
 #sidebar-profile-avatar, #sidebar-footer-avatar { object-fit:cover; }
-
-/* ===== STYLE BLOCK %d ===== */
-body { font-family: sans-serif; padding: 20px; color: #000; background: #fff; }
-                        .kop { text-align:center; border-bottom:2px solid #000; padding:0 0 8px; margin:0 0 14px; }
-                        .kop h2 { margin:0; font-size:14px; line-height:1.15; text-transform:uppercase; font-weight:800; }
-                        .kop h3 { margin:2px 0; font-size:15px; line-height:1.15; text-transform:uppercase; font-weight:900; }
-                        .kop p { margin:1px 0 0; font-size:9px; line-height:1.2; font-family:Arial,sans-serif; font-weight:600; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
-                        table th, table td { border: 1px solid #333; padding: 6px 8px; text-align: left; }
-                        table th { background: #f1f5f9; }
-                        .tanda-tangan { margin-top: 40px; float: right; text-align: center; font-size: 12px; }
-                        @media print { .no-print { display: none; } }
-
-/* ===== STYLE BLOCK %d ===== */
-@page { size: A4 landscape; margin: 8mm; }
-                        body { font-family: Arial, sans-serif; padding: 0; margin: 0; color: #000; background: #fff; }
-                        .kop { text-align:center; border-bottom:2px solid #000; padding:0 0 8px; margin:0 0 14px; }
-                        .kop h2 { margin:0; font-size:14px; line-height:1.15; text-transform:uppercase; font-weight:800; }
-                        .kop h3 { margin:2px 0; font-size:15px; line-height:1.15; text-transform:uppercase; font-weight:900; }
-                        .kop p { margin:1px 0 0; font-size:9px; line-height:1.2; font-family:Arial,sans-serif; font-weight:600; }
-                        .periode { text-align:center; font-size:12px; font-weight:700; margin: 0 0 10px; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 9px; }
-                        table th, table td { border: 1px solid #333; padding: 4px 5px; text-align: left; vertical-align: top; }
-                        table th { background: #f1f5f9; }
-                        .tanda-tangan { margin-top: 24px; margin-left: auto; width: 240px; text-align: center; font-size: 10px; }
-                        .no-print { margin-bottom: 12px; text-align: right; }
-                        .btn-print { background:#2563eb;color:#fff;border:0;padding:7px 13px;font-weight:700;border-radius:6px;cursor:pointer; }
-                        @media print { .no-print { display:none!important; } }
