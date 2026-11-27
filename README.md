@@ -1,38 +1,29 @@
-# MEDIX
+# MEDIX – Modular Web Application
 
 Aplikasi MEDIX berbasis web dengan Firebase dan PWA.
 
 ## Struktur proyek
-
 - `index.html` — kerangka halaman aplikasi.
-- `assets/css/main.css` — seluruh stylesheet yang sebelumnya tertanam di HTML.
-- `assets/js/app.js` — logika inti aplikasi dan integrasi Firebase (dipindahkan tanpa mengubah isi logika).
-- `assets/js/table-filters.js` — utilitas filter tabel dan mesin cetak (dipindahkan tanpa mengubah isi logika).
+- `assets/css/main.css` — stylesheet aplikasi dan lapisan refinement visual MEDIX 2.0.
+- `assets/js/app.js` — logika inti aplikasi dan integrasi Firebase.
+- `assets/js/table-filters.js` — utilitas filter tabel dan mesin cetak.
 - `assets/images/logo.png` — logo aplikasi.
 - `database.json` — data/berkas database bawaan proyek.
 - `manifest.json` dan `sw.js` — konfigurasi PWA dan service worker.
+- `CHANGELOG-MEDIX-2.0.md` — catatan perubahan paket.
 
 ## Deployment
+Unggah seluruh isi folder `MEDIX` ke repository deployment. Pertahankan konfigurasi Firebase dan pengaturan hosting yang sudah digunakan. Jangan mengganti konfigurasi project Firebase dengan konfigurasi contoh.
 
-Unggah seluruh isi folder repository ini ke repository MEDIX yang sudah digunakan. Pertahankan konfigurasi Firebase dan pengaturan GitHub Pages yang sudah ada.
+## Catatan
+Paket ini mempertahankan logika aplikasi dan menambahkan refinement visual secara aditif. Tetap lakukan pengujian fungsi, keamanan Firestore, QR publik, LK/PDF, dan seluruh role sebelum digunakan operasional. Lihat `CHANGELOG-MEDIX-2.0.md`.
 
-> Catatan: pemisahan ini merupakan refaktor struktur tahap pertama. Kode JavaScript inti sengaja dipertahankan utuh untuk menjaga kompatibilitas fitur, autentikasi, dan data yang sudah berjalan. Pemecahan logika menjadi modul fitur terpisah dapat dilakukan bertahap setelah pengujian fungsi di deployment.
+### MEDIX Smart Asset Tag
 
-
-## MEDIX Premium UI Update
-
-Paket ini mempertahankan modul aplikasi, alur Firebase, dan struktur data yang sudah ada. Pembaruan berfokus pada konsistensi desain, responsivitas, aksesibilitas navigasi, mode terang/gelap, pengalaman pengisian LK, dan standardisasi label aset.
-
-### Perubahan tampilan
-- Sistem visual Premium Medical: Deep Navy, Medical Teal, permukaan netral, tipografi dan kontrol yang konsisten.
-- Mode terang dan gelap tetap tersedia dan diselaraskan.
-- Sidebar, header, kartu dashboard, tabel, dialog, dan form diperhalus untuk desktop, tablet, dan ponsel.
-- Form LK dirapikan untuk penggunaan layar; hasil cetak tetap menggunakan kertas putih.
-- Label aset satuan dan massal diseragamkan menjadi 78 × 26 mm, dengan QR, nama alat, kode aset, nomor seri, dan lokasi.
-- Cache PWA dinaikkan ke medix-cache-v7 dan stylesheet premium dimasukkan ke app shell.
-
-### Penerapan
-Unggah isi folder `MEDIX` ke repository/deployment yang sama, dengan mempertahankan konfigurasi Firebase dan data Firestore yang sudah digunakan. Setelah deployment, lakukan hard refresh atau tutup-buka ulang PWA agar cache versi baru aktif.
-
-### Catatan pengujian
-Pemeriksaan statis JavaScript, referensi aset lokal, ID HTML, dan daftar app-shell PWA telah dilakukan. Pengujian alur operasional tetap perlu dilakukan pada akun Firebase aktif untuk memastikan izin, data, upload, cetak, dan sinkronisasi berjalan sesuai kondisi deployment.
+- Standar ukuran label: 70 × 25 mm.
+- Identitas: logo eksisting, MEDIX, dan UPTD RSUD Kelas D Pondokgede.
+- Label satuan: PNG resolusi tinggi.
+- Label massal: browser print dan PDF A4 landscape, 28 label per halaman (4 × 7).
+- QR tetap menggunakan payload canonical `medixBuildQrValue(alat)` dan token publik aset yang sama. Cetak ulang tidak membuat token baru jika token sudah tersedia.
+- Untuk hasil ukuran fisik yang tepat, pada dialog cetak pilih A4, Landscape, skala 100% / Actual size, dan nonaktifkan header/footer browser. Pastikan printer tidak menerapkan scaling tambahan.
+- Lakukan uji scan pada hasil cetak fisik sebelum produksi massal; hasil scan dipengaruhi printer, bahan stiker, kontras, dan kualitas cetak.

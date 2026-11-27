@@ -2537,7 +2537,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 }
 
 /* ===== STYLE BLOCK %d ===== */
-/* MEDIX LABEL ENGINE — ukuran label diseragamkan menjadi 78 × 26 mm */
+/* MEDIX LABEL ENGINE — 4 kolom x 9 baris A4 landscape, margin 5 mm */
 .medix-label-printing{background:#fff!important;}
 #medix-label-print-root{display:none;}
 .medix-label-printing #medix-label-print-root{display:block;width:297mm;margin:0 auto;background:#fff;color:#0f172a;}
@@ -2552,7 +2552,7 @@ body.dark-mode .medix-mobile-filter-btn { background:#172033; color:#e2e8f0; bor
 .medix-label-info{min-width:0;width:50mm;overflow:hidden;line-height:1.02;}
 .medix-label-name{font-size:2.75mm;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;}
 .medix-label-sub{font-size:1.65mm;color:#475569;font-weight:700;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.medix-label-sn{font:700 1.35mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.medix-label-sn{font:700 1.55mm/1.05 monospace;color:#334155;margin-top:.65mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-room{font-size:1.55mm;color:#2563eb;font-weight:800;margin-top:.55mm;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .medix-label-scan{text-align:center;height:2.7mm;min-height:2.7mm;font:700 1.2mm/1 monospace;color:#64748b;padding-top:.25mm;}
 @media print{
@@ -3231,104 +3231,255 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 .medix-mobile-filter-reset { display:none !important; }
 #sidebar-profile-avatar, #sidebar-footer-avatar { object-fit:cover; }
 
-
-/* MEDIX DASHBOARD POLISH — welcome, clock and responsive data views */
-.dashboard-welcome{display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden;padding:22px 24px;border-radius:22px;color:#f8fafc;background:linear-gradient(115deg,#0f766e 0%,#0d9488 48%,#0e7490 100%);border:1px solid rgba(255,255,255,.24);box-shadow:0 14px 32px rgba(15,118,110,.18)}
-.dashboard-welcome::after{content:"";position:absolute;width:250px;height:250px;right:18%;top:-170px;border:1px solid rgba(255,255,255,.14);border-radius:50%;box-shadow:0 0 0 28px rgba(255,255,255,.035),0 0 0 58px rgba(255,255,255,.025);pointer-events:none}
-.dashboard-welcome-copy,.dashboard-clock-card{position:relative;z-index:1}
-.dashboard-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:9px;color:#ccfbf1;font-size:9px;font-weight:900;letter-spacing:.16em}
-.dashboard-welcome h1{margin:0;color:#fff;font-size:clamp(21px,3vw,29px);line-height:1.15;font-weight:900;letter-spacing:-.035em}
-.dashboard-welcome p{margin:8px 0 0;max-width:660px;color:rgba(240,253,250,.9);font-size:12px;line-height:1.65}
-.dashboard-clock-card{flex:0 0 auto;min-width:205px;padding:12px 15px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px)}
-.dashboard-date{display:flex;align-items:center;gap:7px;color:#ccfbf1;font-size:10px;font-weight:700}
-.dashboard-time{margin-top:5px;color:#fff;font-size:clamp(25px,3vw,32px);font-weight:900;letter-spacing:.045em;font-variant-numeric:tabular-nums;line-height:1.2}
-.dashboard-timezone{margin-top:3px;color:rgba(240,253,250,.78);font-size:9px;font-weight:700;letter-spacing:.08em}
-#dashboard-stat-grid>div,#dashboard-stat-grid>button{min-height:94px;border-color:rgba(13,148,136,.18);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-#dashboard-stat-grid>div:hover,#dashboard-stat-grid>button:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(15,118,110,.10);border-color:rgba(13,148,136,.38)}
-#tab-dashboard canvas{max-width:100%}#tab-dashboard .glass-panel{min-width:0}#tab-dashboard .glass-panel h4{line-height:1.45}
-#tab-dashboard table{width:100%;border-collapse:separate;border-spacing:0}#tab-dashboard table th{position:sticky;top:0;z-index:1}
-@media(max-width:700px){.dashboard-welcome{align-items:stretch;flex-direction:column;padding:18px;gap:14px}.dashboard-clock-card{min-width:0;width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px}.dashboard-date{grid-column:1}.dashboard-time{grid-column:2;grid-row:1/span 2;margin:0;font-size:25px}.dashboard-timezone{grid-column:1}#dashboard-stat-grid>div,#dashboard-stat-grid>button{min-height:82px}}
-@media(prefers-reduced-motion:reduce){#dashboard-stat-grid>div,#dashboard-stat-grid>button{transition:none}}
-
 /* =========================================================
-   MEDIX PROFESSIONAL UI LAYER — responsive, accessible, print-safe
-   Tidak mengubah struktur data maupun logika bisnis aplikasi.
+   MEDIX 2.0 – visual refinement layer
+   Additive overrides: preserve existing component IDs and logic.
    ========================================================= */
-:root{
-  --medix-primary:#0f766e;--medix-primary-strong:#0b625b;--medix-primary-soft:#e6f5f2;
-  --medix-ink:#172b3a;--medix-muted:#647789;--medix-line:#dce6eb;--medix-surface:#fff;
-  --medix-shadow:0 8px 26px rgba(20,55,70,.07);--medix-radius:16px;
+:root {
+  --medix-navy: #123047;
+  --medix-teal: #0f8b83;
+  --medix-teal-dark: #0b716b;
+  --medix-canvas: #f3f6f9;
+  --medix-border: #e2e8f0;
+  --medix-radius: 14px;
+  --medix-shadow: 0 5px 18px rgba(15, 35, 55, .055);
 }
-html,body{max-width:100%;overflow-x:hidden!important}
-body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.008em}
-#main-content-area{min-width:0;max-width:100%;overscroll-behavior:contain}
-#main-content-area>header{position:sticky;top:0;z-index:35;min-height:72px;background:rgba(255,255,255,.94)!important;border-bottom:1px solid var(--medix-line)!important;box-shadow:0 3px 14px rgba(15,45,60,.045)!important;backdrop-filter:blur(14px)}
-#main-content-area>header h1{font-size:clamp(23px,2.5vw,30px)!important}
-#main-content-area>main{width:100%;max-width:1680px;margin-inline:auto;padding:clamp(14px,2vw,28px)!important;box-sizing:border-box}
-#app-sidebar{background:#fff!important;border-color:var(--medix-line)!important;box-shadow:12px 0 38px rgba(15,45,60,.09)!important}
-#app-sidebar .sidebar-item{min-height:44px;border-radius:11px!important;border-left:3px solid transparent!important;font-size:12px;transition:background .18s ease,color .18s ease,border-color .18s ease}
-#app-sidebar .sidebar-item.active{background:var(--medix-primary-soft)!important;color:var(--medix-primary-strong)!important;border-left-color:var(--medix-primary)!important}
-#app-sidebar .sidebar-item:hover{background:#f1f7f8!important;color:var(--medix-primary-strong)!important}
-.glass-panel{border:1px solid var(--medix-line)!important;border-radius:var(--medix-radius)!important;box-shadow:var(--medix-shadow)!important;min-width:0;}
-#tab-dashboard .glass-panel{padding:clamp(13px,1.5vw,20px)}
-#dashboard-stat-grid>div,#dashboard-stat-grid>button{border-radius:15px!important;background:#fff!important}
-.dashboard-welcome{border-radius:20px!important;box-shadow:0 14px 34px rgba(15,118,110,.14)!important}
-/* Form controls: consistent height, focus ring and readable labels. */
-input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea{max-width:100%;border-color:#cbd8df!important;border-radius:10px!important}
-input:focus,select:focus,textarea:focus,button:focus-visible,[role=button]:focus-visible{outline:3px solid rgba(13,148,136,.2)!important;outline-offset:2px}
-label{line-height:1.45}
-button{touch-action:manipulation}
-/* Data tables remain readable and scroll inside their own region. */
-#main-content-area table{max-width:100%;border-collapse:separate;border-spacing:0}
-#main-content-area th{font-size:10px;letter-spacing:.035em;white-space:nowrap}
-#main-content-area td{font-size:11px;vertical-align:middle}
-.master-table-scroll,.table-scroll,#tab-data-alat .overflow-x-auto,#tab-bhp .overflow-x-auto,#tab-equipment .overflow-x-auto,#tab-ticket-system .overflow-x-auto{max-width:100%;overflow:auto!important;overscroll-behavior-x:contain;border-radius:12px}
-#main-content-area table td,#main-content-area table th{padding:10px 12px}
-/* Dialogs and toast should fit smaller viewports. */
-#medix-confirm-dialog,#medix-input-dialog{z-index:1000000}
-.medix-dialog-card{max-width:min(440px,calc(100vw - 28px));border-radius:18px!important;box-shadow:0 24px 80px rgba(15,35,50,.24)!important}
-#toast-container{max-width:min(390px,calc(100vw - 24px));right:12px!important;top:12px!important}
-#medix-mobile-backdrop{z-index:48}
-/* Desktop: fixed sidebar with comfortable content spacing. */
-@media(min-width:1024px){
- #app-sidebar{width:272px!important}
- #main-content-area>main{padding:26px 30px!important}
- #main-content-area>header{padding-inline:30px!important}
- #tab-dashboard #dashboard-stat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+html { scroll-behavior: smooth; }
+body#main-app-body {
+  background: var(--medix-canvas);
+  color: #263449;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-/* Tablet and mobile: drawer navigation, compact header, no page-level sideways scroll. */
-@media(max-width:1023px){
- #app-sidebar{width:min(304px,86vw)!important;max-width:86vw;z-index:60}
- #main-content-area{margin-left:0!important;width:100%!important}
- #main-content-area>header{padding:12px 16px!important;min-height:64px}
- #main-content-area>header span{letter-spacing:.08em!important}
- #main-content-area>main{padding:16px!important}
- #medix-mobile-backdrop.show{display:block!important;position:fixed;inset:0;background:rgba(8,24,36,.48);backdrop-filter:blur(2px)}
+button, input, select, textarea { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid rgba(15, 139, 131, .34) !important;
+  outline-offset: 2px !important;
 }
-@media(max-width:640px){
- #main-content-area>header{gap:10px;padding:10px 12px!important}
- #main-content-area>header h1{font-size:23px!important;line-height:1}
- #main-content-area>header span{font-size:8px!important;line-height:1.35;max-width:210px}
- #main-content-area>main{padding:12px!important;gap:14px!important}
- .dashboard-welcome{padding:17px!important;border-radius:16px!important}
- #dashboard-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
- #dashboard-stat-grid>div,#dashboard-stat-grid>button{padding:12px!important;min-height:78px!important;gap:8px}
- #dashboard-stat-grid h3{font-size:24px!important}
- #dashboard-stat-grid p{font-size:8px!important;line-height:1.35}
- .glass-panel{border-radius:14px!important}
- #main-content-area table td,#main-content-area table th{padding:8px 9px;font-size:10px}
- #main-content-area input:not([type=checkbox]):not([type=radio]):not([type=file]),#main-content-area select{min-height:40px}
- #main-content-area button{min-height:38px}
- .medix-dialog-card{padding:18px!important}
+
+/* Consistent brand identity */
+#app-sidebar { border-right-color: #dbe5eb !important; }
+#app-sidebar > div:first-child { border-bottom-color: #e6edf2 !important; }
+#app-sidebar .sidebar-item {
+  min-height: 42px;
+  border-radius: 11px !important;
+  font-weight: 600;
+  letter-spacing: .005em;
 }
-@media(max-width:380px){
- #main-content-area>header span{max-width:165px}
- #dashboard-stat-grid>div,#dashboard-stat-grid>button{padding:10px!important}
- #dashboard-stat-grid h3{font-size:21px!important}
+#app-sidebar .sidebar-item.active {
+  color: var(--medix-teal-dark) !important;
+  background: #e8f5f3 !important;
+  box-shadow: inset 3px 0 0 var(--medix-teal);
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-@media print{
- html,body{overflow:visible!important;max-width:none!important}
- #main-content-area>header,#app-sidebar,#medix-mobile-backdrop,#toast-container,#db-status-loader{display:none!important}
- #main-content-area,#main-content-area>main{display:block!important;width:100%!important;margin:0!important;padding:0!important;overflow:visible!important;max-width:none!important}
+#app-sidebar .sidebar-item:hover:not(.active) { background: #f1f6f8 !important; }
+#app-sidebar img#sidebar-profile-avatar,
+#app-sidebar img#sidebar-footer-avatar {
+  border-radius: 50% !important;
+  object-fit: cover;
+}
+#app-sidebar button[title="Ubah foto profil"] {
+  border-radius: 50% !important;
+}
+
+/* Header and content rhythm */
+#main-content-area > header {
+  background: rgba(255,255,255,.94) !important;
+  border-bottom: 1px solid var(--medix-border) !important;
+  box-shadow: 0 3px 14px rgba(15, 35, 55, .035) !important;
+  backdrop-filter: blur(14px);
+}
+#main-content-area > header h1 {
+  letter-spacing: -.045em;
+  background-image: linear-gradient(110deg, var(--medix-navy), var(--medix-teal)) !important;
+}
+#main-content-area main { min-height: calc(100vh - 72px); }
+.glass-panel {
+  border: 1px solid rgba(220, 230, 237, .9) !important;
+  border-radius: var(--medix-radius) !important;
+  box-shadow: var(--medix-shadow) !important;
+  backdrop-filter: none;
+}
+
+/* Buttons: clearer hierarchy without changing their actions */
+button { transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease; }
+button:active { transform: translateY(1px); }
+button:disabled { cursor: not-allowed !important; opacity: .58; }
+#medix-mobile-bottom-nav button { min-height: 56px; }
+#medix-mobile-bottom-nav button[aria-current="page"],
+#medix-mobile-bottom-nav button.active {
+  color: var(--medix-teal-dark) !important;
+}
+
+/* Form labels and controls */
+label {
+  line-height: 1.4;
+  letter-spacing: .005em;
+}
+input:not([type="checkbox"]):not([type="radio"]),
+select, textarea {
+  border-radius: 10px;
+  border-color: #cbd5e1;
+}
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus, textarea:focus {
+  border-color: var(--medix-teal) !important;
+  box-shadow: 0 0 0 3px rgba(15,139,131,.10) !important;
+}
+::placeholder { color: #94a3b8; opacity: 1; }
+
+/* Tables: improve scanability and mobile legibility */
+table { border-collapse: separate; border-spacing: 0; }
+table thead th { font-weight: 750; letter-spacing: .015em; }
+table tbody tr { transition: background-color .12s ease; }
+table tbody tr:hover { background-color: #f7fafc; }
+table td, table th { line-height: 1.45; }
+
+/* Status chips and alerts */
+.badge, [class*="status-badge"], [class*="status-chip"] { font-weight: 700; }
+[role="alert"] { border-radius: 12px; }
+
+/* Dark mode refinements */
+body.dark-mode#main-app-body { background: #0b1220 !important; color: #e5edf5 !important; }
+body.dark-mode #main-content-area > header {
+  background: rgba(15, 23, 42, .94) !important;
+  border-bottom-color: #263449 !important;
+}
+body.dark-mode .glass-panel {
+  border-color: #263449 !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,.16) !important;
+}
+body.dark-mode table tbody tr:hover { background-color: #172338 !important; }
+body.dark-mode input:not([type="checkbox"]):not([type="radio"]),
+body.dark-mode select, body.dark-mode textarea {
+  border-color: #475569 !important;
+}
+body.dark-mode #app-sidebar .sidebar-item.active {
+  color: #7dd3c7 !important;
+  background: rgba(15,139,131,.17) !important;
+  box-shadow: inset 3px 0 0 #2dd4bf;
+}
+body.dark-mode #app-sidebar .sidebar-item:hover:not(.active) { background: #1e293b !important; }
+
+/* Print output must retain its own document colors and sizing. */
+@media print {
+  html, body#main-app-body { background: #fff !important; color: #111827 !important; }
+  button, .no-print { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ============================================================
+   MEDIX SMART ASSET TAG — unified 70 × 25 mm print standard
+   Used by single PNG, bulk browser print and bulk PDF output.
+   ============================================================ */
+#medix-label-print-root { display:none !important; }
+body.medix-label-printing { background:#fff !important; }
+body.medix-label-printing > * { display:none !important; }
+body.medix-label-printing > #medix-label-print-root {
+  display:block !important; position:static !important; width:297mm !important;
+  min-height:0 !important; margin:0 auto !important; padding:0 !important;
+  overflow:visible !important; background:#fff !important; color:#0f172a !important;
+}
+body.medix-label-printing #medix-label-print-root .medix-label-print-page {
+  display:grid !important; grid-template-columns:repeat(4,70mm) !important;
+  grid-template-rows:repeat(7,25mm) !important; grid-auto-rows:25mm !important;
+  gap:2mm !important; width:286mm !important; height:187mm !important;
+  margin:11.5mm auto !important; padding:0 !important; box-sizing:border-box !important;
+  align-content:start !important; justify-content:center !important;
+  page-break-after:always !important; break-after:page !important;
+}
+body.medix-label-printing #medix-label-print-root .medix-label-print-page:last-child {
+  page-break-after:auto !important; break-after:auto !important;
+}
+body.medix-label-printing .medix-label-card-print {
+  width:70mm !important; height:25mm !important; box-sizing:border-box !important;
+  overflow:hidden !important; display:flex !important; flex-direction:column !important;
+  border:.25mm solid #123047 !important; border-radius:1.2mm !important;
+  background:#fff !important; color:#0f172a !important;
+  page-break-inside:avoid !important; break-inside:avoid !important;
+}
+body.medix-label-printing .medix-label-top {
+  height:4.1mm !important; min-height:4.1mm !important; flex:0 0 4.1mm !important;
+  display:flex !important; align-items:center !important; gap:1mm !important;
+  padding:0 1.1mm !important; box-sizing:border-box !important;
+  background:#fff !important; color:#123047 !important;
+  border-bottom:.2mm solid #dbe5eb !important; line-height:1 !important;
+}
+body.medix-label-printing .medix-label-top img {
+  display:block !important; width:3.2mm !important; height:3.2mm !important;
+  object-fit:contain !important; flex:0 0 3.2mm !important;
+}
+body.medix-label-printing .medix-label-top b {
+  color:#0f766e !important; font:900 2.35mm/1 Arial,sans-serif !important;
+  letter-spacing:.05mm !important;
+}
+body.medix-label-printing .medix-label-top span {
+  color:#123047 !important; font:700 1.35mm/1 Arial,sans-serif !important;
+  white-space:nowrap !important; letter-spacing:0 !important; margin-left:.6mm !important;
+}
+body.medix-label-printing .medix-label-body {
+  height:18.1mm !important; min-height:18.1mm !important; flex:0 0 18.1mm !important;
+  display:flex !important; align-items:center !important; gap:1mm !important;
+  padding:.1mm 1mm 0 !important; box-sizing:border-box !important;
+}
+body.medix-label-printing .medix-label-qr {
+  width:18mm !important; height:18mm !important; flex:0 0 18mm !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  box-sizing:border-box !important; padding:1.5mm !important;
+  background:#fff !important; overflow:hidden !important;
+}
+body.medix-label-printing .medix-label-qr img,
+body.medix-label-printing .medix-label-qr canvas {
+  display:block !important; width:100% !important; height:100% !important;
+  max-width:none !important; max-height:none !important; object-fit:contain !important;
+  image-rendering:pixelated !important;
+}
+body.medix-label-printing .medix-label-info {
+  min-width:0 !important; width:47mm !important; overflow:hidden !important;
+  display:flex !important; flex-direction:column !important; justify-content:center !important;
+  line-height:1.05 !important;
+}
+body.medix-label-printing .medix-label-name {
+  color:#123047 !important; font:900 2.35mm/1.08 Arial,sans-serif !important;
+  white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+}
+body.medix-label-printing .medix-label-sub {
+  color:#475569 !important; font:700 1.55mm/1.1 Arial,sans-serif !important;
+  margin-top:.65mm !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+}
+body.medix-label-printing .medix-label-sn {
+  color:#334155 !important; font:700 1.4mm/1.1 monospace !important;
+  margin-top:.7mm !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+}
+body.medix-label-printing .medix-label-room {
+  color:#0f766e !important; font:800 1.45mm/1.1 Arial,sans-serif !important;
+  margin-top:.7mm !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+}
+body.medix-label-printing .medix-label-scan {
+  height:2.4mm !important; min-height:2.4mm !important; flex:0 0 2.4mm !important;
+  padding:0 !important; text-align:center !important; color:#64748b !important;
+  font:700 1.15mm/2.2mm Arial,sans-serif !important; letter-spacing:.08mm !important;
+}
+@media print {
+  @page { size:A4 landscape; margin:0; }
+  html, body.medix-label-printing {
+    width:297mm !important; min-width:297mm !important; height:auto !important;
+    margin:0 !important; padding:0 !important; background:#fff !important;
+    -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;
+  }
+  body.medix-label-printing > #medix-label-print-root { width:297mm !important; margin:0 !important; }
+  body.medix-label-printing #medix-label-print-root .medix-label-print-page {
+    width:286mm !important; height:187mm !important; margin:11.5mm auto !important;
+    grid-template-columns:repeat(4,70mm) !important;
+    grid-template-rows:repeat(7,25mm) !important; gap:2mm !important;
+  }
 }
