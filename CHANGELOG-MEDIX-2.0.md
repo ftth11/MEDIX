@@ -44,3 +44,31 @@ Paket ini adalah peningkatan visual non-destruktif tahap awal. Belum dapat diseb
 - Palet aplikasi diselaraskan ke putih/abu-abu kebiruan dengan aksen teal dan biru, termasuk dashboard sambutan agar kontras teks lebih jelas.
 - Penyesuaian layout responsif untuk desktop, tablet, dan ponsel, termasuk ruang konten, header, sidebar, tabel yang dapat digulir horizontal, dan kontrol sentuh.
 - Fungsi autentikasi, penyimpanan profil Firebase, dan struktur data aset tidak diubah.
+
+
+## LK refinement — signature alignment and flat input layout
+- Standardized the three LK signature blocks (technician, room representative, and IPSRS equipment lead) with identical row heights and aligned signature pads/name lines.
+- Kept existing signature canvas IDs and persistence fields unchanged.
+- Removed nested boxed styling from LK form controls; fields now use a clean underline treatment while section cards remain visually separated.
+- Simplified the four structured work-description fields and improved mobile stacking; print layout keeps a compact two-column description area and aligned three-column signatures.
+- Corrected the malformed closing tag in the final-inspection heading.
+
+## Penyempurnaan Lembar Kerja — Workflow & Audit
+
+- Menambahkan status dokumen LK: `Menunggu Verifikasi` dan `Terverifikasi`.
+- Verifikasi LK tersedia melalui tombol khusus Admin pada tampilan dokumen tersimpan.
+- Menambahkan identitas verifikator dan waktu verifikasi.
+- Menambahkan `riwayatAudit` untuk mencatat pembuatan, verifikasi, dan addendum.
+- Menambahkan mekanisme catatan revisi/addendum khusus Admin. Catatan addendum bersifat append-only dan tidak menimpa isi LK asli.
+- Menambahkan reservasi nomor LK melalui transaksi Firestore pada `systemCounters/lembarKerja` untuk mengurangi risiko nomor ganda saat beberapa pengguna menyimpan bersamaan. Jika aturan Firestore belum mengizinkan koleksi counter, aplikasi memakai fallback nomor berdasarkan cache yang tersedia.
+- Struktur dokumen LK lama tetap dapat dibuka. Dokumen lama tanpa field verifikasi ditampilkan sebagai `Status Belum Dicatat`, bukan dianggap sudah atau belum diverifikasi.
+
+### Catatan konfigurasi Firestore
+
+Untuk mengaktifkan seluruh fitur dengan aman, sesuaikan Firestore Security Rules yang sudah digunakan MEDIX:
+
+- `lembarKerja`: Admin/Teknisi dapat membuat LK sesuai alur yang berlaku; hanya Admin yang boleh mengubah field verifikasi dan menambahkan addendum. Batasi User Ruangan menjadi baca sesuai hak akses aplikasi.
+- `systemCounters/lembarKerja`: izinkan read/write hanya untuk pengguna terautentikasi dengan role Admin atau Teknisi. Validasi role harus dilakukan melalui dokumen profil `users/{uid}` atau mekanisme otorisasi tepercaya yang sudah dipakai project.
+- Jangan mengganti seluruh Firestore Rules dengan aturan terbuka. Gabungkan aturan baru ke rules yang sudah ada dan pertahankan aturan QR publik secara terpisah.
+
+Catatan: pemeriksaan role pada antarmuka hanya untuk pengalaman pengguna; keamanan sebenarnya wajib ditegakkan di Firestore Security Rules.

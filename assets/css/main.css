@@ -3601,3 +3601,89 @@ img, canvas, video, iframe { max-width:100%; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
+
+
+/* MEDIX LK REFINEMENT — uniform signatures, flat fields, readable document */
+#area-lembar-kerja-resmi .lk-signature-grid{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  align-items:start !important;
+  gap:12px !important;
+}
+#area-lembar-kerja-resmi .lk-signature-card{
+  display:grid !important;
+  grid-template-rows:22px 66px 24px 28px !important;
+  align-content:start !important;
+  justify-items:stretch !important;
+  min-width:0 !important;
+  text-align:center !important;
+}
+#area-lembar-kerja-resmi .lk-signature-role{
+  display:flex !important;align-items:center !important;justify-content:center !important;
+  min-height:22px !important;margin:0 !important;padding:0 3px !important;
+  color:#475569 !important;font-size:10px !important;font-weight:700 !important;line-height:1.15 !important;
+}
+#area-lembar-kerja-resmi .lk-signature-pad{
+  position:relative !important;display:block !important;width:100% !important;height:66px !important;
+  min-height:66px !important;max-height:66px !important;overflow:hidden !important;
+  border:1px dashed #94a3b8 !important;border-radius:6px !important;background:#f8fafc !important;
+}
+#area-lembar-kerja-resmi .lk-signature-pad canvas{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;touch-action:none !important;}
+#area-lembar-kerja-resmi .lk-signature-action{height:24px !important;display:flex !important;align-items:center !important;justify-content:center !important;}
+#area-lembar-kerja-resmi .lk-signature-clear{font-size:9px !important;line-height:1.2 !important;padding:3px 9px !important;border:1px solid #fecdd3 !important;border-radius:5px !important;background:#fff1f2 !important;color:#be123c !important;font-weight:700 !important;}
+#area-lembar-kerja-resmi .lk-signature-name{
+  display:flex !important;align-items:flex-end !important;justify-content:center !important;
+  width:100% !important;min-width:0 !important;height:28px !important;min-height:28px !important;
+  padding:0 2px 3px !important;box-sizing:border-box !important;border-bottom:1px solid #64748b !important;
+  color:#0f172a !important;font-size:10px !important;font-weight:800 !important;line-height:1.15 !important;
+}
+#area-lembar-kerja-resmi .lk-signature-name input,
+#area-lembar-kerja-resmi .lk-signature-name select{
+  width:100% !important;min-width:0 !important;height:22px !important;min-height:22px !important;
+  margin:0 !important;padding:0 2px !important;border:0 !important;border-radius:0 !important;
+  border-bottom:0 !important;background:transparent !important;box-shadow:none !important;outline:none !important;
+  color:#0f172a !important;font-size:10px !important;font-weight:800 !important;text-align:center !important;
+}
+#area-lembar-kerja-resmi .lk-signature-static-name{overflow-wrap:anywhere !important;}
+/* Flat form controls: no nested boxes inside LK cards. */
+#area-lembar-kerja-resmi input:not([type=button]):not([type=submit]):not([type=reset]):not([type=radio]):not([type=checkbox]):not([type=file]),
+#area-lembar-kerja-resmi select,
+#area-lembar-kerja-resmi textarea{
+  box-shadow:none !important;outline:none !important;border:0 !important;
+  border-bottom:1px solid #cbd5e1 !important;border-radius:0 !important;
+  background:transparent !important;padding-left:2px !important;padding-right:2px !important;
+}
+#area-lembar-kerja-resmi input:not([type=button]):not([type=submit]):not([type=reset]):not([type=radio]):not([type=checkbox]):not([type=file]):focus,
+#area-lembar-kerja-resmi select:focus,
+#area-lembar-kerja-resmi textarea:focus{border-bottom:2px solid #0f766e !important;background:#f8fffe !important;}
+#area-lembar-kerja-resmi .lk-uraian-field{border:0 !important;border-radius:0 !important;background:transparent !important;box-shadow:none !important;}
+#area-lembar-kerja-resmi .lk-uraian-field label{border:0 !important;padding:0 0 3px !important;color:#475569 !important;}
+#area-lembar-kerja-resmi .lk-uraian-field textarea{
+  border:0 !important;border-bottom:1px solid #cbd5e1 !important;border-radius:0 !important;
+  background:#fff !important;padding:5px 2px !important;box-shadow:none !important;resize:vertical !important;
+}
+#area-lembar-kerja-resmi .lk-uraian-field textarea:focus{border-bottom:2px solid #0f766e !important;background:#f8fffe !important;}
+@media(max-width:767px){
+  #area-lembar-kerja-resmi .lk-signature-grid{grid-template-columns:1fr !important;gap:12px !important;}
+  #area-lembar-kerja-resmi .lk-signature-card{grid-template-rows:22px 72px 24px 28px !important;max-width:100% !important;}
+  #area-lembar-kerja-resmi .lk-signature-pad{height:72px !important;min-height:72px !important;max-height:72px !important;}
+  #area-lembar-kerja-resmi .lk-uraian-structured{grid-template-columns:1fr !important;grid-template-rows:auto !important;height:auto !important;min-height:0 !important;max-height:none !important;border:0 !important;gap:10px !important;}
+  #area-lembar-kerja-resmi .lk-uraian-field textarea{min-height:64px !important;}
+}
+@media print{
+  #area-lembar-kerja-resmi .lk-signature-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;}
+  #area-lembar-kerja-resmi .lk-signature-card{grid-template-rows:18px 54px 16px 22px !important;break-inside:avoid !important;page-break-inside:avoid !important;}
+  #area-lembar-kerja-resmi .lk-signature-role{min-height:18px !important;font-size:8px !important;}
+  #area-lembar-kerja-resmi .lk-signature-pad{height:54px !important;min-height:54px !important;max-height:54px !important;border:1px solid #64748b !important;border-radius:0 !important;background:#fff !important;}
+  #area-lembar-kerja-resmi .lk-signature-action{height:0 !important;overflow:hidden !important;}
+  #area-lembar-kerja-resmi .lk-signature-name{height:22px !important;min-height:22px !important;padding:0 1px 2px !important;border-bottom:1px solid #111 !important;font-size:8px !important;}
+  #area-lembar-kerja-resmi .lk-signature-name input,
+  #area-lembar-kerja-resmi .lk-signature-name select{height:20px !important;min-height:20px !important;font-size:8px !important;color:#000 !important;}
+  #area-lembar-kerja-resmi .lk-uraian-structured{grid-template-columns:1fr 1fr !important;grid-template-rows:auto auto !important;height:auto !important;min-height:0 !important;max-height:none !important;border:0 !important;gap:5px 10px !important;}
+  #area-lembar-kerja-resmi .lk-uraian-field{border:0 !important;overflow:visible !important;}
+  #area-lembar-kerja-resmi .lk-uraian-field label{height:auto !important;line-height:1.1 !important;border:0 !important;font-size:7px !important;padding:0 0 2px !important;}
+  #area-lembar-kerja-resmi .lk-uraian-field textarea{height:auto !important;min-height:28px !important;max-height:none !important;border:0 !important;border-bottom:1px solid #777 !important;border-radius:0 !important;padding:2px !important;font-size:7.5px !important;line-height:1.2 !important;overflow:visible !important;resize:none !important;background:#fff !important;}
+}
+@media print{
+  #area-lembar-kerja-resmi .lk-signature-pad canvas{max-height:none !important;height:100% !important;width:100% !important;}
+}

@@ -35,3 +35,9 @@ Paket ini mempertahankan logika aplikasi dan menambahkan refinement visual secar
 
 ### UI refinement
 MEDIX menggunakan tema terang permanen dengan palet putih/abu-abu kebiruan dan aksen teal/biru. Tombol logout berada di kanan atas. Foto profil dapat dibuka dari avatar header atau sidebar; perubahan foto memerlukan Firebase Storage dan izin Firestore/Storage yang sesuai. Layout telah diberi penyesuaian responsif untuk desktop, tablet, dan ponsel.
+
+### Workflow verifikasi dan audit Lembar Kerja
+
+Versi ini menambahkan status verifikasi LK, identitas/waktu verifikator, audit trail, serta catatan addendum khusus Admin. Addendum tidak mengubah isi LK yang telah disimpan; koreksi dicatat sebagai catatan tambahan agar dokumen asli tetap dapat ditelusuri. Nomor LK menggunakan transaksi `systemCounters/lembarKerja` untuk mengurangi kemungkinan nomor ganda saat penyimpanan bersamaan.
+
+Sebelum digunakan bersama, sesuaikan Firestore Security Rules untuk koleksi `lembarKerja` dan `systemCounters` sesuai role. Jangan membuka akses koleksi tersebut untuk publik. Lihat bagian "Catatan konfigurasi Firestore" pada `CHANGELOG-MEDIX-2.0.md`.

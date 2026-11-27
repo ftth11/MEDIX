@@ -3885,6 +3885,123 @@ function renderMaintenanceHistory() {
             renderTabelPusatDokumen();
         }
 
+        function medixEscapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+        }
+
+        function medixNamaPenggunaAktif() {
+            const emailAktif = typeof auth !== 'undefined' && auth?.currentUser ? auth.currentUser.email : '';
+            return String(currentUserNama || currentUser?.nama || currentUser?.username || currentUser?.email || emailAktif || 'Pengguna MEDIX');
+        }
+
+        function medixFormatWaktuAudit(value) {
+            try {
+                const date = value?.toDate ? value.toDate() : (value instanceof Date ? value : new Date(value));
+                if (Number.isNaN(date.getTime())) return '-';
+                return date.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' }) + ' WIB';
+            } catch (_) { return '-'; }
+        }
+
+        function renderStatusDanAuditLK(record = {}) {
+            const statusEl = document.getElementById('dlk-verification-status');
+            const metaEl = document.getElementById('dlk-verification-meta');
+            const btn = document.getElementById('btn-verifikasi-lk');
+            const list = document.getElementById('dlk-audit-list');
+            const status = record.statusVerifikasi || (record.noLk ? 'Status Belum Dicatat' : 'Belum disimpan');
+            if (statusEl) {
+                statusEl.textContent = status;
+                statusEl.className = status === 'Terverifikasi' ? 'text-emerald-700' : (status === 'Belum disimpan' || status === 'Status Belum Dicatat') ? 'text-slate-500' : 'text-amber-700';
+            }
+            if (metaEl) {
+                metaEl.textContent = status === 'Terverifikasi'
+                    ? `Diverifikasi oleh ${record.diverifikasiOleh || '-'} pada ${medixFormatWaktuAudit(record.diverifikasiAt)}.`
+                    : status === 'Belum disimpan' ? 'Dokumen akan menunggu verifikasi setelah disimpan.' : status === 'Status Belum Dicatat' ? 'Dokumen lama belum memiliki catatan verifikasi di sistem.' : 'Dokumen telah disimpan dan menunggu pemeriksaan penanggung jawab.';
+            }
+            if (btn) {
+                const canVerify = canonicalRole(currentActiveRole) === 'Admin' && !!record.id && status !== 'Terverifikasi';
+                btn.classList.toggle('hidden', !canVerify);
+                btn.disabled = !canVerify;
+            }
+            const revisionAdmin = document.getElementById('dlk-revision-admin');
+            if (revisionAdmin) revisionAdmin.classList.toggle('hidden', !(canonicalRole(currentActiveRole) === 'Admin' && !!record.id));
+            const revisionList = document.getElementById('dlk-revision-list');
+            const revisions = Array.isArray(record.riwayatRevisi) ? record.riwayatRevisi : [];
+            if (revisionList) revisionList.innerHTML = revisions.length ? revisions.slice().reverse().map(item => `<li class="border-l-2 border-amber-300 pl-2 py-0.5"><span class="font-bold">${medixEscapeHtml(item.oleh || '-')}</span> <span class="text-slate-400">(${medixEscapeHtml(medixFormatWaktuAudit(item.waktu))})</span><div>${medixEscapeHtml(item.catatan || '')}</div></li>`).join('') : '<li>Belum ada addendum.</li>';
+            const audit = Array.isArray(record.riwayatAudit) ? record.riwayatAudit : [];
+            if (list) list.innerHTML = audit.length ? audit.slice().reverse().map(item => {
+                const action = String(item.aksi || 'Aktivitas');
+                const actor = String(item.oleh || '-');
+                const note = String(item.keterangan || '');
+                return `<li class="border-l-2 border-blue-300 pl-2 py-0.5"><span class="font-bold text-slate-700">${medixEscapeHtml(action)}</span> — ${medixEscapeHtml(actor)} <span class="text-slate-400">(${medixEscapeHtml(medixFormatWaktuAudit(item.waktu))})</span>${note ? `<div class="text-slate-500">${medixEscapeHtml(note)}</div>` : ''}</li>`;
+            }).join('') : '<li>Belum ada riwayat aktivitas yang tercatat.</li>';
+        }
+
+        async function verifikasiLembarKerjaAktif() {
+            if (canonicalRole(currentActiveRole) !== 'Admin') {
+                showToast('Hanya Admin yang dapat memverifikasi Lembar Kerja.', 'error');
+                return;
+            }
+            const id = document.getElementById('dlk-firebase-id')?.value || '';
+            if (!id) { showToast('Simpan LK terlebih dahulu sebelum diverifikasi.', 'warning'); return; }
+            const btn = document.getElementById('btn-verifikasi-lk');
+            if (btn?.dataset.busy === '1') return;
+            if (btn) { btn.dataset.busy = '1'; btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Memverifikasi...'; }
+            try {
+                const ref = db.collection('lembarKerja').doc(id);
+                const snap = await ref.get();
+                if (!snap.exists) throw new Error('Dokumen LK tidak ditemukan.');
+                const record = snap.data() || {};
+                if (record.statusVerifikasi === 'Terverifikasi') {
+                    showToast('LK ini sudah terverifikasi.', 'info');
+                    renderStatusDanAuditLK({ ...record, id });
+                    return;
+                }
+                const actor = medixNamaPenggunaAktif();
+                const event = { aksi: 'Diverifikasi', oleh: actor, role: 'Admin', waktu: new Date().toISOString(), keterangan: 'Verifikasi dokumen oleh Admin.' };
+                await ref.update({
+                    statusVerifikasi: 'Terverifikasi',
+                    diverifikasiOleh: actor,
+                    diverifikasiAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    riwayatAudit: firebase.firestore.FieldValue.arrayUnion(event),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                renderStatusDanAuditLK({ ...record, id, statusVerifikasi: 'Terverifikasi', diverifikasiOleh: actor, diverifikasiAt: new Date(), riwayatAudit: [...(record.riwayatAudit || []), event] });
+                showToast('Lembar Kerja berhasil diverifikasi.', 'success');
+            } catch (error) {
+                console.error('Verifikasi LK gagal:', error);
+                showToast('Gagal memverifikasi LK: ' + (error.message || error), 'error');
+            } finally {
+                if (btn) { btn.dataset.busy = '0'; btn.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i>Verifikasi LK'; }
+            }
+        }
+
+        async function tambahCatatanRevisiLK() {
+            if (canonicalRole(currentActiveRole) !== 'Admin') { showToast('Hanya Admin yang dapat menambahkan addendum LK.', 'error'); return; }
+            const id = document.getElementById('dlk-firebase-id')?.value || '';
+            const input = document.getElementById('dlk-revision-note');
+            const catatan = String(input?.value || '').trim();
+            if (!id) { showToast('Dokumen LK belum tersimpan.', 'warning'); return; }
+            if (catatan.length < 5) { showToast('Catatan addendum minimal 5 karakter.', 'warning'); return; }
+            try {
+                const actor = medixNamaPenggunaAktif();
+                const revision = { oleh: actor, role: 'Admin', waktu: new Date().toISOString(), catatan };
+                const audit = { aksi: 'Addendum ditambahkan', oleh: actor, role: 'Admin', waktu: revision.waktu, keterangan: catatan };
+                const ref = db.collection('lembarKerja').doc(id);
+                await ref.update({
+                    riwayatRevisi: firebase.firestore.FieldValue.arrayUnion(revision),
+                    riwayatAudit: firebase.firestore.FieldValue.arrayUnion(audit),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                if (input) input.value = '';
+                const snap = await ref.get();
+                renderStatusDanAuditLK({ ...(snap.data() || {}), id });
+                showToast('Addendum berhasil ditambahkan tanpa mengubah dokumen asli.', 'success');
+            } catch (error) {
+                console.error('Addendum LK gagal:', error);
+                showToast('Gagal menyimpan addendum: ' + (error.message || error), 'error');
+            }
+        }
+
         async function simpanPenuhIsianWorksheetDinamis() {
             if (currentActiveRole === 'User') {
                 showToast('Akses ditolak! Akun User hanya dapat melihat Lembar Kerja.', 'error');
@@ -3929,6 +4046,10 @@ function renderMaintenanceHistory() {
             const payload = {
                 alatId: alatIdRaw,
                 noLk: document.getElementById('dlk-no')?.value || '',
+                statusVerifikasi: 'Menunggu Verifikasi',
+                diverifikasiOleh: '',
+                diverifikasiAt: null,
+                riwayatAudit: [],
                 textTgl: tglText,
                 desc_kerja: medixBuildDescKerja(),
                 keluhan: medixGetStructuredUraian().keluhan,
@@ -3960,6 +4081,21 @@ function renderMaintenanceHistory() {
                 ? 'Dalam Perbaikan'
                 : 'Siap Digunakan';
 
+            const existingRecord = existingFirebaseId ? dataLembarKerja.find(item => item.id === existingFirebaseId) : null;
+            const auditEvent = {
+                aksi: existingFirebaseId ? 'Dokumen diperbarui' : 'Dokumen dibuat',
+                oleh: medixNamaPenggunaAktif(),
+                role: canonicalRole(currentActiveRole),
+                waktu: new Date().toISOString(),
+                keterangan: existingFirebaseId ? 'Perubahan data LK disimpan; status verifikasi dikembalikan menjadi menunggu.' : 'LK baru disimpan dan menunggu verifikasi.'
+            };
+            payload.riwayatAudit = [...(Array.isArray(existingRecord?.riwayatAudit) ? existingRecord.riwayatAudit : []), auditEvent];
+            if (existingFirebaseId) {
+                payload.statusVerifikasi = 'Menunggu Verifikasi';
+                payload.diverifikasiOleh = '';
+                payload.diverifikasiAt = null;
+            }
+
             try {
                 // Siapkan seluruh perubahan utama terlebih dahulu agar LK + status aset
                 // + penutupan ticket berhasil sebagai satu commit Firestore.
@@ -3967,10 +4103,25 @@ function renderMaintenanceHistory() {
                 if (existingFirebaseId) {
                     lkRef = db.collection('lembarKerja').doc(existingFirebaseId);
                 } else {
-                    const nextNumber = dataLembarKerja.reduce((max, item) => {
+                    const maxCachedNumber = dataLembarKerja.reduce((max, item) => {
                         const m = String(item.noLk || '').match(/LK-(\d+)$/i);
                         return m ? Math.max(max, Number(m[1])) : max;
-                    }, 0) + 1;
+                    }, 0);
+                    const counterRef = db.collection('systemCounters').doc('lembarKerja');
+                    let nextNumber;
+                    try {
+                        nextNumber = await db.runTransaction(async transaction => {
+                            const counterSnap = await transaction.get(counterRef);
+                            const storedNumber = counterSnap.exists ? Number(counterSnap.data()?.lastNumber || 0) : 0;
+                            const reservedNumber = Math.max(storedNumber, maxCachedNumber) + 1;
+                            transaction.set(counterRef, { lastNumber: reservedNumber, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+                            return reservedNumber;
+                        });
+                    } catch (counterError) {
+                        if (counterError?.code !== 'permission-denied') throw counterError;
+                        console.warn('Counter LK belum diizinkan Firestore Rules; memakai nomor dari cache lokal.', counterError);
+                        nextNumber = maxCachedNumber + 1;
+                    }
                     payload.noLk = 'RSUDPG/IPSRS/LK-' + String(nextNumber).padStart(3, '0');
                     payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
                     lkRef = db.collection('lembarKerja').doc();
@@ -4012,6 +4163,8 @@ function renderMaintenanceHistory() {
                 }
 
                 await batch.commit();
+                document.getElementById('dlk-firebase-id').value = lkRef.id;
+                renderStatusDanAuditLK({ ...payload, id: lkRef.id, statusVerifikasi: 'Menunggu Verifikasi' });
                 // Perbarui projection Rekam Jejak publik agar scan kamera tanpa login
                 // langsung melihat LK terbaru. Tidak mengganggu penyimpanan utama bila gagal.
                 medixSyncCurrentAssetPublicHistory(alatIdRaw);
@@ -4069,6 +4222,7 @@ function renderMaintenanceHistory() {
             if (!izinMenu('lk','create')) { showToast('Anda tidak memiliki izin membuat LK.', 'error'); return; }
             const areaLK = document.getElementById('area-lembar-kerja-resmi'); if(!areaLK) return;
             document.getElementById('dlk-firebase-id').value = ""; stringFotoBase64 = "-"; stringFotoBeforeBase64 = "-";
+            renderStatusDanAuditLK({});
             resetFotoAfterDisplay();
             terpakaiAlatKerja = []; terpakaiFisik = []; terpakaiFungsi = []; bhpUsageLK = []; renderBHPUsageLK();
             const now = new Date();
@@ -4166,7 +4320,7 @@ function renderMaintenanceHistory() {
             ['dlk-uraian-keluhan','dlk-uraian-penyebab','dlk-uraian-pengecekan','dlk-uraian-solusi'].forEach(id=>document.getElementById(id)?.setAttribute('disabled','true'));
             setTimeout(() => {
                 const area = document.getElementById('area-lembar-kerja-resmi');
-                if(area) area.querySelectorAll('input, select, textarea').forEach(el => el.setAttribute('disabled', 'true'));
+                if(area) area.querySelectorAll('input:not(#dlk-revision-note), select, textarea:not(#dlk-revision-note)').forEach(el => el.setAttribute('disabled', 'true'));
             }, 50);
         }
 
@@ -4174,7 +4328,8 @@ function renderMaintenanceHistory() {
             if (!izinMenu('lk','read')) { showToast('Anda tidak memiliki izin melihat LK.', 'error'); return; }
             let record = dataPerbaikan.find(r => r.id == id) || dataPM.find(p => p.id == id) || dataInspeksi.find(i => i.id == id);
             if(!record) { showToast("Dokumen lembar kerja tidak ditemukan.", "error"); return; }
-            document.getElementById('dlk-firebase-id').value = record.id; 
+            document.getElementById('dlk-firebase-id').value = record.id;
+            renderStatusDanAuditLK({ ...record, id: record.id });
             document.querySelectorAll('input[name="dlk-jenis"]').forEach(radio => { if(radio.value === record.jenisKerja) radio.checked = true; });
             document.getElementById('dlk-no').value = record.noLk || ""; 
             document.getElementById('dlk-tgl').value = record.textTgl || (record.tgl ? record.tgl.substring(0,16) : '');
