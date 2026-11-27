@@ -1,5 +1,13 @@
-const CACHE_VERSION = 'medix-cache-v3';
-const APP_SHELL = ['./', './index.html', './logo.png'];
+const CACHE_VERSION = 'medix-cache-v4';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './manifest.json',
+  './assets/css/main.css',
+  './assets/js/app.js',
+  './assets/js/table-filters.js',
+  './assets/images/logo.png'
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
