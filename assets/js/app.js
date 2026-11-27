@@ -4587,9 +4587,13 @@ function renderMaintenanceHistory() {
             }
 
             let uploadedPdfRef = null;
+            let saveStage = 'persiapan nomor dokumen';
             try {
-                // Siapkan seluruh perubahan utama terlebih dahulu agar LK + status aset
-                // + penutupan ticket berhasil sebagai satu commit Firestore.
+                if (!auth.currentUser) throw new Error('Sesi login tidak aktif. Silakan login ulang.');
+                if (!storage || !db) throw new Error('Layanan Firebase belum siap. Muat ulang aplikasi.');
+                // Dokumen utama dan status aset diprioritaskan. Sinkronisasi stok BHP
+                // dan penutupan tiket dilakukan sesudah commit agar izin koleksi tambahan
+                // tidak menggagalkan arsip LK/PDF yang utama.
                 let lkRef;
                 if (existingFirebaseId) {
                     lkRef = db.collection('lembarKerja').doc(existingFirebaseId);
@@ -4618,16 +4622,13 @@ function renderMaintenanceHistory() {
                     lkRef = db.collection('lembarKerja').doc();
                 }
 
-                let ticketSnap = null;
-                if (newStatus === 'Siap Digunakan') {
-                    ticketSnap = await db.collection('troubleTickets')
-                        .where('alatId', '==', alatIdRaw)
-                        .get();
-                }
-
                 // PDF final dibuat dan diunggah SEBELUM commit Firestore. Dengan demikian,
                 // dokumen LK tidak akan tercatat tersimpan bila berkas PDF resminya gagal dibuat.
+                saveStage = 'pembuatan PDF';
                 const pdfBlob = await medixGenerateLkPdf(payload, lkRef.id);
+                if (!(pdfBlob instanceof Blob) || pdfBlob.size < 500 || pdfBlob.type !== 'application/pdf') {
+                    throw new Error('Generator tidak menghasilkan berkas PDF yang valid.');
+                }
                 const pdfSha256 = await medixSha256(pdfBlob);
                 const safeFileNo = String(payload.noLk || 'LK').replace(/[^a-zA-Z0-9_-]+/g, '_');
                 const pdfStoragePath = `lembarKerjaPdf/${lkRef.id}/${safeFileNo}.pdf`;
@@ -4650,38 +4651,45 @@ function renderMaintenanceHistory() {
                 payload.pdfVersion = 1;
                 payload.pdfGeneratedAt = firebase.firestore.FieldValue.serverTimestamp();
 
+                saveStage = 'penyimpanan data LK dan status aset ke Firestore';
                 const batch = db.batch();
-
-                if (existingFirebaseId) {
-                    batch.update(lkRef, payload);
-                } else {
-                    batch.set(lkRef, payload);
-                }
-
-                batch.update(db.collection('dataAlat').doc(alatIdRaw), {
+                if (existingFirebaseId) batch.update(lkRef, payload);
+                else batch.set(lkRef, payload);
+                batch.set(db.collection('dataAlat').doc(alatIdRaw), {
                     status: newStatus,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                await sinkronkanTransaksiBHPUntukLK(existingFirebaseId || lkRef.id, payload.bhpUsage || [], batch, payload.noLk, alatIdRaw, tglText);
-
-                if (ticketSnap) {
-                    ticketSnap.forEach(docT => {
-                        const d = docT.data() || {};
-                        if (d.statusTiket !== 'Selesai') {
-                            batch.update(docT.ref, {
-                                statusTiket: 'Selesai',
-                                selesaiAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                            });
-                        }
-                    });
-                }
-
+                }, { merge: true });
                 await batch.commit();
                 // Setelah Firestore berhasil commit, PDF sudah menjadi dokumen arsip.
                 // Jangan hapus PDF bila ada proses pasca-simpan yang gagal.
                 uploadedPdfRef = null;
+                // Sinkronisasi stok BHP merupakan proses turunan. Data pemakaian tetap
+                // tersimpan di payload LK/PDF walaupun aturan koleksi transaksi belum cocok.
+                let bhpSyncWarning = '';
+                if (Array.isArray(payload.bhpUsage) && payload.bhpUsage.length) {
+                    try {
+                        const bhpBatch = db.batch();
+                        await sinkronkanTransaksiBHPUntukLK(lkRef.id, payload.bhpUsage, bhpBatch, payload.noLk, alatIdRaw, tglText);
+                        await bhpBatch.commit();
+                    } catch (bhpError) {
+                        console.error('LK tersimpan, tetapi sinkronisasi transaksi BHP gagal:', bhpError);
+                        bhpSyncWarning = ' Data penggunaan BHP sudah tercatat di LK/PDF, tetapi stok belum tersinkron; periksa Firestore Rules bhpTransactions.';
+                    }
+                }
+                // Penutupan tiket juga proses turunan, tidak boleh membatalkan LK final.
+                if (newStatus === 'Siap Digunakan') {
+                    try {
+                        const ticketSnap = await db.collection('troubleTickets').where('alatId', '==', alatIdRaw).get();
+                        const ticketBatch = db.batch(); let ticketCount = 0;
+                        ticketSnap.forEach(docT => {
+                            if ((docT.data() || {}).statusTiket !== 'Selesai') {
+                                ticketBatch.update(docT.ref, { statusTiket: 'Selesai', selesaiAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                                ticketCount++;
+                            }
+                        });
+                        if (ticketCount) await ticketBatch.commit();
+                    } catch (ticketError) { console.warn('LK tersimpan, tetapi tiket belum dapat ditutup:', ticketError); }
+                }
                 document.getElementById('dlk-firebase-id').value = lkRef.id;
                 renderStatusDanAuditLK({ ...payload, id: lkRef.id, statusVerifikasi: 'Menunggu Verifikasi' });
                 // Perbarui projection Rekam Jejak publik agar scan kamera tanpa login
@@ -4722,7 +4730,7 @@ function renderMaintenanceHistory() {
                 }
 
                 document.getElementById('area-lembar-kerja-resmi')?.classList.add('hidden');
-                showToast(`Lembar Kerja ${payload.noLk} berhasil disimpan sebagai PDF final dan masuk rekapan.`, 'success');
+                showToast(`Lembar Kerja ${payload.noLk} berhasil disimpan sebagai PDF final dan masuk rekapan.${bhpSyncWarning}`, bhpSyncWarning ? 'warning' : 'success');
                 await medixOpenLKPdf({ id: lkRef.id, ...payload });
                 jadwalkanRenderAll();
             } catch (error) {
@@ -4731,7 +4739,12 @@ function renderMaintenanceHistory() {
                 }
                 console.error('Gagal menyimpan LK:', error);
                 const code = error?.code ? ` [${error.code}]` : '';
-                showToast('Lembar Kerja gagal disimpan: ' + (error.message || 'periksa koneksi dan Security Rules.') + code, 'error');
+                console.error('Tahap kegagalan simpan LK:', saveStage);
+                let hint = '';
+                if (error?.code === 'storage/unauthorized' || error?.code === 'permission-denied') hint = ' Periksa Firebase Storage Rules untuk folder lembarKerjaPdf.';
+                else if (error?.code === 'permission-denied') hint = ' Periksa Firestore Rules untuk lembarKerja dan dataAlat.';
+                else if (error?.code === 'storage/canceled') hint = ' Proses unggah dibatalkan atau koneksi terputus.';
+                showToast(`LK gagal pada tahap ${saveStage}: ${error.message || 'periksa koneksi dan aturan Firebase.'}${code}${hint}`, 'error');
             } finally {
                 if (btnSimpan) {
                     btnSimpan.dataset.saving = '0';
@@ -4777,6 +4790,7 @@ function renderMaintenanceHistory() {
             aktualisasikanTampilanKotakTabel('fisik'); 
             aktualisasikanTampilanKotakTabel('fungsi'); 
             populasikanDropdownNamaTandaTangan();
+            populasikanDropdownBHPDiLK();
             inisialisasiInputKepalaRuanganWorksheet();
             setPenanggungJawabAlkesOtomatis();
             
@@ -5762,7 +5776,7 @@ function renderMaintenanceHistory() {
             const s=document.getElementById('dlk-bhp-item'); if(!s)return;
             const old=s.value; const q=String(filterText||document.getElementById('dlk-bhp-search')?.value||'').toLowerCase().trim();
             const rows=dataBHPItems.filter(i=>!q||[i.namaItem,i.namaAlkes,i.spesifikasi,i.jenisItem].some(v=>String(v||'').toLowerCase().includes(q)));
-            s.innerHTML='<option value="">-- Pilih BHP / Aksesoris --</option>'+rows.map(i=>{const st=getStokBHP(i.id);return `<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} · ${st.stok} ${escBHP(i.satuan||'')}</option>`}).join('');
+            s.innerHTML='<option value="">'+(rows.length?'-- Pilih BHP / Aksesoris --':'Belum ada master BHP. Tambahkan pada menu BHP terlebih dahulu.')+'</option>'+rows.map(i=>{const st=getStokBHP(i.id);return `<option value="${escBHP(i.id)}">${escBHP(i.namaItem)} — ${escBHP(i.namaAlkes)} · Stok ${st.stok} ${escBHP(i.satuan||'')}</option>`}).join('');
             if(rows.some(i=>String(i.id)===old))s.value=old;
             updateStokInfoBHPDiLK(); renderBHPUsageLK();
         }
@@ -5809,7 +5823,10 @@ function renderMaintenanceHistory() {
             if(!itemId||qty<=0){showToast('Pilih BHP dan isi jumlah terlebih dahulu.','error');return;}
             const item=dataBHPItems.find(x=>String(x.id)===String(itemId)); if(!item)return;
             const available=hitungStokTersediaBHP(itemId, window._medixEditingLkId||''); const existing=bhpUsageLK.find(x=>String(x.itemId)===String(itemId)); const currentQty=existing?angkaBHP(existing.qty):0;
-            if(qty+currentQty>available){showToast(`Jumlah pemakaian melebihi stok tersedia (${available} ${item.satuan||''}).`,'error');return;}
+            if(qty+currentQty>available){
+                const lanjut = window.confirm(`Stok tercatat ${available} ${item.satuan||''}, sedangkan pemakaian menjadi ${qty+currentQty} ${item.satuan||''}. Tetap catat pemakaian aktual pada LK?`);
+                if(!lanjut) return;
+            }
             if(existing)existing.qty=currentQty+qty; else bhpUsageLK.push({itemId,qty,namaItem:item.namaItem,namaAlkes:item.namaAlkes,jenisItem:item.jenisItem,satuan:item.satuan});
             renderBHPUsageLK(); document.getElementById('dlk-bhp-qty').value=1; document.getElementById('dlk-bhp-item').value=''; updateStokInfoBHPDiLK();
         }

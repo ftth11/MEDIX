@@ -91,3 +91,13 @@ Contoh field metadata yang dapat diperbarui Admin: `statusVerifikasi`, `diverifi
 
 ### Kompatibilitas
 LK yang sudah tersimpan sebelum fitur PDF ini dan belum memiliki `pdfStoragePath` tetap dibuka melalui tampilan arsip lama (read-only). LK baru setelah pembaruan akan memiliki PDF final. PDF tidak dapat diedit melalui MEDIX dan file di Storage tidak dapat ditimpa melalui aturan di atas; perubahan pada salinan PDF di luar MEDIX tetap mungkin dilakukan oleh aplikasi PDF pihak ketiga, tetapi hash SHA-256 pada record MEDIX dapat dipakai untuk mendeteksi perubahan salinan tersebut.
+
+
+## Perbaikan LK — efisiensi kolom, BHP, dan penyimpanan
+- Input BHP pada LK diisi dari master `bhpItems`; daftar master dimuat ulang ketika form LK baru dibuka. Jika stok yang tercatat tidak cukup, teknisi mendapat konfirmasi untuk tetap mencatat pemakaian aktual (stok negatif harus ditindaklanjuti melalui pencatatan stok).
+- Pemakaian BHP tetap disimpan di dokumen LK dan PDF final. Sinkronisasi transaksi stok BHP dilakukan setelah dokumen LK utama berhasil disimpan, sehingga izin koleksi transaksi BHP yang belum lengkap tidak menggagalkan penyimpanan LK/PDF. Jika sinkronisasi gagal, MEDIX menampilkan peringatan agar stok direkonsiliasi.
+- Penyimpanan dipisahkan menjadi tahap pembuatan PDF, unggah Storage, dan commit Firestore. Pesan kesalahan menyebutkan tahap kegagalan untuk memudahkan diagnosis. Penutupan tiket dilakukan sebagai proses lanjutan dan tidak membatalkan arsip LK.
+- Kolom input BHP dan field pemeriksaan dibuat lebih padat; layout BHP disesuaikan untuk desktop/tablet dan ponsel.
+- Service worker cache dinaikkan ke `medix-cache-v8` agar browser mengambil aset revisi.
+
+**Catatan:** aturan Firebase tetap harus mengizinkan role teknisi/admin membuat dokumen `lembarKerja`, membaca/menulis `dataAlat`, membuat file pada `lembarKerjaPdf`, serta membuat/membaca transaksi `bhpTransactions`. Jika simpan gagal, periksa Console browser dan pesan yang sekarang menyebut tahap proses; jangan membuka rules menjadi publik.

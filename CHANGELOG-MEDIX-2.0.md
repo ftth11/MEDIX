@@ -85,3 +85,12 @@ Catatan: pemeriksaan role pada antarmuka hanya untuk pengalaman pengguna; keaman
 - Viewer menyediakan verifikasi Admin, audit trail, dan addendum tanpa mengubah PDF asli.
 
 - Menambahkan field opsional pemeriksaan listrik/grounding, daya dan battery internal, checklist preventive maintenance, stok consumable, hasil maintenance, rekomendasi, serta catatan teknisi mengikuti formulir lapangan.
+
+
+### LK refinement — 27 November 2026
+- Input BHP di-refresh saat form LK baru dibuka; master kosong diberi keterangan yang jelas.
+- Pemakaian di atas stok tidak lagi langsung ditolak; ada konfirmasi untuk mencatat pemakaian aktual.
+- Sinkronisasi transaksi BHP dan penutupan tiket dipindah menjadi proses pasca-commit agar kegagalan izin koleksi tambahan tidak membatalkan PDF/LK utama. Pemakaian BHP tetap tersimpan di dokumen LK/PDF dan kegagalan sinkronisasi ditampilkan sebagai peringatan.
+- Penyimpanan memiliki pesan tahap kegagalan: pembuatan PDF, unggah Storage, atau commit Firestore.
+- Input BHP dan field LK dibuat lebih ringkas dan responsif.
+- Cache PWA dinaikkan ke medix-cache-v8.

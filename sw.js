@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'medix-cache-v7';
+const CACHE_VERSION = 'medix-cache-v8';
 const APP_SHELL = [
   './',
   './index.html',
