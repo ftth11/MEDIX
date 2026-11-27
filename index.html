@@ -30,6 +30,116 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <link rel="stylesheet" href="./assets/css/main.css">
 </head>
     
@@ -230,7 +340,19 @@
                     <ul id="list-warning-kalibrasi" class="list-disc pl-5 space-y-1 max-h-24 overflow-y-auto text-slate-700 no-scrollbar"></ul>
                 </div>
 
-                <div id="tab-dashboard" class="tab-content space-y-4 no-print">
+                <div id="tab-dashboard" class="tab-content space-y-5 no-print">
+                    <section id="dashboard-welcome" class="dashboard-welcome" aria-label="Sambutan dashboard MEDIX">
+                        <div class="dashboard-welcome-copy">
+                            <span class="dashboard-eyebrow"><i class="fa-solid fa-heart-pulse"></i> MEDICAL EQUIPMENT MANAGEMENT SYSTEM</span>
+                            <h1>Selamat datang di MEDIX</h1>
+                            <p>Kelola aset medis, pemeliharaan, kalibrasi, dan dokumentasi peralatan dalam satu sistem terintegrasi.</p>
+                        </div>
+                        <div class="dashboard-clock-card" aria-live="off">
+                            <div class="dashboard-date"><i class="fa-regular fa-calendar"></i><span id="medix-dashboard-date">Memuat tanggal…</span></div>
+                            <div class="dashboard-time" id="medix-dashboard-time">--:--:--</div>
+                            <div class="dashboard-timezone">Waktu Indonesia Barat (WIB)</div>
+                        </div>
+                    </section>
                     <!-- 4 Kartu Statistik Atas -->
                     <div id="dashboard-stat-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         <div onclick="clickDashboardStat('all')" class="glass-panel p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:scale-[1.01] transition">
@@ -1288,6 +1410,7 @@
 </div>
 
     <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/dashboard-ui.js"></script>
     <script src="./assets/js/table-filters.js"></script>
 </body>
 </html>

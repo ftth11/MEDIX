@@ -1,10 +1,11 @@
-const CACHE_VERSION = 'medix-cache-v5';
+const CACHE_VERSION = 'medix-cache-v6';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.json',
   './assets/css/main.css',
   './assets/js/app.js',
+  './assets/js/dashboard-ui.js',
   './assets/js/table-filters.js',
   './assets/images/logo.png'
 ];

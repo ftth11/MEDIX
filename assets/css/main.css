@@ -3230,3 +3230,22 @@ body.medix-public-rekam #modal-kartu .kartu-body { max-height:calc(100vh - 230px
 #master-table-scroll { overflow-y:visible !important; }
 .medix-mobile-filter-reset { display:none !important; }
 #sidebar-profile-avatar, #sidebar-footer-avatar { object-fit:cover; }
+
+
+/* MEDIX DASHBOARD POLISH — welcome, clock and responsive data views */
+.dashboard-welcome{display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden;padding:22px 24px;border-radius:22px;color:#f8fafc;background:linear-gradient(115deg,#0f766e 0%,#0d9488 48%,#0e7490 100%);border:1px solid rgba(255,255,255,.24);box-shadow:0 14px 32px rgba(15,118,110,.18)}
+.dashboard-welcome::after{content:"";position:absolute;width:250px;height:250px;right:18%;top:-170px;border:1px solid rgba(255,255,255,.14);border-radius:50%;box-shadow:0 0 0 28px rgba(255,255,255,.035),0 0 0 58px rgba(255,255,255,.025);pointer-events:none}
+.dashboard-welcome-copy,.dashboard-clock-card{position:relative;z-index:1}
+.dashboard-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:9px;color:#ccfbf1;font-size:9px;font-weight:900;letter-spacing:.16em}
+.dashboard-welcome h1{margin:0;color:#fff;font-size:clamp(21px,3vw,29px);line-height:1.15;font-weight:900;letter-spacing:-.035em}
+.dashboard-welcome p{margin:8px 0 0;max-width:660px;color:rgba(240,253,250,.9);font-size:12px;line-height:1.65}
+.dashboard-clock-card{flex:0 0 auto;min-width:205px;padding:12px 15px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.dashboard-date{display:flex;align-items:center;gap:7px;color:#ccfbf1;font-size:10px;font-weight:700}
+.dashboard-time{margin-top:5px;color:#fff;font-size:clamp(25px,3vw,32px);font-weight:900;letter-spacing:.045em;font-variant-numeric:tabular-nums;line-height:1.2}
+.dashboard-timezone{margin-top:3px;color:rgba(240,253,250,.78);font-size:9px;font-weight:700;letter-spacing:.08em}
+#dashboard-stat-grid>div,#dashboard-stat-grid>button{min-height:94px;border-color:rgba(13,148,136,.18);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+#dashboard-stat-grid>div:hover,#dashboard-stat-grid>button:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(15,118,110,.10);border-color:rgba(13,148,136,.38)}
+#tab-dashboard canvas{max-width:100%}#tab-dashboard .glass-panel{min-width:0}#tab-dashboard .glass-panel h4{line-height:1.45}
+#tab-dashboard table{width:100%;border-collapse:separate;border-spacing:0}#tab-dashboard table th{position:sticky;top:0;z-index:1}
+@media(max-width:700px){.dashboard-welcome{align-items:stretch;flex-direction:column;padding:18px;gap:14px}.dashboard-clock-card{min-width:0;width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px}.dashboard-date{grid-column:1}.dashboard-time{grid-column:2;grid-row:1/span 2;margin:0;font-size:25px}.dashboard-timezone{grid-column:1}#dashboard-stat-grid>div,#dashboard-stat-grid>button{min-height:82px}}
+@media(prefers-reduced-motion:reduce){#dashboard-stat-grid>div,#dashboard-stat-grid>button{transition:none}}
