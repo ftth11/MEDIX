@@ -4587,7 +4587,7 @@ function renderMaintenanceHistory() {
             }
 
             let uploadedPdfRef = null;
-            let saveStage = 'persiapan nomor dokumen';
+            let saveStage = 'persiapan nomor dokumen (lokal, tanpa akses systemCounters)';
             try {
                 if (!auth.currentUser) throw new Error('Sesi login tidak aktif. Silakan login ulang.');
                 if (!storage || !db) throw new Error('Layanan Firebase belum siap. Muat ulang aplikasi.');
@@ -4598,26 +4598,16 @@ function renderMaintenanceHistory() {
                 if (existingFirebaseId) {
                     lkRef = db.collection('lembarKerja').doc(existingFirebaseId);
                 } else {
-                    const maxCachedNumber = dataLembarKerja.reduce((max, item) => {
-                        const m = String(item.noLk || '').match(/LK-(\d+)$/i);
-                        return m ? Math.max(max, Number(m[1])) : max;
-                    }, 0);
-                    const counterRef = db.collection('systemCounters').doc('lembarKerja');
-                    let nextNumber;
-                    try {
-                        nextNumber = await db.runTransaction(async transaction => {
-                            const counterSnap = await transaction.get(counterRef);
-                            const storedNumber = counterSnap.exists ? Number(counterSnap.data()?.lastNumber || 0) : 0;
-                            const reservedNumber = Math.max(storedNumber, maxCachedNumber) + 1;
-                            transaction.set(counterRef, { lastNumber: reservedNumber, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-                            return reservedNumber;
-                        });
-                    } catch (counterError) {
-                        if (counterError?.code !== 'permission-denied') throw counterError;
-                        console.warn('Counter LK belum diizinkan Firestore Rules; memakai nomor dari cache lokal.', counterError);
-                        nextNumber = maxCachedNumber + 1;
-                    }
-                    payload.noLk = 'RSUDPG/IPSRS/LK-' + String(nextNumber).padStart(3, '0');
+                    // Nomor LK tidak lagi membaca/menulis systemCounters. Pada project
+                    // MEDIX yang Security Rules-nya belum memberi akses ke koleksi tersebut,
+                    // pembacaan counter menghasilkan HTTP 403 sebelum proses PDF dimulai.
+                    // Gunakan nomor berbasis waktu + akhiran acak agar unik tanpa izin
+                    // tambahan, tanpa read-before-write, dan tetap mudah ditelusuri.
+                    const nowForLk = new Date();
+                    const ymd = [nowForLk.getFullYear(), String(nowForLk.getMonth()+1).padStart(2,'0'), String(nowForLk.getDate()).padStart(2,'0')].join('');
+                    const hms = [nowForLk.getHours(), nowForLk.getMinutes(), nowForLk.getSeconds()].map(v => String(v).padStart(2,'0')).join('');
+                    const suffix = Math.random().toString(36).slice(2, 6).toUpperCase();
+                    payload.noLk = `RSUDPG/IPSRS/LK-${ymd}-${hms}-${suffix}`;
                     payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
                     lkRef = db.collection('lembarKerja').doc();
                 }
@@ -4741,8 +4731,8 @@ function renderMaintenanceHistory() {
                 const code = error?.code ? ` [${error.code}]` : '';
                 console.error('Tahap kegagalan simpan LK:', saveStage);
                 let hint = '';
-                if (error?.code === 'storage/unauthorized' || error?.code === 'permission-denied') hint = ' Periksa Firebase Storage Rules untuk folder lembarKerjaPdf.';
-                else if (error?.code === 'permission-denied') hint = ' Periksa Firestore Rules untuk lembarKerja dan dataAlat.';
+                if (error?.code === 'storage/unauthorized') hint = ' Periksa Firebase Storage Rules untuk folder lembarKerjaPdf.';
+                else if (error?.code === 'permission-denied' || error?.code === 'unknown') hint = ' Periksa Firestore Rules untuk koleksi lembarKerja dan dataAlat; nomor dokumen kini tidak lagi memakai systemCounters.';
                 else if (error?.code === 'storage/canceled') hint = ' Proses unggah dibatalkan atau koneksi terputus.';
                 showToast(`LK gagal pada tahap ${saveStage}: ${error.message || 'periksa koneksi dan aturan Firebase.'}${code}${hint}`, 'error');
             } finally {

@@ -94,3 +94,9 @@ Catatan: pemeriksaan role pada antarmuka hanya untuk pengalaman pengguna; keaman
 - Penyimpanan memiliki pesan tahap kegagalan: pembuatan PDF, unggah Storage, atau commit Firestore.
 - Input BHP dan field LK dibuat lebih ringkas dan responsif.
 - Cache PWA dinaikkan ke medix-cache-v8.
+
+### LK: perbaikan akses nomor dokumen dan tata letak ringkas
+- Menghapus ketergantungan pembuatan nomor LK pada `systemCounters/lembarKerja`. Log 403 menunjukkan aplikasi mencoba membaca dokumen counter yang tidak diizinkan Firestore Rules, sehingga proses berhenti sebelum pembuatan PDF.
+- Nomor LK baru sekarang dibentuk secara lokal menggunakan tanggal, jam, dan akhiran acak; tidak memerlukan pembacaan/penulisan koleksi counter.
+- Menambahkan layout LK yang lebih ringkas untuk desktop dan ponsel, dengan ruang lebih besar untuk uraian dan kolom data singkat tetap hemat tempat.
+- Catatan: bila setelah perubahan ini masih terjadi 403, periksa tahap error berikutnya pada koleksi `lembarKerja`/`dataAlat` atau Storage Rules. Jangan membuka seluruh Firestore Rules.

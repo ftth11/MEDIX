@@ -101,3 +101,6 @@ LK yang sudah tersimpan sebelum fitur PDF ini dan belum memiliki `pdfStoragePath
 - Service worker cache dinaikkan ke `medix-cache-v8` agar browser mengambil aset revisi.
 
 **Catatan:** aturan Firebase tetap harus mengizinkan role teknisi/admin membuat dokumen `lembarKerja`, membaca/menulis `dataAlat`, membuat file pada `lembarKerjaPdf`, serta membuat/membaca transaksi `bhpTransactions`. Jika simpan gagal, periksa Console browser dan pesan yang sekarang menyebut tahap proses; jangan membuka rules menjadi publik.
+
+#### Catatan nomor dokumen LK
+Versi ini tidak lagi menggunakan koleksi `systemCounters/lembarKerja` untuk menghasilkan nomor LK. Nomor baru dibuat dari tanggal-waktu lokal ditambah akhiran acak, sehingga error 403 pada pembacaan counter tidak lagi menghentikan penyimpanan. Pastikan Firestore Rules tetap mengizinkan pengguna berwenang membuat dokumen pada `lembarKerja` dan memperbarui status aset pada `dataAlat`, serta Storage Rules mengizinkan unggah PDF pada `lembarKerjaPdf/{lkId}/...`.

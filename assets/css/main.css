@@ -3810,3 +3810,24 @@ img, canvas, video, iframe { max-width:100%; }
 #area-lembar-kerja-resmi .lk-reference-grid input,
 #area-lembar-kerja-resmi .lk-reference-grid select{width:100%;min-width:0;min-height:36px;padding:7px 9px!important;font-size:11px!important;}
 #area-lembar-kerja-resmi .lk-reference-notes textarea{min-height:58px;padding:8px 10px!important;font-size:11px!important;}
+
+/* MEDIX LK: compact workspace layout, with readable writing areas */
+#area-lembar-kerja-resmi > div:first-child { max-width: 70rem; padding: 1rem; gap: .65rem; }
+#area-lembar-kerja-resmi .lk-reference-grid,
+#area-lembar-kerja-resmi .lk-form-grid { gap: .5rem .65rem; }
+#area-lembar-kerja-resmi input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+#area-lembar-kerja-resmi select { min-height: 2rem; }
+#area-lembar-kerja-resmi textarea { min-height: 3.25rem; resize: vertical; }
+#area-lembar-kerja-resmi .lk-bhp-usage-card { border-radius: .8rem; }
+#area-lembar-kerja-resmi .lk-bhp-usage-card .p-3 { padding: .65rem; }
+#area-lembar-kerja-resmi .lk-bhp-row { gap: .5rem; padding: .45rem .6rem; }
+@media (max-width: 767px) {
+  #area-lembar-kerja-resmi { align-items: flex-start; padding: .35rem; }
+  #area-lembar-kerja-resmi > div:first-child { width: 100%; max-height: calc(100dvh - .7rem); padding: .75rem; border-radius: .85rem; }
+  #area-lembar-kerja-resmi .lk-reference-grid-3 { grid-template-columns: minmax(0,1fr); }
+  #area-lembar-kerja-resmi .lk-bhp-usage-card .grid { grid-template-columns: minmax(0,1fr); }
+  #area-lembar-kerja-resmi .lk-bhp-usage-card button { min-height: 2.5rem; }
+}
+@media print {
+  #area-lembar-kerja-resmi > div:first-child { max-width: none; padding: 0; }
+}
